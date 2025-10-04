@@ -5,12 +5,21 @@ import { Highlight, themes } from "prism-react-renderer";
 import styles from "./CodeEditor.module.css";
 import type { CSSProperties } from "react";
 
-function LineNumbers({ lineNumbers }: { lineNumbers: number }) {
+function LineNumbers({
+  lineNumbers,
+  currentLine,
+}: {
+  lineNumbers: number;
+  currentLine: number | null;
+}) {
   return (
     <div className={styles.lineNumbers}>
       {Array.from({ length: lineNumbers }).map((_, i) => (
-        <div key={i} className={styles.lineNumber}>
-          {i + 1}
+        <div>
+          <span className={styles.currentLineIndicator}>
+            {currentLine === i + 1 && "►"}
+          </span>
+          <span className={styles.lineNumber}>{i + 1}</span>
         </div>
       ))}
     </div>
@@ -20,9 +29,11 @@ function LineNumbers({ lineNumbers }: { lineNumbers: number }) {
 export function CodeEditor({
   code,
   setCode,
+  currentLine,
 }: {
   code: string;
   setCode: (code: string) => void;
+  currentLine: number | null;
 }) {
   const { t } = useTranslation();
   const theme = {
@@ -30,16 +41,21 @@ export function CodeEditor({
     plain: {
       ...themes.vsDark.plain,
       fontFamily: "Jetbrains Mono, monospace",
-    }
-  }
+    },
+  };
   const lineNumbers = code.split("\n").length;
   return (
     <Window title={t("codeEditor.title")}>
-      <div className={styles.codeEditor} style={{
-        "--foreground-color": theme.plain.color,
-        "--background-color": theme.plain.backgroundColor
-      } as CSSProperties}>
-        <LineNumbers lineNumbers={lineNumbers} />
+      <div
+        className={styles.codeEditor}
+        style={
+          {
+            "--foreground-color": theme.plain.color,
+            "--background-color": theme.plain.backgroundColor,
+          } as CSSProperties
+        }
+      >
+        <LineNumbers lineNumbers={lineNumbers} currentLine={currentLine} />
         <Editor
           value={code}
           onValueChange={setCode}

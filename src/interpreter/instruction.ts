@@ -2,7 +2,7 @@ export type NoVarInstruction<T> = { type: T };
 export type OneVarInstruction<T> = {
   type: T;
   src: string;
-}
+};
 export type TwoVarInstruction<T> = {
   type: T;
   dest: string;
@@ -23,15 +23,25 @@ export type Instruction =
   | { type: "load"; dest: string; value: Value }
   | TwoVarInstruction<"copy">
   // Arithmetic instructions
-  | ThreeVarInstruction<"add" | "sub" | "mul" | "div">
+  | ThreeVarInstruction<"add">
+  | ThreeVarInstruction<"sub">
+  | ThreeVarInstruction<"mul">
+  | ThreeVarInstruction<"div">
   // Logical instructions
-  | ThreeVarInstruction<"and" | "or" | "xor">
+  | ThreeVarInstruction<"and">
+  | ThreeVarInstruction<"or">
+  | ThreeVarInstruction<"xor">
   | TwoVarInstruction<"not">
   // Comparison instructions
-  | ThreeVarInstruction<"lt" | "lte" | "gt" | "gte" | "eq" | "neq">
+  | ThreeVarInstruction<"lt">
+  | ThreeVarInstruction<"lte">
+  | ThreeVarInstruction<"gt">
+  | ThreeVarInstruction<"gte">
+  | ThreeVarInstruction<"eq">
+  | ThreeVarInstruction<"neq">
   // Control flow instructions
-  | { type: "jump"; target: number }
-  | { type: "call"; target: number }
+  | { type: "jump"; target: string }
+  | { type: "call"; target: string }
   | NoVarInstruction<"ret">
   | { type: "branch"; cond: string; target: number }
   | { type: "branchz"; cond: string; target: number }
@@ -46,4 +56,4 @@ export type InstructionData = {
 };
 
 export type Value = number;
-export type LabelDefinition = { label: string; line: number };
+export type LabelDefinition = { label: string; pc: number };

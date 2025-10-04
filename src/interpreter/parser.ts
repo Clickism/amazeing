@@ -31,9 +31,11 @@ export function parse(code: string): {
       if (labels.has(parsed.label)) {
         throw new LocatableError(
           lineNumber,
-          `Label "${parsed.label}" already defined on line ${labels.get(parsed.label)?.line}`,
+          `Label "${parsed.label}" already defined on line ${labels.get(parsed.label)?.pc}`,
         );
       }
+      // Set the instruction index to the next instruction to be added
+      parsed.pc = instructions.length;
       labels.set(parsed.label, parsed);
     } else {
       // Instruction
@@ -58,6 +60,7 @@ function parseLine(
     return null;
   }
   if (line.endsWith(":")) {
+    // Label definition
     const label = line.slice(0, -1).trim();
     if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(label)) {
       throw new LocatableError(
@@ -65,7 +68,8 @@ function parseLine(
         `Invalid label name: "${label}", must start with a letter and only contain letters, numbers, and underscores`,
       );
     }
-    return { label, line: lineNumber };
+    // Set instructionIndex to 0 temporarily
+    return { label, pc: 0 };
   }
   const parts = line.split(/\s+/);
   const [instructionType, ...args] = parts;
@@ -128,7 +132,7 @@ function parseInstruction(type: string, args: string[]): Instruction {
     case "jump":
     case "call":
       assertArgsLength(type, args, 1);
-      return { type, target: parseValue(args[0]) };
+      return { type, target: parseIdentifier(args[0]) };
     case "branch":
     case "branchz":
       assertArgsLength(type, args, 2);
