@@ -1,0 +1,18 @@
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.stretch {
+  width: 100%;
+}
+
+.stretch > * {
+  flex: 1;
+}

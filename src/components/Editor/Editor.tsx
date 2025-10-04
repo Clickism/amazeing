@@ -6,6 +6,7 @@ import * as React from "react";
 import { Button } from "../ui/Button/Button.tsx";
 import { Interpreter } from "../../interpreter/interpreter.ts";
 import '../../prism/amazeing.ts';
+import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
 
 export function Editor() {
   const [code, setCode] = React.useState<string>("");
@@ -29,7 +30,10 @@ export function Editor() {
         <div className={styles.viewport}>
           <Viewport />
         </div>
-        <Button onClick={handleRun}>Step</Button>
+        <ButtonGroup stretch>
+          <Button onClick={handleRun}>Run</Button>
+          <Button onClick={handleRun}>Step</Button>
+        </ButtonGroup>
         <div className={styles.console}>
           <Console text={output} />
         </div>
