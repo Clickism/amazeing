@@ -10,6 +10,7 @@
 
   background-color: var(--clr-surface-a0);
   color: var(--text-color);
+  color-scheme: light;
 
   --text-color: var(--clr-dark-a0);
 
@@ -72,6 +73,7 @@
 }
 
 :root[theme="dark"] {
+  color-scheme: dark;
   --text-color: var(--clr-light-a0);
 
   /** Theme primary colors */
@@ -125,3 +127,23 @@ body, html, #root {
   width: 100%;
   height: 100%;
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --padding-vertical: .4rem;
+  --padding-horizontal: 1.25rem;
+  --padding: var(--padding-vertical) var(--padding-horizontal);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --padding-vertical: .75rem;
+    --padding-horizontal: 1.5rem;
+  }
+}
+

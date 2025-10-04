@@ -1,0 +1,33 @@
+.window {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.background {
+  border-radius: 1rem;
+  background-color: var(--clr-surface-a10);
+  padding: .5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  flex: 1;
+}
+
+.title {
+  color: var(--clr-surface-a70);
+  user-select: none;
+  -webkit-user-select: none;
+  text-align: center;
+  line-height: 1;
+}
+
+.foreground {
+  border-radius: .5rem;
+
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}

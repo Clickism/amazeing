@@ -169,7 +169,7 @@ class PartialParseError extends Error {
 
 class ParseError extends Error {
   constructor(lineNumber: number, message: string) {
-    super(`${lineNumber}: ${message}`);
+    super(`Error on line ${lineNumber}: ${message}`);
     this.name = "ParseError";
   }
 }

@@ -1,0 +1,18 @@
+.navbar {
+  left: 0;
+  top: 0;
+  width: 100%;
+
+  padding: .5rem 1rem;
+  background-color: var(--clr-surface-a10);
+  border-bottom: 1px solid var(--clr-surface-a20);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left, .right {
+  display: flex;
+  gap: 1rem;
+}

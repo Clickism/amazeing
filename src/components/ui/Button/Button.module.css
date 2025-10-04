@@ -1,0 +1,45 @@
+.button {
+  all: unset;
+  border-radius: .5rem;
+  padding: var(--padding);
+  will-change: transform;
+  transition: all .2s;
+  background-color: var(--background-color);
+  font-weight: 500;
+  font-size: 16px;
+  box-sizing: content-box;
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: color-mix(in srgb, var(--background-color) 90%, var(--text-color));
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+.button:disabled {
+  cursor: default !important;
+  background: inherit !important;
+  transform: none !important;
+}
+
+.primary {
+  --background-color: var(--clr-primary-a0);
+  color: var(--clr-dark-a0);
+}
+
+.secondary {
+  --background-color: var(--clr-surface-a20);
+  color: var(--text-color);
+}
