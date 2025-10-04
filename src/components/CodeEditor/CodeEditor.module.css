@@ -1,9 +1,25 @@
 .codeEditor {
-  all: unset;
-  color: var(--clr-light-a0);
-  background-color: var(--clr-dark-a0);
   font-family: "JetBrains Mono", monospace;
-  padding: 1rem;
   height: 100%;
-  width: 100%;
+  display: flex;
+  font-size: 14px;
+  overflow: hidden;
+  --foreground-color: var(--text-color);
+  --background-color: var(--clr-surface-a10);
+  color: var(--foreground-color);
+  background-color: var(--background-color);
+}
+
+.lineNumbers {
+  text-align: right;
+  padding: 10px 8px;
+  user-select: none;
+  opacity: 1;
+  background-color: color-mix(in srgb, var(--background-color), var(--clr-surface-a50) 10%);
+}
+
+.lineNumber {
+  height: 1.5em;
+  line-height: 1.5em;
+  opacity: 0.2;
 }
