@@ -6,7 +6,7 @@ export function CodeEditor() {
   const { t } = useTranslation();
   return (
     <Window title={t("codeEditor.title")}>
-      <div className={styles.codeEditor}>Code Editor</div>
+      <textarea className={styles.codeEditor}>Code Editor</textarea>
     </Window>
   );
 }

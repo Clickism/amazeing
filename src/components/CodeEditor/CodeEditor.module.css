@@ -1,5 +1,8 @@
 .codeEditor {
-  background-color: var(--clr-surface-a0);
+  all: unset;
+  color: var(--clr-light-a0);
+  background-color: var(--clr-dark-a0);
+  font-family: "JetBrains Mono", monospace;
   padding: 1rem;
   height: 100%;
   width: 100%;
