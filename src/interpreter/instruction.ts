@@ -46,3 +46,4 @@ export type InstructionData = {
 };
 
 export type Value = number;
+export type LabelDefinition = { label: string; line: number };
