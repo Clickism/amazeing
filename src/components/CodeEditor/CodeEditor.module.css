@@ -14,12 +14,13 @@
   text-align: right;
   padding: 10px 8px;
   user-select: none;
+  -webkit-user-select: none;
   opacity: 1;
-  background-color: color-mix(in srgb, var(--background-color), var(--clr-surface-a50) 10%);
+  background-color: color-mix(in srgb, var(--background-color), var(--clr-dark-a0) 10%);
 }
 
 .lineNumber {
   height: 1.5em;
   line-height: 1.5em;
-  opacity: 0.2;
+  opacity: 0.3;
 }

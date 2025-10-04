@@ -25,7 +25,13 @@ export function CodeEditor({
   setCode: (code: string) => void;
 }) {
   const { t } = useTranslation();
-  const theme = themes.oneDark;
+  const theme = {
+    ...themes.vsDark,
+    plain: {
+      ...themes.vsDark.plain,
+      fontFamily: "Jetbrains Mono, monospace",
+    }
+  }
   const lineNumbers = code.split("\n").length;
   return (
     <Window title={t("codeEditor.title")}>
@@ -38,7 +44,7 @@ export function CodeEditor({
           value={code}
           onValueChange={setCode}
           highlight={(code) => (
-            <Highlight theme={theme} code={code} language="js">
+            <Highlight theme={theme} code={code} language="amazeing">
               {({ style, tokens, getLineProps, getTokenProps }) => (
                 <pre style={{ ...style, margin: 0 }}>
                   {tokens.map((line, i) => (

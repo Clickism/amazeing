@@ -8,6 +8,7 @@ export class Interpreter {
   pc: number;
   instructions: InstructionData[];
   env: Map<string, Value>;
+  stack: Map<string, Value>[] = [];
 
   constructor(
     instructions: InstructionData[],

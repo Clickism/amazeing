@@ -5,6 +5,7 @@ import styles from "./Editor.module.css";
 import * as React from "react";
 import { Button } from "../ui/Button/Button.tsx";
 import { Interpreter } from "../../interpreter/interpreter.ts";
+import '../../prism/amazeing.ts';
 
 export function Editor() {
   const [code, setCode] = React.useState<string>("");
