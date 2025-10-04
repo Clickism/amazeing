@@ -8,6 +8,7 @@
   --background-color: var(--clr-surface-a10);
   color: var(--foreground-color);
   background-color: var(--background-color);
+  cursor: text;
 }
 
 .lineNumbers {
