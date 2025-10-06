@@ -8,15 +8,18 @@ import "../../prism/amazeing.ts";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
 import { InterpreterConsole } from "../../interpreter/console.ts";
 import { Interpreter } from "../../interpreter/interpreter.ts";
+import { Window } from "../ui/Window/Window.tsx";
+import { useTranslation } from "react-i18next";
 
 export function Editor() {
   const [code, setCode] = React.useState<string>("");
   const [output, setOutput] = React.useState<string>("");
   const [currentLine, setCurrentLine] = React.useState<number | null>(0);
+  const { t } = useTranslation();
 
   const appendOutput = (msg: string) => {
     setOutput((prev) => prev + msg + "\n");
-  }
+  };
 
   const interpreter = React.useRef<Interpreter | null>(null);
 
@@ -60,33 +63,33 @@ export function Editor() {
         appendOutput(e.message);
       }
     }
-  }
+  };
 
   const handleReset = () => {
     initInterpreter();
     setOutput("");
     setCurrentLine(interpreter.current?.getCurrentLine() ?? null);
-  }
+  };
 
   return (
     <div className={styles.editorContainer}>
       <div className={styles.left}>
-        <div className={styles.viewport}>
+        <Window title={t("viewport.title")} className={styles.viewport}>
           <Viewport />
-        </div>
+        </Window>
         <ButtonGroup stretch>
           <Button onClick={handleRun}>Run</Button>
           <Button onClick={handleStep}>Step</Button>
           <Button onClick={handleReset}>Reset</Button>
         </ButtonGroup>
-        <div className={styles.console}>
+        <Window title={t("console.title")} className={styles.console}>
           <Console text={output} />
-        </div>
+        </Window>
       </div>
       <div className={styles.right}>
-        <div className={styles.codeEditor}>
+        <Window title={t("codeEditor.title")}className={styles.codeEditor}>
           <CodeEditor code={code} setCode={setCode} currentLine={currentLine} />
-        </div>
+        </Window>
       </div>
     </div>
   );

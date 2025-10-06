@@ -1,21 +1,10 @@
-.window {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-}
-
 .background {
   border-radius: 1rem;
   background-color: var(--clr-surface-a10);
   border: 1px solid var(--clr-surface-a20);
-  /*box-shadow: inset 0 0 4px var(--clr-surface-a20);*/
   padding: .5rem;
-
-  display: flex;
-  flex-direction: column;
-  gap: .5rem;
   flex: 1;
+  overflow-y: auto;
 }
 
 .title {
@@ -24,23 +13,12 @@
   -webkit-user-select: none;
   text-align: center;
   line-height: 1;
+  margin-bottom: .5rem;
 }
 
 .foreground {
   position: relative;
   border-radius: .5rem;
   border: 1px solid var(--clr-surface-a20);
-  /*box-shadow: 0 0 4px var(--clr-surface-a20);*/
-  flex: 1 1 auto;
-  min-height: 0;
   overflow: hidden;
-}
-
-.foreground::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 1;
 }

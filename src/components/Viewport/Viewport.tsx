@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Window } from "../ui/Window/Window";
 import styles from "./Viewport.module.css";
 
 const MAZE: number[][] = [
@@ -13,14 +11,12 @@ const MAZE: number[][] = [
 ];
 
 export function Viewport() {
-  const { t } = useTranslation();
-
   const [owlPos, setOwlPos] = useState({ x: 1, y: 1 });
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
-    null
+    null,
   );
 
   // Arrow key movement
@@ -60,34 +56,32 @@ export function Viewport() {
   };
 
   return (
-    <Window title={t("viewport.title")}>
+    <div
+      className={styles.viewport}
+      onWheel={handleWheel}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
       <div
-        className={styles.viewport}
-        onWheel={handleWheel}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        className={styles.mazeContainer}
+        style={{
+          transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+          transformOrigin: "top left",
+        }}
       >
-        <div
-          className={styles.mazeContainer}
-          style={{
-            transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
-            transformOrigin: "top left",
-          }}
-        >
-          {MAZE.map((row, y) =>
-            row.map((cell, x) => (
-              <div
-                key={`${x}-${y}`}
-                className={`${styles.cell} ${
-                  cell === 1 ? styles.wall : ""
-                } ${owlPos.x === x && owlPos.y === y ? styles.owl : ""}`}
-              />
-            ))
-          )}
-        </div>
+        {MAZE.map((row, y) =>
+          row.map((cell, x) => (
+            <div
+              key={`${x}-${y}`}
+              className={`${styles.cell} ${
+                cell === 1 ? styles.wall : ""
+              } ${owlPos.x === x && owlPos.y === y ? styles.owl : ""}`}
+            />
+          )),
+        )}
       </div>
-    </Window>
+    </div>
   );
 }
