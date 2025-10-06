@@ -85,7 +85,7 @@ function parseLine(
 }
 
 /**
- * @throws {PartialParseError} if parsing fails
+ * @throws {Error} if parsing fails
  */
 function parseInstruction(type: string, args: string[]): Instruction {
   switch (type) {
