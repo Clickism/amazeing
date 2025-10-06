@@ -4,12 +4,10 @@ import { Viewport } from "../Viewport/Viewport.tsx";
 import styles from "./Editor.module.css";
 import * as React from "react";
 import { Button } from "../ui/Button/Button.tsx";
-import {
-  Interpreter,
-  InterpreterConsole,
-} from "../../interpreter/interpreter.ts";
 import "../../prism/amazeing.ts";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
+import { InterpreterConsole } from "../../interpreter/console.ts";
+import { Interpreter } from "../../interpreter/interpreter.ts";
 
 export function Editor() {
   const [code, setCode] = React.useState<string>("");
