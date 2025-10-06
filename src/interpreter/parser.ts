@@ -185,7 +185,7 @@ function parseValue(arg: string): Value {
 }
 
 /**
- * @throws {PartialParseError} if the number of arguments is incorrect
+ * @throws {Error} if the number of arguments is incorrect
  */
 function assertArgsLength(
   instructionType: Instruction["type"],

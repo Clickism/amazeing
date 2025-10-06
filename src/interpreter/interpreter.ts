@@ -1,6 +1,13 @@
-import type { Instruction, InstructionData, LabelDefinition, ThreeVarInstruction, Value } from "./instruction.ts";
+import type {
+  Instruction,
+  InstructionData,
+  ThreeVarInstruction,
+  Value,
+} from "./instruction.ts";
 import { parse } from "./parser.ts";
 import { LocatableError } from "./error.ts";
+import { Environment } from "./environment.ts";
+import type { InterpreterConsole } from "./console.ts";
 
 const MAX_STEPS = 10000;
 
@@ -116,6 +123,11 @@ export class Interpreter {
   }
 }
 
+type PcTarget = {
+  type: "call" | "jump";
+  target: number;
+};
+
 type Executor<T extends Instruction["type"]> = (
   env: Environment,
   instruction: Extract<Instruction, { type: T }>,
@@ -128,14 +140,11 @@ type Executors = {
 
 const executors = {
   var: (env, { name }) => {
-    env.set(name);
+    env.define(name);
   },
 
   load: (env, { dest, value }) => {
-    if (!env.has(dest)) {
-      throw new Error(`Variable "${dest}" is not defined`);
-    }
-    env.set(dest, value);
+    env.setOrThrow(dest, value);
   },
 
   add: (env, instruction) =>
@@ -153,30 +162,18 @@ const executors = {
     }),
 
   print: (env, { src }) => {
-    const value = env.get(src);
-    if (value === undefined) {
-      throw new Error(`Variable "${src}" is not defined`);
-    }
-    if (value === null) {
-      throw new Error(`Variable "${src}" is not set`);
-    }
+    const value = env.getOrThrow(src);
     env.console.log({ type: "log", message: value.toString() });
   },
 
   jump: (env, { target }) => {
-    const labelPc = env.labels.get(target)?.pc;
-    if (labelPc === undefined) {
-      throw new Error(`Label "${target}" not found`);
-    }
-    return { type: "jump", target: labelPc };
+    const pc = env.getLabelOrThrow(target).pc;
+    return { type: "jump", target: pc };
   },
 
   call: (env, { target }) => {
-    const labelPc = env.labels.get(target)?.pc;
-    if (labelPc === undefined) {
-      throw new Error(`Label "${target}" not found`);
-    }
-    return { type: "call", target: labelPc };
+    const pc = env.getLabelOrThrow(target).pc;
+    return { type: "call", target: pc };
   },
 
   ret: (env) => {
@@ -198,146 +195,4 @@ function arithmeticExecutor(
   const val2 = env.getOrThrow(src2);
   const result = operation(val1, val2);
   env.set(dest, result);
-}
-
-export type VariableMap = Map<string, Value | null>;
-
-export type StackFrame = {
-  returnAddress: number | undefined;
-  variables: VariableMap;
-};
-
-type PcTarget = {
-  type: "call" | "jump";
-  target: number;
-};
-
-/**
- * Environment for the interpreter.
- */
-class Environment {
-  labels: Map<string, LabelDefinition>;
-  console: InterpreterConsole;
-  private global: VariableMap;
-  private stack: StackFrame[];
-  private args: VariableMap;
-
-  constructor(
-    labels: Map<string, LabelDefinition>,
-    interpreterConsole: InterpreterConsole = new InterpreterConsole((msg) =>
-      console.log(`[${msg.type.toUpperCase()}] ${msg.message}`),
-    ),
-    global: VariableMap = new Map(),
-    stack: StackFrame[] = [],
-    args: VariableMap = new Map(),
-  ) {
-    this.labels = labels;
-    this.console = interpreterConsole;
-    this.global = global;
-    this.stack = stack;
-    this.args = args;
-  }
-
-  /**
-   * Gets the value of a variable.
-   */
-  get(name: string): Value | null | undefined {
-    if (this.stack.length > 0) {
-      const { variables } = this.stack[this.stack.length - 1];
-      if (variables.has(name)) {
-        return variables.get(name);
-      }
-    }
-    if (this.args.has(name)) {
-      return this.args.get(name);
-    }
-    return this.global.get(name);
-  }
-
-  /**
-   * Gets the value of a variable or null if it's not defined.
-   * @param name The name of the variable.
-   */
-  getOrNull(name: string): Value | null {
-    const value = this.get(name);
-    if (value === undefined) {
-      throw new Error(`Variable "${name}" is not defined.`);
-    }
-    return value;
-  }
-
-  /**
-   * Gets the value of a variable or throws an error if it's not defined or not set.
-   * @param name The name of the variable.
-   */
-  getOrThrow(name: string): Value {
-    const value = this.getOrNull(name);
-    if (value === null) {
-      throw new Error(`Variable "${name}" is not set.`);
-    }
-    return value;
-  }
-
-  /**
-   * Sets the value of a variable in the current scope.
-   * @throws {Error} if the variable is already defined in the current scope.
-   */
-  set(name: string, value: Value | null = null, isGlobal = false) {
-    if (isGlobal) {
-      throw new Error("Global variables not implemented yet.");
-    }
-    if (this.stack.length === 0) {
-      this.stack.push({ returnAddress: undefined, variables: new Map() });
-    }
-    if (this.stack.length > 0) {
-      const { variables } = this.stack[this.stack.length - 1];
-      // Be lenient when re-defining variables
-      // if (variables.has(name) && value === null) {
-      //   throw new Error(
-      //     `Variable "${name}" is already defined in the current scope.`,
-      //   );
-      // }
-      variables.set(name, value);
-    }
-  }
-
-  /**
-   * Checks if a variable is defined in any scope.
-   * @param name The name of the variable.
-   */
-  has(name: string): boolean {
-    return this.get(name) !== undefined;
-  }
-
-  /**
-   * Pushes a new stack frame.
-   * @param returnAddress The return address for the new stack frame.
-   */
-  pushStackFrame(returnAddress: number) {
-    this.stack.push({ returnAddress, variables: new Map() });
-  }
-
-  /**
-   * Pops the top stack frame.
-   */
-  popStackFrame(): StackFrame | undefined {
-    return this.stack.pop();
-  }
-}
-
-export type ConsoleMessage = {
-  type: "log" | "error" | "warn";
-  message: string;
-};
-
-export class InterpreterConsole {
-  logger: (message: ConsoleMessage) => void;
-
-  constructor(logger: (message: ConsoleMessage) => void) {
-    this.logger = logger;
-  }
-
-  log(message: ConsoleMessage) {
-    this.logger(message);
-  }
 }
