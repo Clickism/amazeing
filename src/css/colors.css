@@ -1,17 +1,6 @@
+/* Light theme colors */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  background-color: var(--clr-surface-a0);
-  color: var(--text-color);
   color-scheme: light;
-
   --text-color: var(--clr-dark-a0);
 
   /** Base colors */
@@ -69,12 +58,16 @@
   --clr-info-a0: #1e56a3;
   --clr-info-a10: #347ada;
   --clr-info-a20: #74a4e6;
-
 }
 
+/* Dark theme colors */
 :root[theme="dark"] {
   color-scheme: dark;
   --text-color: var(--clr-light-a0);
+
+  /** Base colors */
+  --clr-dark-a0: #000000;
+  --clr-light-a0: #ffffff;
 
   /** Theme primary colors */
   --clr-primary-a0: #1e88e6;
@@ -83,22 +76,30 @@
   --clr-primary-a30: #83aeef;
   --clr-primary-a40: #9abbf2;
   --clr-primary-a50: #afc8f5;
+  --clr-primary-a60: #c4d6f8;
+  --clr-primary-a70: #d8e3fa;
+  --clr-primary-a80: #ebf1fd;
+  --clr-primary-a90: #ffffff;
 
-  /** Theme surface colors */
+  /*!** Theme surface colors *!*/
   /*--clr-surface-a0: #121212;*/
   /*--clr-surface-a10: #282828;*/
   /*--clr-surface-a20: #3f3f3f;*/
   /*--clr-surface-a30: #575757;*/
   /*--clr-surface-a40: #717171;*/
   /*--clr-surface-a50: #8b8b8b;*/
+  /*--clr-surface-a60: #a7a7a7;*/
+  /*--clr-surface-a70: #c4c4c4;*/
 
   /** Theme tonal surface colors */
-  --clr-surface-a0: #191d24;
-  --clr-surface-a10: #2e3239;
-  --clr-surface-a20: #45484e;
-  --clr-surface-a30: #5d5f65;
-  --clr-surface-a40: #75787d;
-  --clr-surface-a50: #8f9195;
+  --clr-surface-a0: #1e2736;
+  --clr-surface-a10: #343b4a;
+  --clr-surface-a20: #4a515e;
+  --clr-surface-a30: #626773;
+  --clr-surface-a40: #7a7f89;
+  --clr-surface-a50: #93979f;
+  --clr-surface-a60: #adb0b7;
+  --clr-surface-a70: #c8cace;
 
   /** Success colors */
   --clr-success-a0: #22946e;
@@ -120,30 +121,3 @@
   --clr-info-a10: #4077d1;
   --clr-info-a20: #92b2e5;
 }
-
-body, html, #root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-:root {
-  --padding-vertical: .4rem;
-  --padding-horizontal: 1.25rem;
-  --padding: var(--padding-vertical) var(--padding-horizontal);
-}
-
-@media (max-width: 767px) {
-  :root {
-    --padding-vertical: .75rem;
-    --padding-horizontal: 1.5rem;
-  }
-}
-

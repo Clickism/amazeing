@@ -1,14 +1,16 @@
 .codeEditor {
   font-family: "JetBrains Mono", monospace;
   height: 100%;
+  width: 100%;
+
   display: flex;
   font-size: 14px;
-  overflow: hidden;
   --foreground-color: var(--text-color);
   --background-color: var(--clr-surface-a10);
   color: var(--foreground-color);
   background-color: var(--background-color);
   cursor: text;
+  overflow: auto;
 }
 
 .lineNumbers {

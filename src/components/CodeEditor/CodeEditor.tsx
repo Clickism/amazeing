@@ -1,7 +1,9 @@
 import Editor from "react-simple-code-editor";
-import { Highlight, themes } from "prism-react-renderer";
+import { Highlight } from "prism-react-renderer";
 import styles from "./CodeEditor.module.css";
 import type { CSSProperties } from "react";
+import clsx from "clsx";
+import { useEditorTheme } from "../../hooks/useEditorTheme.ts";
 
 function LineNumbers({
   lineNumbers,
@@ -33,17 +35,18 @@ export function CodeEditor({
   setCode: (code: string) => void;
   currentLine: number | null;
 }) {
+  const { editorTheme } = useEditorTheme();
   const theme = {
-    ...themes.vsDark,
+    ...editorTheme,
     plain: {
-      ...themes.vsDark.plain,
+      ...editorTheme.plain,
       fontFamily: "Jetbrains Mono, monospace",
     },
   };
   const lineNumbers = code.split("\n").length;
   return (
     <div
-      className={styles.codeEditor}
+      className={clsx(styles.codeEditor, "window-border")}
       style={
         {
           "--foreground-color": theme.plain.color,

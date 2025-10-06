@@ -8,7 +8,6 @@ import "../../prism/amazeing.ts";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
 import { InterpreterConsole } from "../../interpreter/console.ts";
 import { Interpreter } from "../../interpreter/interpreter.ts";
-import { Window } from "../ui/Window/Window.tsx";
 import { useTranslation } from "react-i18next";
 
 export function Editor() {
@@ -74,22 +73,22 @@ export function Editor() {
   return (
     <div className={styles.editorContainer}>
       <div className={styles.left}>
-        <Window title={t("viewport.title")} className={styles.viewport}>
+        <div title={t("viewport.title")} className={styles.viewport}>
           <Viewport />
-        </Window>
+        </div>
         <ButtonGroup stretch>
           <Button onClick={handleRun}>Run</Button>
           <Button onClick={handleStep}>Step</Button>
           <Button onClick={handleReset}>Reset</Button>
         </ButtonGroup>
-        <Window title={t("console.title")} className={styles.console}>
+        <div title={t("console.title")} className={styles.console}>
           <Console text={output} />
-        </Window>
+        </div>
       </div>
       <div className={styles.right}>
-        <Window title={t("codeEditor.title")}className={styles.codeEditor}>
-          <CodeEditor code={code} setCode={setCode} currentLine={currentLine} />
-        </Window>
+        <div title={t("codeEditor.title")} className={styles.codeEditor}>
+          <CodeEditor code={code} setCode={setCode} currentLine={currentLine}/>
+        </div>
       </div>
     </div>
   );

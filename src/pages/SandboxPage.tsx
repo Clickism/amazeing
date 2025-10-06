@@ -3,7 +3,7 @@ import { Editor } from "../components/Editor/Editor.tsx";
 
 export function SandboxPage() {
   return (
-    <Layout>
+    <Layout fullWidth>
       <Editor />
     </Layout>
   );

@@ -8,12 +8,15 @@ import {
   type Theme,
   toggleTheme,
 } from "../../../../utils/themes.ts";
+import { useEditorTheme } from "../../../../hooks/useEditorTheme.ts";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(getTheme());
+  const { refreshEditorTheme } = useEditorTheme();
 
   useEffect(() => {
     applyCurrentTheme();
+    refreshEditorTheme();
   }, [theme]);
 
   const handleClick = () => {

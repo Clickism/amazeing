@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Viewport.module.css";
+import clsx from "clsx";
 
 const MAZE: number[][] = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -57,7 +58,7 @@ export function Viewport() {
 
   return (
     <div
-      className={styles.viewport}
+      className={clsx(styles.viewport, "window-border")}
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
