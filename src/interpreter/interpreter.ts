@@ -233,6 +233,9 @@ const executors = {
   },
 } as Executors;
 
+/**
+ * Executes an arithmetic operation.
+ */
 function arithmeticExecutor(
   env: Environment,
   instruction: ThreeVarInstruction<unknown>,
@@ -245,6 +248,9 @@ function arithmeticExecutor(
   env.setOrThrow(dest, result);
 }
 
+/**
+ * Executes a logical operation, storing 1 for true and 0 for false.
+ */
 function logicalExecutor(
   env: Environment,
   instruction: ThreeVarInstruction<unknown>,
