@@ -1,9 +1,4 @@
-import type {
-  Instruction,
-  InstructionData,
-  ThreeVarInstruction,
-  Value,
-} from "./instruction.ts";
+import type { Instruction, InstructionData, ThreeVarInstruction, Value } from "./instruction.ts";
 import { parse } from "./parser.ts";
 import { LocatableError } from "./error.ts";
 import { Environment } from "./environment.ts";
@@ -134,16 +129,28 @@ type Executor<T extends Instruction["type"]> = (
 ) => PcTarget | undefined;
 
 type Executors = {
-  // TODO: Remove optionality once all executors are implemented
-  [K in Instruction["type"]]?: Executor<K>;
+  [K in Instruction["type"]]: Executor<K>;
 };
 
 const executors = {
+  move: (env) => {
+    throw new Error("Not implemented");
+  },
+
+  turn: (env, { direction }) => {
+    throw new Error("Not implemented");
+  },
+
   var: (env, { name }) => {
     env.define(name);
   },
 
   load: (env, { dest, value }) => {
+    env.setOrThrow(dest, value);
+  },
+
+  copy: (env, { dest, src }) => {
+    const value = env.getOrThrow(src);
     env.setOrThrow(dest, value);
   },
 
@@ -161,10 +168,30 @@ const executors = {
       return Math.floor(a / b);
     }),
 
-  print: (env, { src }) => {
+  and: (env, instruction) =>
+    arithmeticExecutor(env, instruction, (a, b) => a & b),
+  or: (env, instruction) =>
+    arithmeticExecutor(env, instruction, (a, b) => a | b),
+  xor: (env, instruction) =>
+    arithmeticExecutor(env, instruction, (a, b) => a ^ b),
+  not: (env, { dest, src }) => {
     const value = env.getOrThrow(src);
-    env.console.log({ type: "log", text: value.toString() });
+    // TODO: Bitwise not?
+    env.setOrThrow(dest, ~value);
   },
+
+  lt: (env, instruction) =>
+    logicalExecutor(env, instruction, (a, b) => a < b),
+  lte: (env, instruction) =>
+    logicalExecutor(env, instruction, (a, b) => a <= b),
+  gt: (env, instruction) =>
+    logicalExecutor(env, instruction, (a, b) => a > b),
+  gte: (env, instruction) =>
+    logicalExecutor(env, instruction, (a, b) => a >= b),
+  eq: (env, instruction) =>
+    logicalExecutor(env, instruction, (a, b) => a === b),
+  neq: (env, instruction) =>
+    logicalExecutor(env, instruction, (a, b) => a !== b),
 
   jump: (env, { target }) => {
     const pc = env.getLabelOrThrow(target).pc;
@@ -183,6 +210,27 @@ const executors = {
     }
     return { type: "jump", target: frame.returnAddress };
   },
+
+  branch: (env, { cond, target }) => {
+    const pc = env.getLabelOrThrow(target).pc;
+    const condValue = env.getOrThrow(cond);
+    if (condValue !== 0) {
+      return { type: "jump", target: pc };
+    }
+  },
+
+  branchz: (env, { cond, target }) => {
+    const pc = env.getLabelOrThrow(target).pc;
+    const condValue = env.getOrThrow(cond);
+    if (condValue === 0) {
+      return { type: "jump", target: pc };
+    }
+  },
+
+  print: (env, { src }) => {
+    const value = env.getOrThrow(src);
+    env.console.log({ type: "log", text: value.toString() });
+  },
 } as Executors;
 
 function arithmeticExecutor(
@@ -194,5 +242,13 @@ function arithmeticExecutor(
   const val1 = env.getOrThrow(src1);
   const val2 = env.getOrThrow(src2);
   const result = operation(val1, val2);
-  env.set(dest, result);
+  env.setOrThrow(dest, result);
+}
+
+function logicalExecutor(
+  env: Environment,
+  instruction: ThreeVarInstruction<unknown>,
+  cond: (a: Value, b: Value) => boolean,
+) {
+  return arithmeticExecutor(env, instruction, (a, b) => (cond(a, b) ? 1 : 0);
 }

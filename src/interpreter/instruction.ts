@@ -43,8 +43,8 @@ export type Instruction =
   | { type: "jump"; target: string }
   | { type: "call"; target: string }
   | NoVarInstruction<"ret">
-  | { type: "branch"; cond: string; target: number }
-  | { type: "branchz"; cond: string; target: number }
+  | { type: "branch"; cond: string; target: string }
+  | { type: "branchz"; cond: string; target: string }
   // Other instructions
   | OneVarInstruction<"print">;
 
