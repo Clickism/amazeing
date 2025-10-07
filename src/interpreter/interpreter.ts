@@ -163,7 +163,7 @@ const executors = {
 
   print: (env, { src }) => {
     const value = env.getOrThrow(src);
-    env.console.log({ type: "log", message: value.toString() });
+    env.console.log({ type: "log", text: value.toString() });
   },
 
   jump: (env, { target }) => {

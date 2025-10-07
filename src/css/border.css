@@ -1,5 +1,9 @@
+:root {
+  --clr-surface-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+}
+
 .window-border {
   border-radius: 1rem;
   border: 4px solid var(--clr-surface-a10);
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+  box-shadow: var(--clr-surface-shadow);
 }

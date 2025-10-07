@@ -3,7 +3,7 @@
  */
 export type ConsoleMessage = {
   type: "log" | "error" | "warn";
-  message: string;
+  text: string;
 };
 
 /**

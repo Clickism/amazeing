@@ -4,6 +4,12 @@ import styles from "./CodeEditor.module.css";
 import type { CSSProperties } from "react";
 import clsx from "clsx";
 import { useEditorTheme } from "../../hooks/useEditorTheme.ts";
+import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
+import { Button } from "../ui/Button/Button.tsx";
+import { RxGear } from "react-icons/rx";
+import Popup from "reactjs-popup";
+import { ThemeSelect } from "./ThemeSelect/ThemeSelect.tsx";
+import { FaArrowRight } from "react-icons/fa";
 
 function LineNumbers({
   lineNumbers,
@@ -15,9 +21,9 @@ function LineNumbers({
   return (
     <div className={styles.lineNumbers}>
       {Array.from({ length: lineNumbers }).map((_, i) => (
-        <div>
+        <div key={i}>
           <span className={styles.currentLineIndicator}>
-            {currentLine === i + 1 && "►"}
+            {currentLine === i + 1 && <FaArrowRight size={10} />}
           </span>
           <span className={styles.lineNumber}>{i + 1}</span>
         </div>
@@ -35,7 +41,7 @@ export function CodeEditor({
   setCode: (code: string) => void;
   currentLine: number | null;
 }) {
-  const { editorTheme } = useEditorTheme();
+  const { editorTheme, setEditorTheme } = useEditorTheme();
   const theme = {
     ...editorTheme,
     plain: {
@@ -46,7 +52,7 @@ export function CodeEditor({
   const lineNumbers = code.split("\n").length;
   return (
     <div
-      className={clsx(styles.codeEditor, "window-border")}
+      className={clsx(styles.container, "window-border")}
       style={
         {
           "--foreground-color": theme.plain.color,
@@ -54,8 +60,25 @@ export function CodeEditor({
         } as CSSProperties
       }
     >
+      <CornerGroup>
+        <Popup
+          trigger={
+            <Button variant="icon-only">
+              <RxGear />
+            </Button>
+          }
+          position="left center"
+        >
+          Theme: &nbsp;
+          <ThemeSelect
+            editorTheme={editorTheme}
+            setEditorTheme={setEditorTheme}
+          />
+        </Popup>
+      </CornerGroup>
       <LineNumbers lineNumbers={lineNumbers} currentLine={currentLine} />
       <Editor
+        className={styles.codeEditor}
         value={code}
         onValueChange={setCode}
         highlight={(code) => (

@@ -1,0 +1,7 @@
+input, select {
+  all: unset;
+  padding: calc(var(--padding-vertical) / 2) calc(var(--padding-horizontal) / 2);
+  background: var(--clr-surface-a0);
+  border: 1px solid var(--clr-surface-a20);
+  border-radius: .5rem;
+}

@@ -8,3 +8,15 @@
   white-space: pre-wrap;
   overflow: auto;
 }
+
+.message-error {
+  color: var(--clr-danger-a10);
+  font-weight: bold;
+}
+
+.message-warn {
+  color: var(--clr-warning-a10);
+}
+
+.message-log {
+}

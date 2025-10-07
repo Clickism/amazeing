@@ -1,0 +1,37 @@
+.popup-content {
+  background: var(--clr-surface-a10);
+  border-radius: .5rem;
+  border: 1px solid var(--clr-surface-a20);
+  padding: var(--padding-vertical);
+  z-index: 2000;
+  box-sizing: border-box;
+
+  animation: popup-animation 0.1s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+}
+
+.popup-arrow {
+  display: none;
+}
+
+[role='tooltip'].popup-content {
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+
+[data-popup='tooltip'].popup-overlay {
+  background: transparent;
+}
+
+@keyframes popup-animation {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  1% {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

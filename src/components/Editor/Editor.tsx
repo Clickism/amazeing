@@ -6,18 +6,21 @@ import * as React from "react";
 import { Button } from "../ui/Button/Button.tsx";
 import "../../prism/amazeing.ts";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
-import { InterpreterConsole } from "../../interpreter/console.ts";
+import {
+  type ConsoleMessage,
+  InterpreterConsole,
+} from "../../interpreter/console.ts";
 import { Interpreter } from "../../interpreter/interpreter.ts";
 import { useTranslation } from "react-i18next";
 
 export function Editor() {
   const [code, setCode] = React.useState<string>("");
-  const [output, setOutput] = React.useState<string>("");
+  const [output, setOutput] = React.useState<ConsoleMessage[]>([]);
   const [currentLine, setCurrentLine] = React.useState<number | null>(0);
   const { t } = useTranslation();
 
-  const appendOutput = (msg: string) => {
-    setOutput((prev) => prev + msg + "\n");
+  const appendOutput = (message: ConsoleMessage) => {
+    setOutput((prev) => [...prev, message]);
   };
 
   const interpreter = React.useRef<Interpreter | null>(null);
@@ -26,13 +29,13 @@ export function Editor() {
     try {
       interpreter.current = Interpreter.fromCode(
         code,
-        new InterpreterConsole((msg) => {
-          appendOutput(`${msg.message}`);
+        new InterpreterConsole((message) => {
+          appendOutput(message);
         }),
       );
     } catch (e) {
       if (e instanceof Error) {
-        setOutput(e.message);
+        appendOutput({ type: "error", text: e.message });
       }
     }
   };
@@ -46,7 +49,7 @@ export function Editor() {
       setCurrentLine(interpreter.current?.getCurrentLine() ?? null);
     } catch (e) {
       if (e instanceof Error) {
-        appendOutput(e.message);
+        appendOutput({ type: "error", text: e.message });
       }
     }
   };
@@ -59,14 +62,14 @@ export function Editor() {
       interpreter.current?.run();
     } catch (e) {
       if (e instanceof Error) {
-        appendOutput(e.message);
+        appendOutput({ type: "error", text: e.message });
       }
     }
   };
 
   const handleReset = () => {
     initInterpreter();
-    setOutput("");
+    setOutput([]);
     setCurrentLine(interpreter.current?.getCurrentLine() ?? null);
   };
 
@@ -82,7 +85,7 @@ export function Editor() {
           <Button onClick={handleReset}>Reset</Button>
         </ButtonGroup>
         <div title={t("console.title")} className={styles.console}>
-          <Console text={output} />
+          <Console messages={output} />
         </div>
       </div>
       <div className={styles.right}>

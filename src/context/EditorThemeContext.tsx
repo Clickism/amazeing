@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { type PrismTheme } from "prism-react-renderer";
+import type { EditorTheme } from "../utils/editorTheme.ts";
 
 export const EditorThemeContext = createContext<
   | {
-      editorTheme: PrismTheme;
+      editorTheme: EditorTheme;
       setEditorTheme: (theme: string) => void;
       refreshEditorTheme: () => void;
     }

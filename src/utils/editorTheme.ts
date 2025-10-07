@@ -1,10 +1,10 @@
 import { type PrismTheme, themes } from "prism-react-renderer";
 import { getTheme } from "./themes.ts";
 
-const DEFAULT_LIGHT_THEME: PrismTheme = themes.github;
-const DEFAULT_DARK_THEME: PrismTheme = themes.vsDark;
+const DEFAULT_LIGHT_THEME: EditorTheme = { ...themes.github, name: "github" };
+const DEFAULT_DARK_THEME: EditorTheme = { ...themes.vsDark, name: "vsDark" };
 
-const SUPPORTED_THEMES = {
+export const SUPPORTED_THEMES = {
   dracula: themes.dracula,
   duotoneDark: themes.duotoneDark,
   duotoneLight: themes.duotoneLight,
@@ -21,27 +21,30 @@ const SUPPORTED_THEMES = {
   oneLight: themes.oneLight,
   palenight: themes.palenight,
   shadesOfPurple: themes.shadesOfPurple,
-  synthwave84: themes.synthwave84,
+  // synthwave84: themes.synthwave84,
   ultramin: themes.ultramin,
   vsDark: themes.vsDark,
   vsLight: themes.vsLight,
 };
 
+export type EditorTheme = PrismTheme & { name: string };
+
 export function setEditorTheme(theme: string) {
   localStorage.setItem("colorTheme", theme);
 }
 
-export function getEditorTheme(): PrismTheme {
-  const themeName = localStorage.getItem("theme");
+export function getEditorTheme(): EditorTheme {
+  const themeName = localStorage.getItem("colorTheme");
   if (themeName === null || !(themeName in SUPPORTED_THEMES)) {
     return getDefaultEditorTheme();
   }
-  return SUPPORTED_THEMES[
+  const theme = SUPPORTED_THEMES[
     themeName as keyof typeof SUPPORTED_THEMES
-    ] as PrismTheme;
+  ] as PrismTheme;
+  return { ...theme, name: themeName };
 }
 
-export function getDefaultEditorTheme(): PrismTheme {
+export function getDefaultEditorTheme(): EditorTheme {
   const theme = getTheme();
   return theme === "dark" ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
 }

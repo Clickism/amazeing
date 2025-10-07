@@ -1,6 +1,6 @@
 import { type ReactNode, useState } from "react";
-import type { PrismTheme } from "prism-react-renderer";
 import {
+  type EditorTheme,
   getEditorTheme as getStoredTheme,
   setEditorTheme as saveTheme,
 } from "../utils/editorTheme.ts";
@@ -8,7 +8,7 @@ import { EditorThemeContext } from "./EditorThemeContext.tsx";
 
 export function EditorThemeProvider({ children }: { children: ReactNode }) {
   const [editorTheme, setEditorThemeState] =
-    useState<PrismTheme>(getStoredTheme);
+    useState<EditorTheme>(getStoredTheme);
 
   const setEditorTheme = (theme: string) => {
     saveTheme(theme);

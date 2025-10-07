@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import "./css/index.css";
 import "./css/colors.css";
 import "./css/border.css";
+import "./css/popup.css";
+import "./css/form.css";
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/AppRoutes.tsx";
 import { EditorThemeProvider } from "./context/EditorThemeProvider.tsx";
