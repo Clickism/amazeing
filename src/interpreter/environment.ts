@@ -20,9 +20,7 @@ export class Environment {
 
   constructor(
     labels: Map<string, LabelDefinition>,
-    interpreterConsole: InterpreterConsole = new InterpreterConsole((msg) =>
-      console.log(`[${msg.type.toUpperCase()}] ${msg.text}`),
-    ),
+    interpreterConsole: InterpreterConsole,
     global: VariableMap = new Map(),
     stack: StackFrame[] = [],
     args: VariableMap = new Map(),

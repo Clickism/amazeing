@@ -15,8 +15,10 @@ export function Console({ messages }: { messages: ConsoleMessage[] }) {
 
   return (
     <div className={clsx(styles.console, "window-border")} ref={containerRef}>
-      {messages.map((message) => (
-        <div className={styles[`message-${message.type}`]}>{message.text}</div>
+      {messages.map((message, i) => (
+        <div key={i} className={styles[`message-${message.type}`]}>
+          {message.text}
+        </div>
       ))}
     </div>
   );

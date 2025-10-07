@@ -86,9 +86,9 @@ export function CodeEditor({
             {({ style, tokens, getLineProps, getTokenProps }) => (
               <pre style={{ ...style, margin: 0 }}>
                 {tokens.map((line, i) => (
-                  <div key={i} {...getLineProps({ line, key: i })}>
+                  <div key={i} {...getLineProps({ line })}>
                     {line.map((token, key) => (
-                      <span key={key} {...getTokenProps({ token, key })} />
+                      <span key={key} {...getTokenProps({ token })} />
                     ))}
                   </div>
                 ))}

@@ -1,4 +1,9 @@
-import type { Instruction, InstructionData, ThreeVarInstruction, Value } from "./instruction.ts";
+import type {
+  Instruction,
+  InstructionData,
+  ThreeVarInstruction,
+  Value,
+} from "./instruction.ts";
 import { parse } from "./parser.ts";
 import { LocatableError } from "./error.ts";
 import { Environment } from "./environment.ts";
@@ -7,9 +12,37 @@ import type { InterpreterConsole } from "./console.ts";
 const MAX_STEPS = 10000;
 
 /**
+ * Interpreter interface.
+ */
+export interface Interpreter {
+  /**
+   * Executes the next instruction.
+   *
+   * @throws {Error} If the program has already terminated.
+   * @throws {LocatableError} If an error occurs during execution.
+   */
+  step(): void;
+
+  /**
+   * Runs the rest of the program until termination.
+   */
+  run(): void;
+
+  /**
+   * Returns true if there are more instructions to execute.
+   */
+  canStep(): boolean;
+
+  /**
+   * Returns the current line number, or null if execution is complete or not started.
+   */
+  getCurrentLine(): number | null;
+}
+
+/**
  * Interpreter for Amazeing.
  */
-export class Interpreter {
+export class InterpreterImpl implements Interpreter {
   pc: number;
   instructions: InstructionData[];
   env: Environment;
@@ -28,21 +61,15 @@ export class Interpreter {
    */
   static fromCode(
     code: string,
-    interpreterConsole?: InterpreterConsole,
+    interpreterConsole: InterpreterConsole,
   ): Interpreter {
     const { instructions, labels } = parse(code);
-    return new Interpreter(
+    return new InterpreterImpl(
       instructions,
       new Environment(labels, interpreterConsole),
     );
   }
 
-  /**
-   * Executes the next instruction.
-   *
-   * @throws {Error} If the program has already terminated.
-   * @throws {LocatableError} If an error occurs during execution.
-   */
   step() {
     if (this.steps >= MAX_STEPS) {
       throw new Error("Maximum number of steps exceeded.");
@@ -68,18 +95,12 @@ export class Interpreter {
     this.steps++;
   }
 
-  /**
-   * Runs the rest of the program until termination.
-   */
   run() {
     while (this.pc < this.instructions.length) {
       this.step();
     }
   }
 
-  /**
-   * Returns true if there are more instructions to execute.
-   */
   canStep(): boolean {
     return this.pc < this.instructions.length;
   }
@@ -90,7 +111,7 @@ export class Interpreter {
    * @param line The line number of the instruction.
    * @throws {LocatableError} If an error occurs during execution.
    */
-  executeInstruction({ instruction, line }: InstructionData) {
+  private executeInstruction({ instruction, line }: InstructionData) {
     const executor = executors[instruction.type];
     if (!executor) {
       throw new LocatableError(
@@ -107,14 +128,63 @@ export class Interpreter {
     }
   }
 
-  /**
-   * Returns the current line number, or null.
-   */
   getCurrentLine(): number | null {
     if (this.pc >= this.instructions.length) {
       return null;
     }
     return this.instructions[this.pc].line;
+  }
+}
+
+/**
+ * Lazy interpreter for Amazeing.
+ * Will only parse the code when needed.
+ */
+export class LazyInterpreter implements Interpreter {
+  code: string;
+  console: InterpreterConsole;
+  interpreter: Interpreter | null = null;
+
+  private constructor(code: string, console: InterpreterConsole) {
+    this.code = code;
+    this.console = console;
+  }
+
+  /**
+   * Creates a new lazily initialized Interpreter from the given code and console.
+   * @param code The code to interpret.
+   * @param console The console to use for logging.
+   */
+  static fromCode(code: string, console: InterpreterConsole): LazyInterpreter {
+    return new LazyInterpreter(code, console);
+  }
+
+  init() {
+    if (this.interpreter !== null) return;
+    this.interpreter = InterpreterImpl.fromCode(this.code, this.console);
+  }
+
+  step() {
+    this.init();
+    this.interpreter?.step();
+  }
+
+  run() {
+    this.init();
+    this.interpreter?.run();
+  }
+
+  canStep(): boolean {
+    if (this.interpreter === null) {
+      // If not initialized, check if there is code to run
+      return this.code.trim().length > 0;
+    } else {
+      return this.interpreter.canStep();
+    }
+  }
+
+  getCurrentLine(): number | null {
+    return this.interpreter?.getCurrentLine() ?? null;
   }
 }
 
@@ -180,12 +250,10 @@ const executors = {
     env.setOrThrow(dest, ~value);
   },
 
-  lt: (env, instruction) =>
-    logicalExecutor(env, instruction, (a, b) => a < b),
+  lt: (env, instruction) => logicalExecutor(env, instruction, (a, b) => a < b),
   lte: (env, instruction) =>
     logicalExecutor(env, instruction, (a, b) => a <= b),
-  gt: (env, instruction) =>
-    logicalExecutor(env, instruction, (a, b) => a > b),
+  gt: (env, instruction) => logicalExecutor(env, instruction, (a, b) => a > b),
   gte: (env, instruction) =>
     logicalExecutor(env, instruction, (a, b) => a >= b),
   eq: (env, instruction) =>

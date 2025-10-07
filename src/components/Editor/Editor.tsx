@@ -3,6 +3,7 @@ import { Console } from "../Console/Console.tsx";
 import { Viewport } from "../Viewport/Viewport.tsx";
 import styles from "./Editor.module.css";
 import * as React from "react";
+import { useCallback, useEffect } from "react";
 import { Button } from "../ui/Button/Button.tsx";
 import "../../prism/amazeing.ts";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
@@ -10,8 +11,11 @@ import {
   type ConsoleMessage,
   InterpreterConsole,
 } from "../../interpreter/console.ts";
-import { Interpreter } from "../../interpreter/interpreter.ts";
 import { useTranslation } from "react-i18next";
+import {
+  type Interpreter,
+  LazyInterpreter,
+} from "../../interpreter/interpreter.ts";
 
 export function Editor() {
   const [code, setCode] = React.useState<string>("");
@@ -19,59 +23,63 @@ export function Editor() {
   const [currentLine, setCurrentLine] = React.useState<number | null>(0);
   const { t } = useTranslation();
 
-  const appendOutput = (message: ConsoleMessage) => {
-    setOutput((prev) => [...prev, message]);
-  };
-
   const interpreter = React.useRef<Interpreter | null>(null);
 
-  const initInterpreter = () => {
+  const appendOutput = useCallback((message: ConsoleMessage) => {
+    setOutput((prev) => [...prev, message]);
+  }, []);
+
+  const initInterpreter = useCallback(() => {
     try {
-      interpreter.current = Interpreter.fromCode(
+      interpreter.current = LazyInterpreter.fromCode(
         code,
         new InterpreterConsole((message) => {
           appendOutput(message);
         }),
       );
+      setOutput([]);
+      setCurrentLine(interpreter.current.getCurrentLine());
     } catch (e) {
       if (e instanceof Error) {
-        appendOutput({ type: "error", text: e.message });
+        // Clear previous output for parsing error
+        setOutput([{ type: "error", text: e.message }]);
       }
     }
-  };
+  }, [code, appendOutput]);
 
-  const handleStep = () => {
-    if (!interpreter.current) {
-      initInterpreter();
-    }
-    try {
-      interpreter.current?.step();
-      setCurrentLine(interpreter.current?.getCurrentLine() ?? null);
-    } catch (e) {
-      if (e instanceof Error) {
-        appendOutput({ type: "error", text: e.message });
-      }
-    }
-  };
-
-  const handleRun = () => {
-    if (!interpreter.current) {
-      initInterpreter();
-    }
-    try {
-      interpreter.current?.run();
-    } catch (e) {
-      if (e instanceof Error) {
-        appendOutput({ type: "error", text: e.message });
-      }
-    }
-  };
-
-  const handleReset = () => {
+  useEffect(() => {
     initInterpreter();
-    setOutput([]);
-    setCurrentLine(interpreter.current?.getCurrentLine() ?? null);
-  };
+  }, [code, initInterpreter]);
+
+  function logErrorToConsole<T>(fn: () => T) {
+    try {
+      return fn();
+    } catch (e) {
+      if (e instanceof Error) {
+        appendOutput({ type: "error", text: e.message });
+      }
+    }
+  }
+
+  function handleStep() {
+    logErrorToConsole(() => {
+      if (!interpreter.current) return;
+      interpreter.current.step();
+      setCurrentLine(interpreter.current.getCurrentLine());
+    });
+  }
+
+  function handleRun() {
+    logErrorToConsole(() => {
+      if (!interpreter.current) return;
+      interpreter.current.run();
+      setCurrentLine(interpreter.current.getCurrentLine());
+    });
+  }
+
+  function handleReset() {
+    initInterpreter();
+  }
 
   return (
     <div className={styles.editorContainer}>
@@ -90,7 +98,7 @@ export function Editor() {
       </div>
       <div className={styles.right}>
         <div title={t("codeEditor.title")} className={styles.codeEditor}>
-          <CodeEditor code={code} setCode={setCode} currentLine={currentLine}/>
+          <CodeEditor code={code} setCode={setCode} currentLine={currentLine} />
         </div>
       </div>
     </div>
