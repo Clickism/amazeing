@@ -139,7 +139,7 @@ function parseInstruction(type: string, args: string[]): Instruction {
       return {
         type,
         cond: parseIdentifier(args[0]),
-        target: parseValue(args[1]),
+        target: parseIdentifier(args[1]),
       };
     // Other instructions
     case "turn":
