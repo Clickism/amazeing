@@ -133,11 +133,11 @@ type Executors = {
 };
 
 const executors = {
-  move: (env) => {
+  move: () => {
     throw new Error("Not implemented");
   },
 
-  turn: (env, { direction }) => {
+  turn: () => {
     throw new Error("Not implemented");
   },
 
@@ -250,5 +250,5 @@ function logicalExecutor(
   instruction: ThreeVarInstruction<unknown>,
   cond: (a: Value, b: Value) => boolean,
 ) {
-  return arithmeticExecutor(env, instruction, (a, b) => (cond(a, b) ? 1 : 0);
+  return arithmeticExecutor(env, instruction, (a, b) => (cond(a, b) ? 1 : 0));
 }
