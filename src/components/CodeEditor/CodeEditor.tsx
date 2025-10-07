@@ -1,7 +1,7 @@
 import Editor from "react-simple-code-editor";
-import { Highlight } from "prism-react-renderer";
+import { Highlight, type PrismTheme } from "prism-react-renderer";
 import styles from "./CodeEditor.module.css";
-import type { CSSProperties } from "react";
+import { type CSSProperties, useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useEditorTheme } from "../../hooks/useEditorTheme.ts";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
@@ -9,47 +9,79 @@ import { Button } from "../ui/Button/Button.tsx";
 import { RxGear } from "react-icons/rx";
 import Popup from "reactjs-popup";
 import { ThemeSelect } from "./ThemeSelect/ThemeSelect.tsx";
-import { FaArrowRight } from "react-icons/fa";
+import { LineNumbers } from "./LineNumbers/LineNumbers.tsx";
 
-function LineNumbers({
-  lineNumbers,
-  currentLine,
-}: {
-  lineNumbers: number;
+const AUTO_SAVE_INTERVAL = 5000; // ms
+
+type Props = {
+  code: string;
+  setCode: (code: string) => void;
   currentLine: number | null;
-}) {
-  return (
-    <div className={styles.lineNumbers}>
-      {Array.from({ length: lineNumbers }).map((_, i) => (
-        <div key={i}>
-          <span className={styles.currentLineIndicator}>
-            {currentLine === i + 1 && <FaArrowRight size={10} />}
-          </span>
-          <span className={styles.lineNumber}>{i + 1}</span>
-        </div>
-      ))}
-    </div>
-  );
+  localStoragePath?: string;
+};
+
+function overrideTheme(theme: PrismTheme) {
+  return {
+    ...theme,
+    plain: {
+      ...theme.plain,
+      fontFamily: "Jetbrains Mono, monospace",
+    },
+  };
 }
 
 export function CodeEditor({
   code,
   setCode,
   currentLine,
-}: {
-  code: string;
-  setCode: (code: string) => void;
-  currentLine: number | null;
-}) {
+  localStoragePath,
+}: Props) {
+  const savedCodeRef = useRef<string | null>(
+    localStoragePath ? localStorage.getItem(localStoragePath) : null,
+  );
+  const codeRef = useRef(code);
+
   const { editorTheme, setEditorTheme } = useEditorTheme();
-  const theme = {
-    ...editorTheme,
-    plain: {
-      ...editorTheme.plain,
-      fontFamily: "Jetbrains Mono, monospace",
-    },
-  };
+  const theme = overrideTheme(editorTheme);
   const lineNumbers = code.split("\n").length;
+
+  useEffect(() => {
+    codeRef.current = code;
+  }, [code]);
+
+  // Load code from localStorage
+  useEffect(() => {
+    if (!localStoragePath) return;
+    const storedCode = localStorage.getItem(localStoragePath);
+    if (storedCode !== null) {
+      setCode(storedCode);
+    }
+  }, [localStoragePath, setCode]);
+
+  // Auto-save
+  useEffect(() => {
+    if (!localStoragePath) return;
+    const interval = setInterval(() => {
+      if (codeRef.current === savedCodeRef.current) return;
+      savedCodeRef.current = codeRef.current;
+      localStorage.setItem(localStoragePath, codeRef.current);
+    }, AUTO_SAVE_INTERVAL);
+    return () => clearInterval(interval);
+  }, [localStoragePath]);
+
+  // Save on close
+  useEffect(() => {
+    if (!localStoragePath) return;
+    const handleBeforeUnload = () => {
+      if (codeRef.current === savedCodeRef.current) return;
+      localStorage.setItem(localStoragePath, codeRef.current);
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [localStoragePath]);
+
   return (
     <div
       className={clsx(styles.container, "window-border")}
