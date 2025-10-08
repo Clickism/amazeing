@@ -24,6 +24,15 @@ export interface Interpreter {
   step(): void;
 
   /**
+   * Executes the next multiple instructions.
+   *
+   * @throws {Error} If the program has already terminated.
+   * @throws {LocatableError} If an error occurs during execution.
+   * @param steps The number of steps to execute.
+   */
+  stepMultiple(steps: number): void;
+
+  /**
    * Runs the rest of the program until termination.
    */
   run(): void;
@@ -93,6 +102,13 @@ export class InterpreterImpl implements Interpreter {
       this.pc++;
     }
     this.steps++;
+  }
+
+  stepMultiple(steps: number) {
+    for (let i = 0; i < steps; i++) {
+      if (!this.canStep()) break;
+      this.step();
+    }
   }
 
   run() {
@@ -167,6 +183,11 @@ export class LazyInterpreter implements Interpreter {
   step() {
     this.init();
     this.interpreter?.step();
+  }
+
+  stepMultiple(steps: number) {
+    this.init();
+    this.interpreter?.stepMultiple(steps);
   }
 
   run() {
