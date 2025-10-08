@@ -59,7 +59,29 @@
   color: var(--clr-dark-a0);
 }
 
+.primary:hover {
+  background-color: var(--clr-primary-a10) !important;
+}
+
 .secondary {
   --background-color: var(--clr-surface-a20);
   color: var(--text-color);
+}
+
+.secondary:hover {
+  background-color: var(--clr-surface-a30) !important;
+}
+
+.success {
+  --background-color: var(--clr-success-a10);
+  color: var(--clr-dark-a0);
+}
+
+.success:hover {
+  background-color: var(--clr-success-a20) !important;
+}
+
+.danger {
+  --background-color: var(--clr-danger-a10);
+  color: var(--clr-light-a0);
 }

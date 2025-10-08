@@ -50,7 +50,7 @@ export function RunControls({
     const interval = setInterval(() => {
       if (interpreter.current?.canStep()) {
         try {
-          interpreter.current.step();
+          interpreter.current?.step();
           setCurrentLine(interpreter.current.getCurrentLine());
         } catch (e) {
           if (e instanceof Error) {
@@ -65,15 +65,11 @@ export function RunControls({
   }
 
   const canStep = interpreter.current?.canStep() ?? false;
-
   return (
     <ButtonGroup>
       {runIntervalId === null ? (
         <Button
-          style={{
-            backgroundColor: "var(--clr-success-a10)",
-          }}
-          variant={canStep ? "secondary" : "disabled"}
+          variant={canStep ? "success" : "disabled"}
           disabled={!canStep}
           onClick={startRunning}
         >
@@ -81,9 +77,7 @@ export function RunControls({
         </Button>
       ) : (
         <Button
-          style={{
-            backgroundColor: "var(--clr-danger-a10)",
-          }}
+          variant="danger"
           onClick={stopRunning}
         >
           <VscDebugStop /> {t("editor.stop")}

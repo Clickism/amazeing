@@ -3,9 +3,18 @@ import clsx from "clsx";
 import styles from "./Button.module.css";
 import { useNavigate } from "react-router";
 
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "disabled"
+  | "icon-rounded"
+  | "icon-only"
+  | "success"
+  | "danger";
+
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   linkTo?: string;
-  variant?: "primary" | "secondary" | "disabled" | "icon-rounded" | "icon-only";
+  variant?: ButtonVariant;
   flex?: boolean;
 };
 

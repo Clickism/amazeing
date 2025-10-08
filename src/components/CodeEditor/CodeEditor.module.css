@@ -29,7 +29,7 @@
   padding: 10px 8px;
   user-select: none;
   -webkit-user-select: none;
-  background-color: color-mix(in srgb, var(--background-color), var(--clr-dark-a0) 5%);
+  background-color: color-mix(in srgb, var(--background-color), var(--clr-dark-a0) 10%);
 }
 
 .lineNumber {
