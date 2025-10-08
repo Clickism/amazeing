@@ -3,6 +3,7 @@
   "navbar.sandbox": "Sandbox",
   "codeEditor.title": "Code-Editor",
   "codeEditor.theme": "Farbthema",
+  "codeEditor.fontSize": "Schriftgröße",
   "console.title": "Konsole",
   "viewport.title": "Viewport",
   "editor.run": "Ausführen",
