@@ -17,6 +17,10 @@
   font-family: "JetBrains Mono", monospace;
 }
 
+.codeEditor textarea:focus {
+  outline: none; /* Remove default focus outline */
+}
+
 .lineNumbers {
   font-family: "JetBrains Mono", monospace;
   text-align: right;
@@ -24,6 +28,7 @@
   user-select: none;
   -webkit-user-select: none;
   background-color: color-mix(in srgb, var(--background-color), var(--clr-dark-a0) 5%);
+  --line-number: 1;
 }
 
 .lineNumber {
@@ -36,4 +41,25 @@
   color: var(--clr-danger-a10);
   margin-right: 4px;
   opacity: 1;
+}
+
+.currentLineOverlay {
+  position: absolute;
+  top: calc(var(--line-number) * 1.5em - 0.75em);
+  left: 0;
+  height: 1.5em;
+  width: 100%;
+  background: linear-gradient(90deg, var(--clr-danger-a0) 0%, transparent 40%) center;
+  z-index: 2;
+  transition: top 0.1s ease-out, opacity 0.1s ease-out;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.currentLineOverlay.visible {
+  opacity: 0.5;
+}
+
+.currentLineOverlay.resetting {
+  transition-delay: .1s, 0s;
 }

@@ -34,6 +34,7 @@ export interface Interpreter {
 
   /**
    * Runs the rest of the program until termination.
+   * Blocking.
    */
   run(): void;
 
@@ -43,7 +44,11 @@ export interface Interpreter {
   canStep(): boolean;
 
   /**
-   * Returns the current line number, or null if execution is complete or not started.
+   * Returns the current line number, or:
+   *
+   * <code>-1</code> if the program has terminated.
+   *
+   * <code>null</code> if the program has not started yet.
    */
   getCurrentLine(): number | null;
 }
@@ -145,8 +150,11 @@ export class InterpreterImpl implements Interpreter {
   }
 
   getCurrentLine(): number | null {
-    if (this.pc >= this.instructions.length) {
+    if (this.pc === 0) {
       return null;
+    }
+    if (this.pc >= this.instructions.length) {
+      return -1;
     }
     return this.instructions[this.pc].line;
   }

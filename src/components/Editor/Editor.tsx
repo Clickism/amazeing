@@ -26,7 +26,7 @@ type Props = {
 export function Editor({ filename }: Props) {
   const [code, setCode] = useState<string>("");
   const [output, setOutput] = useState<ConsoleMessage[]>([]);
-  const [currentLine, setCurrentLine] = useState<number | null>(0);
+  const [currentLine, setCurrentLine] = useState<number | null>(null);
   const { t } = useTranslation();
 
   const interpreter = useRef<Interpreter | null>(null);
