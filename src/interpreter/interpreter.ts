@@ -16,12 +16,13 @@ const MAX_STEPS = 10000;
  */
 export interface Interpreter {
   /**
-   * Executes the next instruction.
+   * Executes a number of steps of the program.
+   * @param steps The number of steps to execute. Defaults to 1.
    *
    * @throws {Error} If the program has already terminated.
    * @throws {LocatableError} If an error occurs during execution.
    */
-  step(): void;
+  step(steps: number): void;
 
   /**
    * Runs the rest of the program until termination.
@@ -70,7 +71,16 @@ export class InterpreterImpl implements Interpreter {
     );
   }
 
-  step() {
+  step(steps: number = 1) {
+    for (let i = 0; i < steps; i++) {
+      this.executeStep();
+    }
+  }
+
+  /**
+   * Executes a single step of the interpreter.
+   */
+  private executeStep() {
     if (this.steps >= MAX_STEPS) {
       throw new Error("Maximum number of steps exceeded.");
     }
@@ -164,9 +174,9 @@ export class LazyInterpreter implements Interpreter {
     this.interpreter = InterpreterImpl.fromCode(this.code, this.console);
   }
 
-  step() {
+  step(step: number = 1) {
     this.init();
-    this.interpreter?.step();
+    this.interpreter?.step(step);
   }
 
   run() {
