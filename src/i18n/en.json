@@ -3,5 +3,9 @@
   "navbar.sandbox": "Sandbox",
   "codeEditor.title": "Code Editor",
   "console.title": "Console",
-  "viewport.title": "Viewport"
+  "viewport.title": "Viewport",
+  "editor.run": "Run",
+  "editor.stop": "Stop",
+  "editor.step": "Step",
+  "editor.reset": "Reset"
 }

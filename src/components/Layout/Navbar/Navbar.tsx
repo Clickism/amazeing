@@ -1,18 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import ThemeToggle from "./ThemeToggle/ThemeToggle.tsx";
 import { LanguageToggle } from "./LanguageToggle/LanguageToggle.tsx";
+import React from "react";
+import clsx from "clsx";
+import { useTranslation } from "react-i18next";
+
+function NavbarLink({
+  to,
+  regex,
+  children,
+}: {
+  to: string;
+  regex?: RegExp;
+  children: React.ReactNode;
+}) {
+  const location = useLocation();
+  const isCurrent = regex
+    ? regex.test(location.pathname)
+    : location.pathname === to;
+  return (
+    <Link
+      to={to}
+      className={clsx(styles.link, isCurrent && styles.currentLink)}
+    >
+      {children}
+    </Link>
+  );
+}
 
 export function Navbar() {
+  const { t } = useTranslation();
   return (
     <div className={styles.navbar}>
-      <div className={styles.left}>
-        <Link to="/">Home</Link>
-        <Link to="/sandbox">Sandbox</Link>
-      </div>
-      <div className={styles.right}>
-        <LanguageToggle />
-        <ThemeToggle />
+      <div className={styles.container}>
+        <div className={styles.left}>
+          <NavbarLink to="/">Home</NavbarLink>
+          <NavbarLink to="/sandbox">{t("navbar.sandbox")}</NavbarLink>
+        </div>
+        <div className={styles.right}>
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

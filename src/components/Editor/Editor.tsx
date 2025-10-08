@@ -16,11 +16,8 @@ import {
   type Interpreter,
   LazyInterpreter,
 } from "../../interpreter/interpreter.ts";
-import {
-  VscDebugContinue,
-  VscDebugRestart,
-  VscDebugStepOver,
-} from "react-icons/vsc";
+import { VscDebugContinue, VscDebugRestart } from "react-icons/vsc";
+import { StepController } from "./StepController/StepController.tsx";
 
 type Props = {
   filename?: string;
@@ -70,10 +67,10 @@ export function Editor({ filename }: Props) {
     }
   }
 
-  function handleStep() {
+  function handleSteps(steps: number) {
     logErrorToConsole(() => {
       if (!interpreter.current) return;
-      interpreter.current.step();
+      interpreter.current.stepMultiple(steps);
       setCurrentLine(interpreter.current.getCurrentLine());
     });
   }
@@ -97,21 +94,24 @@ export function Editor({ filename }: Props) {
           <Viewport />
         </div>
         <ButtonGroup center>
-          <Button onClick={handleRun}>
-            <VscDebugContinue /> Run
+          <Button
+            variant={interpreter.current?.canStep() ? "secondary" : "disabled"}
+            disabled={!interpreter.current?.canStep()}
+            onClick={handleRun}
+          >
+            <VscDebugContinue /> {t("editor.run")}
           </Button>
           {/*<Button>*/}
           {/*  <VscDebugStop /> Stop*/}
           {/*</Button>*/}
-          <Button
-            variant={interpreter.current?.canStep() ? "secondary" : "disabled"}
-            disabled={!interpreter.current?.canStep()}
-            onClick={handleStep}
-          >
-            <VscDebugStepOver /> Step
-          </Button>
+          <ButtonGroup.Separator />
+          <StepController
+            canStep={interpreter.current?.canStep() ?? false}
+            handleSteps={handleSteps}
+          />
+          <ButtonGroup.Separator />
           <Button onClick={handleReset}>
-            <VscDebugRestart /> Reset
+            <VscDebugRestart /> {t("editor.reset")}
           </Button>
         </ButtonGroup>
         <div title={t("console.title")} className={styles.console}>

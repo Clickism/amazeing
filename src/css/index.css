@@ -38,6 +38,16 @@ body, html, #root {
   }
 }
 
+a {
+  color: var(--clr-primary-a10);
+  text-decoration: none;
+  transition: color .2s;
+}
+
+a:hover {
+  color: var(--clr-primary-a20);
+}
+
 .flex-text {
   display: flex;
   flex-direction: row;

@@ -14,7 +14,9 @@
   background-color: var(--clr-surface-a10);
   border-bottom: 1px solid var(--clr-surface-a20);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+}
 
+.container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,5 +24,25 @@
 
 .left, .right {
   display: flex;
-  gap: 1rem;
+  gap: .5rem;
+}
+
+.logo {
+
+}
+
+.link {
+  color: var(--text-color) !important;
+  font-weight: 500;
+  padding: var(--padding);
+  border-radius: .5rem;
+  transition: color .2s, background-color .2s;
+}
+
+.link:hover {
+  color: var(--clr-primary-a10) !important;
+}
+
+.currentLink {
+  background-color: var(--clr-surface-a20);
 }

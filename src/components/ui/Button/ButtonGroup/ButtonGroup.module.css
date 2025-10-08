@@ -20,3 +20,9 @@
 .center {
   justify-content: center;
 }
+
+.separator {
+  height: 2rem;
+  width: 1px;
+  background-color: var(--clr-surface-a10);
+}

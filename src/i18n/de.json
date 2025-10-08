@@ -2,5 +2,10 @@
   "navbar.home": "Startseite",
   "navbar.sandbox": "Sandbox",
   "codeEditor.title": "Code-Editor",
-  "console.title": "Konsole"
+  "console.title": "Konsole",
+  "viewport.title": "Viewport",
+  "editor.run": "Ausführen",
+  "editor.stop": "Stoppen",
+  "editor.step": "Einzelschritt",
+  "editor.reset": "Zurücksetzen"
 }

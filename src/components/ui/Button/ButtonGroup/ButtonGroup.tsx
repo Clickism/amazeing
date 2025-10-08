@@ -9,6 +9,13 @@ type Props = {
   center?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
+/**
+ * A separator component to be used within ButtonGroup.
+ */
+function Separator() {
+  return <div className={styles.separator} />;
+}
+
 export function ButtonGroup({
   children,
   vertical = false,
@@ -30,3 +37,5 @@ export function ButtonGroup({
     </div>
   );
 }
+
+ButtonGroup.Separator = Separator;
