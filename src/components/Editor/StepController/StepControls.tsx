@@ -1,16 +1,10 @@
 import { ButtonGroup } from "../../ui/Button/ButtonGroup/ButtonGroup.tsx";
+import { VscDebugStepOver } from "react-icons/vsc";
 import { Button } from "../../ui/Button/Button.tsx";
-import { VscDebugContinue, VscSettings } from "react-icons/vsc";
+import { useTranslation } from "react-i18next";
 import { type RefObject, useState } from "react";
 import type { Interpreter } from "../../../interpreter/interpreter.ts";
 import type { ConsoleMessage } from "../../../interpreter/console.ts";
-import { useTranslation } from "react-i18next";
-import Popup from "reactjs-popup";
-import { FormField } from "../../ui/Form/FormField/FormField.tsx";
-
-const MIN_SPEED = 1;
-const MAX_SPEED = 100;
-const DEFAULT_SPEED = 50;
 
 type Props = {
   interpreter: RefObject<Interpreter | null>;
@@ -18,18 +12,18 @@ type Props = {
   appendOutput: (message: ConsoleMessage) => void;
 };
 
-export function RunController({
+export function StepControls({
   interpreter,
   appendOutput,
   setCurrentLine,
 }: Props) {
+  const [steps, setSteps] = useState(1);
   const { t } = useTranslation();
-  const [speed, setSpeed] = useState(DEFAULT_SPEED);
 
-  function handleRun() {
+  function handleSteps(steps: number) {
     try {
       if (!interpreter.current) return;
-      interpreter.current.run();
+      interpreter.current.stepMultiple(steps);
       setCurrentLine(interpreter.current.getCurrentLine());
     } catch (e) {
       if (e instanceof Error) {
@@ -37,39 +31,25 @@ export function RunController({
       }
     }
   }
-
   const canStep = interpreter.current?.canStep() ?? false;
-
   return (
     <ButtonGroup>
       <Button
         variant={canStep ? "secondary" : "disabled"}
         disabled={!canStep}
-        onClick={handleRun}
+        onClick={() => handleSteps(steps)}
       >
-        <VscDebugContinue /> {t("editor.run")}
+        <VscDebugStepOver /> {t("editor.step")}
       </Button>
-      <Popup
-        trigger={
-          <Button variant="icon-only">
-            <VscSettings size={20} />
-          </Button>
-        }
-      >
-        <FormField label={t("editor.runSpeed")}>
-          <input
-            type="range"
-            min={MIN_SPEED}
-            max={MAX_SPEED}
-            defaultValue={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
-          />
-        </FormField>
-      </Popup>
-
-      {/*<Button>*/}
-      {/*  <VscDebugStop /> Stop*/}
-      {/*</Button>*/}
+      <input
+        type="number"
+        min={1}
+        value={steps}
+        onChange={(e) => setSteps(Number(e.target.value))}
+        style={{
+          width: "3rem",
+        }}
+      />
     </ButtonGroup>
   );
 }

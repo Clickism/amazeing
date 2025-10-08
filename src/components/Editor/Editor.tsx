@@ -16,8 +16,8 @@ import {
   LazyInterpreter,
 } from "../../interpreter/interpreter.ts";
 import { VscDebugRestart } from "react-icons/vsc";
-import { StepController } from "./StepController/StepController.tsx";
-import { RunController } from "./RunController/RunController.tsx";
+import { StepControls } from "./StepController/StepControls.tsx";
+import { RunControls } from "./RunController/RunControls.tsx";
 
 type Props = {
   filename?: string;
@@ -68,13 +68,13 @@ export function Editor({ filename }: Props) {
           <Viewport />
         </div>
         <ButtonGroup center>
-          <RunController
+          <RunControls
             interpreter={interpreter}
             setCurrentLine={setCurrentLine}
             appendOutput={appendOutput}
           />
           <ButtonGroup.Separator />
-          <StepController
+          <StepControls
             interpreter={interpreter}
             appendOutput={appendOutput}
             setCurrentLine={setCurrentLine}
