@@ -1,6 +1,15 @@
 import styles from "./CornerGroup.module.css";
 import React from "react";
+import clsx from "clsx";
 
-export function CornerGroup({ children }: { children?: React.ReactNode }) {
-  return <div className={styles.cornerGroup}>{children}</div>;
+type Props = {
+  children?: React.ReactNode;
+} & React.HTMLAttributes<HTMLDivElement>;
+
+export function CornerGroup({ children, className, ...props }: Props) {
+  return (
+    <div className={clsx(styles.cornerGroup, className)} {...props}>
+      {children}
+    </div>
+  );
 }

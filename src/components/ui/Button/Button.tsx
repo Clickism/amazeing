@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   linkTo?: string;
-  variant?: "primary" | "secondary" | "icon-rounded" | "icon-only";
+  variant?: "primary" | "secondary" | "disabled" | "icon-rounded" | "icon-only";
   flex?: boolean;
 };
 

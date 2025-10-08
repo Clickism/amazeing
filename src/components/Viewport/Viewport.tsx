@@ -65,24 +65,24 @@ export function Viewport() {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      <div
-        className={styles.mazeContainer}
-        style={{
-          transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
-          transformOrigin: "top left",
-        }}
-      >
-        {MAZE.map((row, y) =>
-          row.map((cell, x) => (
-            <div
-              key={`${x}-${y}`}
-              className={`${styles.cell} ${
-                cell === 1 ? styles.wall : ""
-              } ${owlPos.x === x && owlPos.y === y ? styles.owl : ""}`}
-            />
-          )),
-        )}
-      </div>
+      {/*<div*/}
+      {/*  className={styles.mazeContainer}*/}
+      {/*  style={{*/}
+      {/*    transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,*/}
+      {/*    transformOrigin: "top left",*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  {MAZE.map((row, y) =>*/}
+      {/*    row.map((cell, x) => (*/}
+      {/*      <div*/}
+      {/*        key={`${x}-${y}`}*/}
+      {/*        className={`${styles.cell} ${*/}
+      {/*          cell === 1 ? styles.wall : ""*/}
+      {/*        } ${owlPos.x === x && owlPos.y === y ? styles.owl : ""}`}*/}
+      {/*      />*/}
+      {/*    )),*/}
+      {/*  )}*/}
+      {/*</div>*/}
     </div>
   );
 }

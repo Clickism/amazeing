@@ -30,6 +30,8 @@
   /*--clr-surface-a70: #9b9b9b;*/
 
   /** Theme tonal surface colors */
+  --clr-surface-a-minus-20: #faffff;
+  --clr-surface-a-minus-10: #f3f9ff;
   --clr-surface-a0: #edf2fd;
   --clr-surface-a10: #e0e5ee;
   --clr-surface-a20: #d4d8e0;
@@ -92,6 +94,8 @@
   /*--clr-surface-a70: #c4c4c4;*/
 
   /** Theme tonal surface colors */
+  --clr-surface-a-minus-20: #0e1725;
+  --clr-surface-a-minus-10: #161f2d;
   --clr-surface-a0: #1e2736;
   --clr-surface-a10: #343b4a;
   --clr-surface-a20: #4a515e;

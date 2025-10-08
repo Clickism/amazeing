@@ -6,7 +6,5 @@
   right: 0;
   display: flex;
   flex-direction: row;
-  background-color: var(--clr-surface-a10);
-  padding: .3rem .3rem .5rem .5rem;
-  border-bottom-left-radius: 1rem;
+  padding: .5rem;
 }

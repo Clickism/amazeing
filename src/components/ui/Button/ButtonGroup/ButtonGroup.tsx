@@ -6,12 +6,14 @@ type Props = {
   children: ReactNode;
   vertical?: boolean;
   stretch?: boolean;
+  center?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
 export function ButtonGroup({
   children,
   vertical = false,
   stretch = false,
+  center = false,
   ...props
 }: Props) {
   return (
@@ -20,6 +22,7 @@ export function ButtonGroup({
         styles.buttonGroup,
         vertical && styles.vertical,
         stretch && styles.stretch,
+        center && styles.center
       )}
       {...props}
     >

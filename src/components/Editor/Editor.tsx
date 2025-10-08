@@ -16,8 +16,17 @@ import {
   type Interpreter,
   LazyInterpreter,
 } from "../../interpreter/interpreter.ts";
+import {
+  VscDebugContinue,
+  VscDebugRestart,
+  VscDebugStepOver,
+} from "react-icons/vsc";
 
-export function Editor() {
+type Props = {
+  filename?: string;
+};
+
+export function Editor({ filename }: Props) {
   const [code, setCode] = React.useState<string>("");
   const [output, setOutput] = React.useState<ConsoleMessage[]>([]);
   const [currentLine, setCurrentLine] = React.useState<number | null>(0);
@@ -87,10 +96,23 @@ export function Editor() {
         <div title={t("viewport.title")} className={styles.viewport}>
           <Viewport />
         </div>
-        <ButtonGroup stretch>
-          <Button onClick={handleRun}>Run</Button>
-          <Button onClick={handleStep}>Step</Button>
-          <Button onClick={handleReset}>Reset</Button>
+        <ButtonGroup center>
+          <Button onClick={handleRun}>
+            <VscDebugContinue /> Run
+          </Button>
+          {/*<Button>*/}
+          {/*  <VscDebugStop /> Stop*/}
+          {/*</Button>*/}
+          <Button
+            variant={interpreter.current?.canStep() ? "secondary" : "disabled"}
+            disabled={!interpreter.current?.canStep()}
+            onClick={handleStep}
+          >
+            <VscDebugStepOver /> Step
+          </Button>
+          <Button onClick={handleReset}>
+            <VscDebugRestart /> Reset
+          </Button>
         </ButtonGroup>
         <div title={t("console.title")} className={styles.console}>
           <Console messages={output} />
@@ -98,7 +120,12 @@ export function Editor() {
       </div>
       <div className={styles.right}>
         <div title={t("codeEditor.title")} className={styles.codeEditor}>
-          <CodeEditor code={code} setCode={setCode} currentLine={currentLine} />
+          <CodeEditor
+            code={code}
+            setCode={setCode}
+            currentLine={currentLine}
+            filename={filename}
+          />
         </div>
       </div>
     </div>

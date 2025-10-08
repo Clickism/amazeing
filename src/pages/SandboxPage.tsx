@@ -4,7 +4,7 @@ import { Editor } from "../components/Editor/Editor.tsx";
 export function SandboxPage() {
   return (
     <Layout fullWidth>
-      <Editor />
+      <Editor filename="sandbox" />
     </Layout>
   );
 }

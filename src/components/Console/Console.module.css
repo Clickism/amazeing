@@ -1,12 +1,21 @@
 .console {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
-  background-color: black;
+  background-color: #000000;
   padding: 1rem;
   height: 100%;
   width: 100%;
   white-space: pre-wrap;
   overflow: auto;
+  position: relative;
+}
+
+.title {
+  color: #5e6779;
+  margin-right: 4px;
+}
+
+.message {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
 }
 
 .message-error {

@@ -17,7 +17,7 @@ type Props = {
   code: string;
   setCode: (code: string) => void;
   currentLine: number | null;
-  localStoragePath?: string;
+  filename?: string;
 };
 
 function overrideTheme(theme: PrismTheme) {
@@ -34,8 +34,9 @@ export function CodeEditor({
   code,
   setCode,
   currentLine,
-  localStoragePath,
+  filename,
 }: Props) {
+  const localStoragePath = filename ? `editor:file:${filename}` : undefined;
   const savedCodeRef = useRef<string | null>(
     localStoragePath ? localStorage.getItem(localStoragePath) : null,
   );
