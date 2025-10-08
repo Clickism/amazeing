@@ -21,6 +21,8 @@ type Props = {
   setCode: (code: string) => void;
   currentLine: number | null;
   filename?: string;
+  runSpeed?: number;
+  isRunning?: boolean;
 };
 
 function overrideTheme(theme: PrismTheme) {
@@ -33,7 +35,14 @@ function overrideTheme(theme: PrismTheme) {
   };
 }
 
-export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
+export function CodeEditor({
+  code,
+  setCode,
+  currentLine,
+  filename,
+  runSpeed,
+  isRunning,
+}: Props) {
   const { t } = useTranslation();
   const localStoragePath = filename ? `editor:file:${filename}` : undefined;
   const savedCodeRef = useRef<string | null>(
@@ -126,7 +135,7 @@ export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
           </FormGroup>
         </Popup>
       </CornerGroup>
-      <LineNumbers lineNumbers={lineNumbers} currentLine={currentLine} />
+      <LineNumbers lineNumbers={lineNumbers} currentLine={currentLine} runSpeed={runSpeed} isRunning={isRunning} />
       <Editor
         className={styles.codeEditor}
         value={code}

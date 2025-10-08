@@ -2,12 +2,27 @@ import styles from "../CodeEditor.module.css";
 import { type CSSProperties, useEffect, useState } from "react";
 import clsx from "clsx";
 
+function getTransitionDuration(runSpeed?: number) {
+  if (!runSpeed) return "100ms";
+  if (runSpeed >= 50) {
+    return "0ms";
+  }
+  if (runSpeed >= 10) {
+    return `${1000 / (runSpeed * 1.2)}ms`;
+  }
+  return "100ms";
+}
+
 export function LineNumbers({
   lineNumbers,
   currentLine,
+  runSpeed,
+  isRunning,
 }: {
   lineNumbers: number;
   currentLine: number | null;
+  runSpeed?: number;
+  isRunning?: boolean;
 }) {
   const [prevLine, setPrevLine] = useState<number | null>(null);
   useEffect(() => {
@@ -26,7 +41,12 @@ export function LineNumbers({
           isVisible && styles.visible,
           isResetting && styles.resetting,
         )}
-        style={{ "--line-number": overlayLine } as CSSProperties}
+        style={
+          {
+            "--line-number": overlayLine,
+            "--line-number-transition-duration": isRunning && getTransitionDuration(runSpeed)
+          } as CSSProperties
+        }
       />
       <div className={styles.lineNumbers}>
         {Array.from({ length: lineNumbers }).map((_, i) => (

@@ -19,6 +19,10 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { StepControls } from "./StepController/StepControls.tsx";
 import { RunControls } from "./RunController/RunControls.tsx";
 
+export const MIN_RUN_SPEED = 1;
+export const MAX_RUN_SPEED = 100;
+export const DEFAULT_RUN_SPEED = 5;
+
 type Props = {
   filename?: string;
 };
@@ -27,6 +31,9 @@ export function Editor({ filename }: Props) {
   const [code, setCode] = useState<string>("");
   const [output, setOutput] = useState<ConsoleMessage[]>([]);
   const [currentLine, setCurrentLine] = useState<number | null>(null);
+  const [runIntervalId, setRunIntervalId] = useState<number | null>(null);
+  const [runSpeed, setRunSpeed] = useState(DEFAULT_RUN_SPEED);
+
   const { t } = useTranslation();
 
   const interpreter = useRef<Interpreter | null>(null);
@@ -43,6 +50,7 @@ export function Editor({ filename }: Props) {
           appendOutput(message);
         }),
       );
+      setRunIntervalId(null);
       setOutput([]);
       setCurrentLine(interpreter.current.getCurrentLine());
     } catch (e) {
@@ -61,6 +69,7 @@ export function Editor({ filename }: Props) {
     initInterpreter();
   }
 
+  const isRunning = runIntervalId !== null;
   return (
     <div className={styles.editorContainer}>
       <div className={styles.left}>
@@ -72,12 +81,17 @@ export function Editor({ filename }: Props) {
             interpreter={interpreter}
             setCurrentLine={setCurrentLine}
             appendOutput={appendOutput}
+            runSpeed={runSpeed}
+            setRunSpeed={setRunSpeed}
+            runIntervalId={runIntervalId}
+            setRunIntervalId={setRunIntervalId}
           />
           <ButtonGroup.Separator />
           <StepControls
             interpreter={interpreter}
             appendOutput={appendOutput}
             setCurrentLine={setCurrentLine}
+            isRunning={isRunning}
           />
           <ButtonGroup.Separator />
           <Button onClick={handleReset}>
@@ -95,6 +109,8 @@ export function Editor({ filename }: Props) {
             setCode={setCode}
             currentLine={currentLine}
             filename={filename}
+            runSpeed={runSpeed}
+            isRunning={isRunning}
           />
         </div>
       </div>

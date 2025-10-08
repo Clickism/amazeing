@@ -1,40 +1,68 @@
 import { ButtonGroup } from "../../ui/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../ui/Button/Button.tsx";
-import { VscDebugContinue, VscSettings } from "react-icons/vsc";
-import { type RefObject, useState } from "react";
+import { VscDebugContinue, VscDebugStop, VscSettings } from "react-icons/vsc";
+import { type RefObject, useEffect } from "react";
 import type { Interpreter } from "../../../interpreter/interpreter.ts";
 import type { ConsoleMessage } from "../../../interpreter/console.ts";
 import { useTranslation } from "react-i18next";
 import Popup from "reactjs-popup";
 import { FormField } from "../../ui/Form/FormField/FormField.tsx";
-
-const MIN_SPEED = 1;
-const MAX_SPEED = 100;
-const DEFAULT_SPEED = 50;
+import { MAX_RUN_SPEED, MIN_RUN_SPEED } from "../Editor.tsx";
 
 type Props = {
   interpreter: RefObject<Interpreter | null>;
   setCurrentLine: (line: number | null) => void;
   appendOutput: (message: ConsoleMessage) => void;
+  runSpeed: number;
+  setRunSpeed: (speed: number) => void;
+  runIntervalId: number | null;
+  setRunIntervalId: (id: number | null) => void;
 };
 
 export function RunControls({
   interpreter,
   appendOutput,
   setCurrentLine,
+  runSpeed,
+  setRunSpeed,
+  runIntervalId,
+  setRunIntervalId,
 }: Props) {
   const { t } = useTranslation();
-  const [speed, setSpeed] = useState(DEFAULT_SPEED);
 
-  function handleRun() {
-    try {
-      if (!interpreter.current) return;
-      interpreter.current.run();
-      setCurrentLine(interpreter.current.getCurrentLine());
-    } catch (e) {
-      if (e instanceof Error) {
-        appendOutput({ type: "error", text: e.message });
+  useEffect(() => {
+    if (runIntervalId !== null) {
+      // Restart interval with new speed
+      clearInterval(runIntervalId);
+      startRunning();
+    }
+  }, [runSpeed]);
+
+  function startRunning() {
+    const interval = setInterval(() => {
+      if (interpreter.current?.canStep()) {
+        try {
+          interpreter.current.step();
+          setCurrentLine(interpreter.current.getCurrentLine());
+        } catch (e) {
+          if (e instanceof Error) {
+            appendOutput({ type: "error", text: e.message });
+          }
+        }
+      } else {
+        if (runIntervalId !== null) {
+          clearInterval(runIntervalId);
+          setRunIntervalId(null);
+        }
       }
+    }, 1000 / runSpeed);
+    setRunIntervalId(interval);
+  }
+
+  function stopRunning() {
+    if (runIntervalId !== null) {
+      clearInterval(runIntervalId);
+      setRunIntervalId(null);
     }
   }
 
@@ -42,13 +70,25 @@ export function RunControls({
 
   return (
     <ButtonGroup>
-      <Button
-        variant={canStep ? "secondary" : "disabled"}
-        disabled={!canStep}
-        onClick={handleRun}
-      >
-        <VscDebugContinue /> {t("editor.run")}
-      </Button>
+      {runIntervalId === null ? (
+        <Button
+          variant={canStep ? "secondary" : "disabled"}
+          disabled={!canStep}
+          onClick={startRunning}
+        >
+          <VscDebugContinue /> {t("editor.run")}
+        </Button>
+      ) : (
+        <Button
+          style={{
+            backgroundColor: "var(--clr-danger-a10)",
+          }}
+          onClick={stopRunning}
+        >
+          <VscDebugStop /> {t("editor.stop")}
+        </Button>
+      )}
+
       <Popup
         trigger={
           <Button variant="icon-only">
@@ -59,13 +99,13 @@ export function RunControls({
         <FormField label={t("editor.runSpeed")}>
           <input
             type="range"
-            min={MIN_SPEED}
-            max={MAX_SPEED}
-            defaultValue={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
+            min={MIN_RUN_SPEED}
+            max={MAX_RUN_SPEED}
+            defaultValue={runSpeed}
+            onChange={(e) => setRunSpeed(Number(e.target.value))}
           />
         </FormField>
-        {speed}
+        {runSpeed}
       </Popup>
 
       {/*<Button>*/}

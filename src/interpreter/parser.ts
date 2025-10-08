@@ -56,6 +56,8 @@ function parseLine(
   line: string,
   lineNumber: number,
 ): InstructionData | LabelDefinition | null {
+  const [linePart] = line.split(COMMENT_PREFIX, 2);
+  line = linePart.trim();
   if (line === "" || line.startsWith(COMMENT_PREFIX)) {
     return null;
   }

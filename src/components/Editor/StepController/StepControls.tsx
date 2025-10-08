@@ -10,12 +10,14 @@ type Props = {
   interpreter: RefObject<Interpreter | null>;
   setCurrentLine: (line: number | null) => void;
   appendOutput: (message: ConsoleMessage) => void;
+  isRunning: boolean;
 };
 
 export function StepControls({
   interpreter,
   appendOutput,
   setCurrentLine,
+  isRunning,
 }: Props) {
   const [steps, setSteps] = useState(1);
   const { t } = useTranslation();
@@ -35,8 +37,8 @@ export function StepControls({
   return (
     <ButtonGroup>
       <Button
-        variant={canStep ? "secondary" : "disabled"}
-        disabled={!canStep}
+        variant={canStep && !isRunning ? "secondary" : "disabled"}
+        disabled={!canStep || isRunning}
         onClick={() => handleSteps(steps)}
       >
         <VscDebugStepOver /> {t("editor.step")}
