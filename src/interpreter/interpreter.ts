@@ -12,7 +12,7 @@ import type { InterpreterConsole } from "./console.ts";
 const MAX_STEPS = 10000;
 
 /**
- * Interpreter interface.
+ * Interpreter interface for Amazeing (OwlASM?).
  */
 export interface Interpreter {
   /**
