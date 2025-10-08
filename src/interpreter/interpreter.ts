@@ -96,7 +96,7 @@ export class InterpreterImpl implements Interpreter {
 
   private executeStep() {
     if (this.steps >= MAX_STEPS) {
-      throw new Error("Maximum number of steps exceeded.");
+      throw new Error("Maximum number of steps exceeded: " + MAX_STEPS);
     }
     if (this.pc >= this.instructions.length) {
       throw new Error("No more instructions to execute.");
