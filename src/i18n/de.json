@@ -2,10 +2,12 @@
   "navbar.home": "Startseite",
   "navbar.sandbox": "Sandbox",
   "codeEditor.title": "Code-Editor",
+  "codeEditor.theme": "Farbthema",
   "console.title": "Konsole",
   "viewport.title": "Viewport",
   "editor.run": "Ausführen",
   "editor.stop": "Stoppen",
   "editor.step": "Einzelschritt",
-  "editor.reset": "Zurücksetzen"
+  "editor.reset": "Zurücksetzen",
+  "editor.runSpeed": "Ausführungsgeschwindigkeit"
 }

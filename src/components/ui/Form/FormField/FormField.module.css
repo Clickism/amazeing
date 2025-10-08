@@ -1,0 +1,13 @@
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.formLabel {
+  color: var(--clr-surface-a60);
+  font-size: 0.875rem;
+  padding: 0;
+  margin-left: 4px;
+}
+

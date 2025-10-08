@@ -1,8 +1,8 @@
 .popup-content {
   background: var(--clr-surface-a10);
-  border-radius: .5rem;
+  border-radius: 1rem;
   border: 1px solid var(--clr-surface-a20);
-  padding: var(--padding-vertical);
+  padding: 1rem;
   z-index: 2000;
   box-sizing: border-box;
 

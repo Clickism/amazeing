@@ -2,8 +2,7 @@ import { CodeEditor } from "../CodeEditor/CodeEditor.tsx";
 import { Console } from "../Console/Console.tsx";
 import { Viewport } from "../Viewport/Viewport.tsx";
 import styles from "./Editor.module.css";
-import * as React from "react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/Button/Button.tsx";
 import "../../prism/amazeing.ts";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
@@ -16,20 +15,21 @@ import {
   type Interpreter,
   LazyInterpreter,
 } from "../../interpreter/interpreter.ts";
-import { VscDebugContinue, VscDebugRestart } from "react-icons/vsc";
+import { VscDebugRestart } from "react-icons/vsc";
 import { StepController } from "./StepController/StepController.tsx";
+import { RunController } from "./RunController/RunController.tsx";
 
 type Props = {
   filename?: string;
 };
 
 export function Editor({ filename }: Props) {
-  const [code, setCode] = React.useState<string>("");
-  const [output, setOutput] = React.useState<ConsoleMessage[]>([]);
-  const [currentLine, setCurrentLine] = React.useState<number | null>(0);
+  const [code, setCode] = useState<string>("");
+  const [output, setOutput] = useState<ConsoleMessage[]>([]);
+  const [currentLine, setCurrentLine] = useState<number | null>(0);
   const { t } = useTranslation();
 
-  const interpreter = React.useRef<Interpreter | null>(null);
+  const interpreter = useRef<Interpreter | null>(null);
 
   const appendOutput = useCallback((message: ConsoleMessage) => {
     setOutput((prev) => [...prev, message]);
@@ -57,32 +57,6 @@ export function Editor({ filename }: Props) {
     initInterpreter();
   }, [code, initInterpreter]);
 
-  function logErrorToConsole<T>(fn: () => T) {
-    try {
-      return fn();
-    } catch (e) {
-      if (e instanceof Error) {
-        appendOutput({ type: "error", text: e.message });
-      }
-    }
-  }
-
-  function handleSteps(steps: number) {
-    logErrorToConsole(() => {
-      if (!interpreter.current) return;
-      interpreter.current.stepMultiple(steps);
-      setCurrentLine(interpreter.current.getCurrentLine());
-    });
-  }
-
-  function handleRun() {
-    logErrorToConsole(() => {
-      if (!interpreter.current) return;
-      interpreter.current.run();
-      setCurrentLine(interpreter.current.getCurrentLine());
-    });
-  }
-
   function handleReset() {
     initInterpreter();
   }
@@ -94,20 +68,16 @@ export function Editor({ filename }: Props) {
           <Viewport />
         </div>
         <ButtonGroup center>
-          <Button
-            variant={interpreter.current?.canStep() ? "secondary" : "disabled"}
-            disabled={!interpreter.current?.canStep()}
-            onClick={handleRun}
-          >
-            <VscDebugContinue /> {t("editor.run")}
-          </Button>
-          {/*<Button>*/}
-          {/*  <VscDebugStop /> Stop*/}
-          {/*</Button>*/}
+          <RunController
+            interpreter={interpreter}
+            setCurrentLine={setCurrentLine}
+            appendOutput={appendOutput}
+          />
           <ButtonGroup.Separator />
           <StepController
-            canStep={interpreter.current?.canStep() ?? false}
-            handleSteps={handleSteps}
+            interpreter={interpreter}
+            appendOutput={appendOutput}
+            setCurrentLine={setCurrentLine}
           />
           <ButtonGroup.Separator />
           <Button onClick={handleReset}>

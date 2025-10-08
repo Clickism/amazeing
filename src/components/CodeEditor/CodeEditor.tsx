@@ -6,10 +6,13 @@ import clsx from "clsx";
 import { useEditorTheme } from "../../hooks/useEditorTheme.ts";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
 import { Button } from "../ui/Button/Button.tsx";
-import { RxGear } from "react-icons/rx";
 import Popup from "reactjs-popup";
 import { ThemeSelect } from "./ThemeSelect/ThemeSelect.tsx";
 import { LineNumbers } from "./LineNumbers/LineNumbers.tsx";
+import { VscSettings } from "react-icons/vsc";
+import { FormField } from "../ui/Form/FormField/FormField.tsx";
+import { useTranslation } from "react-i18next";
+import { FormGroup } from "../ui/Form/FormGroup/FormGroup.tsx";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -30,12 +33,8 @@ function overrideTheme(theme: PrismTheme) {
   };
 }
 
-export function CodeEditor({
-  code,
-  setCode,
-  currentLine,
-  filename,
-}: Props) {
+export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
+  const { t } = useTranslation();
   const localStoragePath = filename ? `editor:file:${filename}` : undefined;
   const savedCodeRef = useRef<string | null>(
     localStoragePath ? localStorage.getItem(localStoragePath) : null,
@@ -97,16 +96,34 @@ export function CodeEditor({
         <Popup
           trigger={
             <Button variant="icon-only">
-              <RxGear />
+              <VscSettings size={20} />
             </Button>
           }
           position="left center"
         >
-          Theme: &nbsp;
-          <ThemeSelect
-            editorTheme={editorTheme}
-            setEditorTheme={setEditorTheme}
-          />
+          <FormGroup>
+            <FormField label={t("codeEditor.theme")}>
+              <ThemeSelect
+                editorTheme={editorTheme}
+                setEditorTheme={setEditorTheme}
+              />
+            </FormField>
+            <FormField label={t("codeEditor.fontSize")}>
+              <input
+                type="number"
+                min={8}
+                max={32}
+                defaultValue={14}
+                onChange={(e) => {
+                  const size = Number(e.target.value);
+                  document.documentElement.style.setProperty(
+                    "--editor-font-size",
+                    `${size}px`,
+                  );
+                }}
+              />
+            </FormField>
+          </FormGroup>
         </Popup>
       </CornerGroup>
       <LineNumbers lineNumbers={lineNumbers} currentLine={currentLine} />
