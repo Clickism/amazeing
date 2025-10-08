@@ -61,6 +61,7 @@ export class InterpreterImpl implements Interpreter {
   instructions: InstructionData[];
   env: Environment;
   steps: number = 0;
+  hasError: boolean = false;
 
   constructor(instructions: InstructionData[], env: Environment) {
     this.pc = 0;
@@ -85,6 +86,15 @@ export class InterpreterImpl implements Interpreter {
   }
 
   step() {
+    try {
+      this.executeStep();
+    } catch (e) {
+      this.hasError = true;
+      throw e;
+    }
+  }
+
+  private executeStep() {
     if (this.steps >= MAX_STEPS) {
       throw new Error("Maximum number of steps exceeded.");
     }
@@ -93,7 +103,6 @@ export class InterpreterImpl implements Interpreter {
     }
     const { instruction, line } = this.instructions[this.pc];
     // For now, we just log the instruction and increment the pc
-    console.log(`Executing line ${line}:`, JSON.stringify(instruction));
     const pcTarget = this.executeInstruction({ instruction, line });
     if (pcTarget) {
       const { target, type } = pcTarget;
@@ -123,7 +132,7 @@ export class InterpreterImpl implements Interpreter {
   }
 
   canStep(): boolean {
-    return this.pc < this.instructions.length;
+    return this.pc < this.instructions.length && !this.hasError;
   }
 
   /**
@@ -168,6 +177,7 @@ export class LazyInterpreter implements Interpreter {
   code: string;
   console: InterpreterConsole;
   interpreter: Interpreter | null = null;
+  hasError: boolean = false;
 
   private constructor(code: string, console: InterpreterConsole) {
     this.code = code;
@@ -185,7 +195,13 @@ export class LazyInterpreter implements Interpreter {
 
   init() {
     if (this.interpreter !== null) return;
-    this.interpreter = InterpreterImpl.fromCode(this.code, this.console);
+    if (this.hasError) return;
+    try {
+      this.interpreter = InterpreterImpl.fromCode(this.code, this.console);
+    } catch (e) {
+      this.hasError = true;
+      throw e;
+    }
   }
 
   step() {
@@ -204,6 +220,7 @@ export class LazyInterpreter implements Interpreter {
   }
 
   canStep(): boolean {
+    if (this.hasError) return false;
     if (this.interpreter === null) {
       // If not initialized, check if there is code to run
       return this.code.trim().length > 0;

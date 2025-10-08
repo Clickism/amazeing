@@ -36,7 +36,15 @@ export function RunControls({
       clearInterval(runIntervalId);
       startRunning();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runSpeed]);
+
+  function stopRunning() {
+    if (runIntervalId !== null) {
+      clearInterval(runIntervalId);
+      setRunIntervalId(null);
+    }
+  }
 
   function startRunning() {
     const interval = setInterval(() => {
@@ -50,20 +58,10 @@ export function RunControls({
           }
         }
       } else {
-        if (runIntervalId !== null) {
-          clearInterval(runIntervalId);
-          setRunIntervalId(null);
-        }
+        stopRunning();
       }
     }, 1000 / runSpeed);
     setRunIntervalId(interval);
-  }
-
-  function stopRunning() {
-    if (runIntervalId !== null) {
-      clearInterval(runIntervalId);
-      setRunIntervalId(null);
-    }
   }
 
   const canStep = interpreter.current?.canStep() ?? false;
@@ -72,6 +70,9 @@ export function RunControls({
     <ButtonGroup>
       {runIntervalId === null ? (
         <Button
+          style={{
+            backgroundColor: "var(--clr-success-a10)",
+          }}
           variant={canStep ? "secondary" : "disabled"}
           disabled={!canStep}
           onClick={startRunning}

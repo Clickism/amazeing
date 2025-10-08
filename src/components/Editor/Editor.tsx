@@ -50,7 +50,10 @@ export function Editor({ filename }: Props) {
           appendOutput(message);
         }),
       );
-      setRunIntervalId(null);
+      if (runIntervalId !== null) {
+        clearInterval(runIntervalId);
+        setRunIntervalId(null);
+      }
       setOutput([]);
       setCurrentLine(interpreter.current.getCurrentLine());
     } catch (e) {
@@ -59,11 +62,12 @@ export function Editor({ filename }: Props) {
         setOutput([{ type: "error", text: e.message }]);
       }
     }
-  }, [code, appendOutput]);
+  }, [code, runIntervalId, appendOutput]);
 
   useEffect(() => {
     initInterpreter();
-  }, [code, initInterpreter]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code]);
 
   function handleReset() {
     initInterpreter();
