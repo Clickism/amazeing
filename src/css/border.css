@@ -1,4 +1,8 @@
 :root {
+  --clr-surface-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+
+:root[theme="dark"] {
   --clr-surface-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
 }
 
