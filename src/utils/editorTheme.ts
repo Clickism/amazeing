@@ -1,8 +1,8 @@
 import { type PrismTheme, themes } from "prism-react-renderer";
 import { getTheme } from "./themes.ts";
 
-const DEFAULT_LIGHT_THEME: EditorTheme = { ...themes.github, name: "github" };
-const DEFAULT_DARK_THEME: EditorTheme = { ...themes.vsDark, name: "vsDark" };
+const DEFAULT_LIGHT_THEME: EditorTheme = { ...themes.github, name: "default" };
+const DEFAULT_DARK_THEME: EditorTheme = { ...themes.vsDark, name: "default" };
 
 export const SUPPORTED_THEMES = {
   dracula: themes.dracula,
@@ -25,11 +25,16 @@ export const SUPPORTED_THEMES = {
   ultramin: themes.ultramin,
   vsDark: themes.vsDark,
   vsLight: themes.vsLight,
+  default: themes.vsDark,
 };
 
 export type EditorTheme = PrismTheme & { name: string };
 
 export function setEditorTheme(theme: string) {
+  if (theme === "default") {
+    localStorage.removeItem("colorTheme");
+    return;
+  }
   localStorage.setItem("colorTheme", theme);
 }
 
