@@ -1,7 +1,13 @@
 import { ButtonGroup } from "../../ui/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../ui/Button/Button.tsx";
 import { VscDebugContinue, VscDebugStop, VscSettings } from "react-icons/vsc";
-import { type RefObject, useEffect } from "react";
+import {
+  type Dispatch,
+  type RefObject,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+} from "react";
 import type { Interpreter } from "../../../interpreter/interpreter.ts";
 import type { ConsoleMessage } from "../../../interpreter/console.ts";
 import { useTranslation } from "react-i18next";
@@ -16,7 +22,7 @@ type Props = {
   runSpeed: number;
   setRunSpeed: (speed: number) => void;
   runIntervalId: number | null;
-  setRunIntervalId: (id: number | null) => void;
+  setRunIntervalId: Dispatch<SetStateAction<number | null>>;
 };
 
 export function RunControls({
@@ -39,12 +45,14 @@ export function RunControls({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runSpeed]);
 
-  function stopRunning() {
-    if (runIntervalId !== null) {
-      clearInterval(runIntervalId);
-      setRunIntervalId(null);
-    }
-  }
+  const stopRunning = useCallback(() => {
+    setRunIntervalId((prevId) => {
+      if (prevId !== null) {
+        clearInterval(prevId);
+      }
+      return null;
+    });
+  }, [setRunIntervalId]);
 
   function startRunning() {
     const interval = setInterval(() => {
@@ -76,10 +84,7 @@ export function RunControls({
           <VscDebugContinue /> {t("editor.run")}
         </Button>
       ) : (
-        <Button
-          variant="danger"
-          onClick={stopRunning}
-        >
+        <Button variant="danger" onClick={stopRunning}>
           <VscDebugStop /> {t("editor.stop")}
         </Button>
       )}
