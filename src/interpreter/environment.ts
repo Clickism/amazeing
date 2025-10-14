@@ -1,5 +1,7 @@
-import type { LabelDefinition, Value } from "./instruction.ts";
+import type { LabelDefinition } from "./instruction.ts";
 import { InterpreterConsole } from "./console.ts";
+import type { Owl } from "./owl.ts";
+import type { Value } from "./types.ts";
 
 export type VariableMap = Map<string, Value | null>;
 
@@ -17,6 +19,7 @@ export class Environment {
   private global: VariableMap;
   private stack: StackFrame[];
   private args: VariableMap;
+  owl?: Owl;
 
   constructor(
     labels: Map<string, LabelDefinition>,

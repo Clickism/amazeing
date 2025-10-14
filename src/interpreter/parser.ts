@@ -2,9 +2,9 @@ import type {
   Instruction,
   InstructionData,
   LabelDefinition,
-  Value,
 } from "./instruction.ts";
 import { LocatableError } from "./error.ts";
+import type { Value } from "./types.ts";
 
 const COMMENT_PREFIX = "#";
 

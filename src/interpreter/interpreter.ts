@@ -2,7 +2,6 @@ import type {
   Instruction,
   InstructionData,
   ThreeVarInstruction,
-  Value,
 } from "./instruction.ts";
 import { parse } from "./parser.ts";
 import { LocatableError } from "./error.ts";
@@ -353,7 +352,7 @@ const executors = {
 function arithmeticExecutor(
   env: Environment,
   instruction: ThreeVarInstruction<unknown>,
-  operation: (a: Value, b: Value) => Value,
+  operation: (a: number, b: number) => number,
 ) {
   const { dest, src1, src2 } = instruction;
   const val1 = env.getOrThrow(src1);
@@ -368,7 +367,7 @@ function arithmeticExecutor(
 function logicalExecutor(
   env: Environment,
   instruction: ThreeVarInstruction<unknown>,
-  cond: (a: Value, b: Value) => boolean,
+  cond: (a: number, b: number) => boolean,
 ) {
   return arithmeticExecutor(env, instruction, (a, b) => (cond(a, b) ? 1 : 0));
 }

@@ -1,3 +1,5 @@
+import type { LeftRight, Value } from "./types.ts";
+
 export type NoVarInstruction<T> = { type: T };
 export type OneVarInstruction<T> = {
   type: T;
@@ -48,12 +50,10 @@ export type Instruction =
   // Other instructions
   | OneVarInstruction<"print">;
 
-export type LeftRight = "left" | "right";
 
 export type InstructionData = {
   instruction: Instruction;
   line: number;
 };
 
-export type Value = number;
 export type LabelDefinition = { label: string; pc: number };
