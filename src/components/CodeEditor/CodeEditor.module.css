@@ -20,29 +20,10 @@
   /*line-height: var(--editor-line-height);*/
   flex: 1;
   line-height: 1.4em;
-
-  overflow: auto !important;
-  white-space: pre;
-  height: 100vh;
 }
 
 .codeEditor textarea:focus {
   outline: none; /* Remove default focus outline */
-}
-
-.codeEditor textarea {
-  white-space: pre !important;
-  word-wrap: normal !important;
-  word-break: break-all !important;
-/*  height: ${({ textareaHeight }) => textareaHeight}px!important;*/
-/*width: ${({ textareaWidth }) => textareaWidth}px!important;*/
-}
-
-.codeEditor pre {
-  height: 100vh;
-  white-space: pre !important;
-  word-wrap: normal !important;
-  word-break: break-all !important;
 }
 
 .lineNumbers {
