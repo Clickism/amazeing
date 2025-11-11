@@ -1,7 +1,7 @@
 import Editor from "react-simple-code-editor";
 import { Highlight, type PrismTheme } from "prism-react-renderer";
 import styles from "./CodeEditor.module.css";
-import { type CSSProperties, useEffect, useRef } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useEditorTheme } from "../../hooks/useEditorTheme.ts";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
@@ -49,6 +49,7 @@ export function CodeEditor({
     localStoragePath ? localStorage.getItem(localStoragePath) : null,
   );
   const codeRef = useRef(code);
+  const [fontSize, setFontSize] = useState(14);
 
   const { editorTheme, setEditorTheme } = useEditorTheme();
   const theme = overrideTheme(editorTheme);
@@ -98,6 +99,8 @@ export function CodeEditor({
         {
           "--foreground-color": theme.plain.color,
           "--background-color": theme.plain.backgroundColor,
+          fontSize: `${fontSize}px`,
+          lineHeight: `1.4em`,
         } as CSSProperties
       }
     >
@@ -125,17 +128,22 @@ export function CodeEditor({
                 defaultValue={14}
                 onChange={(e) => {
                   const size = Number(e.target.value);
-                  document.documentElement.style.setProperty(
-                    "--editor-font-size",
-                    `${size}px`,
-                  );
+                  setFontSize(size);
                 }}
               />
             </FormField>
           </FormGroup>
         </Popup>
       </CornerGroup>
-      <LineNumbers lineNumbers={lineNumbers} currentLine={currentLine} runSpeed={runSpeed} isRunning={isRunning} />
+
+      <LineNumbers
+        lineNumbers={lineNumbers}
+        currentLine={currentLine}
+        runSpeed={runSpeed}
+        isRunning={isRunning}
+        fontSize={fontSize}
+      />
+
       <Editor
         className={styles.codeEditor}
         value={code}
@@ -156,9 +164,6 @@ export function CodeEditor({
           </Highlight>
         )}
         padding={10}
-        style={{
-          flex: 1,
-        }}
       />
     </div>
   );

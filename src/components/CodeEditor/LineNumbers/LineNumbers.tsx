@@ -18,11 +18,13 @@ export function LineNumbers({
   currentLine,
   runSpeed,
   isRunning,
+  fontSize,
 }: {
   lineNumbers: number;
   currentLine: number | null;
   runSpeed?: number;
   isRunning?: boolean;
+  fontSize: number;
 }) {
   const [prevLine, setPrevLine] = useState<number | null>(null);
   useEffect(() => {
@@ -44,7 +46,8 @@ export function LineNumbers({
         style={
           {
             "--line-number": overlayLine,
-            "--line-number-transition-duration": isRunning && getTransitionDuration(runSpeed)
+            "--line-number-transition-duration":
+              isRunning && getTransitionDuration(runSpeed),
           } as CSSProperties
         }
       />
@@ -54,7 +57,14 @@ export function LineNumbers({
             {/*<span className={styles.currentLineIndicator}>*/}
             {/*  {currentLine === i + 1 && <FaArrowRight size={10} />}*/}
             {/*</span>*/}
-            <span className={styles.lineNumber}>{i + 1}</span>
+            <span
+              className={styles.lineNumber}
+              style={{
+                fontSize: `${fontSize}px`,
+              }}
+            >
+              {i + 1}
+            </span>
           </div>
         ))}
       </div>
