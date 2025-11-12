@@ -156,6 +156,7 @@ export function CodeEditor({
       </CornerGroup>
 
       <ReactCodeMirror
+        key={fileName ?? "single-editor"}
         value={code}
         className={styles.codeEditor}
         height="100%"
