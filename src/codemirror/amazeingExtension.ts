@@ -45,11 +45,12 @@ export const amazeing = StreamLanguage.define({
       state.afterVar = false; // reset
       return "variableName";
     }
+    // TODO: Keywords in identifiers get highlighted
     if (stream.match(keywordPattern)) {
       state.afterVar = stream.current() === "var";
       return "keyword";
     }
-    if (stream.match(/arg\d+/)) return "string";
+    if (stream.match(/\barg\d+/)) return "string";
     if (stream.match(/\b\d+\b/)) return "number";
     if (stream.match(/\b\w+(?=:)/)) return "def";
     if (stream.match(/[=+\-*/:]/)) return "operator";
