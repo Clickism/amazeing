@@ -10,6 +10,8 @@
   box-sizing: content-box;
   text-align: center;
   height: 1.5rem;
+  word-break: keep-all;
+  text-wrap: nowrap;
 }
 
 .flex {
@@ -73,6 +75,16 @@
   color: var(--clr-light-a0);
 }
 
+.variant-background {
+  --background-color: var(--clr-surface-a10);
+  color: var(--text-color);
+}
+
+.variant-background:hover {
+  background-color: var(--clr-surface-a20) !important;
+}
+
+
 /* Shapes */
 .shape-default {
   border-radius: .5rem;
@@ -80,7 +92,8 @@
 
 .shape-icon {
   padding: var(--padding-vertical);
-  width: 1.5rem;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
 }
 
 /* Sizes */

@@ -56,6 +56,25 @@ export function CodeStorageProvider({
     setFiles({});
   }, []);
 
+  const renameFile = useCallback((oldName: string, newName: string) => {
+    setFiles((prev) => {
+      const newFiles = { ...prev };
+      const oldFile = newFiles[oldName];
+      if (newFiles[newName]) {
+        // Prevent overwriting existing file
+        return newFiles;
+      }
+      if (oldFile) {
+        newFiles[newName] = {
+          name: newName,
+          content: oldFile.content,
+        };
+        delete newFiles[oldName];
+      }
+      return newFiles;
+    });
+  }, []);
+
   return (
     <CodeStorageContext.Provider
       value={{
@@ -63,6 +82,7 @@ export function CodeStorageProvider({
         saveFile,
         loadFile,
         deleteFile,
+        renameFile,
         clearAll,
       }}
     >

@@ -11,6 +11,7 @@ export const CodeStorageContext = createContext<
       saveFile: (file: CodeFile) => void;
       loadFile: (name: string) => CodeFile | null;
       deleteFile: (name: string) => void;
+      renameFile: (oldName: string, newName: string) => void;
       clearAll: () => void;
     }
   | undefined

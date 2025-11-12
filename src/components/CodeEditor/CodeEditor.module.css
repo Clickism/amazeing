@@ -20,4 +20,9 @@
   width: 100%;
 }
 
+.editorTabs {
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
 

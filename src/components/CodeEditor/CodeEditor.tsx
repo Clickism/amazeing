@@ -90,8 +90,7 @@ export function CodeEditor({
   // Auto-save
   useEffect(() => {
     if (!fileName) return;
-    const interval = setInterval(() => {
-      if (codeRef.current === savedCodeRef.current) return;
+    const interval = setInterval(() => {if (codeRef.current === savedCodeRef.current) return;
       savedCodeRef.current = codeRef.current;
       saveFile({ name: fileName, content: codeRef.current });
     }, AUTO_SAVE_INTERVAL);
@@ -113,10 +112,28 @@ export function CodeEditor({
 
   return (
     <div className={clsx(styles.container, "window-border")}>
-      <CornerGroup>
+
+      <CornerGroup position="top-left" style={{
+        width: "100%",
+        gap: "0.5rem",
+      }}>
+        <div className={styles.editorTabs}>
+          {tabbed && (
+            <EditorTabs
+              activeFile={fileName ?? "Untitled"}
+              setActiveFile={(newFileName, saveOld) => {
+                // Save current file before switching
+                if (fileName && saveOld) {
+                  saveFile({ name: fileName, content: code });
+                }
+                setFileName?.(newFileName);
+              }}
+            />
+          )}
+        </div>
         <Popup
           trigger={
-            <Button shape="icon">
+            <Button shape="icon" className={styles.settingsButton}>
               <VscSettings size={20} />
             </Button>
           }
@@ -144,21 +161,6 @@ export function CodeEditor({
           </FormGroup>
         </Popup>
       </CornerGroup>
-
-      {tabbed && (
-        <CornerGroup position="top-left">
-          <EditorTabs
-            activeFile={fileName ?? "Untitled"}
-            setActiveFile={(newFileName) => {
-              // Save current file before switching
-              if (fileName) {
-                saveFile({ name: fileName, content: code });
-              }
-              setFileName?.(newFileName);
-            }}
-          />
-        </CornerGroup>
-      )}
 
       <ReactCodeMirror
         value={code}

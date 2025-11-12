@@ -8,7 +8,8 @@ export type ButtonVariant =
   | "secondary"
   | "disabled"
   | "success"
-  | "danger";
+  | "danger"
+  | "background";
 
 export type ButtonShape =
   | "default"
