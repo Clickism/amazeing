@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  gap: .5rem;
+}
+
+.activeTab {
+  display: flex;
+  align-items: center;
+  background-color: var(--clr-surface-a10);
+  padding-right: .4rem;
+  gap: .5rem;
+  border-radius: .5rem;
+}

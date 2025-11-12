@@ -17,16 +17,18 @@ import {
 import { VscDebugRestart } from "react-icons/vsc";
 import { StepControls } from "./StepController/StepControls.tsx";
 import { RunControls } from "./RunController/RunControls.tsx";
+import { TabbedCodeEditor } from "../CodeEditor/TabbedCodeEditor.tsx";
 
 export const MIN_RUN_SPEED = 1;
 export const MAX_RUN_SPEED = 100;
 export const DEFAULT_RUN_SPEED = 5;
 
 type Props = {
-  filename?: string;
+  tabbed?: boolean
+  startingFileName?: string;
 };
 
-export function Editor({ filename }: Props) {
+export function Editor({ tabbed, startingFileName }: Props) {
   const [code, setCode] = useState<string>("");
   const [output, setOutput] = useState<ConsoleMessage[]>([]);
   const [currentLine, setCurrentLine] = useState<number | null>(null);
@@ -107,14 +109,24 @@ export function Editor({ filename }: Props) {
       </div>
       <div className={styles.right}>
         <div title={t("codeEditor.title")} className={styles.codeEditor}>
-          <CodeEditor
-            code={code}
-            setCode={setCode}
-            currentLine={currentLine}
-            filename={filename}
-            runSpeed={runSpeed}
-            isRunning={isRunning}
-          />
+          {tabbed ? (
+            <TabbedCodeEditor
+              code={code}
+              setCode={setCode}
+              currentLine={currentLine}
+              runSpeed={runSpeed}
+              isRunning={isRunning}
+              startingFileName={startingFileName}
+            />
+          ) : (
+            <CodeEditor
+              code={code}
+              setCode={setCode}
+              currentLine={currentLine}
+              runSpeed={runSpeed}
+              isRunning={isRunning}
+            />
+          )}
         </div>
       </div>
     </div>

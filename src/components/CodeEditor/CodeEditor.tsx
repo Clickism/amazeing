@@ -16,33 +16,57 @@ import {
   amazeingAutocomplete,
 } from "../../codemirror/amazeingExtension.ts";
 import { currentLineHighlighter } from "../../codemirror/currentLineHighlighter.ts";
+import { EditorView } from "@codemirror/view";
+import { EditorTabs } from "./EditorTabs/EditorTabs.tsx";
+import { useCodeStorage } from "../../hooks/useCodeStorage.ts";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
-type Props = {
+// TODO: Add error line state to CodeMirror
+export type TabbedCodeEditorProps =
+  | {
+      tabbed?: false;
+      fileName?: never;
+      setFileName?: never;
+    }
+  | {
+      tabbed: true;
+      fileName: string;
+      setFileName: (fileName: string | null) => void;
+    };
+
+export type CodeEditorProps = {
   code: string;
   setCode: (code: string) => void;
   currentLine: number | null;
-  filename?: string;
   runSpeed?: number;
   isRunning?: boolean;
-};
+} & TabbedCodeEditorProps;
 
 const FONT_STORAGE_KEY = "editor:fontSize";
 
-export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
+export function CodeEditor({
+  code,
+  setCode,
+  currentLine,
+  tabbed,
+  fileName,
+  setFileName,
+}: CodeEditorProps) {
+  const { editorTheme, setEditorTheme } = useEditorTheme();
+  const { saveFile, loadFile } = useCodeStorage();
   const { t } = useTranslation();
-  const localStoragePath = filename ? `editor:file:${filename}` : undefined;
+
+  // Code refs for saving
   const savedCodeRef = useRef<string | null>(
-    localStoragePath ? localStorage.getItem(localStoragePath) : null,
+    tabbed ? loadFile(fileName)?.content : null,
   );
   const codeRef = useRef(code);
+
   const [fontSize, setFontSize] = useState(() => {
     const storedSize = localStorage.getItem(FONT_STORAGE_KEY);
     return storedSize ? Number(storedSize) : 14;
   });
-
-  const { editorTheme, setEditorTheme } = useEditorTheme();
 
   useEffect(() => {
     // Save font size to localStorage
@@ -57,43 +81,42 @@ export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
 
   // Load code from localStorage
   useEffect(() => {
-    if (!localStoragePath) return;
-    const storedCode = localStorage.getItem(localStoragePath);
-    if (storedCode !== null) {
-      setCode(storedCode);
-    }
-  }, [localStoragePath, setCode]);
+    if (!fileName) return;
+    const file = loadFile(fileName);
+    if (!file) return;
+    setCode(file.content);
+  }, [fileName, loadFile, setCode]);
 
   // Auto-save
   useEffect(() => {
-    if (!localStoragePath) return;
+    if (!fileName) return;
     const interval = setInterval(() => {
       if (codeRef.current === savedCodeRef.current) return;
       savedCodeRef.current = codeRef.current;
-      localStorage.setItem(localStoragePath, codeRef.current);
+      saveFile({ name: fileName, content: codeRef.current });
     }, AUTO_SAVE_INTERVAL);
     return () => clearInterval(interval);
-  }, [localStoragePath]);
+  }, [fileName, saveFile]);
 
   // Save on close
   useEffect(() => {
-    if (!localStoragePath) return;
+    if (!fileName) return;
     const handleBeforeUnload = () => {
       if (codeRef.current === savedCodeRef.current) return;
-      localStorage.setItem(localStoragePath, codeRef.current);
+      saveFile({ name: fileName, content: codeRef.current });
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [localStoragePath]);
+  }, [fileName, saveFile]);
 
   return (
     <div className={clsx(styles.container, "window-border")}>
       <CornerGroup>
         <Popup
           trigger={
-            <Button variant="icon-only">
+            <Button shape="icon">
               <VscSettings size={20} />
             </Button>
           }
@@ -122,6 +145,21 @@ export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
         </Popup>
       </CornerGroup>
 
+      {tabbed && (
+        <CornerGroup position="top-left">
+          <EditorTabs
+            activeFile={fileName ?? "Untitled"}
+            setActiveFile={(newFileName) => {
+              // Save current file before switching
+              if (fileName) {
+                saveFile({ name: fileName, content: code });
+              }
+              setFileName?.(newFileName);
+            }}
+          />
+        </CornerGroup>
+      )}
+
       <ReactCodeMirror
         value={code}
         className={styles.codeEditor}
@@ -134,6 +172,14 @@ export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
           tooltips({
             position: "fixed",
             parent: document.getElementById("tooltip-root")!,
+          }),
+          // Make space for tabs
+          EditorView.theme({
+            ".cm-scroller": tabbed
+              ? {
+                  paddingTop: "3rem",
+                }
+              : {},
           }),
         ]}
         onChange={(value) => setCode(value)}

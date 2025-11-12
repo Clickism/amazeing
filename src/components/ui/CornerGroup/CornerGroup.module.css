@@ -3,9 +3,32 @@
   /* TODO: Make sticky */
   position: absolute;
   z-index: 1;
-  top: 0;
-  right: 0;
   display: flex;
   flex-direction: row;
   padding: .5rem;
+}
+
+.position-top-right {
+  top: 0;
+  right: 0;
+  left: auto;
+}
+
+.position-top-left {
+  top: 0;
+  left: 0;
+  right: auto;
+}
+
+.position-bottom-left {
+  bottom: 0;
+  left: 0;
+  top: auto;
+  right: auto;
+}
+
+.position-bottom-right {
+  bottom: 0;
+  right: 0;
+  top: auto;
 }

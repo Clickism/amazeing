@@ -35,53 +35,67 @@
   transform: none !important;
 }
 
-.disabled {
+/* Variants */
+.variant-disabled {
   background: transparent;
   box-shadow: inset 0 0 0 2px var(--clr-surface-a20);
 }
 
-.icon-only {
-  --background-color: var(--clr-surface-a20);
-  color: var(--text-color);
-  padding: var(--padding-vertical);
-  width: 1.5rem;
-}
-
-.icon-rounded {
-  --background-color: var(--clr-surface-a20);
-  color: var(--text-color);
-  padding: var(--padding-vertical);
-  border-radius: 50%;
-}
-
-.primary {
+.variant-primary {
   --background-color: var(--clr-primary-a0);
   color: var(--clr-dark-a0);
 }
 
-.primary:hover {
+.variant-primary:hover {
   background-color: var(--clr-primary-a10) !important;
 }
 
-.secondary {
+.variant-secondary {
   --background-color: var(--clr-surface-a20);
   color: var(--text-color);
 }
 
-.secondary:hover {
+.variant-secondary:hover {
   background-color: var(--clr-surface-a30) !important;
 }
 
-.success {
+.variant-success {
   --background-color: var(--clr-success-a10);
   color: var(--clr-dark-a0);
 }
 
-.success:hover {
+.variant-success:hover {
   background-color: var(--clr-success-a20) !important;
 }
 
-.danger {
+.variant-danger {
   --background-color: var(--clr-danger-a10);
   color: var(--clr-light-a0);
+}
+
+/* Shapes */
+.shape-default {
+  border-radius: .5rem;
+}
+
+.shape-icon {
+  padding: var(--padding-vertical);
+  width: 1.5rem;
+}
+
+/* Sizes */
+.size-small {
+  --padding: 2px 4px;
+  --padding-vertical: 2px;
+  font-size: 14px;
+}
+
+.size-medium {
+  --padding: .375rem .75rem;
+  --padding-vertical: .375rem;
+  font-size: 16px;
+}
+
+.size-large {
+  /* Default */
 }

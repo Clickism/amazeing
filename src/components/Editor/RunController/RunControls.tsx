@@ -91,7 +91,7 @@ export function RunControls({
 
       <Popup
         trigger={
-          <Button variant="icon-only">
+          <Button shape="icon">
             <VscSettings size={20} />
           </Button>
         }

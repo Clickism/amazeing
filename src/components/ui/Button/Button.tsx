@@ -7,14 +7,23 @@ export type ButtonVariant =
   | "primary"
   | "secondary"
   | "disabled"
-  | "icon-rounded"
-  | "icon-only"
   | "success"
   | "danger";
+
+export type ButtonShape =
+  | "default"
+  | "icon"
+
+export type ButtonSize =
+  | "small"
+  | "medium"
+  | "large";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   linkTo?: string;
   variant?: ButtonVariant;
+  shape?: ButtonShape;
+  size?: ButtonSize;
   flex?: boolean;
 };
 
@@ -23,6 +32,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       linkTo,
       variant = "secondary",
+      shape = "default",
+      size = "large",
       flex = true,
       className,
       children,
@@ -36,7 +47,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={clsx(
           styles.button,
-          styles[variant],
+          styles[`variant-${variant}`],
+          styles[`shape-${shape}`],
+          styles[`size-${size}`],
           flex && styles.flex,
           className,
         )}

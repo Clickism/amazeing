@@ -15,7 +15,15 @@ export function Layout({
     <div className={styles.layout}>
       <Navbar />
       <main className={clsx(fullWidth && styles.fullWidth)}>
-        <ErrorBoundary fallback={<h1>Something went wrong.</h1>}>
+        <ErrorBoundary fallback={
+          <>
+            <h2>Something went wrong.</h2>
+            <p>
+              Please try refreshing the page, or contact support if the problem
+              persists.
+            </p>
+          </>
+        }>
           {children}
         </ErrorBoundary>
       </main>
