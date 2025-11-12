@@ -109,6 +109,11 @@ export class InterpreterImpl implements Interpreter {
         // Push a new stack frame
         this.env.pushStackFrame(this.pc + 1);
       }
+      if (target === -1) {
+        // Terminate program on exit
+        this.pc = this.instructions.length;
+        return;
+      }
       this.pc = target;
     } else {
       // Increment pc by one
@@ -324,6 +329,11 @@ const executors = {
     return { type: "jump", target: frame.returnAddress };
   },
 
+  exit: (env) => {
+    env.console.log({ type: "log", text: "Program exited." });
+    return { type: "jump", target: -1 };
+  },
+
   branch: (env, { cond, target }) => {
     const pc = env.getLabelOrThrow(target).pc;
     const condValue = env.getOrThrow(cond);
@@ -344,6 +354,7 @@ const executors = {
     const value = env.getOrThrow(src);
     env.console.log({ type: "log", text: value.toString() });
   },
+
 } as Executors;
 
 /**

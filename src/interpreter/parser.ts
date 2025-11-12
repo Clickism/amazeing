@@ -94,6 +94,7 @@ function parseInstruction(type: string, args: string[]): Instruction {
     // No var instructions
     case "move":
     case "ret":
+    case "exit":
       assertArgsLength(type, args, 0);
       return { type };
     // One var instructions

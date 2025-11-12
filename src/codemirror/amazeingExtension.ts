@@ -1,34 +1,6 @@
 import { StreamLanguage } from "@codemirror/language";
 import { autocompletion, CompletionContext } from "@codemirror/autocomplete";
 
-export const amazeing = StreamLanguage.define({
-  startState() {
-    return { afterVar: false };
-  },
-  token(stream, state) {
-    if (stream.eatSpace()) return null;
-    if (stream.match(/#.*/)) return "comment";
-    if (state.afterVar && stream.match(/\w+/)) {
-      state.afterVar = false; // reset
-      return "variableName";
-    }
-    if (
-      stream.match(
-        /\b(move|turn|var|load|copy|add|sub|mul|div|and|or|xor|not|lt|lte|gt|gte|eq|neq|jump|call|ret|branch|branchz|print)\b/,
-      )
-    ) {
-      state.afterVar = stream.current() === "var";
-      return "keyword";
-    }
-    if (stream.match(/arg\d+/)) return "string";
-    if (stream.match(/\b\d+\b/)) return "number";
-    if (stream.match(/\b\w+(?=:)/)) return "def";
-    if (stream.match(/[=+\-*/:]/)) return "operator";
-    stream.next();
-    return null;
-  },
-});
-
 const amazeingKeywords = [
   "move",
   "turn",
@@ -52,10 +24,39 @@ const amazeingKeywords = [
   "jump",
   "call",
   "ret",
+  "exit",
   "branch",
   "branchz",
   "print",
 ];
+
+const keywordPattern = new RegExp(
+  `\\b(${amazeingKeywords.join("|")})\\b`,
+);
+
+export const amazeing = StreamLanguage.define({
+  startState() {
+    return { afterVar: false };
+  },
+  token(stream, state) {
+    if (stream.eatSpace()) return null;
+    if (stream.match(/#.*/)) return "comment";
+    if (state.afterVar && stream.match(/\w+/)) {
+      state.afterVar = false; // reset
+      return "variableName";
+    }
+    if (stream.match(keywordPattern)) {
+      state.afterVar = stream.current() === "var";
+      return "keyword";
+    }
+    if (stream.match(/arg\d+/)) return "string";
+    if (stream.match(/\b\d+\b/)) return "number";
+    if (stream.match(/\b\w+(?=:)/)) return "def";
+    if (stream.match(/[=+\-*/:]/)) return "operator";
+    stream.next();
+    return null;
+  },
+});
 
 function extractVariables(docText: string): string[] {
   const regex = /\bvar\s+([A-Za-z_]\w*)/g;

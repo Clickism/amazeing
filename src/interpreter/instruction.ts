@@ -45,6 +45,7 @@ export type Instruction =
   | { type: "jump"; target: string }
   | { type: "call"; target: string }
   | NoVarInstruction<"ret">
+  | NoVarInstruction<"exit"> // TODO: Implement
   | { type: "branch"; cond: string; target: string }
   | { type: "branchz"; cond: string; target: string }
   // Other instructions

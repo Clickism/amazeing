@@ -10,6 +10,10 @@ export type StackFrame = {
   variables: VariableMap;
 };
 
+function isArg(name: string) {
+  return /^arg\d+$/.test(name);
+}
+
 /**
  * Environment for the interpreter.
  */
@@ -103,6 +107,10 @@ export class Environment {
    * Sets the value of a variable in the current scope.
    */
   set(name: string, value: Value | null) {
+    if (isArg(name)) {
+      this.args.set(name, value);
+      return;
+    }
     if (this.stack.length === 0) {
       this.stack.push({ returnAddress: undefined, variables: new Map() });
     }
@@ -116,6 +124,9 @@ export class Environment {
    * @param name The name of the variable.
    */
   isDefined(name: string): boolean {
+    if (isArg(name)) {
+      return true;
+    }
     return this.get(name) !== undefined;
   }
 
