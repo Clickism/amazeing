@@ -34,7 +34,7 @@ export function EditorSettingsProvider({ children }: { children: ReactNode }) {
     loadTheme("theme"),
   );
   const [fontSize, setFontSizeState] = useState<number>(
-    loadNumber("fontSize", 14),
+    loadNumber("fontSize", 16),
   );
 
   const setEditorTheme = (themeName: string) => {
