@@ -1,6 +1,5 @@
 .cornerGroup {
   box-sizing: border-box;
-  /* TODO: Make sticky */
   position: absolute;
   z-index: 1;
   display: flex;

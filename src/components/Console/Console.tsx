@@ -21,17 +21,19 @@ export function Console({ messages }: { messages: ConsoleMessage[] }) {
   return (
     <div className={clsx(styles.console, "window-border")} ref={containerRef}>
       <CornerGroup className={styles.title}>{t("console.title")}</CornerGroup>
-      {messages.map((message, i) => (
-        <div
-          key={i}
-          className={clsx(styles.message, styles[`message-${message.type}`])}
-          style={{
-            fontSize,
-          }}
-        >
-          {message.text}
-        </div>
-      ))}
+      <div className={styles.messageContainer}>
+        {messages.map((message, i) => (
+          <div
+            key={i}
+            className={clsx(styles.message, styles[`message-${message.type}`])}
+            style={{
+              fontSize,
+            }}
+          >
+            {message.text}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

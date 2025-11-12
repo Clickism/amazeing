@@ -1,16 +1,21 @@
 .console {
   background-color: var(--clr-console-bg);
-  padding: 1rem;
   height: 100%;
   width: 100%;
   white-space: pre-wrap;
-  overflow: auto;
   position: relative;
 }
 
 .title {
-  color: #5e6779;
-  margin-right: 4px;
+  color: var(--clr-surface-a30);
+  margin: .25rem 1rem;
+}
+
+.messageContainer {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  padding: 1rem;
 }
 
 .message {

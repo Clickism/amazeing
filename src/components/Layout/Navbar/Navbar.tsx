@@ -10,10 +10,12 @@ function NavbarLink({
   to,
   regex,
   children,
+  dontMatch
 }: {
   to: string;
   regex?: RegExp;
   children: React.ReactNode;
+  dontMatch?: boolean;
 }) {
   const location = useLocation();
   const isCurrent = regex
@@ -22,7 +24,7 @@ function NavbarLink({
   return (
     <Link
       to={to}
-      className={clsx(styles.link, isCurrent && styles.currentLink)}
+      className={clsx(styles.link, isCurrent && !dontMatch && styles.currentLink)}
     >
       {children}
     </Link>
@@ -35,6 +37,11 @@ export function Navbar() {
     <div className={styles.navbar}>
       <div className={styles.container}>
         <div className={styles.left}>
+          <NavbarLink to="/" dontMatch>
+            <div style={{ fontWeight: 700 }}>
+              Prog2 Precourse
+            </div>
+          </NavbarLink>
           <NavbarLink to="/">Home</NavbarLink>
           <NavbarLink to="/sandbox">{t("navbar.sandbox")}</NavbarLink>
         </div>
