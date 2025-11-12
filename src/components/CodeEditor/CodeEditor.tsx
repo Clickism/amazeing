@@ -1,7 +1,7 @@
 import styles from "./CodeEditor.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import clsx from "clsx";
-import { useEditorTheme } from "../../hooks/useEditorTheme.ts";
+import { useEditorSettings } from "../../hooks/useEditorSettings.ts";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
 import { Button } from "../ui/Button/Button.tsx";
 import Popup from "reactjs-popup";
@@ -43,8 +43,6 @@ export type CodeEditorProps = {
   isRunning?: boolean;
 } & TabbedCodeEditorProps;
 
-const FONT_STORAGE_KEY = "editor:fontSize";
-
 export function CodeEditor({
   code,
   setCode,
@@ -53,7 +51,8 @@ export function CodeEditor({
   fileName,
   setFileName,
 }: CodeEditorProps) {
-  const { editorTheme, setEditorTheme } = useEditorTheme();
+  const { editorTheme, setEditorTheme, fontSize, setFontSize } =
+    useEditorSettings();
   const { saveFile, loadFile } = useCodeStorage();
   const { t } = useTranslation();
 
@@ -62,18 +61,6 @@ export function CodeEditor({
     tabbed ? loadFile(fileName)?.content : null,
   );
   const codeRef = useRef(code);
-
-  const [fontSize, setFontSize] = useState(() => {
-    const storedSize = localStorage.getItem(FONT_STORAGE_KEY);
-    return storedSize ? Number(storedSize) : 14;
-  });
-
-  useEffect(() => {
-    // Save font size to localStorage
-    localStorage.setItem(FONT_STORAGE_KEY, fontSize.toString());
-    // Set tooltip font size
-    document.getElementById("tooltip-root")!.style.fontSize = `${fontSize}px`;
-  }, [fontSize]);
 
   useEffect(() => {
     codeRef.current = code;
@@ -90,7 +77,8 @@ export function CodeEditor({
   // Auto-save
   useEffect(() => {
     if (!fileName) return;
-    const interval = setInterval(() => {if (codeRef.current === savedCodeRef.current) return;
+    const interval = setInterval(() => {
+      if (codeRef.current === savedCodeRef.current) return;
       savedCodeRef.current = codeRef.current;
       saveFile({ name: fileName, content: codeRef.current });
     }, AUTO_SAVE_INTERVAL);
@@ -111,12 +99,20 @@ export function CodeEditor({
   }, [fileName, saveFile]);
 
   return (
-    <div className={clsx(styles.container, "window-border")}>
-
-      <CornerGroup position="top-left" style={{
-        width: "100%",
-        gap: "0.5rem",
-      }}>
+    <div
+      className={clsx(
+        styles.container,
+        "window-border",
+        editorTheme.isLight ? "light-theme" : "dark-theme",
+      )}
+    >
+      <CornerGroup
+        position="top-left"
+        style={{
+          width: "100%",
+          gap: "0.5rem",
+        }}
+      >
         <div className={styles.editorTabs}>
           {tabbed && (
             <EditorTabs

@@ -94,6 +94,7 @@
   padding: var(--padding-vertical);
   width: 1.5rem !important;
   height: 1.5rem !important;
+  flex: 0 0 auto;
 }
 
 /* Sizes */

@@ -23,6 +23,11 @@
 .editorTabs {
   flex: 1;
   overflow-x: auto;
+  scrollbar-width: none;
+  border-right: 1px solid var(--clr-surface-a20);
+}
+
+.editorTabs:hover {
   scrollbar-width: thin;
 }
 

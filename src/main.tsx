@@ -8,14 +8,14 @@ import "./css/form.css";
 import "./css/codemirror.css";
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/AppRoutes.tsx";
-import { EditorThemeProvider } from "./context/EditorThemeProvider.tsx";
+import { EditorSettingsProvider } from "./context/EditorSettingsProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <EditorThemeProvider>
+      <EditorSettingsProvider>
         <AppRoutes />
-      </EditorThemeProvider>
+      </EditorSettingsProvider>
     </BrowserRouter>
   </StrictMode>,
 );

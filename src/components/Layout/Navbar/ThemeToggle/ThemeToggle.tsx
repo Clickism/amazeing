@@ -8,11 +8,11 @@ import {
   type Theme,
   toggleTheme,
 } from "../../../../utils/themes.ts";
-import { useEditorTheme } from "../../../../hooks/useEditorTheme.ts";
+import { useEditorSettings } from "../../../../hooks/useEditorSettings.ts";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(getTheme());
-  const { refreshEditorTheme } = useEditorTheme();
+  const { refreshEditorTheme } = useEditorSettings();
 
   useEffect(() => {
     applyCurrentTheme();

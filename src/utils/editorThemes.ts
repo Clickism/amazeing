@@ -1,4 +1,3 @@
-// import { type PrismTheme, themes } from "prism-react-renderer";
 import { getTheme } from "./themes.ts";
 import type { Extension } from "@codemirror/state";
 
@@ -40,6 +39,7 @@ import { oneDark } from "@codemirror/theme-one-dark";
 const DEFAULT_LIGHT_THEME: EditorTheme = {
   extension: githubLight,
   name: "default",
+  isLight: true,
 };
 const DEFAULT_DARK_THEME: EditorTheme = {
   extension: vscodeDark,
@@ -82,25 +82,37 @@ export const SUPPORTED_THEMES: Record<string, Extension> = {
   oneDark,
 };
 
-export type EditorTheme = { extension: Extension; name: string };
+const LIGHT_THEMES: Record<string, boolean> = {
+  vscodeLight: true,
+  githubLight: true,
+  bbedit: true,
+  duotoneLight: true,
+  eclipse: true,
+  gruvboxLight: true,
+  materialLight: true,
+  quietlight: true,
+  solarizedLight: true,
+  xcodeLight: true,
+};
 
-export function setEditorTheme(theme: string) {
-  if (theme === "default") {
-    localStorage.removeItem("colorTheme");
-    return;
-  }
-  localStorage.setItem("colorTheme", theme);
-}
+export type EditorTheme = {
+  extension: Extension;
+  name: string;
+  isLight?: boolean;
+};
 
-export function getEditorTheme(): EditorTheme {
-  const themeName = localStorage.getItem("colorTheme");
-  if (themeName === null || !(themeName in SUPPORTED_THEMES)) {
+export function getEditorTheme(themeName: string): EditorTheme {
+  if (themeName === "default" || !(themeName in SUPPORTED_THEMES)) {
     return getDefaultEditorTheme();
   }
   const theme = SUPPORTED_THEMES[
     themeName as keyof typeof SUPPORTED_THEMES
   ] as Extension;
-  return { extension: theme, name: themeName };
+  return {
+    extension: theme,
+    name: themeName,
+    isLight: themeName in LIGHT_THEMES,
+  };
 }
 
 export function getDefaultEditorTheme(): EditorTheme {

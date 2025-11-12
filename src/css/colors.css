@@ -1,5 +1,6 @@
 /* Light theme colors */
-:root {
+:root,
+.light-theme {
   color-scheme: light;
   --text-color: var(--clr-dark-a0);
 
@@ -33,6 +34,7 @@
   --clr-surface-a-minus-20: #faffff;
   --clr-surface-a-minus-10: #f3f9ff;
   --clr-surface-a0: #edf2fd;
+  --clr-surface-a5: #e8ecf9;
   --clr-surface-a10: #e0e5ee;
   --clr-surface-a20: #d4d8e0;
   --clr-surface-a30: #c7cbd2;
@@ -60,10 +62,13 @@
   --clr-info-a0: #1e56a3;
   --clr-info-a10: #347ada;
   --clr-info-a20: #74a4e6;
+
+  --clr-console-bg: #FFFFFF;
 }
 
 /* Dark theme colors */
-:root[theme="dark"] {
+:root[theme="dark"],
+.dark-theme {
   color-scheme: dark;
   --text-color: var(--clr-light-a0);
 
@@ -97,6 +102,7 @@
   --clr-surface-a-minus-20: #0e1725;
   --clr-surface-a-minus-10: #161f2d;
   --clr-surface-a0: #1e2736;
+  --clr-surface-a5: #262f3e;
   --clr-surface-a10: #343b4a;
   --clr-surface-a20: #4a515e;
   --clr-surface-a30: #626773;
@@ -124,4 +130,6 @@
   --clr-info-a0: #21498a;
   --clr-info-a10: #4077d1;
   --clr-info-a20: #92b2e5;
+
+  --clr-console-bg: #000000;
 }

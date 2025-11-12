@@ -1,7 +1,7 @@
 import {
   type EditorTheme,
   SUPPORTED_THEMES,
-} from "../../../utils/editorTheme.ts";
+} from "../../../utils/editorThemes.ts";
 import { camelToTitleCase } from "../../../utils/utils.ts";
 import React from "react";
 
