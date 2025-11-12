@@ -4,7 +4,6 @@ import { Viewport } from "../Viewport/Viewport.tsx";
 import styles from "./Editor.module.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/Button/Button.tsx";
-import "../../prism/amazeing.ts";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
 import {
   type ConsoleMessage,
@@ -66,7 +65,7 @@ export function Editor({ filename }: Props) {
 
   useEffect(() => {
     initInterpreter();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
   function handleReset() {

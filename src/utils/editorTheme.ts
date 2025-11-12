@@ -1,34 +1,88 @@
-import { type PrismTheme, themes } from "prism-react-renderer";
+// import { type PrismTheme, themes } from "prism-react-renderer";
 import { getTheme } from "./themes.ts";
+import type { Extension } from "@codemirror/state";
 
-const DEFAULT_LIGHT_THEME: EditorTheme = { ...themes.github, name: "default" };
-const DEFAULT_DARK_THEME: EditorTheme = { ...themes.vsDark, name: "default" };
+import {
+  androidstudio,
+  atomone,
+  aura,
+  bbedit,
+  bespin,
+  darcula,
+  dracula,
+  duotoneDark,
+  duotoneLight,
+  eclipse,
+  githubDark,
+  githubLight,
+  gruvboxDark,
+  gruvboxLight,
+  kimbie,
+  materialDark,
+  materialLight,
+  monokai,
+  nord,
+  okaidia,
+  quietlight,
+  red,
+  solarizedDark,
+  solarizedLight,
+  sublime,
+  tokyoNight,
+  tomorrowNightBlue,
+  vscodeDark,
+  vscodeLight,
+  xcodeDark,
+  xcodeLight,
+} from "@uiw/codemirror-themes-all";
+import { oneDark } from "@codemirror/theme-one-dark";
 
-export const SUPPORTED_THEMES = {
-  dracula: themes.dracula,
-  duotoneDark: themes.duotoneDark,
-  duotoneLight: themes.duotoneLight,
-  github: themes.github,
-  gruvboxMaterialDark: themes.gruvboxMaterialDark,
-  gruvboxMaterialLight: themes.gruvboxMaterialLight,
-  jettwaveDark: themes.jettwaveDark,
-  jettwaveLight: themes.jettwaveLight,
-  nightOwl: themes.nightOwl,
-  nightOwlLight: themes.nightOwlLight,
-  oceanicNext: themes.oceanicNext,
-  okaidia: themes.okaidia,
-  oneDark: themes.oneDark,
-  oneLight: themes.oneLight,
-  palenight: themes.palenight,
-  shadesOfPurple: themes.shadesOfPurple,
-  // synthwave84: themes.synthwave84,
-  ultramin: themes.ultramin,
-  vsDark: themes.vsDark,
-  vsLight: themes.vsLight,
-  default: themes.vsDark,
+const DEFAULT_LIGHT_THEME: EditorTheme = {
+  extension: githubLight,
+  name: "default",
+};
+const DEFAULT_DARK_THEME: EditorTheme = {
+  extension: vscodeDark,
+  name: "default",
 };
 
-export type EditorTheme = PrismTheme & { name: string };
+export const SUPPORTED_THEMES: Record<string, Extension> = {
+  default: vscodeDark,
+  vscodeDark,
+  vscodeLight,
+  githubDark,
+  githubLight,
+  androidstudio,
+  atomone,
+  aura,
+  bbedit,
+  bespin,
+  darcula,
+  dracula,
+  duotoneDark,
+  duotoneLight,
+  eclipse,
+  gruvboxDark,
+  gruvboxLight,
+  kimbie,
+  materialDark,
+  materialLight,
+  monokai,
+  nord,
+  okaidia,
+  quietlight,
+  red,
+  solarizedDark,
+  solarizedLight,
+  sublime,
+  tokyoNight,
+  tomorrowNightBlue,
+  xcodeDark,
+  xcodeLight,
+  oneDark,
+};
+
+export type EditorTheme = { extension: Extension; name: string };
 
 export function setEditorTheme(theme: string) {
   if (theme === "default") {
@@ -45,8 +99,8 @@ export function getEditorTheme(): EditorTheme {
   }
   const theme = SUPPORTED_THEMES[
     themeName as keyof typeof SUPPORTED_THEMES
-  ] as PrismTheme;
-  return { ...theme, name: themeName };
+  ] as Extension;
+  return { extension: theme, name: themeName };
 }
 
 export function getDefaultEditorTheme(): EditorTheme {

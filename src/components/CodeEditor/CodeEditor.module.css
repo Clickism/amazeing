@@ -20,6 +20,7 @@
   /*line-height: var(--editor-line-height);*/
   flex: 1;
   line-height: 1.4em;
+  width: 100%;
 }
 
 .codeEditor textarea:focus {
@@ -49,25 +50,6 @@
   opacity: 1;
 }
 
-.currentLineOverlay {
-  position: absolute;
-  top: calc((var(--line-number) - .5) * var(--editor-line-height));
-  left: 0;
-  height: var(--editor-line-height);
-  width: 100%;
-  background: linear-gradient(90deg, var(--clr-danger-a0) 0%, transparent 40%) center;
-  z-index: 2;
-  transition: top var(--line-number-transition-duration) ease-out,
-  opacity var(--line-number-transition-duration) ease-out;
-  opacity: 0;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
 
-.currentLineOverlay.visible {
-  opacity: 0.5;
-}
 
-.currentLineOverlay.resetting {
-  transition-delay: .1s, 0s;
-}
+

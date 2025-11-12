@@ -1,18 +1,22 @@
-import Editor from "react-simple-code-editor";
-import { Highlight, type PrismTheme } from "prism-react-renderer";
 import styles from "./CodeEditor.module.css";
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useEditorTheme } from "../../hooks/useEditorTheme.ts";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
 import { Button } from "../ui/Button/Button.tsx";
 import Popup from "reactjs-popup";
 import { ThemeSelect } from "./ThemeSelect/ThemeSelect.tsx";
-import { LineNumbers } from "./LineNumbers/LineNumbers.tsx";
 import { VscSettings } from "react-icons/vsc";
 import { FormField } from "../ui/Form/FormField/FormField.tsx";
 import { useTranslation } from "react-i18next";
 import { FormGroup } from "../ui/Form/FormGroup/FormGroup.tsx";
+import ReactCodeMirror from "@uiw/react-codemirror";
+import {
+  amazeing,
+  amazeingAutocomplete,
+} from "../../codemirror/amazeingExtension.ts";
+import { currentLineHighlighter } from "../../codemirror/currentLineHighlighter.ts";
+import { tooltips } from "@codemirror/view";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -25,24 +29,7 @@ type Props = {
   isRunning?: boolean;
 };
 
-function overrideTheme(theme: PrismTheme) {
-  return {
-    ...theme,
-    plain: {
-      ...theme.plain,
-      fontFamily: "Jetbrains Mono, monospace",
-    },
-  };
-}
-
-export function CodeEditor({
-  code,
-  setCode,
-  currentLine,
-  filename,
-  runSpeed,
-  isRunning,
-}: Props) {
+export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
   const { t } = useTranslation();
   const localStoragePath = filename ? `editor:file:${filename}` : undefined;
   const savedCodeRef = useRef<string | null>(
@@ -52,8 +39,6 @@ export function CodeEditor({
   const [fontSize, setFontSize] = useState(14);
 
   const { editorTheme, setEditorTheme } = useEditorTheme();
-  const theme = overrideTheme(editorTheme);
-  const lineNumbers = code.split("\n").length;
 
   useEffect(() => {
     codeRef.current = code;
@@ -93,17 +78,7 @@ export function CodeEditor({
   }, [localStoragePath]);
 
   return (
-    <div
-      className={clsx(styles.container, "window-border")}
-      style={
-        {
-          "--foreground-color": theme.plain.color,
-          "--background-color": theme.plain.backgroundColor,
-          fontSize: `${fontSize}px`,
-          lineHeight: `1.4em`,
-        } as CSSProperties
-      }
-    >
+    <div className={clsx(styles.container, "window-border")}>
       <CornerGroup>
         <Popup
           trigger={
@@ -136,34 +111,28 @@ export function CodeEditor({
         </Popup>
       </CornerGroup>
 
-      <LineNumbers
-        lineNumbers={lineNumbers}
-        currentLine={currentLine}
-        runSpeed={runSpeed}
-        isRunning={isRunning}
-        fontSize={fontSize}
-      />
-
-      <Editor
-        className={styles.codeEditor}
+      <ReactCodeMirror
         value={code}
-        onValueChange={setCode}
-        highlight={(code) => (
-          <Highlight theme={theme} code={code} language="amazeing">
-            {({ style, tokens, getLineProps, getTokenProps }) => (
-              <pre style={{ ...style, margin: 0 }}>
-                {tokens.map((line, i) => (
-                  <div key={i} {...getLineProps({ line })}>
-                    {line.map((token, key) => (
-                      <span key={key} {...getTokenProps({ token })} />
-                    ))}
-                  </div>
-                ))}
-              </pre>
-            )}
-          </Highlight>
-        )}
-        padding={10}
+        className={styles.codeEditor}
+        height="100%"
+        theme={editorTheme.extension}
+        extensions={[
+          amazeing,
+          amazeingAutocomplete,
+          currentLineHighlighter(() => currentLine),
+          tooltips({
+            parent: document.body,
+          }),
+        ]}
+        onChange={(value) => setCode(value)}
+        basicSetup={{
+          lineNumbers: true,
+          searchKeymap: false,
+        }}
+        style={{
+          fontSize,
+          fontFamily: "JetBrains Mono, monospace",
+        }}
       />
     </div>
   );

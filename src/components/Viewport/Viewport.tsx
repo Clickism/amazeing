@@ -13,7 +13,7 @@ const MAZE: number[][] = [
 
 export function Viewport() {
   const [owlPos, setOwlPos] = useState({ x: 1, y: 1 });
-  const [zoom, setZoom] = useState(1);
+  // const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
@@ -37,8 +37,8 @@ export function Viewport() {
   // Mouse wheel zoom
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    const zoomFactor = 1 - e.deltaY * 0.001;
-    setZoom((prev) => Math.min(3, Math.max(0.5, prev * zoomFactor)));
+    // const zoomFactor = 1 - e.deltaY * 0.001;
+    // setZoom((prev) => Math.min(3, Math.max(0.5, prev * zoomFactor)));
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {

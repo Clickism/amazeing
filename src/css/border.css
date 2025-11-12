@@ -1,13 +1,15 @@
 :root {
-  --clr-surface-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  --surface-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  --surface-shadow-light: 0 0 8px rgba(0, 0, 0, 0.4);
 }
 
 :root[theme="dark"] {
-  --clr-surface-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+  --surface-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+  --surface-shadow-light: 0 0 8px rgba(0, 0, 0, 0.7);
 }
 
 .window-border {
   border-radius: 1rem;
   border: 4px solid var(--clr-surface-a10);
-  box-shadow: var(--clr-surface-shadow);
+  box-shadow: var(--surface-shadow);
 }

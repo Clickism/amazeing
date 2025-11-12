@@ -1,0 +1,67 @@
+.cm-execLine {
+  position: relative;
+  overflow: visible;
+}
+
+.cm-execLine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      90deg,
+      var(--clr-danger-a0) 0%,
+      transparent 60%
+  );
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: spawn-animation .1s;
+  border-radius: 4px;
+}
+
+@keyframes spawn-animation {
+  0% {
+    transform: translateY(-14px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: .5;
+  }
+}
+
+.cm-tooltip-autocomplete {
+  background: var(--clr-surface-a0);
+  border-radius: .5rem;
+  box-shadow: var(--surface-shadow-light);
+  margin-top: .25rem;
+  padding: .25rem !important;
+}
+
+/* Each completion item */
+.cm-completionLabel {
+
+}
+
+.cm-completionIcon {
+  margin-right: .25rem;
+}
+
+/* Selected item (arrow key highlight) */
+.cm-tooltip-autocomplete ul li[aria-selected] {
+  background: var(--clr-primary-a0) !important;
+}
+
+.cm-tooltip-autocomplete ul li {
+  border-radius: .25rem;
+  padding: 2px !important;
+}
+
+.cm-tooltip-autocomplete ul {
+}
+
+.cm-completionInfo {
+  border-radius: .5rem;
+  margin: 0 .5rem;
+  box-shadow: var(--surface-shadow-light);
+}
