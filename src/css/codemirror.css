@@ -44,8 +44,35 @@
 }
 
 .cm-completionIcon {
-  margin-right: .25rem;
+  margin-right: .125rem;
 }
+
+/*.cm-completionIcon-function::before {*/
+/*  content: "f";*/
+/*  color: #6af;*/
+/*}*/
+
+/*.cm-completionIcon {*/
+/*}*/
+
+/*.cm-completionIcon-variable::after {*/
+/*  display: none;*/
+/*}*/
+
+/*.cm-completionIcon-variable::before {*/
+/*  content: "x";*/
+/*  color: #fd971f;*/
+/*}*/
+
+/*.cm-completionIcon-keyword::after {*/
+/*  display: none;*/
+/*}*/
+
+/*.cm-completionIcon-keyword::before {*/
+/*  content: "kw";*/
+/*  font-size: .9em;*/
+/*  color: #a6e22e;*/
+/*}*/
 
 /* Selected item (arrow key highlight) */
 .cm-tooltip-autocomplete ul li[aria-selected] {
