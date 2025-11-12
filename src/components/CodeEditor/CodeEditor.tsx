@@ -10,13 +10,12 @@ import { VscSettings } from "react-icons/vsc";
 import { FormField } from "../ui/Form/FormField/FormField.tsx";
 import { useTranslation } from "react-i18next";
 import { FormGroup } from "../ui/Form/FormGroup/FormGroup.tsx";
-import ReactCodeMirror from "@uiw/react-codemirror";
+import ReactCodeMirror, { tooltips } from "@uiw/react-codemirror";
 import {
   amazeing,
   amazeingAutocomplete,
 } from "../../codemirror/amazeingExtension.ts";
 import { currentLineHighlighter } from "../../codemirror/currentLineHighlighter.ts";
-import { tooltips } from "@codemirror/view";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -29,6 +28,8 @@ type Props = {
   isRunning?: boolean;
 };
 
+const FONT_STORAGE_KEY = "editor:fontSize";
+
 export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
   const { t } = useTranslation();
   const localStoragePath = filename ? `editor:file:${filename}` : undefined;
@@ -36,9 +37,19 @@ export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
     localStoragePath ? localStorage.getItem(localStoragePath) : null,
   );
   const codeRef = useRef(code);
-  const [fontSize, setFontSize] = useState(14);
+  const [fontSize, setFontSize] = useState(() => {
+    const storedSize = localStorage.getItem(FONT_STORAGE_KEY);
+    return storedSize ? Number(storedSize) : 14;
+  });
 
   const { editorTheme, setEditorTheme } = useEditorTheme();
+
+  useEffect(() => {
+    // Save font size to localStorage
+    localStorage.setItem(FONT_STORAGE_KEY, fontSize.toString());
+    // Set tooltip font size
+    document.getElementById("tooltip-root")!.style.fontSize = `${fontSize}px`;
+  }, [fontSize]);
 
   useEffect(() => {
     codeRef.current = code;
@@ -100,7 +111,7 @@ export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
                 type="number"
                 min={8}
                 max={32}
-                defaultValue={14}
+                defaultValue={fontSize}
                 onChange={(e) => {
                   const size = Number(e.target.value);
                   setFontSize(size);
@@ -121,7 +132,8 @@ export function CodeEditor({ code, setCode, currentLine, filename }: Props) {
           amazeingAutocomplete,
           currentLineHighlighter(() => currentLine),
           tooltips({
-            parent: document.body,
+            position: "fixed",
+            parent: document.getElementById("tooltip-root")!,
           }),
         ]}
         onChange={(value) => setCode(value)}
