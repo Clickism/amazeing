@@ -63,6 +63,13 @@ export class Environment {
   getOrNull(name: string): Value | null {
     const value = this.get(name);
     if (value === undefined) {
+      if (this.isDefinedAnywhere(name)) {
+        throw new Error(
+          `Variable "${name}" is defined outside of the current scope. ` +
+          "When calling a subroutine, you can't access variables defined outside of it. " +
+          "To pass data to a subroutine, use arguments, i.E: arg0, arg1, etc."
+        );
+      }
       throw new Error(`Variable "${name}" is not defined.`);
     }
     return value;
@@ -128,6 +135,23 @@ export class Environment {
       return true;
     }
     return this.get(name) !== undefined;
+  }
+
+  /**
+   * Checks if a variable is defined anywhere (current scope or any stack frame).
+   * @param name The name of the variable.
+   */
+  isDefinedAnywhere(name: string): boolean {
+    if (this.isDefined(name)) return true;
+    if (this.stack.length === 0) return false;
+    let stack: StackFrame;
+    for (let i = 0; i < this.stack.length; i++) {
+      stack = this.stack[i];
+      if (stack.variables.has(name)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
