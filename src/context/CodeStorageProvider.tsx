@@ -10,21 +10,18 @@ export function CodeStorageProvider({
   fileNamespace,
   children,
 }: ProviderProps) {
-  const [files, setFiles] = useState<Record<string, CodeFile>>({});
-  const fileNames = Object.keys(files);
   const storageKey = `editor:${fileNamespace}:files`;
-
-  useEffect(() => {
-    // Load files
+  const [files, setFiles] = useState<Record<string, CodeFile>>(() => {
     const raw = localStorage.getItem(storageKey);
-    if (!raw) return;
+    if (!raw) return {};
     try {
-      setFiles(JSON.parse(raw));
+      return JSON.parse(raw);
     } catch {
-      console.warn(`Couldn't load file data for ${fileNamespace}`);
-      setFiles({});
+      console.warn(`Couldn't parse file data for ${fileNamespace}`);
+      return {};
     }
-  }, [fileNamespace, storageKey]);
+  });
+  const fileNames = Object.keys(files);
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(files));
