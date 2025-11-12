@@ -162,7 +162,7 @@ export class Environment {
   getLabelOrThrow(name: string): LabelDefinition {
     const label = this.labels.get(name);
     if (!label) {
-      throw new Error(`Label "${name}" not found`);
+      throw new Error(`Label "${name}" not found.`);
     }
     return label;
   }
