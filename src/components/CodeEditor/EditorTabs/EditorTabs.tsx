@@ -93,7 +93,7 @@ export function EditorTabs({ activeFile, setActiveFile }: EditorTabsProps) {
         </div>
       ))}
       <Button
-        variant="disabled"
+        variant="outlined"
         shape="icon"
         onClick={() => {
           const name = `Untitled #${fileNames.length + 1}`;

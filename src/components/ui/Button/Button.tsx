@@ -9,16 +9,12 @@ export type ButtonVariant =
   | "disabled"
   | "success"
   | "danger"
-  | "background";
+  | "background"
+  | "outlined";
 
-export type ButtonShape =
-  | "default"
-  | "icon"
+export type ButtonShape = "default" | "icon";
 
-export type ButtonSize =
-  | "small"
-  | "medium"
-  | "large";
+export type ButtonSize = "small" | "medium" | "large";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   linkTo?: string;

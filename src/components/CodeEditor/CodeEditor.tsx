@@ -108,10 +108,7 @@ export function CodeEditor({
     >
       <CornerGroup
         position="top-left"
-        style={{
-          width: "100%",
-          gap: "0.5rem",
-        }}
+        className={styles.cornerGroup}
       >
         <div className={styles.editorTabs}>
           {tabbed && (

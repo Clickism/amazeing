@@ -31,3 +31,22 @@
   scrollbar-width: thin;
 }
 
+.cornerGroup {
+  position: relative;
+  width: 100%;
+  gap: .5rem;
+  z-index: 5;
+}
+
+.cornerGroup::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 6rem;
+  backdrop-filter: blur(20px);
+  mask: linear-gradient(to bottom, black 0%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
