@@ -179,6 +179,7 @@ export function CodeEditor({
                 }
               : {},
           }),
+          EditorView.lineWrapping
         ]}
         onChange={(value) => setCode(value)}
         basicSetup={{
