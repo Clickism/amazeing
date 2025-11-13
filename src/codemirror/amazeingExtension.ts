@@ -43,7 +43,7 @@ export const amazeing = StreamLanguage.define({
     if (stream.match(/#.*/)) return "comment";
     if (state.afterVar && stream.match(/\w+/)) {
       state.afterVar = false; // reset
-      return "variableName";
+      return "variableName.definition";
     }
     // TODO: Keywords in identifiers get highlighted
     if (stream.match(keywordPattern)) {
@@ -52,7 +52,7 @@ export const amazeing = StreamLanguage.define({
     }
     if (stream.match(/\barg\d+/)) return "string";
     if (stream.match(/\b\d+\b/)) return "number";
-    if (stream.match(/\b\w+(?=:)/)) return "def";
+    if (stream.match(/\b\w+:/)) return "variableName.function";
     if (stream.match(/[=+\-*/:]/)) return "operator";
     stream.next();
     return null;
