@@ -105,7 +105,7 @@ export function RunControls({
             onChange={(e) => setRunSpeed(Number(e.target.value))}
           />
         </FormField>
-        {runSpeed}
+        {runSpeed} instr/s
       </Popup>
 
       {/*<Button>*/}

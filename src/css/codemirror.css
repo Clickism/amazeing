@@ -15,7 +15,7 @@
   opacity: 0.6;
   mix-blend-mode: overlay;
   pointer-events: none;
-  animation: spawn-animation .1s;
+  animation: spawn-animation .1s ease-out;
   border-radius: 4px;
 }
 

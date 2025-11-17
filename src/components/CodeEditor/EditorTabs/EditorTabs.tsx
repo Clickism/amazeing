@@ -75,6 +75,9 @@ export function EditorTabs({ activeFile, setActiveFile }: EditorTabsProps) {
                 shape="icon"
                 size="small"
                 onClick={() => {
+                  if (!confirm(`Are you sure you want to delete the file "${activeFile}"?`)) {
+                    return;
+                  }
                   if (fileNames.length === 1) {
                     setActiveFile(null);
                   } else {
