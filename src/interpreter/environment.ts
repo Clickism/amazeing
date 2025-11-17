@@ -64,6 +64,11 @@ export class Environment {
     const value = this.get(name);
     if (value === undefined) {
       if (this.isDefinedAnywhere(name)) {
+        if (isArg(name)) {
+          throw new Error(
+            `Argument "${name}" was not set before calling this function.`
+          )
+        }
         throw new Error(
           `Variable "${name}" is defined outside of the current scope. ` +
           "When calling a subroutine, you can't access variables defined outside of it. " +

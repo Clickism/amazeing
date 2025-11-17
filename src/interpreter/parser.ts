@@ -110,7 +110,7 @@ function parseInstruction(type: string, args: string[]): Instruction {
         dest: parseIdentifier(args[0]),
         src: parseIdentifier(args[1]),
       };
-    // Three var instructions
+    // Three var (intermediate) instructions
     case "add":
     case "sub":
     case "mul":
@@ -129,7 +129,7 @@ function parseInstruction(type: string, args: string[]): Instruction {
         type,
         dest: parseIdentifier(args[0]),
         src1: parseIdentifier(args[1]),
-        src2: parseIdentifier(args[2]),
+        src2: parseIdentifierOrValue(args[2]),
       };
     // Control flow instructions
     case "jump":
@@ -170,13 +170,22 @@ function parseDirection(arg: string): "left" | "right" {
   throw new Error(`Invalid direction: "${arg}"`);
 }
 
+const identifierRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
+
 function parseIdentifier(arg: string): string {
-  if (/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(arg)) {
+  if (identifierRegex.test(arg)) {
     return arg;
   }
   throw new Error(
     `Invalid identifier: "${arg}", must start with a letter and only contain letters, numbers, and underscores`,
   );
+}
+
+function parseIdentifierOrValue(arg: string): string | Value {
+  if (identifierRegex.test(arg)) {
+    return arg;
+  }
+  return parseValue(arg);
 }
 
 function parseValue(arg: string): Value {

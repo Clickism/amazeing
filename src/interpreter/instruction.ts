@@ -16,6 +16,12 @@ export type ThreeVarInstruction<T> = {
   src1: string;
   src2: string;
 };
+export type ThreeVarIntermediateInstruction<T> = {
+  type: T;
+  dest: string;
+  src1: string;
+  src2: string | number;
+};
 
 export type Instruction =
   | NoVarInstruction<"move">
@@ -25,32 +31,31 @@ export type Instruction =
   | { type: "load"; dest: string; value: Value }
   | TwoVarInstruction<"copy">
   // Arithmetic instructions
-  | ThreeVarInstruction<"add">
-  | ThreeVarInstruction<"sub">
-  | ThreeVarInstruction<"mul">
-  | ThreeVarInstruction<"div">
+  | ThreeVarIntermediateInstruction<"add">
+  | ThreeVarIntermediateInstruction<"sub">
+  | ThreeVarIntermediateInstruction<"mul">
+  | ThreeVarIntermediateInstruction<"div">
   // Logical instructions
-  | ThreeVarInstruction<"and">
-  | ThreeVarInstruction<"or">
-  | ThreeVarInstruction<"xor">
+  | ThreeVarIntermediateInstruction<"and">
+  | ThreeVarIntermediateInstruction<"or">
+  | ThreeVarIntermediateInstruction<"xor">
   | TwoVarInstruction<"not">
   // Comparison instructions
-  | ThreeVarInstruction<"lt">
-  | ThreeVarInstruction<"lte">
-  | ThreeVarInstruction<"gt">
-  | ThreeVarInstruction<"gte">
-  | ThreeVarInstruction<"eq">
-  | ThreeVarInstruction<"neq">
+  | ThreeVarIntermediateInstruction<"lt">
+  | ThreeVarIntermediateInstruction<"lte">
+  | ThreeVarIntermediateInstruction<"gt">
+  | ThreeVarIntermediateInstruction<"gte">
+  | ThreeVarIntermediateInstruction<"eq">
+  | ThreeVarIntermediateInstruction<"neq">
   // Control flow instructions
   | { type: "jump"; target: string }
   | { type: "call"; target: string }
   | NoVarInstruction<"ret">
-  | NoVarInstruction<"exit"> // TODO: Implement
+  | NoVarInstruction<"exit">
   | { type: "branch"; cond: string; target: string }
   | { type: "branchz"; cond: string; target: string }
   // Other instructions
   | OneVarInstruction<"print">;
-
 
 export type InstructionData = {
   instruction: Instruction;
