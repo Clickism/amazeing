@@ -47,6 +47,10 @@ export type Instruction =
   | ThreeVarIntermediateInstruction<"gte">
   | ThreeVarIntermediateInstruction<"eq">
   | ThreeVarIntermediateInstruction<"neq">
+  // Shifting instructions
+  | ThreeVarIntermediateInstruction<"sll">
+  | ThreeVarIntermediateInstruction<"srl">
+  | ThreeVarIntermediateInstruction<"sra">
   // Control flow instructions
   | { type: "jump"; target: string }
   | { type: "call"; target: string }
@@ -55,7 +59,8 @@ export type Instruction =
   | { type: "branch"; cond: string; target: string }
   | { type: "branchz"; cond: string; target: string }
   // Other instructions
-  | OneVarInstruction<"print">;
+  | OneVarInstruction<"print">
+  | OneVarInstruction<"debug">;
 
 export type InstructionData = {
   instruction: Instruction;
@@ -63,3 +68,36 @@ export type InstructionData = {
 };
 
 export type LabelDefinition = { label: string; pc: number };
+
+export const ALL_INSTRUCTIONS = [
+  "move",
+  "turn",
+  "var",
+  "load",
+  "copy",
+  "add",
+  "sub",
+  "mul",
+  "div",
+  "and",
+  "or",
+  "xor",
+  "not",
+  "lt",
+  "lte",
+  "gt",
+  "gte",
+  "eq",
+  "neq",
+  "sll",
+  "srl",
+  "sra",
+  "jump",
+  "call",
+  "ret",
+  "exit",
+  "branch",
+  "branchz",
+  "print",
+  "debug",
+]

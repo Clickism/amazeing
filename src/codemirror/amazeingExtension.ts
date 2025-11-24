@@ -1,34 +1,8 @@
 import { StreamLanguage } from "@codemirror/language";
 import { autocompletion, CompletionContext } from "@codemirror/autocomplete";
+import { ALL_INSTRUCTIONS } from "../interpreter/instruction.ts";
 
-const amazeingKeywords = [
-  "move",
-  "turn",
-  "var",
-  "load",
-  "copy",
-  "add",
-  "sub",
-  "mul",
-  "div",
-  "and",
-  "or",
-  "xor",
-  "not",
-  "lt",
-  "lte",
-  "gt",
-  "gte",
-  "eq",
-  "neq",
-  "jump",
-  "call",
-  "ret",
-  "exit",
-  "branch",
-  "branchz",
-  "print",
-];
+const amazeingKeywords = ALL_INSTRUCTIONS;
 
 const keywordPattern = new RegExp(`\\b(${amazeingKeywords.join("|")})\\b`);
 
