@@ -99,6 +99,7 @@ function parseInstruction(type: string, args: string[]): Instruction {
       return { type };
     // One var instructions
     case "print":
+    case "debug":
       assertArgsLength(type, args, 1);
       return { type, src: parseIdentifier(args[0]) };
     // Two var instructions
@@ -124,6 +125,9 @@ function parseInstruction(type: string, args: string[]): Instruction {
     case "gte":
     case "eq":
     case "neq":
+    case "sll":
+    case "srl":
+    case "sra":
       assertArgsLength(type, args, 3);
       return {
         type,
