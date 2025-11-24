@@ -37,4 +37,5 @@
 
 .message-info {
   color: var(--clr-info-a10);
+  font-style: italic;
 }
