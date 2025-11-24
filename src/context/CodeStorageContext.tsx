@@ -3,7 +3,7 @@ import { createContext } from "react";
 export type CodeFile = {
   name: string;
   content: string;
-}
+};
 
 export const CodeStorageContext = createContext<
   | {

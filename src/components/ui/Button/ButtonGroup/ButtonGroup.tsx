@@ -29,7 +29,7 @@ export function ButtonGroup({
         styles.buttonGroup,
         vertical && styles.vertical,
         stretch && styles.stretch,
-        center && styles.center
+        center && styles.center,
       )}
       {...props}
     >

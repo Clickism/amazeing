@@ -8,9 +8,8 @@ export type EditorSettings = {
 
   fontSize: number;
   setFontSize: (size: number) => void;
-}
+};
 
-export const EditorSettingsContext = createContext<
-  | EditorSettings
-  | undefined
->(undefined);
+export const EditorSettingsContext = createContext<EditorSettings | undefined>(
+  undefined,
+);

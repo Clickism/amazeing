@@ -20,10 +20,10 @@ function isArg(name: string) {
 export class Environment {
   labels: Map<string, LabelDefinition>;
   console: InterpreterConsole;
+  owl?: Owl;
   private global: VariableMap;
   private stack: StackFrame[];
   private args: VariableMap;
-  owl?: Owl;
 
   constructor(
     labels: Map<string, LabelDefinition>,
@@ -66,13 +66,13 @@ export class Environment {
       if (this.isDefinedAnywhere(name)) {
         if (isArg(name)) {
           throw new Error(
-            `Argument "${name}" was not set before calling this function.`
-          )
+            `Argument "${name}" was not set before calling this function.`,
+          );
         }
         throw new Error(
           `Variable "${name}" is defined outside of the current scope. ` +
-          "When calling a subroutine, you can't access variables defined outside of it. " +
-          "To pass data to a subroutine, use arguments, i.E: arg0, arg1, etc."
+            "When calling a subroutine, you can't access variables defined outside of it. " +
+            "To pass data to a subroutine, use arguments, i.E: arg0, arg1, etc.",
         );
       }
       throw new Error(`Variable "${name}" is not defined.`);

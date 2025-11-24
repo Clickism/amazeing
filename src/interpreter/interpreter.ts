@@ -1,8 +1,4 @@
-import type {
-  Instruction,
-  InstructionData,
-  ThreeVarIntermediateInstruction,
-} from "./instruction.ts";
+import type { Instruction, InstructionData, ThreeVarIntermediateInstruction } from "./instruction.ts";
 import { parse } from "./parser.ts";
 import { ErrorWithTip, LocatableError } from "./error.ts";
 import { Environment } from "./environment.ts";
@@ -114,6 +110,33 @@ export class InterpreterImpl implements Interpreter {
     }
   }
 
+  stepMultiple(steps: number) {
+    for (let i = 0; i < steps; i++) {
+      if (!this.canStep()) break;
+      this.step();
+    }
+  }
+
+  run() {
+    while (this.pc < this.instructions.length) {
+      this.step();
+    }
+  }
+
+  canStep(): boolean {
+    return this.pc < this.instructions.length && !this.hasError;
+  }
+
+  getCurrentLine(): number | null {
+    if (this.pc === 0) {
+      return null;
+    }
+    if (this.pc >= this.instructions.length) {
+      return -1;
+    }
+    return this.instructions[this.pc].line;
+  }
+
   private executeStep() {
     if (this.steps >= MAX_STEPS) {
       throw new ErrorWithTip(
@@ -146,23 +169,6 @@ export class InterpreterImpl implements Interpreter {
     this.steps++;
   }
 
-  stepMultiple(steps: number) {
-    for (let i = 0; i < steps; i++) {
-      if (!this.canStep()) break;
-      this.step();
-    }
-  }
-
-  run() {
-    while (this.pc < this.instructions.length) {
-      this.step();
-    }
-  }
-
-  canStep(): boolean {
-    return this.pc < this.instructions.length && !this.hasError;
-  }
-
   /**
    * Executes a single instruction.
    * @param instruction The instruction to execute.
@@ -185,16 +191,6 @@ export class InterpreterImpl implements Interpreter {
         throw new LocatableError(line, err.message, tip);
       }
     }
-  }
-
-  getCurrentLine(): number | null {
-    if (this.pc === 0) {
-      return null;
-    }
-    if (this.pc >= this.instructions.length) {
-      return -1;
-    }
-    return this.instructions[this.pc].line;
   }
 }
 
@@ -356,7 +352,7 @@ const executors = {
     if (!frame || frame.returnAddress === undefined) {
       throw new ErrorWithTip(
         "No stack frame to return to",
-        "Make sure that you are not returning from the main program."
+        "Make sure that you are not returning from the main program.",
       );
     }
     return { type: "jump", target: frame.returnAddress };

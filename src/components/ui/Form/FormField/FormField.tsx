@@ -28,9 +28,7 @@ export function FormField({ label, htmlFor, description, children }: Props) {
           <div className={styles.descriptionPopup}>{description}</div>
         </Popup>
       )}
-      <div className={styles.formInput}>
-        {children}
-      </div>
+      <div className={styles.formInput}>{children}</div>
     </div>
   );
 }

@@ -106,10 +106,7 @@ export function CodeEditor({
         editorTheme.isLight ? "light-theme" : "dark-theme",
       )}
     >
-      <CornerGroup
-        position="top-left"
-        className={styles.cornerGroup}
-      >
+      <CornerGroup position="top-left" className={styles.cornerGroup}>
         <div className={styles.editorTabs}>
           {tabbed && (
             <EditorTabs
@@ -177,7 +174,7 @@ export function CodeEditor({
                 }
               : {},
           }),
-          EditorView.lineWrapping
+          EditorView.lineWrapping,
         ]}
         onChange={(value) => setCode(value)}
         basicSetup={{

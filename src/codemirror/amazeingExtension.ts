@@ -30,9 +30,7 @@ const amazeingKeywords = [
   "print",
 ];
 
-const keywordPattern = new RegExp(
-  `\\b(${amazeingKeywords.join("|")})\\b`,
-);
+const keywordPattern = new RegExp(`\\b(${amazeingKeywords.join("|")})\\b`);
 
 export const amazeing = StreamLanguage.define({
   startState() {
@@ -95,12 +93,12 @@ function amazeingCompletions(context: CompletionContext) {
   return {
     from: word.from,
     options: [
-      ...amazeingKeywords.map(k => ({
+      ...amazeingKeywords.map((k) => ({
         label: k,
         type: "keyword",
         info: `Amazeing instruction '${k}'`,
       })),
-      ...variables.map(v => ({
+      ...variables.map((v) => ({
         label: v,
         type: "variable",
         info: `Previously declared variable '${v}'`,

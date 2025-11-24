@@ -10,7 +10,7 @@ function NavbarLink({
   to,
   regex,
   children,
-  dontMatch
+  dontMatch,
 }: {
   to: string;
   regex?: RegExp;
@@ -24,7 +24,10 @@ function NavbarLink({
   return (
     <Link
       to={to}
-      className={clsx(styles.link, isCurrent && !dontMatch && styles.currentLink)}
+      className={clsx(
+        styles.link,
+        isCurrent && !dontMatch && styles.currentLink,
+      )}
     >
       {children}
     </Link>
@@ -38,9 +41,7 @@ export function Navbar() {
       <div className={styles.container}>
         <div className={styles.left}>
           <NavbarLink to="/" dontMatch>
-            <div style={{ fontWeight: 700 }}>
-              Prog2 Precourse
-            </div>
+            <div style={{ fontWeight: 700 }}>Prog2 Precourse</div>
           </NavbarLink>
           <NavbarLink to="/">Home</NavbarLink>
           <NavbarLink to="/sandbox">{t("navbar.sandbox")}</NavbarLink>

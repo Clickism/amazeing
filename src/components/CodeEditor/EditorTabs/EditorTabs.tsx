@@ -103,11 +103,7 @@ export function EditorTabs({ activeFile, setActiveFile }: EditorTabsProps) {
           )}
         </div>
       ))}
-      <Button
-        variant="outlined"
-        shape="icon"
-        onClick={createFile}
-      >
+      <Button variant="outlined" shape="icon" onClick={createFile}>
         <FaPlus />
       </Button>
     </div>

@@ -24,7 +24,7 @@ export const MAX_RUN_SPEED = 100;
 export const DEFAULT_RUN_SPEED = 5;
 
 type Props = {
-  tabbed?: boolean
+  tabbed?: boolean;
   startingFileName?: string;
 };
 
