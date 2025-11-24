@@ -15,7 +15,6 @@ type Props = {
 
 export function StepControls({
   interpreter,
-  appendOutput,
   setCurrentLine,
   isRunning,
 }: Props) {
@@ -23,15 +22,10 @@ export function StepControls({
   const { t } = useTranslation();
 
   function handleSteps(steps: number) {
-    try {
-      if (!interpreter.current) return;
-      interpreter.current.stepMultiple(steps);
-      setCurrentLine(interpreter.current.getCurrentLine());
-    } catch (e) {
-      if (e instanceof Error) {
-        appendOutput({ type: "error", text: e.message });
-      }
-    }
+    interpreter.current?.executeAndPrintError((interpreter) => {
+      interpreter.stepMultiple(steps);
+      setCurrentLine(interpreter.getCurrentLine());
+    });
   }
   const canStep = interpreter.current?.canStep() ?? false;
   return (

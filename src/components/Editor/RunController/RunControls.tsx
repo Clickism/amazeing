@@ -27,7 +27,6 @@ type Props = {
 
 export function RunControls({
   interpreter,
-  appendOutput,
   setCurrentLine,
   runSpeed,
   setRunSpeed,
@@ -57,14 +56,10 @@ export function RunControls({
   function startRunning() {
     const interval = setInterval(() => {
       if (interpreter.current?.canStep()) {
-        try {
-          interpreter.current?.step();
-          setCurrentLine(interpreter.current.getCurrentLine());
-        } catch (e) {
-          if (e instanceof Error) {
-            appendOutput({ type: "error", text: e.message });
-          }
-        }
+        interpreter.current?.executeAndPrintError((interpreter) => {
+          interpreter.step();
+          setCurrentLine(interpreter.getCurrentLine());
+        });
       } else {
         stopRunning();
       }

@@ -14,6 +14,27 @@ export type EditorTabsProps = {
 export function EditorTabs({ activeFile, setActiveFile }: EditorTabsProps) {
   const { fileNames, saveFile, deleteFile, renameFile } = useCodeStorage();
   const [renamingFile, setRenamingFile] = useState<string | null>(null);
+
+  function createFile() {
+    const name = `Untitled #${fileNames.length + 1}`;
+    saveFile({ name, content: "# Write your code here" });
+    setActiveFile(name);
+  }
+
+  function handleDeleteFile(name: string) {
+    if (!confirm(`Are you sure you want to delete the file "${activeFile}"?`)) {
+      return;
+    }
+    if (fileNames.length === 1) {
+      setActiveFile(null);
+    } else {
+      const idx = fileNames.indexOf(name);
+      const newActive = idx > 0 ? fileNames[idx - 1] : fileNames[idx + 1];
+      setActiveFile(newActive);
+    }
+    deleteFile(name);
+  }
+
   return (
     <div className={styles.container}>
       {fileNames.map((name) => (
@@ -26,7 +47,7 @@ export function EditorTabs({ activeFile, setActiveFile }: EditorTabsProps) {
             onClick={() => setActiveFile(name)}
             className={clsx(
               renamingFile === name && styles.renamingTab,
-              styles.tab
+              styles.tab,
             )}
           >
             {renamingFile === name ? (
@@ -74,20 +95,7 @@ export function EditorTabs({ activeFile, setActiveFile }: EditorTabsProps) {
                 variant="danger"
                 shape="icon"
                 size="small"
-                onClick={() => {
-                  if (!confirm(`Are you sure you want to delete the file "${activeFile}"?`)) {
-                    return;
-                  }
-                  if (fileNames.length === 1) {
-                    setActiveFile(null);
-                  } else {
-                    const idx = fileNames.indexOf(name);
-                    const newActive =
-                      idx > 0 ? fileNames[idx - 1] : fileNames[idx + 1];
-                    setActiveFile(newActive);
-                  }
-                  deleteFile(name);
-                }}
+                onClick={() => handleDeleteFile(name)}
               >
                 <BiTrash />
               </Button>
@@ -98,11 +106,7 @@ export function EditorTabs({ activeFile, setActiveFile }: EditorTabsProps) {
       <Button
         variant="outlined"
         shape="icon"
-        onClick={() => {
-          const name = `Untitled #${fileNames.length + 1}`;
-          saveFile({ name, content: "# Write your code here" });
-          setActiveFile(name);
-        }}
+        onClick={createFile}
       >
         <FaPlus />
       </Button>

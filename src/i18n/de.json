@@ -8,7 +8,7 @@
   "viewport.title": "Viewport",
   "editor.run": "Ausführen",
   "editor.stop": "Stoppen",
-  "editor.step": "Einzelschritt",
+  "editor.step": "Schritt",
   "editor.reset": "Zurücksetzen",
   "editor.runSpeed": "Ausführungsgeschwindigkeit"
 }

@@ -4,9 +4,9 @@ import type {
   ThreeVarIntermediateInstruction,
 } from "./instruction.ts";
 import { parse } from "./parser.ts";
-import { LocatableError } from "./error.ts";
+import { ErrorWithTip, LocatableError } from "./error.ts";
 import { Environment } from "./environment.ts";
-import type { InterpreterConsole } from "./console.ts";
+import { type InterpreterConsole } from "./console.ts";
 
 const MAX_STEPS = 10000;
 
@@ -50,6 +50,14 @@ export interface Interpreter {
    * <code>null</code> if the program has not started yet.
    */
   getCurrentLine(): number | null;
+
+  /**
+   * Executes and catches errors thrown by the given function
+   * and prints them to the console.
+   *
+   * @param fn The function to execute.
+   */
+  executeAndPrintError(fn: (interpreter: Interpreter) => void): void;
 }
 
 /**
@@ -84,6 +92,19 @@ export class InterpreterImpl implements Interpreter {
     );
   }
 
+  executeAndPrintError(fn: (interpreter: Interpreter) => void) {
+    try {
+      fn(this);
+    } catch (e) {
+      if (e instanceof Error) {
+        this.env.console.log({ type: "error", text: e.message });
+        if (e instanceof ErrorWithTip && e.tip !== null) {
+          this.env.console.log({ type: "info", text: "Tip: " + e.tip });
+        }
+      }
+    }
+  }
+
   step() {
     try {
       this.executeStep();
@@ -95,7 +116,10 @@ export class InterpreterImpl implements Interpreter {
 
   private executeStep() {
     if (this.steps >= MAX_STEPS) {
-      throw new Error("Maximum number of steps exceeded: " + MAX_STEPS);
+      throw new ErrorWithTip(
+        "Maximum number of steps exceeded: " + MAX_STEPS,
+        "There might be an infinite loop in your program.",
+      );
     }
     if (this.pc >= this.instructions.length) {
       throw new Error("No more instructions to execute.");
@@ -157,7 +181,8 @@ export class InterpreterImpl implements Interpreter {
       return executor(this.env, instruction as never);
     } catch (err) {
       if (err instanceof Error) {
-        throw new LocatableError(line, err.message);
+        const tip = err instanceof ErrorWithTip ? err.tip : null;
+        throw new LocatableError(line, err.message, tip);
       }
     }
   }
@@ -235,6 +260,11 @@ export class LazyInterpreter implements Interpreter {
 
   getCurrentLine(): number | null {
     return this.interpreter?.getCurrentLine() ?? null;
+  }
+
+  executeAndPrintError(fn: (interpreter: Interpreter) => void): void {
+    this.init();
+    this.interpreter?.executeAndPrintError(fn);
   }
 }
 
@@ -324,7 +354,10 @@ const executors = {
   ret: (env) => {
     const frame = env.popStackFrame();
     if (!frame || frame.returnAddress === undefined) {
-      throw new Error("No stack frame to return to");
+      throw new ErrorWithTip(
+        "No stack frame to return to",
+        "Make sure that you are not returning from the main program."
+      );
     }
     return { type: "jump", target: frame.returnAddress };
   },

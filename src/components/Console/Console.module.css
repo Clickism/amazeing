@@ -34,3 +34,7 @@
 .message-log {
   color: var(--text-color);
 }
+
+.message-info {
+  color: var(--clr-info-a10);
+}
