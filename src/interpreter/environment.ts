@@ -1,17 +1,31 @@
 import type { LabelDefinition } from "./instruction.ts";
 import { InterpreterConsole } from "./console.ts";
 import type { Owl } from "./owl.ts";
-import type { Value } from "./types.ts";
+import {
+  type Address,
+  type Array,
+  type ArrayAccess,
+  type Integer,
+  isArrayAccess,
+  type Value,
+  type Variable,
+} from "./types.ts";
+import { ErrorWithTip } from "./error.ts";
 
-export type VariableMap = Map<string, Value | null>;
+export type VariableValue = Value | Array | null;
+export type VariableValueNotNull = Value | Array;
+export type VariableMap = Map<string, VariableValue>;
 
 export type StackFrame = {
   returnAddress: number | undefined;
   variables: VariableMap;
 };
 
-function isArg(name: string) {
-  return /^arg\d+$/.test(name);
+function isArg(address: Address) {
+  if (isArrayAccess(address)) {
+    return false;
+  }
+  return /^arg\d+$/.test(address);
 }
 
 /**
@@ -40,87 +54,169 @@ export class Environment {
   }
 
   /**
-   * Gets the value of a variable.
+   * Gets the value at an address.
    */
-  get(name: string): Value | null | undefined {
+  get(address: Address): VariableValue | undefined {
+    if (isArrayAccess(address)) {
+      return this.getArrayValue(address);
+    }
     if (this.stack.length > 0) {
       const { variables } = this.stack[this.stack.length - 1];
-      if (variables.has(name)) {
-        return variables.get(name);
+      if (variables.has(address)) {
+        return variables.get(address);
       }
     }
-    if (this.args.has(name)) {
-      return this.args.get(name);
+    if (this.args.has(address)) {
+      return this.args.get(address);
     }
-    return this.global.get(name);
+    return this.global.get(address);
+  }
+
+  getArrayValue(address: ArrayAccess): Value | null | undefined {
+    const array = this.getArray(address.array);
+    // Get index
+    const index = this.getValidArrayIndex(address);
+    const value = array[index];
+    if (value === null || value === undefined) {
+      throw new ErrorWithTip(
+        `Array element at index ${index} of array "${address.array}" is not set.`,
+        `Make sure you initialize all elements of the array in order before accessing them.`,
+      );
+    }
+    return value;
+  }
+
+  getValidArrayIndex(access: ArrayAccess, resize: boolean = false): number {
+    let index: number;
+    if (typeof access.index === "number") {
+      index = access.index;
+    } else {
+      const val = this.getOrThrow(access.index);
+      if (typeof val !== "number") {
+        throw new Error(
+          `Array index "${access.index}" does not store a number.`,
+        );
+      }
+      index = val;
+    }
+    const array = this.getArray(access.array);
+    if (resize && index >= array.length) {
+      this.resizeArray(array, index + 1);
+    }
+    if (index < 0 || index >= array.length) {
+      throw new Error(
+        `Array index out of bounds: ${index} for array "${access.array}" of length ${array.length}.`,
+      );
+    }
+    return index;
+  }
+
+  resizeArray(array: Array, newSize: number) {
+    while (array.length < newSize) {
+      array.push(null);
+    }
+  }
+
+  getArray(name: Variable): Array {
+    const array = this.get(name);
+    if (array === null || array === undefined) {
+      throw new Error(`Array "${name}" is not defined.`);
+    }
+    if (!Array.isArray(array)) {
+      throw new Error(`Variable "${name}" is not an array.`);
+    }
+    return array;
   }
 
   /**
    * Gets the value of a variable or null if it's not defined.
-   * @param name The name of the variable.
+   * @param address The name of the variable.
    * @throws {Error} if the variable is not defined.
    */
-  getOrNull(name: string): Value | null {
-    const value = this.get(name);
+  getOrNull(address: Address): VariableValue {
+    const value = this.get(address);
     if (value === undefined) {
-      if (this.isDefinedAnywhere(name)) {
-        if (isArg(name)) {
+      if (this.isDefinedAnywhere(address)) {
+        if (isArg(address)) {
           throw new Error(
-            `Argument "${name}" was not set before calling this function.`,
+            `Argument "${address}" was not set before calling this function.`,
           );
         }
         throw new Error(
-          `Variable "${name}" is defined outside of the current scope. ` +
+          `Variable "${address}" is defined outside of the current scope. ` +
             "When calling a subroutine, you can't access variables defined outside of it. " +
             "To pass data to a subroutine, use arguments, i.E: arg0, arg1, etc.",
         );
       }
-      throw new Error(`Variable "${name}" is not defined.`);
+      throw new Error(`Variable "${address}" is not defined.`);
     }
     return value;
   }
 
   /**
    * Gets the value of a variable or throws an error if it's not defined or not set.
-   * @param name The name of the variable.
+   * @param address The name of the variable.
    * @throws {Error} if the variable is not defined or not set.
    */
-  getOrThrow(name: string): Value {
-    const value = this.getOrNull(name);
+  getOrThrow(address: Address): VariableValueNotNull {
+    const value = this.getOrNull(address);
     if (value === null) {
-      throw new Error(`Variable "${name}" is not set.`);
+      throw new Error(`Variable "${address}" is not set.`);
+    }
+    return value;
+  }
+
+  getIntegerOrThrow(address: Address): Integer {
+    const value = this.getOrThrow(address);
+    if (typeof value !== "number") {
+      throw new Error(`Variable "${address}" does not contain an integer.`);
     }
     return value;
   }
 
   /**
    * Defines a new variable in the current scope.
-   * @param name The name of the variable.
+   * @param identifier The name of the variable.
+   * @param isArray Whether the variable is an array.
    * @throws {Error} if the variable is already defined in the current scope.
    */
-  define(name: string) {
-    this.set(name, null);
+  define(identifier: Variable, isArray: boolean = false) {
+    if (this.isDefined(identifier)) {
+      throw new Error(`Variable "${identifier}" is already defined.`);
+    }
+    if (isArray) {
+      this.set(identifier, []);
+      return;
+    }
+    this.set(identifier, null);
   }
 
   /**
    * Sets the value of a variable in the current scope or throws if it's not defined.
-   * @param name The name of the variable.
+   * @param address The name of the variable.
    * @param value The value to set.
    * @throws {Error} if the variable is not defined in the current scope.
    */
-  setOrThrow(name: string, value: Value) {
-    if (!this.isDefined(name)) {
-      throw new Error(`Variable "${name}" is not defined.`);
+  setOrThrow(address: Address, value: VariableValue) {
+    if (isArrayAccess(address)) {
+      if (!this.isDefined(address.array)) {
+        throw new Error(`Array "${address.array}" is not defined.`);
+      }
+    } else {
+      if (!this.isDefined(address)) {
+        throw new Error(`Variable "${address}" is not defined.`);
+      }
     }
-    this.set(name, value);
+    this.set(address, value);
   }
 
   /**
    * Sets the value of a variable in the current scope.
    */
-  set(name: string, value: Value | null) {
-    if (isArg(name)) {
-      this.args.set(name, value);
+  set(address: Address, value: VariableValue) {
+    if (isArg(address)) {
+      // Not an array access, so safe to cast
+      this.args.set(address as Variable, value);
       return;
     }
     if (this.stack.length === 0) {
@@ -128,31 +224,67 @@ export class Environment {
     }
     // Set in the top stack frame
     const { variables } = this.stack[this.stack.length - 1];
-    variables.set(name, value);
+    if (isArrayAccess(address)) {
+      this.setArrayValue(address, value as Value);
+      return;
+    }
+    variables.set(address, value);
+  }
+
+  setArrayValue(address: ArrayAccess, value: Value) {
+    const arrayName = address.array;
+    const array = this.getArray(arrayName);
+    const index = this.getValidArrayIndex(address, true);
+    // Check type
+    if (array.length > 0) {
+      const elem = array[0];
+      if (elem !== null && elem !== undefined && typeof elem !== typeof value) {
+        // TODO: Better message
+        throw new Error(
+          `Cannot add value of type "${typeof value}" to array "${arrayName}" of type "${typeof array[0]}"`,
+        );
+      }
+    }
+    array[index] = value;
   }
 
   /**
    * Checks if a variable is defined in the current scope.
-   * @param name The name of the variable.
+   * @param address The name of the variable.
    */
-  isDefined(name: string): boolean {
-    if (isArg(name)) {
+  isDefined(address: Address): boolean {
+    if (isArrayAccess(address)) {
+      return this.isDefined(address.array);
+    }
+    if (isArg(address)) {
       return true;
     }
-    return this.get(name) !== undefined;
+    return this.get(address) !== undefined;
+  }
+
+  /**
+   * Checks if a given address is defined in a specific stack frame.
+   * @param address The address to check.
+   * @param frame The stack frame to check.
+   */
+  isDefinedInFrame(address: Address, frame: StackFrame): boolean {
+    if (isArrayAccess(address)) {
+      return frame.variables.has(address.array);
+    }
+    return frame.variables.has(address);
   }
 
   /**
    * Checks if a variable is defined anywhere (current scope or any stack frame).
-   * @param name The name of the variable.
+   * @param address The name of the variable.
    */
-  isDefinedAnywhere(name: string): boolean {
-    if (this.isDefined(name)) return true;
+  isDefinedAnywhere(address: Address): boolean {
+    if (this.isDefined(address)) return true;
     if (this.stack.length === 0) return false;
     let stack: StackFrame;
     for (let i = 0; i < this.stack.length; i++) {
       stack = this.stack[i];
-      if (stack.variables.has(name)) {
+      if (this.isDefinedInFrame(address, stack)) {
         return true;
       }
     }

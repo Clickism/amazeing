@@ -27,8 +27,8 @@ export const EXECUTORS = {
     throw new Error("Not implemented");
   },
 
-  var: (env, { name }) => {
-    env.define(name);
+  var: (env, { name, isArray }) => {
+    env.define(name, isArray);
   },
 
   load: (env, { dest, value }) => {
@@ -61,7 +61,7 @@ export const EXECUTORS = {
   xor: (env, instruction) =>
     arithmeticExecutor(env, instruction, (a, b) => a ^ b),
   not: (env, { dest, src }) => {
-    const value = env.getOrThrow(src);
+    const value = env.getIntegerOrThrow(src);
     env.setOrThrow(dest, ~value);
   },
 
@@ -133,7 +133,7 @@ export const EXECUTORS = {
   debug: (env, { src }) => {
     const value = env.getOrThrow(src);
     // TODO: Add type information
-    env.console.log({ type: "log", text: `DEBUG: ${src} = ${value}` });
+    env.console.log({ type: "log", text: `DEBUG: ${src} = ${value}, type = ${typeof value}` });
   },
 } as Executors;
 
@@ -146,8 +146,8 @@ function arithmeticExecutor(
   operation: (a: number, b: number) => number,
 ) {
   const { dest, src1, src2 } = instruction;
-  const val1 = env.getOrThrow(src1);
-  const val2 = typeof src2 == "number" ? src2 : env.getOrThrow(src2);
+  const val1 = env.getIntegerOrThrow(src1);
+  const val2 = typeof src2 == "number" ? src2 : env.getIntegerOrThrow(src2);
   const result = operation(val1, val2);
   env.setOrThrow(dest, result);
 }

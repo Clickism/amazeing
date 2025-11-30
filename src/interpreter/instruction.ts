@@ -1,34 +1,34 @@
-import type { LeftRight, Value } from "./types.ts";
+import type { Address, LeftRight, Value, Variable } from "./types.ts";
 
 export type NoVarInstruction<T> = { type: T };
 export type OneVarInstruction<T> = {
   type: T;
-  src: string;
+  src: Address;
 };
 export type TwoVarInstruction<T> = {
   type: T;
-  dest: string;
-  src: string;
+  dest: Address;
+  src: Address;
 };
 export type ThreeVarInstruction<T> = {
   type: T;
-  dest: string;
-  src1: string;
-  src2: string;
+  dest: Address;
+  src1: Address;
+  src2: Address;
 };
 export type ThreeVarIntermediateInstruction<T> = {
   type: T;
-  dest: string;
-  src1: string;
-  src2: string | number;
+  dest: Address;
+  src1: Address;
+  src2: Address | number;
 };
 
 export type Instruction =
   | NoVarInstruction<"move">
   | { type: "turn"; direction: LeftRight }
   // Variable instructions
-  | { type: "var"; name: string }
-  | { type: "load"; dest: string; value: Value }
+  | { type: "var"; name: Variable; isArray: boolean }
+  | { type: "load"; dest: Address; value: Value }
   | TwoVarInstruction<"copy">
   // Arithmetic instructions
   | ThreeVarIntermediateInstruction<"add">

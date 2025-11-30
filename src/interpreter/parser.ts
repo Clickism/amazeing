@@ -3,8 +3,8 @@ import type {
   InstructionData,
   LabelDefinition,
 } from "./instruction.ts";
-import { LocatableError } from "./error.ts";
-import type { Value } from "./types.ts";
+import { ErrorWithTip, LocatableError } from "./error.ts";
+import type { Address, ArrayIndex, LeftRight, Value } from "./types.ts";
 
 const COMMENT_PREFIX = "#";
 
@@ -56,30 +56,27 @@ function parseLine(
   line: string,
   lineNumber: number,
 ): InstructionData | LabelDefinition | null {
+  // Remove comments
   const [linePart] = line.split(COMMENT_PREFIX, 2);
   line = linePart.trim();
   if (line === "" || line.startsWith(COMMENT_PREFIX)) {
     return null;
   }
-  if (line.endsWith(":")) {
-    // Label definition
-    const label = line.slice(0, -1).trim();
-    if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(label)) {
-      throw new LocatableError(
-        lineNumber,
-        `Invalid label name: "${label}", must start with a letter and only contain letters, numbers, and underscores`,
-      );
-    }
-    // Set instructionIndex to 0 temporarily
-    return { label, pc: 0 };
-  }
-  const parts = line.split(/\s+/);
-  const [instructionType, ...args] = parts;
+  // Parse
   try {
-    const instruction = parseInstruction(instructionType, args);
+    // Check for label definition
+    if (line.endsWith(":")) {
+      return parseLabel(line);
+    }
+    // Parse instruction
+    const instruction = parseInstruction(line);
     return { instruction, line: lineNumber };
   } catch (err) {
+    // Add line number to error
     if (err instanceof Error) {
+      if (err instanceof ErrorWithTip) {
+        throw new LocatableError(lineNumber, err.message, err.tip);
+      }
       throw new LocatableError(lineNumber, err.message);
     }
     throw err;
@@ -87,9 +84,28 @@ function parseLine(
 }
 
 /**
- * @throws {Error} if parsing fails
+ * Parses a label definition.
  */
-function parseInstruction(type: string, args: string[]): Instruction {
+function parseLabel(line: string): LabelDefinition {
+  // Label definition
+  const label = line.slice(0, -1).trim();
+  if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(label)) {
+    throw new Error(
+      `Invalid label name: "${label}", must start with a letter and only contain letters, numbers, and underscores`,
+    );
+  }
+  // Set instructionIndex to 0 temporarily
+  return { label, pc: 0 };
+}
+
+/**
+ * Parses an instruction
+ */
+function parseInstruction(line: string): Instruction {
+  const parts = line.split(/\s+/);
+  const type = parts[0];
+  const args = parts.slice(1);
+  // Parse based on instruction type
   switch (type) {
     // No var instructions
     case "move":
@@ -101,15 +117,15 @@ function parseInstruction(type: string, args: string[]): Instruction {
     case "print":
     case "debug":
       assertArgsLength(type, args, 1);
-      return { type, src: parseIdentifier(args[0]) };
+      return { type, src: parseAddress(args[0]) };
     // Two var instructions
     case "copy":
     case "not":
       assertArgsLength(type, args, 2);
       return {
         type,
-        dest: parseIdentifier(args[0]),
-        src: parseIdentifier(args[1]),
+        dest: parseAddress(args[0]),
+        src: parseAddress(args[1]),
       };
     // Three var (intermediate) instructions
     case "add":
@@ -131,9 +147,9 @@ function parseInstruction(type: string, args: string[]): Instruction {
       assertArgsLength(type, args, 3);
       return {
         type,
-        dest: parseIdentifier(args[0]),
-        src1: parseIdentifier(args[1]),
-        src2: parseIdentifierOrValue(args[2]),
+        dest: parseAddress(args[0]),
+        src1: parseAddress(args[1]),
+        src2: parseAddressOrValue(args[2]),
       };
     // Control flow instructions
     case "jump":
@@ -145,21 +161,23 @@ function parseInstruction(type: string, args: string[]): Instruction {
       assertArgsLength(type, args, 2);
       return {
         type,
-        cond: parseIdentifier(args[0]),
+        cond: parseIdentifier(args[0]), // TODO: Address?
         target: parseIdentifier(args[1]),
       };
     // Other instructions
     case "turn":
       assertArgsLength(type, args, 1);
-      return { type: "turn", direction: parseDirection(args[0]) };
-    case "var":
+      return { type: "turn", direction: parseLeftRight(args[0]) };
+    case "var": {
       assertArgsLength(type, args, 1);
-      return { type: "var", name: parseIdentifier(args[0]) };
+      const { name, isArray } = parseVariableDefinition(args[0]);
+      return { type: "var", name, isArray };
+    }
     case "load":
       assertArgsLength(type, args, 2);
       return {
         type: "load",
-        dest: parseIdentifier(args[0]),
+        dest: parseAddress(args[0]),
         value: parseValue(args[1]),
       };
     default:
@@ -167,17 +185,38 @@ function parseInstruction(type: string, args: string[]): Instruction {
   }
 }
 
-function parseDirection(arg: string): "left" | "right" {
+/**
+ * Parses an address (variable or array access).
+ * @param arg The argument to parse
+ */
+function parseAddress(arg: string): Address {
+  const match = arg.match(
+    /^([a-zA-Z_][a-zA-Z_0-9]*)(?:\[([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)])?$/,
+  );
+  if (!match) {
+    throw new Error(`Invalid address: "${arg}"`);
+  }
+  const name = match[1];
+  let index: ArrayIndex = match[2];
+  if (index === undefined) {
+    return name; // Variable
+  } else {
+    if (!isNaN(Number(index))) {
+      index = Number(index); // Numeric index
+    }
+    return { array: name, index }; // Array access
+  }
+}
+
+function parseLeftRight(arg: string): LeftRight {
   if (arg === "left" || arg === "right") {
     return arg;
   }
   throw new Error(`Invalid direction: "${arg}"`);
 }
 
-const identifierRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
-
 function parseIdentifier(arg: string): string {
-  if (identifierRegex.test(arg)) {
+  if (/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(arg)) {
     return arg;
   }
   throw new Error(
@@ -185,11 +224,23 @@ function parseIdentifier(arg: string): string {
   );
 }
 
-function parseIdentifierOrValue(arg: string): string | Value {
-  if (identifierRegex.test(arg)) {
-    return arg;
+function parseVariableDefinition(arg: string): {
+  name: string;
+  isArray: boolean;
+} {
+  if (/^[a-zA-Z_][a-zA-Z0-9_]*\[]$/.test(arg)) {
+    return { name: arg.slice(0, -2), isArray: true };
   }
-  return parseValue(arg);
+  return { name: parseIdentifier(arg), isArray: false };
+}
+
+function parseAddressOrValue(arg: string): Address | Value {
+  try {
+    // Try value first because of constants
+    return parseValue(arg);
+  } catch {
+    return parseAddress(arg);
+  }
 }
 
 function parseValue(arg: string): Value {
