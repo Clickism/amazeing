@@ -13,12 +13,12 @@ import { FormGroup } from "../ui/Form/FormGroup/FormGroup.tsx";
 import ReactCodeMirror, { tooltips } from "@uiw/react-codemirror";
 import {
   amazeing,
-  amazeingAutocomplete,
-} from "../../codemirror/amazeingExtension.ts";
+} from "../../codemirror/amazeing.ts";
 import { currentLineHighlighter } from "../../codemirror/currentLineHighlighter.ts";
 import { EditorView } from "@codemirror/view";
 import { EditorTabs } from "./EditorTabs/EditorTabs.tsx";
 import { useCodeStorage } from "../../hooks/useCodeStorage.ts";
+import { amazeingAutocomplete } from "../../codemirror/autocomplete.ts";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 

@@ -61,6 +61,10 @@ export function EditorSettingsProvider({ children }: { children: ReactNode }) {
     document.getElementById("tooltip-root")!.style.fontSize = `${fontSize}px`;
   }, [fontSize]);
 
+  useEffect(() => {
+    document.getElementById("tooltip-root")!.className = editorTheme.isLight ? "light-theme" : "dark-theme";
+  }, [editorTheme]);
+
   return (
     <EditorSettingsContext.Provider
       value={{

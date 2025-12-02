@@ -102,10 +102,6 @@ export function RunControls({
         </FormField>
         {runSpeed} instr/s
       </Popup>
-
-      {/*<Button>*/}
-      {/*  <VscDebugStop /> Stop*/}
-      {/*</Button>*/}
     </ButtonGroup>
   );
 }
