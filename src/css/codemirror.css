@@ -31,7 +31,7 @@
 }
 
 .cm-tooltip-autocomplete {
-  background: var(--clr-surface-a0);
+  background: var(--clr-surface-a10) !important;
   border-radius: .5rem;
   box-shadow: var(--surface-shadow-light);
   margin-top: .25rem;
@@ -89,26 +89,17 @@
 
 /* Completion box */
 .cm-completionInfo {
-  --keyword-color: #d73a49;
-  --type-color: #005cc5;
-}
-
-.cm-completionInfo {
-  --keyword-color: #ff7b72;
-  --type-color: #79c0ff;
-}
-
-.cm-completionInfo {
   border-radius: .5rem;
   margin: 0 .5rem;
   top: 0 !important;
   padding: 8px !important;
+  background-color: var(--clr-surface-a10) !important;
   box-shadow: var(--surface-shadow-light);
 }
 
 .cm-completionInfo .usage {
   font-family: "JetBrains Mono", monospace;
-  background-color: var(--clr-surface-a0); /* TODO: change to variable */
+  background-color: var(--clr-surface-a20);
   padding: 4px 8px;
   border-radius: 8px;
   margin: 0 0 4px;
@@ -118,7 +109,7 @@
 }
 
 .cm-completionInfo .warning {
-  background-color: var(--clr-surface-a0);
+  background-color: var(--clr-surface-a20);
   padding: 4px 8px;
   border-radius: 8px;
   margin-bottom: 4px;
