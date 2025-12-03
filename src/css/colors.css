@@ -18,6 +18,7 @@
 
   /** Theme surface colors */
   --clr-surface-a0: #ffffff;
+  --clr-surface-a5: #F8F8F8;
   --clr-surface-a10: #f0f0f0;
   --clr-surface-a15: #E9E9E9;
   --clr-surface-a20: #e1e1e1;
@@ -88,6 +89,7 @@
 
   /** Theme tonal surface colors */
   --clr-surface-a0: #0e121a;
+  --clr-surface-a5: #1A1D25;
   --clr-surface-a10: #25282f;
   --clr-surface-a15: #31343A;
   --clr-surface-a20: #3c3f45;

@@ -3,13 +3,26 @@
   flex-direction: column;
   gap: .5rem;
   padding: 3.5rem .5rem;
-  border-radius: .5rem;
-  background-color: var(--clr-surface-a0);
+  background-color: var(--clr-surface-a5);
   min-width: 35%;
   border-left: 1px solid var(--clr-surface-a30);
   box-sizing: border-box;
   overflow: auto;
-  /*todo: box shadow*/
+  /* TODO: Make shadow overlay at the bottom */
+  box-shadow: inset 0 -10px 16px var(--clr-surface-a0);
+  animation: spawn-animation .2s;
+}
+
+/* TODO: Fix animation color weirdness */
+@keyframes spawn-animation {
+  0% {
+    transform: translateX(14px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: .5;
+  }
 }
 
 .tabContainer {

@@ -7,6 +7,7 @@ import {
   type SetStateAction,
   useCallback,
   useEffect,
+  useState,
 } from "react";
 import type { Interpreter } from "../../../interpreter/interpreter.ts";
 import type { ConsoleMessage } from "../../../interpreter/console.ts";
@@ -34,6 +35,7 @@ export function RunControls({
   setRunIntervalId,
 }: Props) {
   const { t } = useTranslation();
+  const [isInstant, setIsInstant] = useState(false);
 
   useEffect(() => {
     if (runIntervalId !== null) {
@@ -54,6 +56,12 @@ export function RunControls({
   }, [setRunIntervalId]);
 
   function startRunning() {
+    if (isInstant) {
+      interpreter.current?.executeAndPrintError((interpreter) => {
+        interpreter.run();
+      })
+      return;
+    }
     const interval = setInterval(() => {
       if (interpreter.current?.canStep()) {
         interpreter.current?.executeAndPrintError((interpreter) => {
@@ -101,6 +109,17 @@ export function RunControls({
           />
         </FormField>
         {runSpeed} instr/s
+
+        <FormField label={t("editor.runInstant")}>
+          <input
+            type="checkbox"
+            checked={isInstant}
+            onChange={(e) => {
+              stopRunning();
+              setIsInstant(e.target.checked)
+            }}
+          />
+        </FormField>
       </Popup>
     </ButtonGroup>
   );

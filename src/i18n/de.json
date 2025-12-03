@@ -11,5 +11,6 @@
   "editor.stop": "Stoppen",
   "editor.step": "Schritt",
   "editor.reset": "Zurücksetzen",
-  "editor.runSpeed": "Ausführungsgeschwindigkeit"
+  "editor.runSpeed": "Ausführungsgeschwindigkeit",
+  "editor.runInstant": "Sofort"
 }

@@ -6,6 +6,7 @@ import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
 import { useTranslation } from "react-i18next";
 import { useEditorSettings } from "../../hooks/useEditorSettings.ts";
 
+/* TODO: Console autoscroll */
 export function Console({ messages }: { messages: ConsoleMessage[] }) {
   const { t } = useTranslation();
   const { fontSize } = useEditorSettings();

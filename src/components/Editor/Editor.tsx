@@ -15,8 +15,8 @@ import {
   LazyInterpreter,
 } from "../../interpreter/interpreter.ts";
 import { VscDebugRestart } from "react-icons/vsc";
-import { StepControls } from "./StepController/StepControls.tsx";
-import { RunControls } from "./RunController/RunControls.tsx";
+import { StepControls } from "./StepControls/StepControls.tsx";
+import { RunControls } from "./RunControls/RunControls.tsx";
 import { TabbedCodeEditor } from "../CodeEditor/TabbedCodeEditor.tsx";
 
 export const MIN_RUN_SPEED = 1;
