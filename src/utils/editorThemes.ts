@@ -8,12 +8,13 @@ import {
   bbedit,
   bespin,
   darcula,
+  defaultSettingsGithubDark,
   dracula,
   duotoneDark,
   duotoneLight,
   eclipse,
-  githubDark,
-  githubLight,
+  githubDarkInit,
+  githubLightInit,
   gruvboxDark,
   gruvboxLight,
   kimbie,
@@ -35,23 +36,55 @@ import {
   xcodeLight,
 } from "@uiw/codemirror-themes-all";
 import { oneDark } from "@codemirror/theme-one-dark";
+import { tags as t } from "@lezer/highlight";
+
+// Replicate Typst colors
+const modifiedGithubLight = githubLightInit({
+  styles: [
+    {
+      tag: [t.function(t.variableName), t.function(t.propertyName)],
+      color: "#1d6c76",
+    },
+    {
+      tag: t.number,
+      color: "#b60157"
+    }
+  ],
+});
+
+const modifiedGithubDark = githubDarkInit({
+  settings: {
+    gutterBackground: defaultSettingsGithubDark.background,
+    gutterForeground: "#606060",
+  },
+  styles: [
+    {
+      tag: [t.function(t.variableName), t.function(t.propertyName)],
+      color: "#64abb2",
+    },
+    {
+      tag: t.number,
+      color: "#ff79a8"
+    }
+  ],
+});
 
 const DEFAULT_LIGHT_THEME: EditorTheme = {
-  extension: githubLight,
+  extension: modifiedGithubLight,
   name: "default",
   isLight: true,
 };
 const DEFAULT_DARK_THEME: EditorTheme = {
-  extension: vscodeDark,
+  extension: modifiedGithubDark,
   name: "default",
 };
 
 export const SUPPORTED_THEMES: Record<string, Extension> = {
-  default: vscodeDark,
+  default: modifiedGithubDark,
+  githubDark: modifiedGithubDark,
+  githubLight: modifiedGithubLight,
   vscodeDark,
   vscodeLight,
-  githubDark,
-  githubLight,
   androidstudio,
   atomone,
   aura,
