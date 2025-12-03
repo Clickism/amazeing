@@ -20,16 +20,6 @@
   width: 100%;
 }
 
-.editorTabs {
-  flex: 1;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.editorTabs:hover {
-  scrollbar-width: thin;
-}
-
 .cornerGroup {
   position: relative;
   width: 100%;

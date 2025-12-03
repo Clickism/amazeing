@@ -1,5 +1,5 @@
 import styles from "./CodeEditor.module.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useEditorSettings } from "../../hooks/useEditorSettings.ts";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
@@ -11,14 +11,14 @@ import { FormField } from "../ui/Form/FormField/FormField.tsx";
 import { useTranslation } from "react-i18next";
 import { FormGroup } from "../ui/Form/FormGroup/FormGroup.tsx";
 import ReactCodeMirror, { tooltips } from "@uiw/react-codemirror";
-import {
-  amazeing,
-} from "../../codemirror/amazeing.ts";
+import { amazeing } from "../../codemirror/amazeing.ts";
 import { currentLineHighlighter } from "../../codemirror/currentLineHighlighter.ts";
 import { EditorView } from "@codemirror/view";
-import { EditorTabs } from "./EditorTabs/EditorTabs.tsx";
 import { useCodeStorage } from "../../hooks/useCodeStorage.ts";
 import { amazeingAutocomplete } from "../../codemirror/autocomplete.ts";
+import { FaRegFolderOpen } from "react-icons/fa6";
+import { ActiveFile } from "./FileList/ActiveFile/ActiveFile.tsx";
+import { FileList } from "./FileList/FileList.tsx";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -51,6 +51,7 @@ export function CodeEditor({
   fileName,
   setFileName,
 }: CodeEditorProps) {
+  const [filesOpen, setFilesOpen] = useState(false);
   const { editorTheme, setEditorTheme, fontSize, setFontSize } =
     useEditorSettings();
   const { saveFile, loadFile } = useCodeStorage();
@@ -106,21 +107,16 @@ export function CodeEditor({
         editorTheme.isLight ? "light-theme" : "dark-theme",
       )}
     >
-      <CornerGroup position="top-left" className={styles.cornerGroup}>
-        <div className={styles.editorTabs}>
-          {tabbed && (
-            <EditorTabs
-              activeFile={fileName ?? "Untitled"}
-              setActiveFile={(newFileName, saveOld) => {
-                // Save current file before switching
-                if (fileName && saveOld) {
-                  saveFile({ name: fileName, content: code });
-                }
-                setFileName?.(newFileName);
-              }}
-            />
-          )}
-        </div>
+      <CornerGroup
+        position="top-right"
+        className={clsx(styles.cornerGroup, styles.blur)}
+      >
+        {tabbed && <ActiveFile activeFile={fileName ?? "Untitled"} />}
+        <div style={{ flex: 1 }} />
+        <Button onClick={() => setFilesOpen((prev) => !prev)}>
+          {filesOpen ? <FaRegFolderOpen /> : <FaRegFolderOpen />}
+          {t("codeEditor.files")}
+        </Button>
         <Popup
           trigger={
             <Button shape="icon" className={styles.settingsButton}>
@@ -186,6 +182,19 @@ export function CodeEditor({
           fontFamily: "JetBrains Mono, monospace",
         }}
       />
+
+      {tabbed && filesOpen && (
+        <FileList
+          activeFile={fileName ?? "Untitled"}
+          setActiveFile={(newFileName, saveOld) => {
+            // Save current file before switching
+            if (fileName && saveOld) {
+              saveFile({ name: fileName, content: code });
+            }
+            setFileName?.(newFileName);
+          }}
+        />
+      )}
     </div>
   );
 }

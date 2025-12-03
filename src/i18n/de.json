@@ -4,6 +4,7 @@
   "codeEditor.title": "Code-Editor",
   "codeEditor.theme": "Farbthema",
   "codeEditor.fontSize": "Schriftgröße",
+  "codeEditor.files": "Dateien",
   "console.title": "Konsole",
   "viewport.title": "Viewport",
   "editor.run": "Ausführen",
