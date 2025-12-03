@@ -89,8 +89,8 @@ function getCompletion(instruction: string) {
       const usage = document.createElement("pre");
       usage.className = "usage";
 
-      function emit(text, classes) {
-        let node = document.createTextNode(text);
+      const putText = (text: string, classes: string) => {
+        let node: Node = document.createTextNode(text);
         if (classes) {
           const span = document.createElement("span");
           span.appendChild(node);
@@ -98,18 +98,18 @@ function getCompletion(instruction: string) {
           node = span;
         }
         usage.appendChild(node);
-      }
+      };
 
-      function emitBreak() {
+      const putBreak = () => {
         usage.appendChild(document.createTextNode("\n"));
-      }
+      };
 
       highlightCode(
         doc.usage,
         docLanguage.parser.parse(doc.usage),
         classHighlighter,
-        emit,
-        emitBreak,
+        putText,
+        putBreak,
       );
 
       div.appendChild(usage);
