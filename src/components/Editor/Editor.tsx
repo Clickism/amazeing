@@ -2,7 +2,13 @@ import { CodeEditor } from "../CodeEditor/CodeEditor.tsx";
 import { Console } from "../Console/Console.tsx";
 import { Viewport } from "../Viewport/Viewport.tsx";
 import styles from "./Editor.module.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type CSSProperties,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button } from "../ui/Button/Button.tsx";
 import { ButtonGroup } from "../ui/Button/ButtonGroup/ButtonGroup.tsx";
 import {
@@ -22,6 +28,11 @@ import { TabbedCodeEditor } from "../CodeEditor/TabbedCodeEditor.tsx";
 export const MIN_RUN_SPEED = 1;
 export const MAX_RUN_SPEED = 100;
 export const DEFAULT_RUN_SPEED = 5;
+
+// Transition
+export const TRANSITION_RUN_SPEED_THRESHOLD = 30;
+export const DEFAULT_TRANSITION_SPEED = 0.1;
+export const MAX_TRANSITION_SPEED = 0.2;
 
 type Props = {
   tabbed?: boolean;
@@ -108,7 +119,15 @@ export function Editor({ tabbed, startingFileName }: Props) {
         </div>
       </div>
       <div className={styles.right}>
-        <div title={t("codeEditor.title")} className={styles.codeEditor}>
+        <div
+          title={t("codeEditor.title")}
+          className={styles.codeEditor}
+          style={
+            {
+              "--exec-line-transition-duration": `${getTransitionSpeed(isRunning, runSpeed)}s`,
+            } as CSSProperties
+          }
+        >
           {tabbed ? (
             <TabbedCodeEditor
               code={code}
@@ -130,5 +149,32 @@ export function Editor({ tabbed, startingFileName }: Props) {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Calculates the adjusted transition speed
+ */
+function getTransitionSpeed(isRunning: boolean, runSpeed: number) {
+  if (!isRunning) {
+    return DEFAULT_TRANSITION_SPEED;
+  }
+  if (runSpeed >= TRANSITION_RUN_SPEED_THRESHOLD) {
+    return 0;
+  }
+  // Between MAX and DEFAULT
+  const belowDefault =
+    DEFAULT_TRANSITION_SPEED +
+    (MAX_TRANSITION_SPEED - DEFAULT_TRANSITION_SPEED) *
+      (1 - runSpeed / DEFAULT_RUN_SPEED);
+  // Between DEFAULT and 0
+  const t =
+    (runSpeed - DEFAULT_RUN_SPEED) /
+    (TRANSITION_RUN_SPEED_THRESHOLD - DEFAULT_RUN_SPEED);
+  const aboveOrAtDefault = DEFAULT_TRANSITION_SPEED * (1 - t);
+  // Clamp
+  return Math.min(
+    MAX_TRANSITION_SPEED,
+    runSpeed < DEFAULT_RUN_SPEED ? belowDefault : aboveOrAtDefault,
   );
 }

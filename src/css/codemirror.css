@@ -1,3 +1,7 @@
+:root {
+  --exec-line-transition-duration: 0s; /* Temporary, replaced in Editor.tsx */
+}
+
 .cm-execLine {
   position: relative;
   overflow: visible;
@@ -15,7 +19,7 @@
   opacity: 0.6;
   mix-blend-mode: overlay;
   pointer-events: none;
-  animation: spawn-animation .1s ease-out;
+  animation: spawn-animation var(--exec-line-transition-duration) ease-out;
   border-radius: 4px;
 }
 
