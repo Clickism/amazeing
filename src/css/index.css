@@ -31,13 +31,6 @@ body, html, #root {
   --padding: var(--padding-vertical) var(--padding-horizontal);
 }
 
-@media (max-width: 767px) {
-  :root {
-    --padding-vertical: .75rem;
-    --padding-horizontal: 1.5rem;
-  }
-}
-
 a {
   color: var(--clr-primary-a10);
   text-decoration: none;
