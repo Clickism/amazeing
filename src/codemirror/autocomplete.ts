@@ -32,16 +32,21 @@ type VariableDeclaration = { name: string; line: number };
 
 function extractVariables(context: CompletionContext): VariableDeclaration[] {
   const docText = context.state.doc.toString();
-  const regex = /\bvar\s+([A-Za-z_]\w*)/g;
+  const regex = /\bvar\s+([A-Za-z_][A-Za-z_0-9]*)/;
   const vars: Map<string, VariableDeclaration> = new Map();
   const lines = docText.split("\n");
+  console.log(lines);
   for (let lineNumber = 0; lineNumber < lines.length; lineNumber++) {
     const currentLineNumber = context.state.doc.lineAt(context.pos).number;
-    if (currentLineNumber === lineNumber + 1) continue;
+    if (currentLineNumber === lineNumber + 1) {
+      console.log("Skipped line " + lineNumber);
+      continue;
+    }
     const line = lines[lineNumber];
     const match = regex.exec(line);
     if (match) {
       const name = match[1];
+      console.log(name);
       if (!vars.has(name)) {
         vars.set(name, { name, line: lineNumber + 1 });
       }
@@ -60,12 +65,18 @@ function amazeingCompletions(context: CompletionContext) {
   const lastWordMatch = /\b(\w+)\b\s*$/.exec(before);
   const prevWord = lastWordMatch ? lastWordMatch[1] : null;
 
-  let options = ALL_INSTRUCTIONS.map(getCompletion);
-
   // Add variable completions if not declaring a new var
-  if (prevWord !== "var") {
-    options = [
-      ...options,
+  if (prevWord === "var") {
+    return {
+      from: word.from,
+      options: [],
+    };
+  }
+
+  return {
+    from: word.from,
+    options: [
+      ...ALL_INSTRUCTIONS.map(getCompletion),
       ...variables.map((v) => ({
         label: v.name,
         type: "variable",
@@ -75,12 +86,7 @@ function amazeingCompletions(context: CompletionContext) {
             description: `Previously declared variable "${v.name}"`,
           }),
       })),
-    ];
-  }
-
-  return {
-    from: word.from,
-    options,
+    ],
   };
 }
 
