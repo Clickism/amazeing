@@ -19,7 +19,6 @@ export type SingleDocumentation = {
 export type Documentation = SingleDocumentation | SingleDocumentation[];
 
 type Documentations = {
-  // TODO: Remove optionality
   [K in Instruction["type"]]?: Documentation;
 };
 
@@ -46,6 +45,14 @@ const comparisonRelations = {
 };
 
 export const INSTRUCTION_DOCUMENTATIONS: Documentations = {
+  move: {
+    usage: "move",
+    description: "Moves the owl forward.",
+  },
+  turn: {
+    usage: "turn <direction: left_right>",
+    description: `Turns the owl to the left or right based on "direction".`,
+  },
   var: [
     {
       usage: "var <name: identifier>",
@@ -68,9 +75,39 @@ export const INSTRUCTION_DOCUMENTATIONS: Documentations = {
     usage: "print <src: address>",
     description: `Outputs the value stored in the address "src" to the console.`,
   },
+  debug: {
+    usage: "debug <src: address>",
+    description: `Outputs a detailed representation and type of the value stored in the address "src" to the console.`,
+  },
   not: {
     usage: "not <dest: address> <src: address>",
-    description: 'Inverts "src" and puts the result into "dest".',
+    description: 'Inverts the bits "src" and puts the result into "dest".',
+  },
+  exit: {
+    usage: "exit",
+    description: "Stops execution and exits the program.",
+  },
+  // Control Flow
+  branch: {
+    usage: "branch <cond: address> <target: label>",
+    description: `Jumps to the label "target" only if "cond" has an integer value other than 0.`,
+  },
+  branchz: {
+    usage: "branch <cond: address> <target: label>",
+    description: `Jumps to the label "target" only if "cond" has the value 0.`,
+  },
+  jump: {
+    usage: "jump <target: label>",
+    description: `Jumps to the label "target" unconditionally.`,
+  },
+  // TODO: Maybe explain call and ret differently.
+  call: {
+    usage: "call <target: label>",
+    description: `Jumps to the label "target" unconditionally and creates a new stack frame.`,
+  },
+  ret: {
+    usage: "ret",
+    description: `Returns to the line after the last executed "call" instruction and to the previous stack frame.`,
   },
   // Arithmetic
   ...Object.fromEntries(
