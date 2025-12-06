@@ -25,6 +25,8 @@
   --clr-surface-a30: #d3d3d3;
   --clr-surface-a40: #c5c5c5;
   --clr-surface-a50: #b6b6b6;
+  --clr-surface-a60: #a5a5a5;
+
 
   /** Theme tonal surface colors */
   --clr-surface-tonal-a0: #edf2fd;
@@ -96,6 +98,7 @@
   --clr-surface-a30: #54575d;
   --clr-surface-a40: #6e7176;
   --clr-surface-a50: #8a8b90;
+  --clr-surface-a60: #a0a1a8;
 
   /** Success colors */
   --clr-success-a0: #22946e;

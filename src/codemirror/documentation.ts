@@ -1,10 +1,22 @@
 import type { Instruction } from "../interpreter/instruction.ts";
 
-type Documentation = {
+export type SingleDocumentation = {
+  /**
+   * Here there is a custom doc language used for highlighting.
+   *
+   * See: autocomplete.ts
+   */
   usage: string;
   warning?: string;
+  /**
+   * Here, any quoted text will be highlighted.
+   *
+   * Used for highlighting parameters.
+   */
   description: string;
 };
+
+export type Documentation = SingleDocumentation | SingleDocumentation[];
 
 type Documentations = {
   // TODO: Remove optionality
@@ -30,17 +42,23 @@ const comparisonRelations = {
   lte: "less than or equal to",
   gte: "greater than or equal to",
   eq: "equal to",
-  neq: "not equal to"
-}
+  neq: "not equal to",
+};
 
 export const INSTRUCTION_DOCUMENTATIONS: Documentations = {
-  var: {
-    usage: "var <name: identifier>\nvar <name: identifier>[]",
-    description: 'Declares a new variable or array (if "[]" is present) named "name".'
-  },
+  var: [
+    {
+      usage: "var <name: identifier>",
+      description: 'Declares a new variable named "name".',
+    },
+    {
+      usage: "var <name: identifier>[]",
+      description: 'Declares a new array named "name".',
+    },
+  ],
   load: {
     usage: "load <dest: address> <immediate: value>",
-    description: 'Loads the given immediate value into "dest".'
+    description: 'Loads the given immediate value into "dest".',
   },
   copy: {
     usage: "copy <dest: address> <src: address>",
@@ -48,7 +66,7 @@ export const INSTRUCTION_DOCUMENTATIONS: Documentations = {
   },
   print: {
     usage: "print <src: address>",
-    description: "Outputs the value of an address to the console.",
+    description: `Outputs the value stored in the address "src" to the console.`,
   },
   not: {
     usage: "not <dest: address> <src: address>",
@@ -59,27 +77,27 @@ export const INSTRUCTION_DOCUMENTATIONS: Documentations = {
     Object.entries(arithmeticActions).map(([instr, action]) => [
       instr,
       arithmetic(instr, action),
-    ])
+    ]),
   ),
   // Comparison
   ...Object.fromEntries(
     Object.entries(comparisonRelations).map(([instr, relation]) => [
       instr,
       comparison(instr, relation),
-    ])
+    ]),
   ),
 };
 
 function arithmetic(instruction: string, action: string): Documentation {
   return {
     usage: `${instruction} <dest: address> <src1: address> <src2: address | integer>`,
-    description: `${action} "src1" and "src2" and puts the result into dest.`,
+    description: `${action} "src1" and "src2" and puts the result into "dest".`,
   };
 }
 
 function comparison(instruction: string, relation: string): Documentation {
   return {
     usage: `${instruction} <dest: address> <src1: address> <src2: address | integer>`,
-    description: `Checks if "src1" is ${relation} "src2" and puts the result into dest.`,
+    description: `Checks if "src1" is ${relation} "src2" and puts the result into "dest".`,
   };
 }

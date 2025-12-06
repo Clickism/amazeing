@@ -101,7 +101,23 @@
   box-shadow: var(--surface-shadow-light);
 }
 
-.cm-completionInfo .usage {
+.documentation .quoted {
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "JetBrains Mono", monospace;
+  background-color: var(--clr-surface-a15);
+  padding: 2px 4px !important;
+  border-radius: 4px;
+}
+
+.documentation .separator {
+  margin: 10px 0;
+  height: 1px;
+  width: 100%;
+  background-color: var(--clr-surface-a30);
+}
+
+.documentation .usage {
   font-family: "JetBrains Mono", monospace;
   background-color: var(--clr-surface-a20);
   padding: 4px 8px;
@@ -112,7 +128,7 @@
   white-space: pre-wrap;
 }
 
-.cm-completionInfo .warning {
+.documentation .warning {
   background-color: var(--clr-surface-a20);
   padding: 4px 8px;
   border-radius: 8px;
@@ -120,14 +136,18 @@
   border-left: 4px solid var(--clr-warning-a10);
 }
 
-.cm-completionInfo .description {
+.documentation .description {
+}
+
+.documentation .tok-number {
+  color: var(--clr-surface-a60);
 }
 
 /* Doc syntax highlighting */
-.cm-completionInfo .tok-keyword {
+.documentation .tok-keyword {
   color: var(--keyword-color);
 }
 
-.cm-completionInfo .tok-typeName {
+.documentation .tok-typeName {
   color: var(--type-color);
 }
