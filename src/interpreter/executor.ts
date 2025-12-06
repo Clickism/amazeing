@@ -131,9 +131,13 @@ export const EXECUTORS = {
   },
 
   debug: (env, { src }) => {
-    const value = env.getOrThrow(src);
-    // TODO: Add type information
-    env.console.log({ type: "log", text: `DEBUG: ${src} = ${value}, type = ${typeof value}` });
+    const value = env.getOrNull(src);
+    if (value === null) {
+      env.console.log({ type: "log", text: `DEBUG: ${src} = NO VALUE` });
+    } else {
+      // TODO: Add type information
+      env.console.log({ type: "log", text: `DEBUG: ${src} = ${value}, type = ${typeof value}` });
+    }
   },
 } as Executors;
 
