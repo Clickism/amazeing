@@ -20,7 +20,7 @@ export const docLanguage = StreamLanguage.define({
     if (stream.match(keywordPattern)) {
       return "keyword";
     }
-    if (stream.match(/[<>]/)) return "operator";
+    if (stream.match(/[<>[\]]/)) return "operator";
     if (stream.match(/[a-zA-Z_0-9]*:/)) return "string";
     if (stream.match(/[a-zA-Z_0-9]/)) return "type";
     stream.next();
@@ -28,27 +28,29 @@ export const docLanguage = StreamLanguage.define({
   },
 });
 
-type VariableDeclaration = { name: string; line: number };
+type VariableDeclaration = { name: string; line: number; isArray: boolean };
 
 function extractVariables(context: CompletionContext): VariableDeclaration[] {
   const docText = context.state.doc.toString();
-  const regex = /\bvar\s+([A-Za-z_][A-Za-z_0-9]*)/;
+  const regex = /\bvar\s+([A-Za-z_][A-Za-z_0-9]*)(\[])?/;
   const vars: Map<string, VariableDeclaration> = new Map();
   const lines = docText.split("\n");
-  console.log(lines);
   for (let lineNumber = 0; lineNumber < lines.length; lineNumber++) {
     const currentLineNumber = context.state.doc.lineAt(context.pos).number;
     if (currentLineNumber === lineNumber + 1) {
-      console.log("Skipped line " + lineNumber);
       continue;
     }
     const line = lines[lineNumber];
     const match = regex.exec(line);
     if (match) {
       const name = match[1];
-      console.log(name);
+      const isArray = match[2];
       if (!vars.has(name)) {
-        vars.set(name, { name, line: lineNumber + 1 });
+        vars.set(name, {
+          name,
+          line: lineNumber + 1,
+          isArray: isArray !== undefined,
+        });
       }
     }
   }
@@ -56,37 +58,68 @@ function extractVariables(context: CompletionContext): VariableDeclaration[] {
   return Array.from(vars.values());
 }
 
+// TODO: No autocompletion in comments
+// TODO: Also maybe new instruction "printm" that takes different printing modes, ascii or sth?? or just "printascii"
 function amazeingCompletions(context: CompletionContext) {
   const word = context.matchBefore(/\w*/);
   if (!word || (word.from === word.to && !context.explicit)) return null;
-  const variables = extractVariables(context);
-
-  const before = context.state.sliceDoc(0, word.from).trimEnd();
-  const lastWordMatch = /\b(\w+)\b\s*$/.exec(before);
-  const prevWord = lastWordMatch ? lastWordMatch[1] : null;
-
-  // Add variable completions if not declaring a new var
-  if (prevWord === "var") {
-    return {
-      from: word.from,
-      options: [],
-    };
+  const state = extractCompletionState(context);
+  if (!state) return null;
+  // Don't autocomplete if naming variable or in comment
+  if (state.prevWord === "var" || state.inComment) {
+    return null;
   }
 
+  const variables = extractVariables(context);
   return {
     from: word.from,
     options: [
       ...ALL_INSTRUCTIONS.map(getCompletion),
-      ...variables.map((v) => ({
-        label: v.name,
-        type: "variable",
-        info: () =>
-          getCompletionNode({
-            usage: `${v.line} var ${v.name}`,
-            description: `Previously declared variable "${v.name}"`,
-          }),
-      })),
+      ...variables.map(getVariableCompletion),
     ],
+  };
+}
+
+type CompletionState = {
+  prevWord: string | null;
+  inComment: boolean;
+};
+
+function extractCompletionState(
+  context: CompletionContext,
+): CompletionState | null {
+  const word = context.matchBefore(/\w*/);
+  if (!word) {
+    return null;
+  }
+  const line = context.state.doc.lineAt(context.pos);
+
+  // Get previous word
+  const before = line.text.slice(0, -word.text.length).trimEnd();
+  const lastWordMatch = /\b(\w+)\b\s*$/.exec(before);
+  const prevWord = lastWordMatch ? lastWordMatch[1] : null;
+
+  // Check if in comment
+  const linePos = context.pos - line.from;
+  const commentIndex = line.text.indexOf("#");
+
+  return {
+    prevWord,
+    inComment: commentIndex !== -1 && linePos >= commentIndex,
+  };
+}
+
+function getVariableCompletion(variable: VariableDeclaration) {
+  let usage = `${variable.line} var ${variable.name}`;
+  if (variable.isArray) {
+    usage += "[]";
+  }
+  const varOrArray = variable.isArray ? "array" : "variable";
+  const description = `Previously declared ${varOrArray} "${variable.name}"`;
+  return {
+    label: variable.name,
+    type: "variable",
+    info: () => getCompletionNode({ usage, description }),
   };
 }
 
