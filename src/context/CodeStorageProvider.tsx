@@ -78,8 +78,10 @@ export function CodeStorageProvider({
   }, [storageKey]);
 
   const getActiveFile = useCallback(() => {
-    return localStorage.getItem(`${storageKey}:activeFile`) ?? null;
-  }, [storageKey])
+    const name = localStorage.getItem(`${storageKey}:activeFile`) ?? null;
+    if (!name) return null;
+    return files[name] ? name : null;
+  }, [files, storageKey])
 
   return (
     <CodeStorageContext.Provider
