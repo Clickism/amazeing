@@ -24,6 +24,8 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { StepControls } from "./StepControls/StepControls.tsx";
 import { RunControls } from "./RunControls/RunControls.tsx";
 import { TabbedCodeEditor } from "../CodeEditor/TabbedCodeEditor.tsx";
+import { type Owl } from "../../game/owl.ts";
+import { type Level } from "../../game/level.ts";
 
 export const MIN_RUN_SPEED = 1;
 export const MAX_RUN_SPEED = 100;
@@ -35,11 +37,14 @@ export const DEFAULT_TRANSITION_SPEED = 0.1;
 export const MAX_TRANSITION_SPEED = 0.2;
 
 type Props = {
+  level: Level;
   tabbed?: boolean;
-  startingFileName?: string;
 };
 
-export function Editor({ tabbed, startingFileName }: Props) {
+export function Editor({ level, tabbed }: Props) {
+  const [owl, setOwl] = useState<Owl>(() => {
+    return level.createOwl((newOwl) => setOwl({ ...newOwl }));
+  });
   const [code, setCode] = useState<string>("");
   const [output, setOutput] = useState<ConsoleMessage[]>([]);
   const [currentLine, setCurrentLine] = useState<number | null>(null);
@@ -56,11 +61,15 @@ export function Editor({ tabbed, startingFileName }: Props) {
 
   const initInterpreter = useCallback(() => {
     try {
+      const newOwl = level.createOwl((newOwl) => setOwl({ ...newOwl }));
+      setOwl(newOwl);
       interpreter.current = LazyInterpreter.fromCode(
         code,
         new InterpreterConsole((message) => {
           appendOutput(message);
         }),
+        newOwl,
+        level,
       );
       if (runIntervalId !== null) {
         clearInterval(runIntervalId);
@@ -74,7 +83,7 @@ export function Editor({ tabbed, startingFileName }: Props) {
         setOutput([{ type: "error", text: e.message }]);
       }
     }
-  }, [code, runIntervalId, appendOutput]);
+  }, [code, level, runIntervalId, appendOutput]);
 
   useEffect(() => {
     initInterpreter();
@@ -90,7 +99,7 @@ export function Editor({ tabbed, startingFileName }: Props) {
     <div className={styles.editorContainer}>
       <div className={styles.left}>
         <div title={t("viewport.title")} className={styles.viewport}>
-          <Viewport />
+          <Viewport owl={owl} level={level} />
         </div>
         <ButtonGroup center>
           <RunControls
@@ -135,7 +144,6 @@ export function Editor({ tabbed, startingFileName }: Props) {
               currentLine={currentLine}
               runSpeed={runSpeed}
               isRunning={isRunning}
-              startingFileName={startingFileName}
             />
           ) : (
             <CodeEditor

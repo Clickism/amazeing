@@ -6,6 +6,7 @@ import { BiPencil, BiTrash } from "react-icons/bi";
 import { useState } from "react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import Popup from "reactjs-popup";
 
 export type FileListProps = {
   activeFile: string;
@@ -97,6 +98,19 @@ export function FileList({ activeFile, setActiveFile }: FileListProps) {
               >
                 <BiPencil />
               </Button>
+              <Popup>
+                <div>
+                  {t("fileList.deleteConfirm")}
+                </div>
+                <Button
+                  variant="danger"
+                  shape="icon"
+                  size="small"
+                  onClick={() => handleDeleteFile(name)}
+                >
+                  <BiTrash /> {t("fileList.delete")}
+                </Button>
+              </Popup>
               <Button
                 variant="danger"
                 shape="icon"

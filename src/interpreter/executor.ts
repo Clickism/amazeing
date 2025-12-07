@@ -19,12 +19,15 @@ type Executors = {
  * Executors for each instruction type.
  */
 export const EXECUTORS = {
-  move: () => {
-    throw new Error("Not implemented");
+  move: (env) => {
+    if (!env.level.canOwlMove(env.owl)) {
+      throw new Error("Owl cannot move forward due to a wall.");
+    }
+    env.owl.move();
   },
 
-  turn: () => {
-    throw new Error("Not implemented");
+  turn: (env, { direction }) => {
+    env.owl.turn(direction);
   },
 
   var: (env, { name, isArray }) => {
@@ -136,7 +139,10 @@ export const EXECUTORS = {
       env.console.log({ type: "log", text: `DEBUG: ${src} = NO VALUE` });
     } else {
       // TODO: Add type information
-      env.console.log({ type: "log", text: `DEBUG: ${src} = ${value}, type = ${typeof value}` });
+      env.console.log({
+        type: "log",
+        text: `DEBUG: ${src} = ${value}, type = ${typeof value}`,
+      });
     }
   },
 } as Executors;

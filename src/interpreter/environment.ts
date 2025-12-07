@@ -1,6 +1,6 @@
 import type { LabelDefinition } from "./instruction.ts";
 import { InterpreterConsole } from "./console.ts";
-import type { Owl } from "./owl.ts";
+import type { Owl } from "../game/owl.ts";
 import {
   type Address,
   type Array,
@@ -11,6 +11,7 @@ import {
   type Variable,
 } from "./types.ts";
 import { ErrorWithTip } from "./error.ts";
+import type { Level } from "../game/level.ts";
 
 export type VariableValue = Value | Array | null;
 export type VariableValueNotNull = Value | Array;
@@ -34,7 +35,8 @@ function isArg(address: Address) {
 export class Environment {
   labels: Map<string, LabelDefinition>;
   console: InterpreterConsole;
-  owl?: Owl;
+  owl: Owl;
+  level: Level;
   private global: VariableMap;
   private stack: StackFrame[];
   private args: VariableMap;
@@ -42,6 +44,8 @@ export class Environment {
   constructor(
     labels: Map<string, LabelDefinition>,
     interpreterConsole: InterpreterConsole,
+    owl: Owl,
+    level: Level,
     global: VariableMap = new Map(),
     stack: StackFrame[] = [],
     args: VariableMap = new Map(),
@@ -51,6 +55,8 @@ export class Environment {
     this.global = global;
     this.stack = stack;
     this.args = args;
+    this.owl = owl;
+    this.level = level;
   }
 
   /**

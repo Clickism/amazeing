@@ -4,6 +4,8 @@ import { ErrorWithTip, LocatableError } from "./error.ts";
 import { Environment } from "./environment.ts";
 import { type InterpreterConsole } from "./console.ts";
 import { EXECUTORS } from "./executor.ts";
+import type { Owl } from "../game/owl.ts";
+import type { Level } from "../game/level.ts";
 
 const MAX_STEPS = 10000;
 
@@ -100,15 +102,19 @@ export class InterpreterImpl extends Interpreter {
    * Parses the given code and returns a new Interpreter instance.
    * @param code The code to parse.
    * @param interpreterConsole The console to use for logging.
+   * @param owl The owl instance.
+   * @param level The level.
    */
   static fromCode(
     code: string,
     interpreterConsole: InterpreterConsole,
+    owl: Owl,
+    level: Level,
   ): Interpreter {
     const { instructions, labels } = parse(code);
     return new InterpreterImpl(
       instructions,
-      new Environment(labels, interpreterConsole),
+      new Environment(labels, interpreterConsole, owl, level),
     );
   }
 
@@ -216,29 +222,50 @@ export class InterpreterImpl extends Interpreter {
 export class LazyInterpreter extends Interpreter {
   code: string;
   console: InterpreterConsole;
+  owl: Owl;
+  level: Level;
   interpreter: Interpreter | null = null;
   hasError: boolean = false;
 
-  private constructor(code: string, console: InterpreterConsole) {
+  private constructor(
+    code: string,
+    console: InterpreterConsole,
+    owl: Owl,
+    level: Level,
+  ) {
     super();
     this.code = code;
     this.console = console;
+    this.owl = owl;
+    this.level = level;
   }
 
   /**
    * Creates a new lazily initialized Interpreter from the given code and console.
    * @param code The code to interpret.
    * @param console The console to use for logging.
+   * @param owl The owl instance.
+   * @param level The level.
    */
-  static fromCode(code: string, console: InterpreterConsole): LazyInterpreter {
-    return new LazyInterpreter(code, console);
+  static fromCode(
+    code: string,
+    console: InterpreterConsole,
+    owl: Owl,
+    level: Level,
+  ): LazyInterpreter {
+    return new LazyInterpreter(code, console, owl, level);
   }
 
   init() {
     if (this.interpreter !== null) return;
     if (this.hasError) return;
     try {
-      this.interpreter = InterpreterImpl.fromCode(this.code, this.console);
+      this.interpreter = InterpreterImpl.fromCode(
+        this.code,
+        this.console,
+        this.owl,
+        this.level,
+      );
     } catch (e) {
       this.hasError = true;
       throw e;

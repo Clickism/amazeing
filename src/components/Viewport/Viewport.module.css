@@ -4,33 +4,12 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
-  cursor: grab;
   user-select: none;
   -webkit-user-select: none;
+
+  background: linear-gradient(180deg, #cbe8ff, #f8faff);
 }
 
-.viewport:active {
-  cursor: grabbing;
-}
-
-.mazeContainer {
-  display: grid;
-  grid-template-columns: repeat(10, 40px);
-  grid-template-rows: repeat(6, 40px);
-  gap: 2px;
-}
-
-.cell {
-  width: 40px;
-  height: 40px;
-  background-color: #eee;
-}
-
-.wall {
-  background-color: #333;
-}
-
-.owl {
-  background-image: url('/src/assets/owl.png');
-  background-size: cover;
+.canvas {
+  image-rendering: pixelated;
 }
