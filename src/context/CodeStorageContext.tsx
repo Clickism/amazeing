@@ -13,6 +13,8 @@ export const CodeStorageContext = createContext<
       deleteFile: (name: string) => void;
       renameFile: (oldName: string, newName: string) => void;
       clearAll: () => void;
+      setActiveFile: (name: string) => void;
+      getActiveFile: () => string | null;
     }
   | undefined
 >(undefined);

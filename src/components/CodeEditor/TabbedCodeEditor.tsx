@@ -10,15 +10,22 @@ export function TabbedCodeEditor({
   startingFileName,
   ...props
 }: TabbedEditorProps) {
-  const { fileNames, saveFile } = useCodeStorage();
+  const { fileNames, saveFile, setActiveFile, getActiveFile } =
+    useCodeStorage();
   const [fileName, setFileName] = useState<string | null>(
-    startingFileName ?? fileNames[0],
+    startingFileName ?? getActiveFile() ?? fileNames[0],
   );
   useEffect(() => {
     if (fileNames.length === 0) {
       saveFile({ name: "Untitled", content: "# Write your code here" });
     }
   }, [fileNames, saveFile]);
+  // Save active file
+  useEffect(() => {
+    if (fileName !== null) {
+      setActiveFile(fileName);
+    }
+  }, [fileName, setActiveFile]);
   return (
     <CodeEditor
       tabbed

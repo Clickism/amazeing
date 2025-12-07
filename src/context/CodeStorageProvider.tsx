@@ -10,9 +10,10 @@ export function CodeStorageProvider({
   fileNamespace,
   children,
 }: ProviderProps) {
-  const storageKey = `editor:${fileNamespace}:files`;
+  const storageKey = `editor:${fileNamespace}`;
+  const filesStorageKey = `${storageKey}:files`;
   const [files, setFiles] = useState<Record<string, CodeFile>>(() => {
-    const raw = localStorage.getItem(storageKey);
+    const raw = localStorage.getItem(filesStorageKey);
     if (!raw) return {};
     try {
       return JSON.parse(raw);
@@ -24,8 +25,8 @@ export function CodeStorageProvider({
   const fileNames = Object.keys(files);
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(files));
-  }, [files, storageKey]);
+    localStorage.setItem(filesStorageKey, JSON.stringify(files));
+  }, [files, filesStorageKey]);
 
   const saveFile = useCallback(({ name, content }: CodeFile) => {
     setFiles((prev) => ({
@@ -72,6 +73,14 @@ export function CodeStorageProvider({
     });
   }, []);
 
+  const setActiveFile = useCallback((name: string) => {
+    localStorage.setItem(`${storageKey}:activeFile`, name);
+  }, [storageKey]);
+
+  const getActiveFile = useCallback(() => {
+    return localStorage.getItem(`${storageKey}:activeFile`) ?? null;
+  }, [storageKey])
+
   return (
     <CodeStorageContext.Provider
       value={{
@@ -81,6 +90,8 @@ export function CodeStorageProvider({
         deleteFile,
         renameFile,
         clearAll,
+        setActiveFile,
+        getActiveFile
       }}
     >
       {children}
