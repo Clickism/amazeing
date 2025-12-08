@@ -1,4 +1,4 @@
-import type { CardinalDirection, LeftRight, Position } from "../interpreter/types.ts";
+import  { type CardinalDirection, inDirection, type LeftRight, type Position } from "../interpreter/types.ts";
 
 /**
  * Represents the owl in the map.
@@ -35,18 +35,7 @@ export class OwlImpl implements Owl {
   }
 
   nextPosition(): Position {
-    const x = this.position.x;
-    const y = this.position.y;
-    switch (this.direction) {
-      case "north":
-        return { x: x, y: y - 1 };
-      case "east":
-        return { x: x + 1, y: y };
-      case "south":
-        return { x: x, y: y + 1 };
-      case "west":
-        return { x: x - 1, y: y };
-    }
+    return inDirection(this.position, this.direction);
   }
 
   turn(direction: LeftRight): void {

@@ -1,4 +1,4 @@
-import type { Maze, WallType } from "./maze";
+import { Maze, type Wall } from "./maze";
 import type { Owl } from "./owl";
 import type { CardinalDirection } from "../interpreter/types";
 import type { SpriteMap } from "./sprites";
@@ -15,8 +15,8 @@ export function renderCanvas(
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const rows = maze.tiles.length;
-  const cols = maze.tiles[0].length;
+  const rows = maze.height();
+  const cols = maze.width();
 
   canvas.width = cols * CELL_SIZE;
   canvas.height = rows * CELL_SIZE;
@@ -35,12 +35,13 @@ function drawTiles(
   maze: Maze,
   sprites: SpriteMap,
 ) {
-  const rows = maze.tiles.length;
-  const cols = maze.tiles[0].length;
+  const rows = maze.height();
+  const cols = maze.width();
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      const tile = maze.tiles[y][x];
+      const tile = maze.tileAt({ x, y });
+      if (!tile) continue;
       const img = sprites.tiles[tile.type];
 
       // full tile draw
@@ -54,19 +55,52 @@ function drawWalls(
   maze: Maze,
   sprites: SpriteMap,
 ) {
-  const rows = maze.tiles.length;
-  const cols = maze.tiles[0].length;
+  const rows = maze.height();
+  const cols = maze.width();
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      const tile = maze.tiles[y][x];
       const px = x * CELL_SIZE;
       const py = y * CELL_SIZE;
 
-      drawWallImage(ctx, sprites, px, py, CELL_SIZE, tile.walls.north, "north");
-      drawWallImage(ctx, sprites, px, py, CELL_SIZE, tile.walls.south, "south");
-      drawWallImage(ctx, sprites, px, py, CELL_SIZE, tile.walls.east, "east");
-      drawWallImage(ctx, sprites, px, py, CELL_SIZE, tile.walls.west, "west");
+      const pos = { x, y };
+
+      drawWallImage(
+        ctx,
+        sprites,
+        px,
+        py,
+        CELL_SIZE,
+        maze.wallAt(pos, "north"),
+        "north",
+      );
+      drawWallImage(
+        ctx,
+        sprites,
+        px,
+        py,
+        CELL_SIZE,
+        maze.wallAt(pos, "south"),
+        "south",
+      );
+      drawWallImage(
+        ctx,
+        sprites,
+        px,
+        py,
+        CELL_SIZE,
+        maze.wallAt(pos, "east"),
+        "east",
+      );
+      drawWallImage(
+        ctx,
+        sprites,
+        px,
+        py,
+        CELL_SIZE,
+        maze.wallAt(pos, "west"),
+        "west",
+      );
     }
   }
 }
@@ -77,12 +111,12 @@ function drawWallImage(
   x: number,
   y: number,
   cell: number,
-  wall: WallType,
+  wall: Wall | null,
   dir: CardinalDirection,
 ) {
-  if (!wall) return;
+  if (!wall || wall.type === null) return;
 
-  const img = sprites.walls[wall];
+  const img = sprites.walls[wall.type];
 
   switch (dir) {
     case "north":

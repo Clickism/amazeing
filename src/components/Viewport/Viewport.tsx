@@ -3,7 +3,6 @@ import styles from "./Viewport.module.css";
 import clsx from "clsx";
 
 import type { Owl } from "../../game/owl.ts";
-import type { Maze } from "../../game/maze.ts";
 import type { Level } from "../../game/level.ts";
 import { renderCanvas } from "../../game/renderer.ts";
 import { loadSprites, type SpriteMap } from "../../game/sprites.ts";
@@ -17,7 +16,7 @@ export function Viewport({ owl, level }: ViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [sprites, setSprites] = useState<SpriteMap | null>(null);
 
-  const maze: Maze = level.data.maze;
+  const maze = level.maze;
 
   // Load sprites once
   useEffect(() => {

@@ -38,3 +38,17 @@ export function oppositeDirection(
       return "east";
   }
 }
+
+export function inDirection(position: Position, direction: CardinalDirection) {
+  const { x, y } = position;
+  switch (direction) {
+    case "north":
+      return { x, y: y - 1 };
+    case "south":
+      return { x, y: y + 1 };
+    case "east":
+      return { x: x + 1, y };
+    case "west":
+      return { x: x - 1, y };
+  }
+}

@@ -4,55 +4,27 @@ import { Editor } from "../components/Editor/Editor.tsx";
 import { Level } from "../game/level.ts";
 
 const sandboxLevel = new Level({
-  name: "Sandbox",
-  description: "Sandbox Level",
+  name: "Test Level",
+  description: "A tiny 3x3 test maze.",
   maze: {
     tiles: [
-      [
-        {
-          type: "grass",
-          walls: { north: "stone", south: null, east: null, west: "stone" },
-        },
-        {
-          type: "grass",
-          walls: { north: "stone", south: null, east: null, west: null },
-        },
-        {
-          type: "grass",
-          walls: { north: "stone", south: null, east: "stone", west: null },
-        },
-      ],
-
-      [
-        {
-          type: "grass",
-          walls: { north: null, south: null, east: "stone", west: "stone" },
-        },
-        {
-          type: "grass",
-          walls: { north: null, south: null, east: null, west: "stone" },
-        },
-        {
-          type: "grass",
-          walls: { north: null, south: null, east: "stone", west: null },
-        },
-      ],
-
-      [
-        {
-          type: "grass",
-          walls: { north: null, south: "stone", east: null, west: "stone" },
-        },
-        {
-          type: "grass",
-          walls: { north: null, south: "stone", east: null, west: null },
-        },
-        {
-          type: "grass",
-          walls: { north: null, south: "stone", east: "stone", west: null },
-        },
-      ],
+      [{ type: "grass" }, { type: "grass" }, { type: "grass" }],
+      [{ type: "grass" }, { type: "grass" }, { type: "grass" }],
+      [{ type: "grass" }, { type: "grass" }, { type: "grass" }],
     ],
+    walls: {
+      horizontal: [
+        [{ type: null }, { type: null }, { type: null }],
+        [{ type: "stone" }, { type: null }, { type: null }],
+        [{ type: null }, { type: null }, { type: null }],
+        [{ type: null }, { type: null }, { type: null }],
+      ],
+      vertical: [
+        [{ type: null }, { type: null }, { type: null }, { type: null }],
+        [{ type: null }, { type: "stone" }, { type: null }, { type: null }],
+        [{ type: null }, { type: null }, { type: null }, { type: null }],
+      ],
+    },
   },
   owlStart: {
     position: { x: 0, y: 0 },
