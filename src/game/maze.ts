@@ -1,23 +1,14 @@
 import type { CardinalDirection, Position } from "../interpreter/types.ts";
 
-export type Tile = {
-  type: TileType;
-};
-
-export type Wall = {
-  type: WallType | null;
-};
-
 export type MazeData = {
-  tiles: Tile[][];
+  tiles: TileType[][];
   walls: {
-    horizontal: Wall[][];
-    vertical: Wall[][];
+    horizontal: (WallType | null)[][];
+    vertical: (WallType | null)[][];
   };
 };
 
 export type TileType = "grass";
-
 export type WallType = "stone";
 
 /**
@@ -48,7 +39,7 @@ export class Maze {
    * Gets the tile at a given position.
    * @param position
    */
-  tileAt(position: Position): Tile | null {
+  tileAt(position: Position): TileType | null {
     const { x, y } = position;
     if (y < 0 || y >= this.data.tiles.length) {
       return null;
@@ -64,7 +55,7 @@ export class Maze {
    * @param position
    * @param direction
    */
-  wallAt(position: Position, direction: CardinalDirection): Wall | null {
+  wallAt(position: Position, direction: CardinalDirection): WallType | null {
     const { x, y } = position;
     switch (direction) {
       case "north":

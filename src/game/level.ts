@@ -35,7 +35,6 @@ export class Level {
 
   canOwlMove(owl: Owl): boolean {
     const wall = this.maze.wallAt(owl.position, owl.direction);
-    if (!wall) return false;
-    return wall.type === null;
+    return wall === null;
   }
 }

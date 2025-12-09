@@ -8,21 +8,21 @@ const sandboxLevel = new Level({
   description: "A tiny 3x3 test maze.",
   maze: {
     tiles: [
-      [{ type: "grass" }, { type: "grass" }, { type: "grass" }],
-      [{ type: "grass" }, { type: "grass" }, { type: "grass" }],
-      [{ type: "grass" }, { type: "grass" }, { type: "grass" }],
+      ["grass", "grass", "grass"],
+      ["grass", "grass", "grass"],
+      ["grass", "grass", "grass"],
     ],
     walls: {
       horizontal: [
-        [{ type: null }, { type: null }, { type: null }],
-        [{ type: "stone" }, { type: null }, { type: null }],
-        [{ type: null }, { type: null }, { type: null }],
-        [{ type: null }, { type: null }, { type: null }],
+        [null, null, null],
+        ["stone", null, "stone"],
+        [null, null, null],
+        [null, null, null],
       ],
       vertical: [
-        [{ type: null }, { type: null }, { type: null }, { type: null }],
-        [{ type: null }, { type: "stone" }, { type: null }, { type: null }],
-        [{ type: null }, { type: null }, { type: null }, { type: null }],
+        [null, null, "stone", null],
+        [null, "stone", "stone", null],
+        [null, null, null, null],
       ],
     },
   },

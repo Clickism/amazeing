@@ -1,4 +1,4 @@
-import { Maze, type Wall } from "./maze";
+import { Maze, type WallType } from "./maze";
 import type { Owl } from "./owl";
 import type { CardinalDirection } from "../interpreter/types";
 import type { SpriteMap } from "./sprites";
@@ -42,7 +42,7 @@ function drawTiles(
     for (let x = 0; x < cols; x++) {
       const tile = maze.tileAt({ x, y });
       if (!tile) continue;
-      const img = sprites.tiles[tile.type];
+      const img = sprites.tiles[tile];
 
       // full tile draw
       ctx.drawImage(img, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
@@ -111,12 +111,11 @@ function drawWallImage(
   x: number,
   y: number,
   cell: number,
-  wall: Wall | null,
+  wall: WallType | null,
   dir: CardinalDirection,
 ) {
-  if (!wall || wall.type === null) return;
-
-  const img = sprites.walls[wall.type];
+  if (!wall) return;
+  const img = sprites.walls[wall];
 
   switch (dir) {
     case "north":
