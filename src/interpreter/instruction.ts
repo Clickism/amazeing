@@ -101,3 +101,15 @@ export const ALL_INSTRUCTIONS = [
   "print",
   "debug",
 ]
+
+export const ALL_CONSTANTS = [
+  "north",
+  "east",
+  "south",
+  "west",
+  "left",
+  "right",
+  "here",
+  "front",
+  "back",
+]
