@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import type { Owl } from "../../game/owl.ts";
 import type { Level } from "../../game/level.ts";
-import { renderCanvas } from "../../game/renderer.ts";
+import { Renderer } from "../../game/renderer.ts";
 import { loadSprites, type SpriteMap } from "../../game/sprites.ts";
 
 export type ViewportProps = {
@@ -29,7 +29,7 @@ export function Viewport({ owl, level }: ViewportProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    renderCanvas(canvas, maze, owl, sprites);
+    new Renderer(canvas, maze, owl, sprites).render();
   }, [maze, owl, sprites]);
 
   return (

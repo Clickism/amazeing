@@ -20,7 +20,7 @@ const sandboxLevel = new Level({
         [null, null, null],
       ],
       vertical: [
-        [null, null, "stone", null],
+        [null, null, null, null],
         [null, "stone", "stone", null],
         [null, null, null, null],
       ],

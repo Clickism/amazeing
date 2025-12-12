@@ -1,4 +1,10 @@
-import  { type CardinalDirection, inDirection, type LeftRight, type Position } from "../interpreter/types.ts";
+import {
+  CARDINAL_DIRECTIONS,
+  type CardinalDirection,
+  inDirection,
+  type LeftRight,
+  type Position,
+} from "../interpreter/types.ts";
 
 /**
  * Represents the owl in the map.
@@ -11,8 +17,6 @@ export interface Owl {
   nextPosition(): Position;
   turn(direction: LeftRight): void;
 }
-
-const directions: CardinalDirection[] = ["north", "east", "south", "west"];
 
 export class OwlImpl implements Owl {
   position: Position;
@@ -39,13 +43,13 @@ export class OwlImpl implements Owl {
   }
 
   turn(direction: LeftRight): void {
-    let currentIndex = directions.indexOf(this.direction);
+    let currentIndex = CARDINAL_DIRECTIONS.indexOf(this.direction);
     if (direction === "left") {
       currentIndex = (currentIndex + 3) % 4;
     } else {
       currentIndex = (currentIndex + 1) % 4;
     }
-    this.direction = directions[currentIndex];
+    this.direction = CARDINAL_DIRECTIONS[currentIndex];
     this.updateCallback(this);
   }
 }

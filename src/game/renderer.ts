@@ -1,148 +1,117 @@
 import { Maze, type WallType } from "./maze";
 import type { Owl } from "./owl";
-import type { CardinalDirection } from "../interpreter/types";
+import type { CardinalDirection, Position } from "../interpreter/types";
 import type { SpriteMap } from "./sprites";
 
-const CELL_SIZE = 64;
-const WALL_THICKNESS = 12;
+const OWL_SIZE = 16;
+const CELL_SIZE = 32;
 
-export function renderCanvas(
-  canvas: HTMLCanvasElement,
-  maze: Maze,
-  owl: Owl,
-  sprites: SpriteMap,
-) {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+export class Renderer {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  maze: Maze;
+  owl: Owl;
+  sprites: SpriteMap;
+  scale: number;
 
-  const rows = maze.height();
-  const cols = maze.width();
+  constructor(
+    canvas: HTMLCanvasElement,
+    maze: Maze,
+    owl: Owl,
+    sprites: SpriteMap,
+    scale: number = 4,
+  ) {
+    this.canvas = canvas;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Failed to get canvas 2D context");
+    this.ctx = ctx;
+    this.maze = maze;
+    this.owl = owl;
+    this.sprites = sprites;
+    this.scale = scale;
+  }
 
-  canvas.width = cols * CELL_SIZE;
-  canvas.height = rows * CELL_SIZE;
+  render() {
+    const rows = this.maze.height();
+    const cols = this.maze.width();
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.canvas.width = cols * CELL_SIZE * this.scale;
+    this.canvas.height = rows * CELL_SIZE * this.scale;
 
-  ctx.save();
-  drawTiles(ctx, maze, sprites);
-  drawWalls(ctx, maze, sprites);
-  drawOwl(ctx, owl, sprites);
-  ctx.restore();
-}
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-function drawTiles(
-  ctx: CanvasRenderingContext2D,
-  maze: Maze,
-  sprites: SpriteMap,
-) {
-  const rows = maze.height();
-  const cols = maze.width();
+    this.ctx.save();
+    this.ctx.imageSmoothingEnabled = false;
+    this.ctx.scale(this.scale, this.scale);
 
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      const tile = maze.tileAt({ x, y });
-      if (!tile) continue;
-      const img = sprites.tiles[tile];
+    this.drawTiles();
+    this.drawWalls();
+    this.drawOwl();
+    this.ctx.restore();
+  }
 
-      // full tile draw
-      ctx.drawImage(img, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+  drawTiles() {
+    const rows = this.maze.height();
+    const cols = this.maze.width();
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const tile = this.maze.tileAt({ x, y });
+        if (!tile) continue;
+        const img = this.sprites.tiles[tile];
+        this.ctx.drawImage(
+          img,
+          x * CELL_SIZE,
+          y * CELL_SIZE,
+          CELL_SIZE,
+          CELL_SIZE,
+        );
+      }
     }
   }
-}
 
-function drawWalls(
-  ctx: CanvasRenderingContext2D,
-  maze: Maze,
-  sprites: SpriteMap,
-) {
-  const rows = maze.height();
-  const cols = maze.width();
+  drawWalls() {
+    this.maze.forEachWall((position, direction, wall) => {
+      this.drawWallImage(position, direction, wall);
+    });
+  }
 
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      const px = x * CELL_SIZE;
-      const py = y * CELL_SIZE;
-
-      const pos = { x, y };
-
-      drawWallImage(
-        ctx,
-        sprites,
-        px,
-        py,
+  drawWallImage(
+    position: Position,
+    direction: CardinalDirection,
+    wall: WallType,
+  ) {
+    const offset = CELL_SIZE / 2;
+    const x = position.x * CELL_SIZE;
+    const y = position.y * CELL_SIZE;
+    const img = this.sprites.walls[wall];
+    if (direction === "north" || direction === "south") {
+      this.ctx.drawImage(
+        img.horizontal,
+        x,
+        direction === "north" ? y - offset : y + offset,
         CELL_SIZE,
-        maze.wallAt(pos, "north"),
-        "north",
+        CELL_SIZE,
       );
-      drawWallImage(
-        ctx,
-        sprites,
-        px,
-        py,
+    } else {
+      this.ctx.drawImage(
+        img.vertical,
+        direction === "west" ? x - offset : x + offset,
+        y,
         CELL_SIZE,
-        maze.wallAt(pos, "south"),
-        "south",
-      );
-      drawWallImage(
-        ctx,
-        sprites,
-        px,
-        py,
         CELL_SIZE,
-        maze.wallAt(pos, "east"),
-        "east",
-      );
-      drawWallImage(
-        ctx,
-        sprites,
-        px,
-        py,
-        CELL_SIZE,
-        maze.wallAt(pos, "west"),
-        "west",
       );
     }
   }
-}
 
-function drawWallImage(
-  ctx: CanvasRenderingContext2D,
-  sprites: SpriteMap,
-  x: number,
-  y: number,
-  cell: number,
-  wall: WallType | null,
-  dir: CardinalDirection,
-) {
-  if (!wall) return;
-  const img = sprites.walls[wall];
-
-  switch (dir) {
-    case "north":
-      ctx.drawImage(img, x, y, cell, WALL_THICKNESS);
-      break;
-
-    case "south":
-      ctx.drawImage(img, x, y + cell - WALL_THICKNESS, cell, WALL_THICKNESS);
-      break;
-
-    case "west":
-      ctx.drawImage(img, x, y, WALL_THICKNESS, cell);
-      break;
-
-    case "east":
-      ctx.drawImage(img, x + cell - WALL_THICKNESS, y, WALL_THICKNESS, cell);
-      break;
+  drawOwl() {
+    const img = this.sprites.owl[this.owl.direction];
+    this.ctx.drawImage(
+      img,
+      this.owl.position.x * CELL_SIZE + (CELL_SIZE - OWL_SIZE) / 2,
+      this.owl.position.y * CELL_SIZE + (CELL_SIZE - OWL_SIZE) / 2,
+      OWL_SIZE,
+      OWL_SIZE,
+    );
   }
-}
-
-function drawOwl(ctx: CanvasRenderingContext2D, owl: Owl, sprites: SpriteMap) {
-  const img = sprites.owl[owl.direction];
-  ctx.drawImage(
-    img,
-    owl.position.x * CELL_SIZE,
-    owl.position.y * CELL_SIZE,
-    CELL_SIZE,
-    CELL_SIZE,
-  );
 }

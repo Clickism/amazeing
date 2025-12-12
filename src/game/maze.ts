@@ -1,4 +1,8 @@
-import type { CardinalDirection, Position } from "../interpreter/types.ts";
+import {
+  CARDINAL_DIRECTIONS,
+  type CardinalDirection,
+  type Position,
+} from "../interpreter/types.ts";
 
 export type MazeData = {
   tiles: TileType[][];
@@ -70,6 +74,37 @@ export class Maze {
       case "west":
         if (x <= 0) return null;
         return this.data.walls.vertical[y][x];
+    }
+  }
+
+  forEachTile(callback: (position: Position, tile: TileType) => void) {
+    const rows = this.height();
+    const cols = this.width();
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const tile = this.tileAt({ x, y });
+        if (tile !== null) {
+          callback({ x, y }, tile);
+        }
+      }
+    }
+  }
+
+  forEachWall(callback: (position: Position, direction: CardinalDirection, wall: WallType) => void) {
+    const rows = this.height();
+    const cols = this.width();
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const pos = { x, y };
+        for (const dir of CARDINAL_DIRECTIONS) {
+          const wall = this.wallAt(pos, dir);
+          if (wall !== null) {
+            callback(pos, dir, wall);
+          }
+        }
+      }
     }
   }
 }

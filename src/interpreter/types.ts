@@ -24,6 +24,8 @@ export function isArrayAccess(address: Address): address is ArrayAccess {
   return typeof address !== "string";
 }
 
+export const CARDINAL_DIRECTIONS: CardinalDirection[] = ["north", "east", "south", "west"];
+
 export function oppositeDirection(
   direction: CardinalDirection,
 ): CardinalDirection {

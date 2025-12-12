@@ -1,5 +1,4 @@
 .viewport {
-  background-color: black;
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -10,5 +9,9 @@
 }
 
 .canvas {
+  image-rendering: pixelated;
+}
+
+.canvas img {
   image-rendering: pixelated;
 }
