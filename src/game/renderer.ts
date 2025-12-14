@@ -12,7 +12,11 @@ export class Renderer {
   maze: Maze;
   owl: Owl;
   sprites: SpriteMap;
+  dpr: number = window.devicePixelRatio || 1;
   scale: number;
+
+  offsetX: number;
+  offsetY: number;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -29,25 +33,57 @@ export class Renderer {
     this.owl = owl;
     this.sprites = sprites;
     this.scale = scale;
+
+    const mazeWidth = this.maze.width() * CELL_SIZE;
+    const mazeHeight = this.maze.height() * CELL_SIZE;
+
+    const canvasWidth = this.canvas.width / (this.dpr * this.scale);
+    const canvasHeight = this.canvas.height / (this.dpr * this.scale);
+
+    this.offsetX = (canvasWidth - mazeWidth) / 2;
+    this.offsetY = (canvasHeight - mazeHeight) / 2;
   }
 
   render() {
-    const rows = this.maze.height();
-    const cols = this.maze.width();
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.canvas.width = cols * CELL_SIZE * this.scale;
-    this.canvas.height = rows * CELL_SIZE * this.scale;
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+    ctx.scale(this.scale, this.scale);
 
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.translate(this.offsetX, this.offsetY);
 
-    this.ctx.save();
-    this.ctx.imageSmoothingEnabled = false;
-    this.ctx.scale(this.scale, this.scale);
-
+    this.drawWaterTiles();
     this.drawTiles();
     this.drawWalls();
     this.drawOwl();
-    this.ctx.restore();
+    ctx.restore();
+  }
+
+  drawWaterTiles() {
+    const img = this.sprites.tiles.water;
+
+    const cols = Math.ceil(this.canvas.width / CELL_SIZE);
+    const rows = Math.ceil(this.canvas.height / CELL_SIZE);
+
+    const startX = -Math.floor(this.offsetX / CELL_SIZE) - 1;
+    const startY = -Math.floor(this.offsetY / CELL_SIZE) - 1;
+
+    const endX = startX + cols + 2;
+    const endY = startY + rows + 2;
+
+    for (let y = startY; y < endX; y++) {
+      for (let x = startX; x < endY; x++) {
+        this.ctx.drawImage(
+          img,
+          x * CELL_SIZE,
+          y * CELL_SIZE,
+          CELL_SIZE,
+          CELL_SIZE,
+        );
+      }
+    }
   }
 
   drawTiles() {

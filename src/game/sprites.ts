@@ -2,6 +2,7 @@ import type { TileType, WallType } from "./maze.ts";
 import type { CardinalDirection } from "../interpreter/types.ts";
 
 import grass from "../assets/sprites/game/tiles/grass.png";
+import water from "../assets/sprites/game/tiles/water.png";
 import wallStoneVertical from "../assets/sprites/game/walls/fence_vertical.png";
 import wallStoneHorizontal from "../assets/sprites/game/walls/fence_horizontal.png";
 
@@ -34,6 +35,7 @@ export async function loadSprites(): Promise<SpriteMap> {
   return {
     tiles: {
       grass: await load(grass),
+      water: await load(water),
     },
     walls: {
       stone: {

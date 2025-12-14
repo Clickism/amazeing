@@ -25,11 +25,24 @@ export function Viewport({ owl, level }: ViewportProps) {
 
   // Render when sprites are loaded
   useEffect(() => {
-    if (!sprites) return; // wait for images
+    if (!sprites) return; // Wait for images
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    new Renderer(canvas, maze, owl, sprites).render();
+    const resize = () => {
+      const rect = canvas.parentElement!.getBoundingClientRect();
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+
+      const renderer = new Renderer(canvas, maze, owl, sprites);
+      renderer.render();
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
   }, [maze, owl, sprites]);
 
   return (

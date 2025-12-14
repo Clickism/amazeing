@@ -12,7 +12,7 @@ export type MazeData = {
   };
 };
 
-export type TileType = "grass";
+export type TileType = "grass" | "water";
 export type WallType = "stone";
 
 /**
