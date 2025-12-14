@@ -7,7 +7,7 @@ import wallStoneVertical from "../assets/sprites/game/walls/fence_vertical.png";
 import wallStoneHorizontal from "../assets/sprites/game/walls/fence_horizontal.png";
 
 import owlNorth from "../assets/sprites/game/owl/north.png";
-import owlSouth from "../assets/sprites/game/owl/south_outline.png";
+import owlSouth from "../assets/sprites/game/owl/south.png";
 import owlEast from "../assets/sprites/game/owl/east.png";
 import owlWest from "../assets/sprites/game/owl/west.png";
 

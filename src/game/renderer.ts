@@ -3,7 +3,7 @@ import type { Owl } from "./owl";
 import type { CardinalDirection, Position } from "../interpreter/types";
 import type { SpriteMap } from "./sprites";
 
-const OWL_SIZE = 16;
+const OWL_SIZE = 32;
 const CELL_SIZE = 32;
 
 export class Renderer {
