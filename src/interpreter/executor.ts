@@ -5,6 +5,7 @@ import type {
 import { Environment } from "./environment.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { PcTarget } from "./interpreter.ts";
+import { booleanToInteger } from "./types.ts";
 
 export type Executor<T extends Instruction["type"]> = (
   env: Environment,
@@ -28,6 +29,14 @@ export const EXECUTORS = {
 
   turn: (env, { direction }) => {
     env.owl.turn(direction);
+  },
+
+  explore: (env, { dest, direction }) => {
+    const owl = env.owl;
+    const normalized = owl.normalizeDirection(direction ?? owl.direction);
+    const isWalkable =
+      normalized === "here" ? true : env.level.canOwlMove(owl, normalized);
+    env.setOrThrow(dest, booleanToInteger(isWalkable));
   },
 
   var: (env, { name, isArray }) => {

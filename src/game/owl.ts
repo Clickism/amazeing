@@ -1,9 +1,11 @@
 import {
   CARDINAL_DIRECTIONS,
   type CardinalDirection,
+  type Direction,
   inDirection,
   type LeftRight,
-  type Position,
+  oppositeDirection,
+  type Position
 } from "../interpreter/types.ts";
 
 /**
@@ -16,6 +18,7 @@ export interface Owl {
   move(): void;
   nextPosition(): Position;
   turn(direction: LeftRight): void;
+  normalizeDirection(direction: Direction): CardinalDirection | "here";
 }
 
 export class OwlImpl implements Owl {
@@ -43,13 +46,36 @@ export class OwlImpl implements Owl {
   }
 
   turn(direction: LeftRight): void {
+    this.direction = this.normalizeLeftRight(direction);
+    this.updateCallback(this);
+  }
+
+  normalizeDirection(direction: Direction): CardinalDirection | "here" {
+    switch (direction) {
+      case "north":
+      case "east":
+      case "south":
+      case "west":
+        return direction;
+      case "left":
+      case "right":
+        return this.normalizeLeftRight(direction);
+      case "front":
+        return this.direction;
+      case "back":
+        return oppositeDirection(this.direction);
+      case "here":
+        return "here";
+    }
+  }
+
+  private normalizeLeftRight(direction: LeftRight): CardinalDirection {
     let currentIndex = CARDINAL_DIRECTIONS.indexOf(this.direction);
     if (direction === "left") {
       currentIndex = (currentIndex + 3) % 4;
     } else {
       currentIndex = (currentIndex + 1) % 4;
     }
-    this.direction = CARDINAL_DIRECTIONS[currentIndex];
-    this.updateCallback(this);
+    return CARDINAL_DIRECTIONS[currentIndex];
   }
 }

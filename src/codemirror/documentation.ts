@@ -53,6 +53,12 @@ export const INSTRUCTION_DOCUMENTATIONS: Documentations = {
     usage: "turn <direction: left_right>",
     description: `Turns the owl to the left or right based on "direction".`,
   },
+  explore: {
+    usage: "explore <dest: address> <direction: direction>?",
+    description:
+      `Checks if the owl can walk in the given "direction" or forward ` +
+      `if no "direction" is given and puts the result into "dest".`,
+  },
   var: [
     {
       usage: "var <name: identifier>",

@@ -1,4 +1,10 @@
-import type { Address, LeftRight, Value, Variable } from "./types.ts";
+import type {
+  Address,
+  Direction,
+  LeftRight,
+  Value,
+  Variable,
+} from "./types.ts";
 
 export type NoVarInstruction<T> = { type: T };
 export type OneVarInstruction<T> = {
@@ -26,6 +32,7 @@ export type ThreeVarIntermediateInstruction<T> = {
 export type Instruction =
   | NoVarInstruction<"move">
   | { type: "turn"; direction: LeftRight }
+  | { type: "explore"; dest: Address; direction?: Direction }
   // Variable instructions
   | { type: "var"; name: Variable; isArray: boolean }
   | { type: "load"; dest: Address; value: Value }
@@ -72,6 +79,7 @@ export type LabelDefinition = { label: string; pc: number };
 export const ALL_INSTRUCTIONS = [
   "move",
   "turn",
+  "explore",
   "var",
   "load",
   "copy",
@@ -100,7 +108,7 @@ export const ALL_INSTRUCTIONS = [
   "branchz",
   "print",
   "debug",
-]
+];
 
 export const ALL_CONSTANTS = [
   "north",
@@ -112,4 +120,4 @@ export const ALL_CONSTANTS = [
   "here",
   "front",
   "back",
-]
+];

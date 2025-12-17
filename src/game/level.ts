@@ -1,5 +1,9 @@
 import { Maze, type MazeData } from "./maze.ts";
-import { type CardinalDirection, type Position } from "../interpreter/types.ts";
+import {
+  type CardinalDirection,
+  inDirection,
+  type Position,
+} from "../interpreter/types.ts";
 import { type Owl, OwlImpl } from "./owl.ts";
 
 export type LevelData = {
@@ -33,8 +37,10 @@ export class Level {
     );
   }
 
-  canOwlMove(owl: Owl): boolean {
-    const wall = this.maze.wallAt(owl.position, owl.direction);
-    return wall === null;
+  canOwlMove(owl: Owl, direction?: CardinalDirection): boolean {
+    const directionToCheck = direction ?? owl.direction;
+    const wall = this.maze.wallAt(owl.position, directionToCheck);
+    const tile = this.maze.tileAt(inDirection(owl.position, directionToCheck));
+    return wall === null && tile !== null;
   }
 }

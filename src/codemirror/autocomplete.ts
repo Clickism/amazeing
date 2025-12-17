@@ -9,6 +9,7 @@ import { ALL_INSTRUCTIONS } from "../interpreter/instruction.ts";
 import { StreamLanguage } from "@codemirror/language";
 import { keywordPattern } from "./amazeing.ts";
 
+// TODO: No instruction autocomplete after the instruction name
 export const docLanguage = StreamLanguage.define({
   startState() {
     return {};

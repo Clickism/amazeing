@@ -3,9 +3,10 @@ export type Value = Integer;
 
 export type Position = { x: number; y: number };
 
-export type Direction = LeftRight | CardinalDirection;
-export type LeftRight = "left" | "right";
+export type Direction = RelativeDirection | CardinalDirection;
 export type CardinalDirection = "north" | "east" | "south" | "west";
+export type RelativeDirection = LeftRight | "front" | "back" | "here";
+export type LeftRight = "left" | "right";
 
 export type Integer = number;
 
@@ -24,7 +25,12 @@ export function isArrayAccess(address: Address): address is ArrayAccess {
   return typeof address !== "string";
 }
 
-export const CARDINAL_DIRECTIONS: CardinalDirection[] = ["north", "east", "south", "west"];
+export const CARDINAL_DIRECTIONS: CardinalDirection[] = [
+  "north",
+  "east",
+  "south",
+  "west",
+];
 
 export function oppositeDirection(
   direction: CardinalDirection,
@@ -53,4 +59,8 @@ export function inDirection(position: Position, direction: CardinalDirection) {
     case "west":
       return { x: x - 1, y };
   }
+}
+
+export function booleanToInteger(value: boolean): Integer {
+  return value ? 1 : 0;
 }

@@ -4,7 +4,13 @@ import type {
   LabelDefinition,
 } from "./instruction.ts";
 import { ErrorWithTip, LocatableError } from "./error.ts";
-import type { Address, ArrayIndex, LeftRight, Value } from "./types.ts";
+import type {
+  Address,
+  ArrayIndex,
+  Direction,
+  LeftRight,
+  Value,
+} from "./types.ts";
 
 const COMMENT_PREFIX = "#";
 
@@ -119,6 +125,14 @@ function parseInstruction(line: string): Instruction {
       assertArgsLength(type, args, 1);
       return { type, src: parseAddress(args[0]) };
     // Two var instructions
+    case "explore": {
+      assertArgsLength(type, args, 1, 2);
+      let direction = undefined;
+      if (args.length > 1) {
+        direction = parseDirection(args[1]);
+      }
+      return { type, dest: parseAddress(args[0]), direction };
+    }
     case "copy":
     case "not":
       assertArgsLength(type, args, 2);
@@ -215,6 +229,23 @@ function parseLeftRight(arg: string): LeftRight {
   throw new Error(`Invalid direction: "${arg}"`);
 }
 
+function parseDirection(arg: string): Direction {
+  switch (arg) {
+    case "left":
+    case "right":
+    case "north":
+    case "east":
+    case "west":
+    case "south":
+    case "front":
+    case "back":
+    case "here":
+      return arg;
+    default:
+      throw new Error(`Invalid direction: "${arg}"`);
+  }
+}
+
 function parseIdentifier(arg: string): string {
   if (/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(arg)) {
     return arg;
@@ -258,10 +289,12 @@ function assertArgsLength(
   instructionType: Instruction["type"],
   args: string[],
   expected: number,
+  expectedSecond?: number,
 ) {
-  if (args.length !== expected) {
+  if (args.length !== expected && args.length !== expectedSecond) {
     throw new Error(
-      `Expected ${expected} argument(s) for "${instructionType}", but got ${args.length} instead`,
+      `Expected ${expected + (expectedSecond ? " or " + expectedSecond : "")} ` +
+        `argument(s) for "${instructionType}", but got ${args.length} instead`,
     );
   }
 }
