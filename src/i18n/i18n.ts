@@ -17,3 +17,22 @@ await i18n
     fallbackLng: "en",
     interpolation: { escapeValue: false },
   });
+
+export type Translatable = string | TranslationKey;
+export type TranslationKey = { key: string };
+
+export function isTranslationKey(t: string | TranslationKey) {
+  return typeof t === "object" && "key" in t;
+}
+
+/**
+ * Translates the given key or returns the original string.
+ * @param t Translation function
+ * @param translatable Raw string or translation key
+ */
+export function tryTranslate(
+  t: (s: string) => string,
+  translatable: Translatable,
+): string {
+  return isTranslationKey(translatable) ? t(translatable.key) : translatable;
+}

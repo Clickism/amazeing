@@ -15,6 +15,9 @@ export type MazeData = {
 export type TileType = "grass" | "water";
 export type WallType = "stone";
 
+export const TILE_TYPES: TileType[] = ["grass", "water"];
+export const WALL_TYPES: WallType[] = ["stone"];
+
 /**
  * Represents the maze structure.
  */

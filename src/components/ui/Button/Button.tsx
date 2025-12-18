@@ -4,6 +4,7 @@ import styles from "./Button.module.css";
 import { useNavigate } from "react-router";
 
 export type ButtonVariant =
+  | "none"
   | "primary"
   | "secondary"
   | "disabled"

@@ -47,3 +47,39 @@ a:hover {
   align-items: center;
   gap: 8px;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-top: 1.6em;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin-top: 1.4em;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+h4 {
+  font-size: 1.1rem;
+}
+
+h5 {
+  font-size: 1rem;
+  color: var(--clr-surface-a50);
+}
+
+h6 {
+  font-size: 0.9rem;
+  color: var(--clr-surface-a50);
+}
+

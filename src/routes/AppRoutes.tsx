@@ -1,13 +1,13 @@
 import { Route } from "react-router";
 import { Routes } from "react-router-dom";
-import { HomePage } from "../pages/HomePage.tsx";
-import { SandboxPage } from "../pages/SandboxPage.tsx";
+import { PAGES } from "./pages.tsx";
 
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/sandbox" element={<SandboxPage />} />
+      {PAGES.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
+      ))}
     </Routes>
   );
 }

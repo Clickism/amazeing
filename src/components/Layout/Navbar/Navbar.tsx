@@ -5,6 +5,8 @@ import { LanguageToggle } from "./LanguageToggle/LanguageToggle.tsx";
 import React from "react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import { PAGES } from "../../../routes/pages.tsx";
+import { tryTranslate } from "../../../i18n/i18n.ts";
 
 function NavbarLink({
   to,
@@ -43,8 +45,11 @@ export function Navbar() {
           <NavbarLink to="/" dontMatch>
             <div style={{ fontWeight: 700 }}>Prog2 Precourse</div>
           </NavbarLink>
-          <NavbarLink to="/">Home</NavbarLink>
-          <NavbarLink to="/sandbox">{t("navbar.sandbox")}</NavbarLink>
+          {PAGES.map(({ path, title }) => (
+            <NavbarLink to={path} key={path}>
+              {tryTranslate(t, title)}
+            </NavbarLink>
+          ))}
         </div>
         <div className={styles.right}>
           <LanguageToggle />

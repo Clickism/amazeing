@@ -1,6 +1,7 @@
 {
-  "navbar.home": "Home",
-  "navbar.sandbox": "Sandbox",
+  "pages.home": "Home",
+  "pages.sandbox": "Sandbox",
+  "pages.levelEditor": "Level Editor",
   "codeEditor.title": "Code Editor",
   "codeEditor.theme": "Theme",
   "codeEditor.fontSize": "Font Size",

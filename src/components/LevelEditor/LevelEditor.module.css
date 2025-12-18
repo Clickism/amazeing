@@ -1,0 +1,79 @@
+.levelEditor {
+  --tile-size: 4rem;
+  --short-size: calc(var(--tile-size) / 4);
+
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+
+  gap: 1rem;
+}
+
+.settingsContainer {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--clr-surface-a5);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  box-sizing: border-box;
+  display: inline-block;
+  --background-color: var(--clr-surface-a10);
+  border-radius: .5rem;
+  padding: 0;
+}
+
+.wall {
+  width: var(--short-size);
+  height: var(--tile-size);
+  min-height: var(--tile-size);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 0;
+  --background-color: var(--clr-surface-a10);
+}
+
+.wallHorizontal {
+  width: var(--tile-size);
+  height: var(--short-size);
+  min-height: var(--short-size) ;
+}
+
+.grid {
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.grid, .gridRow {
+  gap: .5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.gridRow {
+  flex-direction: row;
+}
+
+.wallRow {
+  gap: calc(1rem + var(--short-size));
+}
+
+.wall-stone {
+  --background-color: gray;
+}
+
+.tile-grass {
+  --background-color: lightgreen;
+}
+
+.tile-water {
+  --background-color: lightblue;
+}
