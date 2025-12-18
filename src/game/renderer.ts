@@ -50,7 +50,7 @@ export class Renderer {
 
     ctx.save();
     ctx.imageSmoothingEnabled = false;
-    ctx.scale(this.scale, this.scale);
+    ctx.scale(this.scale * this.dpr, this.scale * this.dpr);
 
     ctx.translate(this.offsetX, this.offsetY);
 
