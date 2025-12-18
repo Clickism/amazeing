@@ -89,7 +89,11 @@ export class InterpreterImpl extends Interpreter {
   instructions: InstructionData[];
   env: Environment;
   steps: number = 0;
-  hasError: boolean = false;
+  /**
+   * Whether the interpreter is locked due to an error or
+   * completing the level.
+   */
+  isLocked: boolean = false;
 
   constructor(instructions: InstructionData[], env: Environment) {
     super();
@@ -122,7 +126,7 @@ export class InterpreterImpl extends Interpreter {
     try {
       this.executeStep();
     } catch (e) {
-      this.hasError = true;
+      this.isLocked = true;
       throw e;
     }
   }
@@ -141,7 +145,7 @@ export class InterpreterImpl extends Interpreter {
   }
 
   canStep(): boolean {
-    return this.pc < this.instructions.length && !this.hasError;
+    return this.pc < this.instructions.length && !this.isLocked;
   }
 
   getCurrentLine(): number | null {
@@ -184,6 +188,11 @@ export class InterpreterImpl extends Interpreter {
       this.pc++;
     }
     this.steps++;
+    // Check for level completion
+    if (this.env.level.isOwlAtFinish(this.env.owl)) {
+      this.env.console.log({ type: "success", text: "Level completed!" });
+      this.isLocked = true;
+    }
   }
 
   /**

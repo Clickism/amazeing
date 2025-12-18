@@ -43,4 +43,11 @@ export class Level {
     const tile = this.maze.tileAt(inDirection(owl.position, directionToCheck));
     return wall === null && tile !== null;
   }
+
+  isOwlAtFinish(owl: Owl): boolean {
+    return (
+      owl.position.x === this.data.finishPosition.x &&
+      owl.position.y === this.data.finishPosition.y
+    );
+  }
 }

@@ -40,3 +40,8 @@
   color: var(--clr-info-a10);
   font-style: italic;
 }
+
+.message-success {
+  color: var(--clr-success-a10);
+  font-weight: bold;
+}
