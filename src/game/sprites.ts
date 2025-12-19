@@ -12,9 +12,9 @@ import owlEast from "../assets/sprites/game/owl/east.png";
 import owlWest from "../assets/sprites/game/owl/west.png";
 
 export type SpriteMap = {
-  tiles: Record<TileType, HTMLImageElement>;
+  tiles: Record<Exclude<TileType, null>, HTMLImageElement>;
   walls: {
-    [key in WallType]: {
+    [key in Exclude<WallType, null>]: {
       horizontal: HTMLImageElement;
       vertical: HTMLImageElement;
     };
