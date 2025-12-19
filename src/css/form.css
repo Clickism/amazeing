@@ -10,4 +10,5 @@ select {
   background: var(--clr-surface-a0);
   box-shadow: inset 0 0 0 1px var(--clr-surface-a20);
   border-radius: .5rem;
+  box-sizing: border-box;
 }

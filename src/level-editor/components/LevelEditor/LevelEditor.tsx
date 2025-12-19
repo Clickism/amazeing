@@ -21,21 +21,26 @@ import { Level } from "../../../game/level.ts";
 import { OwlImpl } from "../../../game/owl.ts";
 import { Modal } from "../../../components/ui/Modal/Modal.tsx";
 
+type TileBrush = { type: "tile"; tile: TileType } | { type: "startFinish" };
+
 export function LevelEditor() {
   const [editor, dispatch] = useReducer(
     editorReducer,
     createInitialEditorState(),
   );
 
-  const [selectedTile, setSelectedTile] = useState<TileType>("grass");
-  const [selectedWall, setSelectedWall] = useState<WallType>("stone");
+  const [tileBrush, setTileBrush] = useState<TileBrush>({
+    type: "tile",
+    tile: "grass",
+  });
+  const [wallBrush, setWallBrush] = useState<WallType>("stone");
 
   const [visualize, setVisualize] = useState(false);
 
   const maze = editor.maze;
 
   const MAX_SIZE = 50;
-
+  const selectedTile = tileBrush.type === "tile" ? tileBrush.tile : null;
   return (
     <div className={styles.levelEditor}>
       <div className={clsx(styles.panel, "window-border")}>
@@ -76,18 +81,26 @@ export function LevelEditor() {
           </FormField>
         </FormGroup>
 
-        <h5>Tile Type</h5>
+        <h5>Tile Brush</h5>
 
         <ButtonGroup vertical stretch>
           {TILE_TYPES.map((tile) => (
             <Button
               key={tile}
               variant={selectedTile === tile ? "secondary" : "outlined"}
-              onClick={() => setSelectedTile(tile)}
+              onClick={() => setTileBrush({ type: "tile", tile })}
             >
               {titleCase(tile ?? "Empty")}
             </Button>
           ))}
+          <Button
+            onClick={() => setTileBrush({ type: "startFinish" })}
+            variant={
+              tileBrush.type === "startFinish" ? "secondary" : "outlined"
+            }
+          >
+            Start / Finish
+          </Button>
         </ButtonGroup>
 
         <h5>Wall Type</h5>
@@ -96,8 +109,8 @@ export function LevelEditor() {
           {WALL_TYPES.map((wall) => (
             <Button
               key={wall}
-              variant={selectedWall === wall ? "secondary" : "outlined"}
-              onClick={() => setSelectedWall(wall)}
+              variant={wallBrush === wall ? "secondary" : "outlined"}
+              onClick={() => setWallBrush(wall)}
             >
               {titleCase(wall ?? "Empty")}
             </Button>
@@ -123,7 +136,7 @@ export function LevelEditor() {
           </Button>
           <Button
             onClick={() => {
-              dispatch({ type: "setAllWalls", wall: selectedWall });
+              dispatch({ type: "setAllWalls", wall: wallBrush });
             }}
           >
             Fill All Walls
@@ -179,9 +192,7 @@ export function LevelEditor() {
                             onClick={() => {
                               const currentWall = maze.walls.vertical[row][col];
                               const wall =
-                                currentWall === selectedWall
-                                  ? null
-                                  : selectedWall;
+                                currentWall === wallBrush ? null : wallBrush;
                               dispatch({
                                 type: "setVerticalWall",
                                 row,
@@ -206,9 +217,7 @@ export function LevelEditor() {
                           onClick={() => {
                             const currentWall = maze.walls.horizontal[row][col];
                             const wall =
-                              currentWall === selectedWall
-                                ? null
-                                : selectedWall;
+                              currentWall === wallBrush ? null : wallBrush;
                             dispatch({
                               type: "setHorizontalWall",
                               row,
@@ -242,6 +251,9 @@ export function LevelEditor() {
                   description: editor.description,
                 });
               }}
+              style={{
+                width: "200px"
+              }}
             />
           </FormField>
           <FormField label="Level Description">
@@ -253,6 +265,10 @@ export function LevelEditor() {
                   name: editor.name,
                   description: e.target.value,
                 });
+              }}
+              style={{
+                height: "100px",
+                width: "200px"
               }}
             />
           </FormField>
