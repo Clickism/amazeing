@@ -4,7 +4,7 @@ import {
   type ButtonProps,
 } from "../../../../components/ui/Button/Button.tsx";
 import clsx from "clsx";
-import styles from "../LevelEditor.module.css";
+import styles from "./Tile.module.css";
 import {
   type CardinalDirection,
   isPositionEqual,

@@ -86,18 +86,38 @@ export class Maze {
     const { x, y } = position;
     switch (direction) {
       case "north":
-        if (y <= 0) return null;
-        return this.data.walls.horizontal[y][x];
+        return this.horizontalWallAt(position);
       case "south":
-        if (y >= this.height() - 1) return null;
-        return this.data.walls.horizontal[y + 1][x];
+        return this.horizontalWallAt({ x, y: y - 1 });
       case "east":
-        if (x >= this.width() - 1) return null;
-        return this.data.walls.vertical[y][x + 1];
+        return this.verticalWallAt({ x: x - 1, y });
       case "west":
-        if (x <= 0) return null;
-        return this.data.walls.vertical[y][x];
+        return this.verticalWallAt(position);
     }
+  }
+
+  private horizontalWallAt(position: Position): WallType {
+    const { x, y } = position;
+    if (y < 0 || y >= this.data.walls.horizontal.length) {
+      return null;
+    }
+    const row = this.data.walls.horizontal[y];
+    if (x < 0 || x >= row.length) {
+      return null;
+    }
+    return row[x];
+  }
+
+  private verticalWallAt(position: Position): WallType {
+    const { x, y } = position;
+    if (y < 0 || y >= this.data.walls.vertical.length) {
+      return null;
+    }
+    const row = this.data.walls.vertical[y];
+    if (x < 0 || x >= row.length) {
+      return null;
+    }
+    return row[x];
   }
 
   forEachTile(callback: (position: Position, tile: TileType) => void) {

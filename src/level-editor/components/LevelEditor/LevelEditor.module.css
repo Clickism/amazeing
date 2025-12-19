@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: calc(100vh - var(--navbar-height) - 2rem);
   align-items: flex-start;
   justify-content: flex-start;
   padding: 0 10rem;
@@ -20,33 +21,6 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-}
-
-.tile {
-  width: var(--tile-size);
-  height: var(--tile-size);
-  box-sizing: border-box;
-  display: inline-block;
-  --background-color: var(--clr-surface-a10);
-  border-radius: .5rem;
-  padding: 0;
-}
-
-.wall {
-  width: var(--short-size);
-  height: var(--tile-size);
-  min-height: var(--tile-size);
-  border-radius: .5rem;
-  box-sizing: border-box;
-  display: inline-block;
-  padding: 0;
-  --background-color: var(--clr-surface-a10);
-}
-
-.wallHorizontal {
-  width: var(--tile-size);
-  height: var(--short-size);
-  min-height: var(--short-size) ;
 }
 
 .gridWindow::before {
@@ -87,28 +61,4 @@
 
 .wallRow {
   gap: calc(1rem + var(--short-size));
-}
-
-.wall-stone {
-  --background-color: gray;
-}
-
-.tile-grass {
-  --background-color: lightgreen;
-}
-
-.tile-water {
-  --background-color: lightblue;
-}
-
-.startTile {
-  outline: 4px solid var(--clr-success-a0)
-}
-
-.startArrow {
-  fill: var(--clr-success-a0);
-}
-
-.finishTile {
-  outline: 4px solid var(--clr-danger-a10)
 }

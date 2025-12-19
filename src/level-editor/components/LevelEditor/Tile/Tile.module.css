@@ -1,0 +1,29 @@
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  box-sizing: border-box;
+  display: inline-block;
+  --background-color: var(--clr-surface-a10);
+  border-radius: .5rem;
+  padding: 0;
+}
+
+.tile-grass {
+  --background-color: lightgreen;
+}
+
+.tile-water {
+  --background-color: lightblue;
+}
+
+.startTile {
+  outline: 4px solid var(--clr-success-a0)
+}
+
+.startArrow {
+  fill: var(--clr-success-a0);
+}
+
+.finishTile {
+  outline: 4px solid var(--clr-danger-a10)
+}

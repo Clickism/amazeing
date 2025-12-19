@@ -6,6 +6,11 @@ import type { SpriteMap } from "./sprites";
 const OWL_SIZE = 32;
 const CELL_SIZE = 32;
 
+export type Camera = {
+  position: Position;
+  zoom: number;
+};
+
 export class Renderer {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
@@ -14,6 +19,7 @@ export class Renderer {
   sprites: SpriteMap;
   dpr: number = window.devicePixelRatio || 1;
   scale: number;
+  camera: Camera;
 
   offsetX: number;
   offsetY: number;
@@ -23,6 +29,7 @@ export class Renderer {
     maze: Maze,
     owl: Owl,
     sprites: SpriteMap,
+    camera: Camera,
     scale: number = 4,
   ) {
     this.canvas = canvas;
@@ -32,6 +39,7 @@ export class Renderer {
     this.maze = maze;
     this.owl = owl;
     this.sprites = sprites;
+    this.camera = camera;
     this.scale = scale;
 
     const mazeWidth = this.maze.width() * CELL_SIZE;
@@ -46,13 +54,24 @@ export class Renderer {
 
   render() {
     const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     ctx.save();
-    ctx.imageSmoothingEnabled = false;
+
+    // Reset
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Scale
     ctx.scale(this.scale * this.dpr, this.scale * this.dpr);
 
+    // Center
     ctx.translate(this.offsetX, this.offsetY);
+
+    // Camera
+    ctx.scale(this.camera.zoom, this.camera.zoom);
+    ctx.translate(-this.camera.position.x, -this.camera.position.y);
+
+    ctx.imageSmoothingEnabled = false;
 
     this.drawWaterTiles();
     this.drawTiles();
@@ -64,17 +83,24 @@ export class Renderer {
   drawWaterTiles() {
     const img = this.sprites.tiles.water;
 
-    const cols = Math.ceil(this.canvas.width / CELL_SIZE);
-    const rows = Math.ceil(this.canvas.height / CELL_SIZE);
+    const viewWidth =
+      this.canvas.width / (this.scale * this.dpr * this.camera.zoom);
+    const viewHeight =
+      this.canvas.height / (this.scale * this.dpr * this.camera.zoom);
 
-    const startX = -Math.floor(this.offsetX / CELL_SIZE) - 1;
-    const startY = -Math.floor(this.offsetY / CELL_SIZE) - 1;
+    const left = this.camera.position.x - this.offsetX;
+    const top = this.camera.position.y - this.offsetY;
 
-    const endX = startX + cols + 2;
-    const endY = startY + rows + 2;
+    const right = left + viewWidth;
+    const bottom = top + viewHeight;
 
-    for (let y = startY; y < endX; y++) {
-      for (let x = startX; x < endY; x++) {
+    const startX = Math.floor(left / CELL_SIZE) - 20;
+    const startY = Math.floor(top / CELL_SIZE) - 20;
+    const endX = Math.ceil(right / CELL_SIZE) + 20;
+    const endY = Math.ceil(bottom / CELL_SIZE) + 20;
+
+    for (let y = startY; y < endY; y++) {
+      for (let x = startX; x < endX; x++) {
         this.ctx.drawImage(
           img,
           x * CELL_SIZE,
@@ -85,6 +111,7 @@ export class Renderer {
       }
     }
   }
+
 
   drawTiles() {
     const rows = this.maze.height();
@@ -117,6 +144,7 @@ export class Renderer {
     direction: CardinalDirection,
     wall: WallType,
   ) {
+    if (!wall) return;
     const offset = CELL_SIZE / 2;
     const x = position.x * CELL_SIZE;
     const y = position.y * CELL_SIZE;

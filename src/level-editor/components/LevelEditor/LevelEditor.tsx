@@ -16,6 +16,9 @@ import { editorReducer } from "../../actions.ts";
 import { createEditorState } from "../../state.ts";
 import { Wall } from "./Wall/Wall.tsx";
 import { Tile } from "./Tile/Tile.tsx";
+import { Viewport } from "../../../components/Viewport/Viewport.tsx";
+import { Level } from "../../../game/level.ts";
+import { OwlImpl } from "../../../game/owl.ts";
 
 export function LevelEditor() {
   const [editor, dispatch] = useReducer(
@@ -25,6 +28,8 @@ export function LevelEditor() {
 
   const [selectedTile, setSelectedTile] = useState<TileType>("grass");
   const [selectedWall, setSelectedWall] = useState<WallType>("stone");
+
+  const [visualize, setVisualize] = useState(false);
 
   const maze = editor.maze;
 
@@ -134,6 +139,9 @@ export function LevelEditor() {
         <h5>Actions</h5>
 
         <ButtonGroup vertical stretch>
+          <Button variant="success" onClick={() => setVisualize((p) => !p)}>
+            {visualize ? "Edit Maze" : "Visualize Maze"}
+          </Button>
           <Button variant="primary">Export JSON</Button>
           <Button
             variant="danger"
@@ -147,71 +155,88 @@ export function LevelEditor() {
       </div>
 
       <div className={clsx(styles.gridWindow, "window-border")}>
-        <div className={clsx(styles.gridContainer)}>
-          <div className={styles.grid}>
-            {maze.tiles.map((columns, row) => (
-              <Fragment key={row}>
-                <div className={styles.gridRow}>
-                  {columns.map((_, col) => (
-                    <Fragment key={col}>
-                      <Tile
-                        tile={maze.tiles[row][col]}
-                        editor={editor}
-                        position={{ x: row, y: col }}
-                        onClick={() => {
-                          const currentTile = maze.tiles[row][col];
-                          const tile =
-                            currentTile === selectedTile ? null : selectedTile;
-                          dispatch({ type: "setTile", row, col, tile });
-                        }}
-                      />
-                      {col < editor.width - 1 && (
-                        <Wall
-                          wall={maze.walls.vertical[row][col]}
+        {visualize ? (
+          <Viewport
+            owl={
+              new OwlImpl(
+                editor.owlStart.position,
+                editor.owlStart.direction,
+                () => {},
+              )
+            }
+            level={new Level(editor)}
+          />
+        ) : (
+          <div className={clsx(styles.gridContainer)}>
+            <div className={styles.grid}>
+              {maze.tiles.map((columns, row) => (
+                <Fragment key={row}>
+                  <div className={styles.gridRow}>
+                    {columns.map((_, col) => (
+                      <Fragment key={col}>
+                        <Tile
+                          tile={maze.tiles[row][col]}
+                          editor={editor}
+                          position={{ x: row, y: col }}
                           onClick={() => {
-                            const currentWall = maze.walls.vertical[row][col];
+                            const currentTile = maze.tiles[row][col];
+                            const tile =
+                              currentTile === selectedTile
+                                ? null
+                                : selectedTile;
+                            dispatch({ type: "setTile", row, col, tile });
+                          }}
+                        />
+                        {col < editor.width - 1 && (
+                          <Wall
+                            wall={maze.walls.vertical[row][col]}
+                            onClick={() => {
+                              const currentWall = maze.walls.vertical[row][col];
+                              const wall =
+                                currentWall === selectedWall
+                                  ? null
+                                  : selectedWall;
+                              dispatch({
+                                type: "setVerticalWall",
+                                row,
+                                col,
+                                wall,
+                              });
+                            }}
+                          />
+                        )}
+                      </Fragment>
+                    ))}
+                  </div>
+                  {row < editor.height - 1 && (
+                    <div className={clsx(styles.gridRow, styles.wallRow)}>
+                      {columns.map((_, ci) => (
+                        <Wall
+                          key={ci}
+                          wall={maze.walls.horizontal[row][ci]}
+                          horizontal
+                          onClick={() => {
+                            const currentWall = maze.walls.horizontal[row][ci];
                             const wall =
                               currentWall === selectedWall
                                 ? null
                                 : selectedWall;
                             dispatch({
-                              type: "setVerticalWall",
+                              type: "setHorizontalWall",
                               row,
-                              col,
+                              col: ci,
                               wall,
                             });
                           }}
                         />
-                      )}
-                    </Fragment>
-                  ))}
-                </div>
-                {row < editor.height - 1 && (
-                  <div className={clsx(styles.gridRow, styles.wallRow)}>
-                    {columns.map((_, ci) => (
-                      <Wall
-                        key={ci}
-                        wall={maze.walls.horizontal[row][ci]}
-                        horizontal
-                        onClick={() => {
-                          const currentWall = maze.walls.horizontal[row][ci];
-                          const wall =
-                            currentWall === selectedWall ? null : selectedWall;
-                          dispatch({
-                            type: "setHorizontalWall",
-                            row,
-                            col: ci,
-                            wall,
-                          });
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-              </Fragment>
-            ))}
+                      ))}
+                    </div>
+                  )}
+                </Fragment>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

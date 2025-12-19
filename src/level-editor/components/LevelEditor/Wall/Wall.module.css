@@ -1,0 +1,20 @@
+.wall-stone {
+  --background-color: gray;
+}
+
+.wall {
+  width: var(--short-size);
+  height: var(--tile-size);
+  min-height: var(--tile-size);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 0;
+  --background-color: var(--clr-surface-a10);
+}
+
+.wallHorizontal {
+  width: var(--tile-size);
+  height: var(--short-size);
+  min-height: var(--short-size) ;
+}
