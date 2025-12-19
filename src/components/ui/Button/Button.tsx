@@ -32,7 +32,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = "secondary",
       shape = "default",
       size = "large",
-      flex = true,
+      flex = false,
       className,
       children,
       ...props
@@ -48,13 +48,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           styles[`variant-${variant}`],
           styles[`shape-${shape}`],
           styles[`size-${size}`],
-          flex && styles.flex,
           className,
         )}
         {...props}
         {...(linkTo ? { onClick: () => navigate(linkTo) } : undefined)}
       >
-        {children}
+        {flex ? (
+          <span className={styles.flexContainer}>{children}</span>
+        ) : (
+          children
+        )}
       </button>
     );
   },

@@ -7,16 +7,36 @@ import {
 export type MazeData = {
   tiles: TileType[][];
   walls: {
-    horizontal: (WallType | null)[][];
-    vertical: (WallType | null)[][];
+    horizontal: WallType[][];
+    vertical: WallType[][];
   };
 };
 
-export type TileType = "grass" | "water";
-export type WallType = "stone";
+export type TileType = "grass" | "water" | null;
+export type WallType = "stone" | null;
 
 export const TILE_TYPES: TileType[] = ["grass", "water"];
 export const WALL_TYPES: WallType[] = ["stone"];
+
+export function createEmptyMazeData(width: number, height: number): MazeData {
+  const tiles: TileType[][] = Array.from({ length: height }, () =>
+    Array.from({ length: width }, () => null),
+  );
+  const horizontalWalls: WallType[][] = Array.from({ length: height - 1 }, () =>
+    Array.from({ length: width }, () => null),
+  );
+  const verticalWalls: WallType[][] = Array.from({ length: height }, () =>
+    Array.from({ length: width - 1 }, () => null),
+  );
+
+  return {
+    tiles,
+    walls: {
+      horizontal: horizontalWalls,
+      vertical: verticalWalls,
+    },
+  };
+}
 
 /**
  * Represents the maze structure.
@@ -94,7 +114,13 @@ export class Maze {
     }
   }
 
-  forEachWall(callback: (position: Position, direction: CardinalDirection, wall: WallType) => void) {
+  forEachWall(
+    callback: (
+      position: Position,
+      direction: CardinalDirection,
+      wall: WallType,
+    ) => void,
+  ) {
     const rows = this.height();
     const cols = this.width();
 

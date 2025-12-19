@@ -2,16 +2,18 @@
   --tile-size: 4rem;
   --short-size: calc(var(--tile-size) / 4);
 
+  /*TODO: Make full screen and side panels scrollable instead*/
   display: flex;
   flex-direction: row;
   width: 100%;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 0 10rem;
 
   gap: 1rem;
 }
 
-.settingsContainer {
+.panel {
   padding: 1rem;
   border-radius: 1rem;
   background-color: var(--clr-surface-a5);
@@ -47,19 +49,40 @@
   min-height: var(--short-size) ;
 }
 
-.grid {
-  padding: 1rem;
-  border-radius: 1rem;
+.gridWindow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset var(--surface-shadow);
+  z-index: 10;
 }
 
-.grid, .gridRow {
+.gridWindow {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+.gridContainer {
+  width: 100%;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.grid {
   gap: .5rem;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .gridRow {
+  gap: .5rem;
+  display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 
 .wallRow {
@@ -76,4 +99,16 @@
 
 .tile-water {
   --background-color: lightblue;
+}
+
+.startTile {
+  outline: 4px solid var(--clr-success-a0)
+}
+
+.startArrow {
+  fill: var(--clr-success-a0);
+}
+
+.finishTile {
+  outline: 4px solid var(--clr-danger-a10)
 }

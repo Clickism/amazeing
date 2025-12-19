@@ -64,3 +64,7 @@ export function inDirection(position: Position, direction: CardinalDirection) {
 export function booleanToInteger(value: boolean): Integer {
   return value ? 1 : 0;
 }
+
+export function isPositionEqual(a: Position, b: Position): boolean {
+  return a.x === b.x && a.y === b.y;
+}
