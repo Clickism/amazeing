@@ -2,20 +2,24 @@
   --tile-size: 4rem;
   --short-size: calc(var(--tile-size) / 4);
 
-  /*TODO: Make full screen and side panels scrollable instead*/
   display: flex;
   flex-direction: row;
-  width: 100%;
   height: calc(100vh - var(--navbar-height) - 2rem);
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 0 10rem;
+
+  --tile-color-grass: lightgreen;
+  --tile-color-water: lightblue;
+
+  --wall-color-stone: gray;
 
   gap: 1rem;
 }
 
 .panel {
-  padding: 1rem;
+  height: 100%;
+  overflow: auto;
+  padding: .5rem 1.5rem 1.5rem;
   border-radius: 1rem;
   background-color: var(--clr-surface-a5);
   display: flex;
@@ -36,10 +40,12 @@
 .gridWindow {
   position: relative;
   flex: 1;
-  overflow: hidden;
+  height: 100%;
+  overflow: auto;
 }
 
 .gridContainer {
+  height: 100%;
   width: 100%;
   overflow: auto;
   padding: 1rem;

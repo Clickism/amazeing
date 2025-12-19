@@ -1,9 +1,9 @@
+import { type TileType, type WallType } from "../game/maze.ts";
 import {
-  createEmptyMazeData,
-  type TileType,
-  type WallType,
-} from "../game/maze.ts";
-import { createEditorState, type EditorState } from "./state.ts";
+  createEditorState,
+  createInitialEditorState,
+  type EditorState,
+} from "./state.ts";
 
 type EditorAction =
   | { type: "reset" }
@@ -23,15 +23,14 @@ type ActionExecutors = {
 
 const actionExecutors: ActionExecutors = {
   reset: () => {
-    return createEditorState(10, 10);
+    return createInitialEditorState();
   },
 
   resize: (state, { width, height }) => {
     return {
-      ...state,
-      width,
-      height,
-      maze: createEmptyMazeData(width, height),
+      ...createEditorState(width, height),
+      name: state.name,
+      description: state.description,
     };
   },
 

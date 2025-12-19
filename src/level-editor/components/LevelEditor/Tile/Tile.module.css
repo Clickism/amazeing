@@ -8,14 +8,6 @@
   padding: 0;
 }
 
-.tile-grass {
-  --background-color: lightgreen;
-}
-
-.tile-water {
-  --background-color: lightblue;
-}
-
 .startTile {
   outline: 4px solid var(--clr-success-a0)
 }

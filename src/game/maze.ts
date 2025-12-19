@@ -1,8 +1,4 @@
-import {
-  CARDINAL_DIRECTIONS,
-  type CardinalDirection,
-  type Position,
-} from "../interpreter/types.ts";
+import { type CardinalDirection, type Position } from "../interpreter/types.ts";
 
 export type MazeData = {
   tiles: TileType[][];
@@ -86,13 +82,13 @@ export class Maze {
     const { x, y } = position;
     switch (direction) {
       case "north":
-        return this.horizontalWallAt(position);
-      case "south":
         return this.horizontalWallAt({ x, y: y - 1 });
+      case "south":
+        return this.horizontalWallAt({ x, y });
       case "east":
-        return this.verticalWallAt({ x: x - 1, y });
+        return this.verticalWallAt({ x, y });
       case "west":
-        return this.verticalWallAt(position);
+        return this.verticalWallAt({ x: x - 1, y });
     }
   }
 
@@ -134,26 +130,25 @@ export class Maze {
     }
   }
 
-  forEachWall(
-    callback: (
-      position: Position,
-      direction: CardinalDirection,
-      wall: WallType,
-    ) => void,
+  forEachHorizontalWall(
+    callback: (position: Position, wall: WallType) => void,
   ) {
-    const rows = this.height();
-    const cols = this.width();
-
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const pos = { x, y };
-        for (const dir of CARDINAL_DIRECTIONS) {
-          const wall = this.wallAt(pos, dir);
-          if (wall !== null) {
-            callback(pos, dir, wall);
-          }
+    this.data.walls.horizontal.forEach((row, y) => {
+      row.forEach((wall, x) => {
+        if (wall !== null) {
+          callback({ x, y }, wall);
         }
-      }
-    }
+      });
+    });
+  }
+
+  forEachVerticalWall(callback: (position: Position, wall: WallType) => void) {
+    this.data.walls.vertical.forEach((row, y) => {
+      row.forEach((wall, x) => {
+        if (wall !== null) {
+          callback({ x, y }, wall);
+        }
+      });
+    });
   }
 }

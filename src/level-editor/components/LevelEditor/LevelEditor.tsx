@@ -13,7 +13,7 @@ import {
 } from "../../../game/maze.ts";
 import { titleCase } from "../../../utils/utils.ts";
 import { editorReducer } from "../../actions.ts";
-import { createEditorState } from "../../state.ts";
+import { createInitialEditorState } from "../../state.ts";
 import { Wall } from "./Wall/Wall.tsx";
 import { Tile } from "./Tile/Tile.tsx";
 import { Viewport } from "../../../components/Viewport/Viewport.tsx";
@@ -23,7 +23,7 @@ import { OwlImpl } from "../../../game/owl.ts";
 export function LevelEditor() {
   const [editor, dispatch] = useReducer(
     editorReducer,
-    createEditorState(10, 10),
+    createInitialEditorState(),
   );
 
   const [selectedTile, setSelectedTile] = useState<TileType>("grass");
@@ -177,7 +177,7 @@ export function LevelEditor() {
                         <Tile
                           tile={maze.tiles[row][col]}
                           editor={editor}
-                          position={{ x: row, y: col }}
+                          position={{ x: col, y: row }}
                           onClick={() => {
                             const currentTile = maze.tiles[row][col];
                             const tile =
@@ -190,6 +190,8 @@ export function LevelEditor() {
                         {col < editor.width - 1 && (
                           <Wall
                             wall={maze.walls.vertical[row][col]}
+                            editor={editor}
+                            position={{ x: col, y: row }}
                             onClick={() => {
                               const currentWall = maze.walls.vertical[row][col];
                               const wall =
@@ -210,13 +212,15 @@ export function LevelEditor() {
                   </div>
                   {row < editor.height - 1 && (
                     <div className={clsx(styles.gridRow, styles.wallRow)}>
-                      {columns.map((_, ci) => (
+                      {columns.map((_, col) => (
                         <Wall
-                          key={ci}
-                          wall={maze.walls.horizontal[row][ci]}
+                          key={col}
+                          wall={maze.walls.horizontal[row][col]}
+                          editor={editor}
+                          position={{ x: col, y: row }}
                           horizontal
                           onClick={() => {
-                            const currentWall = maze.walls.horizontal[row][ci];
+                            const currentWall = maze.walls.horizontal[row][col];
                             const wall =
                               currentWall === selectedWall
                                 ? null
@@ -224,7 +228,7 @@ export function LevelEditor() {
                             dispatch({
                               type: "setHorizontalWall",
                               row,
-                              col: ci,
+                              col: col,
                               wall,
                             });
                           }}

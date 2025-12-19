@@ -6,10 +6,11 @@ export type EditorState = {
   height: number;
 } & LevelData;
 
-export function createEditorState(
-  width: number,
-  height: number,
-): EditorState {
+export function createInitialEditorState(): EditorState {
+  return createEditorState(5, 5);
+}
+
+export function createEditorState(width: number, height: number): EditorState {
   return {
     width,
     height,

@@ -19,19 +19,15 @@ import {
 } from "react-icons/fa";
 import type { IconBaseProps } from "react-icons";
 import { ImExit } from "react-icons/im";
+import type { CSSProperties } from "react";
 
 type TileProps = {
   tile: TileType;
   editor: EditorState;
   position: Position;
-};
+} & ButtonProps;
 
-export function Tile({
-  tile,
-  editor,
-  position,
-  ...props
-}: TileProps & ButtonProps) {
+export function Tile({ tile, editor, position, ...props }: TileProps) {
   const isStart = isPositionEqual(editor.owlStart.position, position);
   const isFinish = isPositionEqual(editor.finishPosition, position);
   return (
@@ -43,6 +39,11 @@ export function Tile({
         isStart && styles.startTile,
         isFinish && styles.finishTile,
       )}
+      style={
+        {
+          "--background-color": tile ? `var(--tile-color-${tile})` : undefined,
+        } as CSSProperties
+      }
       {...props}
       flex
     >

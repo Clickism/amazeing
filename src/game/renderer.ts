@@ -1,6 +1,6 @@
 import { Maze, type WallType } from "./maze";
 import type { Owl } from "./owl";
-import type { CardinalDirection, Position } from "../interpreter/types";
+import type { Position } from "../interpreter/types";
 import type { SpriteMap } from "./sprites";
 
 const OWL_SIZE = 32;
@@ -112,7 +112,6 @@ export class Renderer {
     }
   }
 
-
   drawTiles() {
     const rows = this.maze.height();
     const cols = this.maze.width();
@@ -134,38 +133,28 @@ export class Renderer {
   }
 
   drawWalls() {
-    this.maze.forEachWall((position, direction, wall) => {
-      this.drawWallImage(position, direction, wall);
+    this.maze.forEachHorizontalWall((position, wall) => {
+      this.drawHorizontalWall(position, wall);
+    });
+    this.maze.forEachVerticalWall((position, wall) => {
+      this.drawVerticalWall(position, wall);
     });
   }
 
-  drawWallImage(
-    position: Position,
-    direction: CardinalDirection,
-    wall: WallType,
-  ) {
+  drawHorizontalWall(position: Position, wall: WallType) {
     if (!wall) return;
-    const offset = CELL_SIZE / 2;
     const x = position.x * CELL_SIZE;
+    const y = (position.y + 0.5) * CELL_SIZE;
+    const img = this.sprites.walls[wall].horizontal;
+    this.ctx.drawImage(img, x, y, CELL_SIZE, CELL_SIZE);
+  }
+
+  drawVerticalWall(position: Position, wall: WallType) {
+    if (!wall) return;
+    const x = (position.x + 0.5) * CELL_SIZE;
     const y = position.y * CELL_SIZE;
-    const img = this.sprites.walls[wall];
-    if (direction === "north" || direction === "south") {
-      this.ctx.drawImage(
-        img.horizontal,
-        x,
-        direction === "north" ? y - offset : y + offset,
-        CELL_SIZE,
-        CELL_SIZE,
-      );
-    } else {
-      this.ctx.drawImage(
-        img.vertical,
-        direction === "west" ? x - offset : x + offset,
-        y,
-        CELL_SIZE,
-        CELL_SIZE,
-      );
-    }
+    const img = this.sprites.walls[wall].vertical;
+    this.ctx.drawImage(img, x, y, CELL_SIZE, CELL_SIZE);
   }
 
   drawOwl() {

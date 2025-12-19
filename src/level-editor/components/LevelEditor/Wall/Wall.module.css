@@ -1,7 +1,3 @@
-.wall-stone {
-  --background-color: gray;
-}
-
 .wall {
   width: var(--short-size);
   height: var(--tile-size);
@@ -16,5 +12,6 @@
 .wallHorizontal {
   width: var(--tile-size);
   height: var(--short-size);
-  min-height: var(--short-size) ;
+  min-height: var(--short-size);
 }
+
