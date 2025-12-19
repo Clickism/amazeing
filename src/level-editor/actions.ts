@@ -12,7 +12,8 @@ type EditorAction =
   | { type: "setHorizontalWall"; row: number; col: number; wall: WallType }
   | { type: "setVerticalWall"; row: number; col: number; wall: WallType }
   | { type: "setAllTiles"; tile: TileType }
-  | { type: "setAllWalls"; wall: WallType };
+  | { type: "setAllWalls"; wall: WallType }
+  | { type: "setMetadata"; name: string; description: string };
 
 type ActionExecutor<T> = (state: EditorState, args: T) => EditorState;
 type ActionExecutors = {
@@ -110,6 +111,15 @@ const actionExecutors: ActionExecutors = {
     };
     return state;
   },
+
+  setMetadata: (state, { name, description }) => {
+    state = {
+      ...state,
+      name,
+      description,
+    };
+    return state;
+  },
 };
 
 function clone2DArray<T>(array: T[][]): T[][] {
@@ -122,4 +132,16 @@ export function editorReducer(
 ): EditorState {
   const executor = actionExecutors[action.type];
   return executor(state, action as never);
+}
+
+export function stringifyEditorState(editor: EditorState): string {
+  return JSON.stringify(
+    {
+      ...editor,
+      width: undefined,
+      height: undefined,
+    },
+    null,
+    2,
+  );
 }

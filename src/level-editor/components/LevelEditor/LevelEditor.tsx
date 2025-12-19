@@ -12,13 +12,14 @@ import {
   type WallType,
 } from "../../../game/maze.ts";
 import { titleCase } from "../../../utils/utils.ts";
-import { editorReducer } from "../../actions.ts";
+import { editorReducer, stringifyEditorState } from "../../actions.ts";
 import { createInitialEditorState } from "../../state.ts";
 import { Wall } from "./Wall/Wall.tsx";
 import { Tile } from "./Tile/Tile.tsx";
 import { Viewport } from "../../../components/Viewport/Viewport.tsx";
 import { Level } from "../../../game/level.ts";
 import { OwlImpl } from "../../../game/owl.ts";
+import { Modal } from "../../../components/ui/Modal/Modal.tsx";
 
 export function LevelEditor() {
   const [editor, dispatch] = useReducer(
@@ -135,23 +136,6 @@ export function LevelEditor() {
             Clear All Walls
           </Button>
         </ButtonGroup>
-
-        <h5>Actions</h5>
-
-        <ButtonGroup vertical stretch>
-          <Button variant="success" onClick={() => setVisualize((p) => !p)}>
-            {visualize ? "Edit Maze" : "Visualize Maze"}
-          </Button>
-          <Button variant="primary">Export JSON</Button>
-          <Button
-            variant="danger"
-            onClick={() => {
-              dispatch({ type: "reset" });
-            }}
-          >
-            Reset
-          </Button>
-        </ButtonGroup>
       </div>
 
       <div className={clsx(styles.gridWindow, "window-border")}>
@@ -241,6 +225,73 @@ export function LevelEditor() {
             </div>
           </div>
         )}
+      </div>
+
+      <div className={clsx(styles.panel, "window-border")}>
+        <h4>Export 📤</h4>
+        <h5>Metadata</h5>
+        <FormGroup stretch>
+          <FormField label="Level Name">
+            <input
+              type="text"
+              value={editor.name}
+              onChange={(e) => {
+                dispatch({
+                  type: "setMetadata",
+                  name: e.target.value,
+                  description: editor.description,
+                });
+              }}
+            />
+          </FormField>
+          <FormField label="Level Description">
+            <textarea
+              value={editor.description}
+              onChange={(e) => {
+                dispatch({
+                  type: "setMetadata",
+                  name: editor.name,
+                  description: e.target.value,
+                });
+              }}
+            />
+          </FormField>
+        </FormGroup>
+
+        <h5>Actions</h5>
+
+        <ButtonGroup vertical stretch>
+          <Button variant="success" onClick={() => setVisualize((p) => !p)}>
+            {visualize ? "Edit Maze" : "Visualize Maze"}
+          </Button>
+          <Modal trigger={<Button variant="primary">Export JSON</Button>}>
+            <h5>Exported Level JSON</h5>
+            <textarea
+              readOnly
+              value={stringifyEditorState(editor)}
+              style={{
+                height: "200px",
+              }}
+            />
+            <Button
+              variant="secondary"
+              onClick={() => {
+                navigator.clipboard.writeText(stringifyEditorState(editor));
+              }}
+            >
+              Copy to Clipboard
+            </Button>
+          </Modal>
+
+          <Button
+            variant="danger"
+            onClick={() => {
+              dispatch({ type: "reset" });
+            }}
+          >
+            Reset
+          </Button>
+        </ButtonGroup>
       </div>
     </div>
   );

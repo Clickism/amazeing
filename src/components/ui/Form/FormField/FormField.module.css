@@ -11,3 +11,8 @@
   margin-left: 4px;
 }
 
+.formInput > * {
+  box-sizing: border-box;
+  width: 100%;
+}
+
