@@ -12,3 +12,8 @@ select {
   border-radius: .5rem;
   box-sizing: border-box;
 }
+
+input[type="number"] {
+  padding: var(--padding-vertical) var(--padding-vertical) var(--padding-vertical) calc(var(--padding-horizontal) * .7);
+  min-width: 4rem;
+}
