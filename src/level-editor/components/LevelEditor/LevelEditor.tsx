@@ -21,10 +21,13 @@ import { Level } from "../../../game/level.ts";
 import { OwlImpl } from "../../../game/owl.ts";
 import { Modal } from "../../../components/ui/Modal/Modal.tsx";
 import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard.tsx";
+import { useTranslation } from "react-i18next";
 
 type TileBrush = { type: "tile"; tile: TileType } | { type: "startFinish" };
 
 export function LevelEditor() {
+  const { t } = useTranslation();
+
   const [editor, dispatch] = useReducer(
     editorReducer,
     createInitialEditorState(),
@@ -45,10 +48,11 @@ export function LevelEditor() {
   return (
     <div className={styles.levelEditor}>
       <div className={clsx(styles.panel, "window-border")}>
-        <h4>Level Editor 🎨</h4>
-        <h5>Maze Size</h5>
+        <h4>{t("levelEditor.title") + " 🎨"}</h4>
+
+        <h5>{t("levelEditor.headers.mazeSize")}</h5>
         <FormGroup horizontal stretch>
-          <FormField label="Width">
+          <FormField label={t("levelEditor.tools.width")}>
             <input
               type="number"
               value={editor.width}
@@ -64,7 +68,7 @@ export function LevelEditor() {
               }}
             />
           </FormField>
-          <FormField label="Height">
+          <FormField label={t("levelEditor.tools.height")}>
             <input
               type="number"
               value={editor.height}
@@ -82,7 +86,7 @@ export function LevelEditor() {
           </FormField>
         </FormGroup>
 
-        <h5>Tile Brush</h5>
+        <h5>{t("levelEditor.headers.tileBrush")}</h5>
 
         <ButtonGroup vertical stretch>
           {TILE_TYPES.map((tile) => (
@@ -100,11 +104,11 @@ export function LevelEditor() {
               tileBrush.type === "startFinish" ? "secondary" : "outlined"
             }
           >
-            Start / Finish
+            {t("levelEditor.tools.startFinish")}
           </Button>
         </ButtonGroup>
 
-        <h5>Wall Type</h5>
+        <h5>{t("levelEditor.headers.wallBrush")}</h5>
 
         <ButtonGroup vertical stretch>
           {WALL_TYPES.map((wall) => (
@@ -118,7 +122,7 @@ export function LevelEditor() {
           ))}
         </ButtonGroup>
 
-        <h5>Tools</h5>
+        <h5>{t("levelEditor.headers.tools")}</h5>
 
         <ButtonGroup vertical stretch>
           <Button
@@ -126,28 +130,28 @@ export function LevelEditor() {
               dispatch({ type: "setAllTiles", tile: selectedTile });
             }}
           >
-            Fill All Tiles
+            {t("levelEditor.tools.fillAllTiles")}
           </Button>
           <Button
             onClick={() => {
               dispatch({ type: "setAllTiles", tile: null });
             }}
           >
-            Clear All Tiles
+            {t("levelEditor.tools.clearAllTiles")}
           </Button>
           <Button
             onClick={() => {
               dispatch({ type: "setAllWalls", wall: wallBrush });
             }}
           >
-            Fill All Walls
+            {t("levelEditor.tools.fillAllWalls")}
           </Button>
           <Button
             onClick={() => {
               dispatch({ type: "setAllWalls", wall: null });
             }}
           >
-            Clear All Walls
+            {t("levelEditor.tools.clearAllWalls")}
           </Button>
         </ButtonGroup>
       </div>
@@ -238,10 +242,10 @@ export function LevelEditor() {
       </div>
 
       <div className={clsx(styles.panel, "window-border")}>
-        <h4>Export 📤</h4>
-        <h5>Metadata</h5>
+        <h4>{t("levelEditor.export.export") + " 📤"}</h4>
+        <h5>{t("levelEditor.headers.metadata")}</h5>
         <FormGroup stretch>
-          <FormField label="Level Name">
+          <FormField label={t("levelEditor.export.levelName")}>
             <input
               type="text"
               value={editor.name}
@@ -253,11 +257,11 @@ export function LevelEditor() {
                 });
               }}
               style={{
-                width: "200px"
+                width: "200px",
               }}
             />
           </FormField>
-          <FormField label="Level Description">
+          <FormField label={t("levelEditor.export.levelDescription")}>
             <textarea
               value={editor.description}
               onChange={(e) => {
@@ -269,21 +273,28 @@ export function LevelEditor() {
               }}
               style={{
                 height: "100px",
-                width: "200px"
+                width: "200px",
               }}
             />
           </FormField>
         </FormGroup>
 
-        <h5>Actions</h5>
+        <h5>{t("levelEditor.headers.actions")}</h5>
 
         <ButtonGroup vertical stretch>
           <Button variant="success" onClick={() => setVisualize((p) => !p)}>
-            {visualize ? "Edit Maze" : "Visualize Maze"}
+            {visualize
+              ? t("levelEditor.export.actions.editMaze")
+              : t("levelEditor.export.actions.visualizeMaze")}
           </Button>
           <Modal
             title={"Exported Level JSON"}
-            trigger={<Button variant="primary">Export JSON</Button>}>
+            trigger={
+              <Button variant="primary">
+                {t("levelEditor.export.actions.exportJSON")}
+              </Button>
+            }
+          >
             <textarea
               readOnly
               value={stringifyEditorState(editor)}
@@ -300,7 +311,7 @@ export function LevelEditor() {
               dispatch({ type: "reset" });
             }}
           >
-            Reset
+            {t("levelEditor.export.actions.reset")}
           </Button>
         </ButtonGroup>
       </div>

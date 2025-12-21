@@ -25,14 +25,18 @@
   "levelEditor.headers.tools": "Tools",
   "levelEditor.headers.metadata": "Metadata",
   "levelEditor.headers.actions": "Actions",
+  "levelEditor.tools.width": "Width",
+  "levelEditor.tools.height": "Height",
   "levelEditor.tools.fillAllTiles": "Fill All Tiles",
   "levelEditor.tools.clearAllTiles": "Clear All Tiles",
   "levelEditor.tools.fillAllWalls": "Fill All Walls",
   "levelEditor.tools.clearAllWalls": "Clear All Walls",
+  "levelEditor.tools.startFinish": "Start / Finish",
   "levelEditor.export.export": "Export",
   "levelEditor.export.levelName": "Level Name",
   "levelEditor.export.levelDescription": "Level Description",
   "levelEditor.export.actions.visualizeMaze": "Visualize Maze",
+  "levelEditor.export.actions.editMaze": "Edit Maze",
   "levelEditor.export.actions.exportJSON": "Export JSON",
   "levelEditor.export.actions.reset": "Reset"
 }
