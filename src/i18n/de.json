@@ -1,4 +1,3 @@
-
 {
   "pages.home": "Startseite",
   "pages.sandbox": "Sandbox",
@@ -14,5 +13,7 @@
   "editor.step": "Schritt",
   "editor.reset": "Zurücksetzen",
   "editor.runSpeed": "Ausführungsgeschwindigkeit",
-  "editor.runInstant": "Sofort"
+  "editor.runInstant": "Sofort",
+  "button.copyToClipboard": "In die Zwischenablage Kopieren",
+  "button.copied": "Kopiert!"
 }

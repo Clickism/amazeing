@@ -14,5 +14,25 @@
   "editor.step": "Step",
   "editor.reset": "Reset",
   "editor.runSpeed": "Execution Speed",
-  "editor.runInstant": "Instant"
+  "editor.runInstant": "Instant",
+  "button.copyToClipboard": "Copy To Clipboard",
+  "button.copied": "Copied!",
+
+  "levelEditor.title": "Level Editor",
+  "levelEditor.headers.tileBrush": "Tile Brush",
+  "levelEditor.headers.wallBrush": "Wall Brush",
+  "levelEditor.headers.mazeSize": "Maze Size",
+  "levelEditor.headers.tools": "Tools",
+  "levelEditor.headers.metadata": "Metadata",
+  "levelEditor.headers.actions": "Actions",
+  "levelEditor.tools.fillAllTiles": "Fill All Tiles",
+  "levelEditor.tools.clearAllTiles": "Clear All Tiles",
+  "levelEditor.tools.fillAllWalls": "Fill All Walls",
+  "levelEditor.tools.clearAllWalls": "Clear All Walls",
+  "levelEditor.export.export": "Export",
+  "levelEditor.export.levelName": "Level Name",
+  "levelEditor.export.levelDescription": "Level Description",
+  "levelEditor.export.actions.visualizeMaze": "Visualize Maze",
+  "levelEditor.export.actions.exportJSON": "Export JSON",
+  "levelEditor.export.actions.reset": "Reset"
 }

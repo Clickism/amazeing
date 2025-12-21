@@ -20,6 +20,7 @@ import { Viewport } from "../../../components/Viewport/Viewport.tsx";
 import { Level } from "../../../game/level.ts";
 import { OwlImpl } from "../../../game/owl.ts";
 import { Modal } from "../../../components/ui/Modal/Modal.tsx";
+import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard.tsx";
 
 type TileBrush = { type: "tile"; tile: TileType } | { type: "startFinish" };
 
@@ -280,8 +281,9 @@ export function LevelEditor() {
           <Button variant="success" onClick={() => setVisualize((p) => !p)}>
             {visualize ? "Edit Maze" : "Visualize Maze"}
           </Button>
-          <Modal trigger={<Button variant="primary">Export JSON</Button>}>
-            <h5>Exported Level JSON</h5>
+          <Modal
+            title={"Exported Level JSON"}
+            trigger={<Button variant="primary">Export JSON</Button>}>
             <textarea
               readOnly
               value={stringifyEditorState(editor)}
@@ -289,14 +291,7 @@ export function LevelEditor() {
                 height: "200px",
               }}
             />
-            <Button
-              variant="secondary"
-              onClick={() => {
-                navigator.clipboard.writeText(stringifyEditorState(editor));
-              }}
-            >
-              Copy to Clipboard
-            </Button>
+            <CopyToClipboard content={stringifyEditorState(editor)} />
           </Modal>
 
           <Button

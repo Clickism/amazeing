@@ -27,7 +27,7 @@
 }
 
 [data-popup='tooltip'].popup-overlay {
-  background: transparent;
+  display: none;
 }
 
 @keyframes popup-animation {

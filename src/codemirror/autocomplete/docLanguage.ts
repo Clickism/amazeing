@@ -14,8 +14,10 @@ export const docLanguage = StreamLanguage.define({
       return "keyword";
     }
     if (stream.match(/[<>[\]]/)) return "operator";
-    if (stream.match(/[a-zA-Z_0-9]*:/)) return "string";
+    if (stream.match(/[a-zA-Z_0-9]*(?=.*>):/)) return "string";
+    if (stream.match(/[a-zA-Z_0-9]*:/)) return "variableName.function";
     if (stream.match(/[a-zA-Z_0-9]/)) return "type";
+    if (stream.match(/\?/)) return "escape";
     stream.next();
     return null;
   },

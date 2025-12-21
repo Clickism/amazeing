@@ -151,3 +151,14 @@
 .documentation .tok-typeName {
   color: var(--type-color);
 }
+
+/* Optionality indicator */
+.documentation .tok-string2 {
+  color: var(--optionality-color);
+  font-weight: bold;
+}
+
+/* Label definition */
+.documentation .tok-variableName {
+  color: var(--label-color);
+}

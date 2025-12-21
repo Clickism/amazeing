@@ -3,3 +3,10 @@
   flex-direction: column;
   gap: .5rem;
 }
+
+.title {
+  padding-left: .5rem;
+  border-left: 3px solid var(--clr-surface-a50);
+  border-radius: 2px;
+  margin-bottom: .5rem;
+}
