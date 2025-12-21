@@ -1,4 +1,4 @@
-import type { Instruction } from "../interpreter/instruction.ts";
+import type { Instruction } from "../../interpreter/instruction.ts";
 
 export type SingleDocumentation = {
   /**
@@ -17,10 +17,6 @@ export type SingleDocumentation = {
 };
 
 export type Documentation = SingleDocumentation | SingleDocumentation[];
-
-type Documentations = {
-  [K in Instruction["type"]]?: Documentation;
-};
 
 const arithmeticActions = {
   add: "Adds",
@@ -44,7 +40,19 @@ const comparisonRelations = {
   neq: "not equal to",
 };
 
-export const INSTRUCTION_DOCUMENTATIONS: Documentations = {
+/**
+ * Gets the documentation for the given instruction type.
+ * @param instruction
+ */
+export function getInstructionDocumentation(
+  instruction: string,
+): Documentation | null {
+  return INSTRUCTION_DOCUMENTATION_LOOKUP[instruction as Instruction["type"]] ?? null;
+}
+
+const INSTRUCTION_DOCUMENTATION_LOOKUP: {
+  [K in Instruction["type"]]?: Documentation;
+} = {
   move: {
     usage: "move",
     description: "Moves the owl forward.",

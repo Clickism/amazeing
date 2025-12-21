@@ -1,4 +1,3 @@
-export type ValueType = "integer";
 export type Value = Integer;
 
 export type Position = { x: number; y: number };

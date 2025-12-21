@@ -15,7 +15,7 @@ import { amazeing } from "../../codemirror/amazeing.ts";
 import { currentLineHighlighter } from "../../codemirror/currentLineHighlighter.ts";
 import { EditorView } from "@codemirror/view";
 import { useCodeStorage } from "../../hooks/useCodeStorage.ts";
-import { amazeingAutocomplete } from "../../codemirror/autocomplete.ts";
+import { amazeingAutocomplete } from "../../codemirror/autocomplete/autocomplete.ts";
 import { FaRegFolderOpen } from "react-icons/fa6";
 import { ActiveFile } from "./FileList/ActiveFile/ActiveFile.tsx";
 import { FileList } from "./FileList/FileList.tsx";

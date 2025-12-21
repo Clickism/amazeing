@@ -16,12 +16,6 @@ export type TwoVarInstruction<T> = {
   dest: Address;
   src: Address;
 };
-export type ThreeVarInstruction<T> = {
-  type: T;
-  dest: Address;
-  src1: Address;
-  src2: Address;
-};
 export type ThreeVarIntermediateInstruction<T> = {
   type: T;
   dest: Address;
@@ -29,6 +23,7 @@ export type ThreeVarIntermediateInstruction<T> = {
   src2: Address | number;
 };
 
+// TODO: Also maybe new instruction "printm" that takes different printing modes, ascii or sth?? or just "printascii"
 export type Instruction =
   | NoVarInstruction<"move">
   | { type: "turn"; direction: LeftRight }
