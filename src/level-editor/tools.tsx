@@ -45,7 +45,7 @@ export type GeneralTool = BaseTool & {
 };
 
 export const TILE_TOOLS: TileTool[] = [
-  ...TILE_TYPES.map(
+  ...TILE_TYPES.filter((t) => t != "water").map(
     (tile) =>
       ({
         name: { key: `tile.${tile}` },
@@ -110,6 +110,7 @@ export const WALL_TOOLS = [
             dispatch({ type: "setVerticalWall", position, wall: newWall });
           }
         },
+        wallType: wall,
       }) as WallTool,
   ),
 ];
