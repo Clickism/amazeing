@@ -6,6 +6,7 @@
   "codeEditor.theme": "Farbthema",
   "codeEditor.fontSize": "Schriftgröße",
   "codeEditor.files": "Dateien",
+  "fileList.newFile": "Neue Datei",
   "console.title": "Konsole",
   "viewport.title": "Ansicht",
   "editor.run": "Ausführen",
