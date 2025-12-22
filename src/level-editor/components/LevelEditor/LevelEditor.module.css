@@ -27,6 +27,7 @@
   flex-direction: column;
 }
 
+/* TODO: Fix grid scrollbar behind tiles */
 .gridWindow::before {
   content: "";
   position: absolute;
