@@ -19,8 +19,8 @@
   "button.copied": "Copied!",
 
   "levelEditor.title": "Level Editor",
-  "levelEditor.headers.tileBrush": "Tile Brush",
-  "levelEditor.headers.wallBrush": "Wall Brush",
+  "levelEditor.headers.tileTool": "Tile Tool",
+  "levelEditor.headers.wallTool": "Wall Tool",
   "levelEditor.headers.mazeSize": "Maze Size",
   "levelEditor.headers.tools": "Tools",
   "levelEditor.headers.metadata": "Metadata",
@@ -31,12 +31,17 @@
   "levelEditor.tools.clearAllTiles": "Clear All Tiles",
   "levelEditor.tools.fillAllWalls": "Fill All Walls",
   "levelEditor.tools.clearAllWalls": "Clear All Walls",
-  "levelEditor.tools.startFinish": "Start / Finish",
+  "levelEditor.tools.start": "Start",
+  "levelEditor.tools.finish": "Finish",
   "levelEditor.export.export": "Export",
   "levelEditor.export.levelName": "Level Name",
   "levelEditor.export.levelDescription": "Level Description",
   "levelEditor.export.actions.visualizeMaze": "Visualize Maze",
   "levelEditor.export.actions.editMaze": "Edit Maze",
   "levelEditor.export.actions.exportJSON": "Export JSON",
-  "levelEditor.export.actions.reset": "Reset"
+  "levelEditor.export.actions.reset": "Reset",
+
+  "tile.grass": "Grass",
+  "tile.water": "Water",
+  "wall.stone": "Stone"
 }

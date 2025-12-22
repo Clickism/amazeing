@@ -4,16 +4,23 @@ import {
   createInitialEditorState,
   type EditorState,
 } from "./state.ts";
+import type { CardinalDirection, Position } from "../interpreter/types.ts";
+import type { TileTool, WallTool } from "./tools.tsx";
 
-type EditorAction =
+export type EditorAction =
   | { type: "reset" }
   | { type: "resize"; width: number; height: number }
-  | { type: "setTile"; row: number; col: number; tile: TileType }
-  | { type: "setHorizontalWall"; row: number; col: number; wall: WallType }
-  | { type: "setVerticalWall"; row: number; col: number; wall: WallType }
+  | { type: "setTile"; position: Position; tile: TileType }
+  | { type: "setHorizontalWall"; position: Position; wall: WallType }
+  | { type: "setVerticalWall"; position: Position; wall: WallType }
   | { type: "setAllTiles"; tile: TileType }
   | { type: "setAllWalls"; wall: WallType }
-  | { type: "setMetadata"; name: string; description: string };
+  | { type: "setMetadata"; name: string; description: string }
+  | { type: "toggleVisualize" }
+  | { type: "setTileTool"; tileTool: TileTool }
+  | { type: "setWallTool"; wallTool: WallTool }
+  | { type: "setFinish"; position: Position }
+  | { type: "setStart"; position: Position; direction: CardinalDirection };
 
 type ActionExecutor<T> = (state: EditorState, args: T) => EditorState;
 type ActionExecutors = {
@@ -35,9 +42,9 @@ const actionExecutors: ActionExecutors = {
     };
   },
 
-  setTile: (state, { row, col, tile }) => {
+  setTile: (state, { position, tile }) => {
     const tiles = clone2DArray(state.maze.tiles);
-    tiles[row][col] = tile;
+    tiles[position.y][position.x] = tile;
     state = {
       ...state,
       maze: {
@@ -48,9 +55,9 @@ const actionExecutors: ActionExecutors = {
     return state;
   },
 
-  setHorizontalWall: (state, { row, col, wall }) => {
+  setHorizontalWall: (state, { position, wall }) => {
     const horizontal = clone2DArray(state.maze.walls.horizontal);
-    horizontal[row][col] = wall;
+    horizontal[position.y][position.x] = wall;
     state = {
       ...state,
       maze: {
@@ -64,9 +71,9 @@ const actionExecutors: ActionExecutors = {
     return state;
   },
 
-  setVerticalWall: (state, { row, col, wall }) => {
+  setVerticalWall: (state, { position, wall }) => {
     const vertical = clone2DArray(state.maze.walls.vertical);
-    vertical[row][col] = wall;
+    vertical[position.y][position.x] = wall;
     state = {
       ...state,
       maze: {
@@ -120,6 +127,44 @@ const actionExecutors: ActionExecutors = {
     };
     return state;
   },
+
+  toggleVisualize: (state) => {
+    return {
+      ...state,
+      visualize: !state.visualize,
+    };
+  },
+
+  setTileTool: (state, { tileTool }) => {
+    return {
+      ...state,
+      tileTool,
+    };
+  },
+
+  setWallTool: (state, { wallTool }) => {
+    return {
+      ...state,
+      wallTool,
+    };
+  },
+
+  setFinish: (state, { position }) => {
+    return {
+      ...state,
+      finishPosition: position,
+    };
+  },
+
+  setStart: (state, { position, direction }) => {
+    return {
+      ...state,
+      owlStart: {
+        position,
+        direction,
+      },
+    };
+  },
 };
 
 function clone2DArray<T>(array: T[][]): T[][] {
@@ -133,15 +178,4 @@ export function editorReducer(
   const executor = actionExecutors[action.type];
   return executor(state, action as never);
 }
-
-export function stringifyEditorState(editor: EditorState): string {
-  return JSON.stringify(
-    {
-      ...editor,
-      width: undefined,
-      height: undefined,
-    },
-    null,
-    2,
-  );
-}
+export class stringifyEditorState {}

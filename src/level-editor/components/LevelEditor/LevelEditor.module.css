@@ -50,21 +50,3 @@
   overflow: auto;
   padding: 1rem;
 }
-
-.grid {
-  gap: .5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.gridRow {
-  gap: .5rem;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-}
-
-.wallRow {
-  gap: calc(1rem + var(--short-size));
-}

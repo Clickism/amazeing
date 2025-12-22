@@ -6,20 +6,13 @@ import {
 import clsx from "clsx";
 import styles from "./Tile.module.css";
 import {
-  type CardinalDirection,
   isPositionEqual,
   type Position,
 } from "../../../../interpreter/types.ts";
 import type { EditorState } from "../../../state.ts";
-import {
-  FaArrowCircleDown,
-  FaArrowCircleLeft,
-  FaArrowCircleRight,
-  FaArrowCircleUp,
-} from "react-icons/fa";
-import type { IconBaseProps } from "react-icons";
 import { ImExit } from "react-icons/im";
 import type { CSSProperties } from "react";
+import { getDirectionIcon } from "../../../utils.tsx";
 
 type TileProps = {
   tile: TileType;
@@ -55,17 +48,4 @@ export function Tile({ tile, editor, position, ...props }: TileProps) {
       {isFinish && <ImExit size={28} fill={"var(--clr-danger-a10)"} />}
     </Button>
   );
-}
-
-function getDirectionIcon(direction: CardinalDirection, props?: IconBaseProps) {
-  switch (direction) {
-    case "north":
-      return <FaArrowCircleUp {...props} />;
-    case "east":
-      return <FaArrowCircleRight {...props} />;
-    case "south":
-      return <FaArrowCircleDown {...props} />;
-    case "west":
-      return <FaArrowCircleLeft {...props} />;
-  }
 }
