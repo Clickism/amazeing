@@ -6,7 +6,6 @@ import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
 import { useTranslation } from "react-i18next";
 import { useEditorSettings } from "../../hooks/useEditorSettings.ts";
 
-/* TODO: Console autoscroll */
 export function Console({ messages }: { messages: ConsoleMessage[] }) {
   const { t } = useTranslation();
   const { fontSize } = useEditorSettings();
@@ -20,9 +19,9 @@ export function Console({ messages }: { messages: ConsoleMessage[] }) {
   }, [messages]);
 
   return (
-    <div className={clsx(styles.console, "window-border")} ref={containerRef}>
+    <div className={clsx(styles.console, "window-border")}>
       <CornerGroup className={styles.title}>{t("console.title")}</CornerGroup>
-      <div className={styles.messageContainer}>
+      <div className={styles.messageContainer} ref={containerRef}>
         {messages.map((message, i) => (
           <div
             key={i}
