@@ -139,7 +139,7 @@ export class InterpreterImpl extends Interpreter {
   }
 
   run() {
-    while (this.pc < this.instructions.length) {
+    while (this.canStep()) {
       this.step();
     }
   }
