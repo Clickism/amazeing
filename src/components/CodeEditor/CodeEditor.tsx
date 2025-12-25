@@ -1,7 +1,6 @@
 import styles from "./CodeEditor.module.css";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { useEditorSettings } from "../../hooks/useEditorSettings.ts";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
 import { Button } from "../ui/Button/Button.tsx";
 import Popup from "reactjs-popup";
@@ -14,11 +13,12 @@ import ReactCodeMirror, { tooltips } from "@uiw/react-codemirror";
 import { amazeing } from "../../codemirror/amazeing.ts";
 import { currentLineHighlighter } from "../../codemirror/currentLineHighlighter.ts";
 import { EditorView } from "@codemirror/view";
-import { useCodeStorage } from "../../hooks/useCodeStorage.ts";
 import { amazeingAutocomplete } from "../../codemirror/autocomplete/autocomplete.ts";
 import { FaRegFolderOpen } from "react-icons/fa6";
 import { ActiveFile } from "./FileList/ActiveFile/ActiveFile.tsx";
 import { FileList } from "./FileList/FileList.tsx";
+import { useEditorSettings } from "../../context/EditorSettingsContext.tsx";
+import { useCodeStorage } from "../../context/CodeStorageContext.tsx";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 

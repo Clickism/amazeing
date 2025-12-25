@@ -17,6 +17,7 @@
   "editor.runInstant": "Sofort",
   "button.copyToClipboard": "In die Zwischenablage Kopieren",
   "button.copied": "Kopiert!",
+  "button.saved": "Gespeichert!",
 
   "levelEditor.title": "Level-Editor",
   "levelEditor.headers.tileTool": "Tile-Tool",
@@ -39,6 +40,7 @@
   "levelEditor.export.actions.visualizeMaze": "Maze visualisieren",
   "levelEditor.export.actions.editMaze": "Maze bearbeiten",
   "levelEditor.export.actions.exportJSON": "JSON exportieren",
+  "levelEditor.export.actions.saveCustomLevel": "In Levels speichern",
   "levelEditor.export.actions.reset": "Zurücksetzen",
 
   "tile.grass": "Gras",

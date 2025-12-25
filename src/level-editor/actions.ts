@@ -35,10 +35,14 @@ const actionExecutors: ActionExecutors = {
   },
 
   resize: (state, { width, height }) => {
+    const newState = createEditorState(width, height);
     return {
-      ...createEditorState(width, height),
-      name: state.name,
-      description: state.description,
+      ...state,
+      width: newState.width,
+      height: newState.height,
+      maze: newState.maze,
+      finishPosition: newState.finishPosition,
+      owlStart: newState.owlStart,
     };
   },
 

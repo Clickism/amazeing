@@ -4,7 +4,7 @@ import type { ConsoleMessage } from "../../interpreter/console.ts";
 import { useEffect, useRef } from "react";
 import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
 import { useTranslation } from "react-i18next";
-import { useEditorSettings } from "../../hooks/useEditorSettings.ts";
+import { useEditorSettings } from "../../context/EditorSettingsContext.tsx";
 
 export function Console({ messages }: { messages: ConsoleMessage[] }) {
   const { t } = useTranslation();

@@ -8,7 +8,7 @@ import {
   type Theme,
   toggleTheme,
 } from "../../../../utils/themes.ts";
-import { useEditorSettings } from "../../../../hooks/useEditorSettings.ts";
+import { useEditorSettings } from "../../../../context/EditorSettingsContext.tsx";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(getTheme());

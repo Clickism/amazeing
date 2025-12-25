@@ -1,7 +1,8 @@
 import {
   type EditorDispatch,
   type EditorState,
-  stringifyEditorState,
+  stringifyLevelData,
+  toLevelData,
 } from "../../../state.ts";
 import { FormGroup } from "../../../../components/ui/Form/FormGroup/FormGroup.tsx";
 import { FormField } from "../../../../components/ui/Form/FormField/FormField.tsx";
@@ -10,6 +11,9 @@ import { Button } from "../../../../components/ui/Button/Button.tsx";
 import { Modal } from "../../../../components/ui/Modal/Modal.tsx";
 import { CopyToClipboard } from "../../CopyToClipboard/CopyToClipboard.tsx";
 import { useTranslation } from "react-i18next";
+import { useLevelStorage } from "../../../../context/LevelStorageContext.tsx";
+import { BiExport, BiImport } from "react-icons/bi";
+import { TimedButton } from "../../../../components/ui/Button/TimedButton/TimedButton.tsx";
 
 type ExportPanelProps = {
   editor: EditorState;
@@ -18,7 +22,8 @@ type ExportPanelProps = {
 
 export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
   const { t } = useTranslation();
-  const editorStateJSON = stringifyEditorState(editor);
+  const editorStateJSON = stringifyLevelData(editor);
+  const { addLevel } = useLevelStorage();
   return (
     <>
       <h4>{t("levelEditor.export.export") + " 📤"}</h4>
@@ -70,10 +75,12 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
             : t("levelEditor.export.actions.visualizeMaze")}
         </Button>
         <Modal
+          // TODO: Translate
           title={"Exported Level JSON"}
           trigger={
-            <Button variant="primary">
+            <Button variant="secondary">
               {t("levelEditor.export.actions.exportJSON")}
+              <BiExport />
             </Button>
           }
         >
@@ -86,6 +93,24 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
           />
           <CopyToClipboard content={editorStateJSON} />
         </Modal>
+
+        <TimedButton
+          variant="secondary"
+          onClick={() => {
+            addLevel(toLevelData(editor));
+          }}
+        >
+          {(active) =>
+            active ? (
+              <strong>{t("button.saved")}</strong>
+            ) : (
+              <>
+                {t("levelEditor.export.actions.saveCustomLevel")}
+                <BiImport />
+              </>
+            )
+          }
+        </TimedButton>
 
         <Button
           variant="danger"

@@ -7,6 +7,7 @@ import {
 import { type Owl, OwlImpl } from "./owl.ts";
 
 export type LevelData = {
+  id: string;
   name: string;
   description: string;
   maze: MazeData;

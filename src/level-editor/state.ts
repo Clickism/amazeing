@@ -25,6 +25,7 @@ export function createInitialEditorState(): EditorState {
 
 export function createEditorState(width: number, height: number): EditorState {
   return {
+    id: crypto.randomUUID(),
     width,
     height,
     tileTool: TILE_TOOLS[0],
@@ -47,16 +48,17 @@ export function createEditorState(width: number, height: number): EditorState {
   };
 }
 
-export function stringifyEditorState(editor: EditorState): string {
-  return JSON.stringify(
-    {
-      name: editor.name,
-      description: editor.description,
-      maze: editor.maze,
-      owlStart: editor.owlStart,
-      finishPosition: editor.finishPosition,
-    },
-    null,
-    2,
-  );
+export function toLevelData(editor: EditorState): LevelData {
+  return {
+    id: editor.id,
+    name: editor.name,
+    description: editor.description,
+    maze: editor.maze,
+    owlStart: editor.owlStart,
+    finishPosition: editor.finishPosition,
+  };
+}
+
+export function stringifyLevelData(editor: EditorState): string {
+  return JSON.stringify(toLevelData(editor), null, 2);
 }

@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import type { EditorTheme } from "../utils/editorThemes.ts";
 
 export type EditorSettings = {
@@ -13,3 +13,12 @@ export type EditorSettings = {
 export const EditorSettingsContext = createContext<EditorSettings | undefined>(
   undefined,
 );
+
+export function useEditorSettings() {
+  const ctx = useContext(EditorSettingsContext);
+  if (!ctx)
+    throw new Error(
+      "useEditorSettings must be used within EditorSettingsProvider",
+    );
+  return ctx;
+}

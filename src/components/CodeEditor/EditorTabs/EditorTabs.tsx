@@ -1,10 +1,10 @@
-import { useCodeStorage } from "../../../hooks/useCodeStorage.ts";
 import { Button } from "../../ui/Button/Button.tsx";
 import { FaPlus } from "react-icons/fa6";
 import styles from "./EditorTabs.module.css";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { useState } from "react";
 import clsx from "clsx";
+import { useCodeStorage } from "../../../context/CodeStorageContext.tsx";
 
 export type EditorTabsProps = {
   activeFile: string;

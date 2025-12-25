@@ -1,6 +1,6 @@
-import { useCodeStorage } from "../../hooks/useCodeStorage.ts";
 import { useEffect, useState } from "react";
 import { CodeEditor, type CodeEditorProps } from "./CodeEditor.tsx";
+import { useCodeStorage } from "../../context/CodeStorageContext.tsx";
 
 type TabbedEditorProps = {
   startingFileName?: string;

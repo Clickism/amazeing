@@ -1,4 +1,3 @@
-import { useCodeStorage } from "../../../hooks/useCodeStorage.ts";
 import { Button } from "../../ui/Button/Button.tsx";
 import { FaPlus } from "react-icons/fa6";
 import styles from "./FileList.module.css";
@@ -7,6 +6,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import Popup from "reactjs-popup";
+import { useCodeStorage } from "../../../context/CodeStorageContext.tsx";
 
 export type FileListProps = {
   activeFile: string;
