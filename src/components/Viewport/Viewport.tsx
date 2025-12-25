@@ -7,15 +7,19 @@ import type { Level } from "../../game/level.ts";
 import { type Camera, Renderer } from "../../game/renderer.ts";
 import { loadSprites, type SpriteMap } from "../../game/sprites.ts";
 import type { Position } from "../../interpreter/types.ts";
+import { CornerGroup } from "../ui/CornerGroup/CornerGroup.tsx";
+import { Button } from "../ui/Button/Button.tsx";
+import { FaRegMap } from "react-icons/fa";
 
 const ZOOM_SPEED = 0.0015;
 
 export type ViewportProps = {
   owl: Owl;
   level: Level;
+  levelSelector?: boolean;
 };
 
-export function Viewport({ owl, level }: ViewportProps) {
+export function Viewport({ owl, level, levelSelector }: ViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [sprites, setSprites] = useState<SpriteMap | null>(null);
 
@@ -89,7 +93,7 @@ export function Viewport({ owl, level }: ViewportProps) {
 
     const scale = Math.exp(-e.deltaY * ZOOM_SPEED);
 
-    setCamera(c => {
+    setCamera((c) => {
       const newZoom = Math.min(Math.max(c.zoom * scale, 0.25), 8);
       return {
         ...c,
@@ -98,9 +102,15 @@ export function Viewport({ owl, level }: ViewportProps) {
     });
   };
 
-
   return (
     <div className={clsx(styles.viewport, "window-border")}>
+      {levelSelector && (
+        <CornerGroup position="top-right">
+          <Button shape="icon">
+            <FaRegMap />
+          </Button>
+        </CornerGroup>
+      )}
       <canvas
         ref={canvasRef}
         className={styles.canvas}

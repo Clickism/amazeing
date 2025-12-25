@@ -9,14 +9,14 @@ import {
   isPositionEqual,
   type Position,
 } from "../../../../interpreter/types.ts";
-import type { EditorState } from "../../../state.ts";
+import type { LevelEditorState } from "../../../state.ts";
 import { ImExit } from "react-icons/im";
 import type { CSSProperties } from "react";
 import { getDirectionIcon } from "../../../utils.tsx";
 
 type TileProps = {
   tile: TileType;
-  editor: EditorState;
+  editor: LevelEditorState;
   position: Position;
 } & ButtonProps;
 

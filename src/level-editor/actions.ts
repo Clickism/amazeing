@@ -2,12 +2,12 @@ import { type TileType, type WallType } from "../game/maze.ts";
 import {
   createEditorState,
   createInitialEditorState,
-  type EditorState,
+  type LevelEditorState,
 } from "./state.ts";
 import type { CardinalDirection, Position } from "../interpreter/types.ts";
 import type { TileTool, WallTool } from "./tools.tsx";
 
-export type EditorAction =
+export type LevelEditorAction =
   | { type: "reset" }
   | { type: "resize"; width: number; height: number }
   | { type: "setTile"; position: Position; tile: TileType }
@@ -22,10 +22,10 @@ export type EditorAction =
   | { type: "setFinish"; position: Position }
   | { type: "setStart"; position: Position; direction: CardinalDirection };
 
-type ActionExecutor<T> = (state: EditorState, args: T) => EditorState;
+type ActionExecutor<T> = (state: LevelEditorState, args: T) => LevelEditorState;
 type ActionExecutors = {
-  [K in EditorAction["type"]]: ActionExecutor<
-    Extract<EditorAction, { type: K }>
+  [K in LevelEditorAction["type"]]: ActionExecutor<
+    Extract<LevelEditorAction, { type: K }>
   >;
 };
 
@@ -176,9 +176,9 @@ function clone2DArray<T>(array: T[][]): T[][] {
 }
 
 export function editorReducer(
-  state: EditorState,
-  action: EditorAction,
-): EditorState {
+  state: LevelEditorState,
+  action: LevelEditorAction,
+): LevelEditorState {
   const executor = actionExecutors[action.type];
   return executor(state, action as never);
 }

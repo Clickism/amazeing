@@ -1,6 +1,6 @@
 import {
-  type EditorDispatch,
-  type EditorState,
+  type LevelEditorDispatch,
+  type LevelEditorState,
   stringifyLevelData,
   toLevelData,
 } from "../../../state.ts";
@@ -16,8 +16,8 @@ import { BiExport, BiImport } from "react-icons/bi";
 import { TimedButton } from "../../../../components/ui/Button/TimedButton/TimedButton.tsx";
 
 type ExportPanelProps = {
-  editor: EditorState;
-  dispatch: EditorDispatch;
+  editor: LevelEditorState;
+  dispatch: LevelEditorDispatch;
 };
 
 export function ExportPanel({ editor, dispatch }: ExportPanelProps) {

@@ -2,8 +2,10 @@ import { Layout } from "../components/Layout/Layout.tsx";
 import { CodeStorageProvider } from "../context/CodeStorageProvider.tsx";
 import { Editor } from "../components/Editor/Editor.tsx";
 import { Level } from "../game/level.ts";
+import { LevelStorageProvider } from "../context/LevelStorageProvider.tsx";
 
 const sandboxLevel = new Level({
+  id: "sandbox",
   name: "Test Level",
   description: "A tiny 3x3 test maze.",
   maze: {
@@ -37,7 +39,9 @@ export function SandboxPage() {
   return (
     <Layout fullWidth>
       <CodeStorageProvider fileNamespace="sandbox">
-        <Editor level={sandboxLevel} tabbed />
+        <LevelStorageProvider fileNamespace="custom">
+          <Editor level={sandboxLevel} levelSelector tabbed />
+        </LevelStorageProvider>
       </CodeStorageProvider>
     </Layout>
   );

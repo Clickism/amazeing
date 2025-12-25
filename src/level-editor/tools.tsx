@@ -1,7 +1,7 @@
 import type { Translatable } from "../i18n/i18n.ts";
 import { CARDINAL_DIRECTIONS, type Position } from "../interpreter/types.ts";
 import type { ReactNode } from "react";
-import type { EditorDispatch, EditorState } from "./state.ts";
+import type { LevelEditorDispatch, LevelEditorState } from "./state.ts";
 import {
   TILE_TYPES,
   type TileType,
@@ -18,13 +18,13 @@ export type BaseTool = {
 
 export type TileTool = BaseTool & {
   onTileClick: (
-    editor: EditorState,
-    dispatch: EditorDispatch,
+    editor: LevelEditorState,
+    dispatch: LevelEditorDispatch,
     position: Position,
   ) => void;
   tilePopup?: (
-    editor: EditorState,
-    dispatch: EditorDispatch,
+    editor: LevelEditorState,
+    dispatch: LevelEditorDispatch,
     position: Position,
   ) => ReactNode;
   tileType?: TileType;
@@ -32,8 +32,8 @@ export type TileTool = BaseTool & {
 
 export type WallTool = BaseTool & {
   onWallClick: (
-    editor: EditorState,
-    dispatch: EditorDispatch,
+    editor: LevelEditorState,
+    dispatch: LevelEditorDispatch,
     position: Position,
     horizontal: boolean,
   ) => void;
@@ -41,7 +41,7 @@ export type WallTool = BaseTool & {
 };
 
 export type GeneralTool = BaseTool & {
-  onClick: (editor: EditorState, dispatch: EditorDispatch) => void;
+  onClick: (editor: LevelEditorState, dispatch: LevelEditorDispatch) => void;
 };
 
 export const TILE_TOOLS: TileTool[] = [
@@ -88,7 +88,7 @@ export const TILE_TOOLS: TileTool[] = [
   },
   {
     name: { key: "levelEditor.tools.finish" },
-    onTileClick: (_, dispatch: EditorDispatch, position: Position) => {
+    onTileClick: (_, dispatch: LevelEditorDispatch, position: Position) => {
       dispatch({ type: "setFinish", position });
     },
   },

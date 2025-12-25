@@ -3,13 +3,13 @@ import { FormField } from "../../../../components/ui/Form/FormField/FormField.ts
 import { ButtonGroup } from "../../../../components/ui/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../../../components/ui/Button/Button.tsx";
 import { useTranslation } from "react-i18next";
-import type { EditorDispatch, EditorState } from "../../../state.ts";
+import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
 import { GENERAL_TOOLS, TILE_TOOLS, WALL_TOOLS } from "../../../tools.tsx";
 import { tryTranslate } from "../../../../i18n/i18n.ts";
 
 type ToolPanelProps = {
-  editor: EditorState;
-  dispatch: EditorDispatch;
+  editor: LevelEditorState;
+  dispatch: LevelEditorDispatch;
 };
 
 const MAX_MAZE_SIZE = 50;

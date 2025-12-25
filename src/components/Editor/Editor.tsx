@@ -38,10 +38,11 @@ export const MAX_TRANSITION_SPEED = 0.2;
 
 type Props = {
   level: Level;
+  levelSelector?: boolean;
   tabbed?: boolean;
 };
 
-export function Editor({ level, tabbed }: Props) {
+export function Editor({ level, tabbed, levelSelector }: Props) {
   const [owl, setOwl] = useState<Owl>(() => {
     return level.createOwl((newOwl) => setOwl({ ...newOwl }));
   });
@@ -99,10 +100,11 @@ export function Editor({ level, tabbed }: Props) {
     <div className={styles.editorContainer}>
       <div className={styles.left}>
         <div title={t("viewport.title")} className={styles.viewport}>
-          <Viewport owl={owl} level={level} />
+          <Viewport owl={owl} level={level} levelSelector={levelSelector} />
         </div>
         <ButtonGroup center>
           <RunControls
+            // TODO: Refactor to use context or similar
             interpreter={interpreter}
             setCurrentLine={setCurrentLine}
             appendOutput={appendOutput}

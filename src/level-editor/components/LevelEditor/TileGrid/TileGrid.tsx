@@ -3,13 +3,13 @@ import { Fragment } from "react";
 import { Tile } from "../Tile/Tile.tsx";
 import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
-import type { EditorDispatch, EditorState } from "../../../state.ts";
+import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
 import type { Position } from "../../../../interpreter/types.ts";
 import Popup from "reactjs-popup";
 
 type TileGridProps = {
-  editor: EditorState;
-  dispatch: EditorDispatch;
+  editor: LevelEditorState;
+  dispatch: LevelEditorDispatch;
 };
 
 export function TileGrid({ editor, dispatch }: TileGridProps) {

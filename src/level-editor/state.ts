@@ -7,11 +7,11 @@ import {
   type WallTool,
 } from "./tools.tsx";
 import type { ActionDispatch } from "react";
-import type { EditorAction } from "./actions.ts";
+import type { LevelEditorAction } from "./actions.ts";
 
-export type EditorDispatch = ActionDispatch<[action: EditorAction]>;
+export type LevelEditorDispatch = ActionDispatch<[action: LevelEditorAction]>;
 
-export type EditorState = {
+export type LevelEditorState = {
   width: number;
   height: number;
   tileTool: TileTool;
@@ -19,11 +19,14 @@ export type EditorState = {
   visualize: boolean;
 } & LevelData;
 
-export function createInitialEditorState(): EditorState {
+export function createInitialEditorState(): LevelEditorState {
   return createEditorState(5, 5);
 }
 
-export function createEditorState(width: number, height: number): EditorState {
+export function createEditorState(
+  width: number,
+  height: number,
+): LevelEditorState {
   return {
     id: crypto.randomUUID(),
     width,
@@ -48,7 +51,7 @@ export function createEditorState(width: number, height: number): EditorState {
   };
 }
 
-export function toLevelData(editor: EditorState): LevelData {
+export function toLevelData(editor: LevelEditorState): LevelData {
   return {
     id: editor.id,
     name: editor.name,
@@ -59,6 +62,6 @@ export function toLevelData(editor: EditorState): LevelData {
   };
 }
 
-export function stringifyLevelData(editor: EditorState): string {
+export function stringifyLevelData(editor: LevelEditorState): string {
   return JSON.stringify(toLevelData(editor), null, 2);
 }
