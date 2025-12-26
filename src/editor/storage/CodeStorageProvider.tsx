@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { type CodeFile, CodeStorageContext } from "./CodeStorageContext.tsx";
 
 type ProviderProps = {
   fileNamespace: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export function CodeStorageProvider({

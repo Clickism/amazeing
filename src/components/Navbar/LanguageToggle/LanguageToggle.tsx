@@ -10,7 +10,7 @@ export function LanguageToggle() {
   );
 
   useEffect(() => {
-    changeLanguage(lang);
+    changeLanguage(lang).then();
   }, [lang]);
 
   const handleClick = () => {

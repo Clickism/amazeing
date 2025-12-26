@@ -38,7 +38,7 @@ export class Environment {
   owl: Owl;
   level: Level;
   private global: VariableMap;
-  private stack: StackFrame[];
+  private readonly stack: StackFrame[];
   private args: VariableMap;
 
   constructor(

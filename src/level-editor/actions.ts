@@ -182,4 +182,3 @@ export function editorReducer(
   const executor = actionExecutors[action.type];
   return executor(state, action as never);
 }
-export class stringifyEditorState {}
