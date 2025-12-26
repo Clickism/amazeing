@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from "react";
+import { useCallback, useMemo, useState } from "react";
 
 /**
  * Wrapper around localStorage for namespaced persistent storage.
@@ -10,29 +10,10 @@ export class PersistentStorage {
     this.namespace = namespace;
   }
 
-  load(key: string): string | null {
-    return localStorage.getItem(this.keyOf(key));
-  }
-
-  loadNumber(key: string, defaultValue: number | null = null): number | null {
-    const value = this.load(key);
-    if (value === null) return defaultValue;
-    const number = Number(value);
-    return Number.isNaN(number) ? defaultValue : number;
-  }
-
-  loadBoolean(
-    key: string,
-    defaultValue: boolean | null = null,
-  ): boolean | null {
-    const value = this.load(key);
-    return value !== null ? value === "true" : defaultValue;
-  }
-
-  loadObject<T>(key: string): T | null;
-  loadObject<T>(key: string, defaultValue: T): T;
-  loadObject<T>(key: string, defaultValue: T | null = null): T | null {
-    const value = this.load(key);
+  load<T>(key: string): T | null;
+  load<T>(key: string, defaultValue: T): T;
+  load<T>(key: string, defaultValue: T | null = null): T | null {
+    const value = localStorage.getItem(this.keyOf(key));
     if (value === null) return defaultValue;
     try {
       return JSON.parse(value) as T;
@@ -42,9 +23,7 @@ export class PersistentStorage {
   }
 
   save<T>(key: string, value: T): void {
-    const stringValue =
-      typeof value === "object" ? JSON.stringify(value) : String(value);
-    localStorage.setItem(this.keyOf(key), stringValue);
+    localStorage.setItem(this.keyOf(key), JSON.stringify(value));
   }
 
   remove(key: string): void {
@@ -78,7 +57,7 @@ export function usePersistentState<T>(
   defaultValue: T,
 ): [T, (value: T | ((prev: T) => T)) => void] {
   const [state, setState] = useState<T>(() =>
-    storage.loadObject<T>(key, defaultValue),
+    storage.load<T>(key, defaultValue),
   );
 
   const setPersistentState = useCallback(

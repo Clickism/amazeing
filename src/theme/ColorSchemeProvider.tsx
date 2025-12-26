@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import { type ColorScheme, ColorSchemeContext } from "./ColorSchemeContext.tsx";
 import { usePersistentState, usePersistentStorage } from "../utils/storage.ts";
 
@@ -14,15 +14,14 @@ export function ColorSchemeProvider({
   children,
 }: ColorSchemeProviderProps) {
   const storage = usePersistentStorage(namespace);
-  const [colorScheme, setColorSchemeState] = usePersistentState<ColorScheme>(
+  const [colorScheme, setColorScheme] = usePersistentState<ColorScheme>(
     storage,
     "color-scheme",
     DEFAULT_COLOR_SCHEME,
   );
-  const setColorScheme = (scheme: ColorScheme) => {
-    setColorSchemeState(scheme);
-    document.documentElement.setAttribute("theme", scheme);
-  };
+  useEffect(() => {
+    document.documentElement.setAttribute("theme", colorScheme);
+  }, [colorScheme]);
   return (
     <ColorSchemeContext.Provider
       value={{

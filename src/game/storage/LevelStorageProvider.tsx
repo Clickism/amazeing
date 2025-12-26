@@ -1,6 +1,10 @@
 import { LevelStorageContext } from "./LevelStorageContext.tsx";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode } from "react";
 import type { LevelData } from "../level.ts";
+import {
+  usePersistentState,
+  usePersistentStorage,
+} from "../../utils/storage.ts";
 
 type LevelStorageProviderProps = {
   fileNamespace: string;
@@ -11,22 +15,12 @@ export function LevelStorageProvider({
   children,
   fileNamespace,
 }: LevelStorageProviderProps) {
-  const storageKey = `levels:${fileNamespace}`;
-  const levelsStorageKey = `${storageKey}:levels`;
-  const [levels, setLevels] = useState<Record<string, LevelData>>(() => {
-    const raw = localStorage.getItem(levelsStorageKey);
-    if (!raw) return {};
-    try {
-      return JSON.parse(raw);
-    } catch {
-      console.warn(`Couldn't parse level data for ${fileNamespace}`);
-      return {};
-    }
-  });
-
-  useEffect(() => {
-    localStorage.setItem(levelsStorageKey, JSON.stringify(levels));
-  }, [levels, levelsStorageKey]);
+  const storage = usePersistentStorage(`levels:${fileNamespace}`);
+  const [levels, setLevels] = usePersistentState<Record<string, LevelData>>(
+    storage,
+    "levels",
+    {},
+  );
 
   const getAllLevels = () => Object.values(levels);
   const getAllLevelIds = () => Object.keys(levels).map((id) => Number(id));
