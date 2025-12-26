@@ -43,7 +43,6 @@
   "levelEditor.export.actions.saveCustomLevel": "Save to Custom Levels",
   "levelEditor.export.actions.reset": "Reset",
 
-
   "tile.grass": "Grass",
   "tile.water": "Water",
   "wall.stone": "Stone"

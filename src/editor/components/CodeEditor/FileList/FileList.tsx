@@ -99,9 +99,7 @@ export function FileList({ activeFile, setActiveFile }: FileListProps) {
                 <BiPencil />
               </Button>
               <Popup>
-                <div>
-                  {t("fileList.deleteConfirm")}
-                </div>
+                <div>{t("fileList.deleteConfirm")}</div>
                 <Button
                   variant="danger"
                   shape="icon"

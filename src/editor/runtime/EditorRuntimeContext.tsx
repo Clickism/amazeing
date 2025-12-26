@@ -22,7 +22,9 @@ export type EditorRuntimeAPI = {
   isRunning: boolean;
 };
 
-export const EditorRuntimeContext = createContext<EditorRuntimeAPI | null>(null);
+export const EditorRuntimeContext = createContext<EditorRuntimeAPI | null>(
+  null,
+);
 
 export function useEditorRuntime() {
   const ctx = useContext(EditorRuntimeContext);

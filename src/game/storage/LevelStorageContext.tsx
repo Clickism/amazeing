@@ -10,9 +10,7 @@ export type LevelStorage = {
   deleteLevel: (id: string) => void;
 };
 
-export const LevelStorageContext = createContext<LevelStorage | null>(
-  null,
-);
+export const LevelStorageContext = createContext<LevelStorage | null>(null);
 
 export function useLevelStorage() {
   const ctx = useContext(LevelStorageContext);

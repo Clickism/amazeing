@@ -9,5 +9,5 @@ export function LevelEditorPage() {
         <LevelEditor />
       </LevelStorageProvider>
     </Layout>
-  )
+  );
 }

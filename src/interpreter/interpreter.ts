@@ -158,6 +158,10 @@ export class InterpreterImpl extends Interpreter {
     return this.instructions[this.pc].line;
   }
 
+  getConsole(): InterpreterConsole {
+    return this.env.console;
+  }
+
   private executeStep() {
     if (this.steps >= MAX_STEPS) {
       throw new ErrorWithTip(
@@ -217,10 +221,6 @@ export class InterpreterImpl extends Interpreter {
         throw new LocatableError(line, err.message, tip);
       }
     }
-  }
-
-  getConsole(): InterpreterConsole {
-    return this.env.console;
   }
 }
 

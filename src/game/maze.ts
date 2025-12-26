@@ -92,30 +92,6 @@ export class Maze {
     }
   }
 
-  private horizontalWallAt(position: Position): WallType {
-    const { x, y } = position;
-    if (y < 0 || y >= this.data.walls.horizontal.length) {
-      return null;
-    }
-    const row = this.data.walls.horizontal[y];
-    if (x < 0 || x >= row.length) {
-      return null;
-    }
-    return row[x];
-  }
-
-  private verticalWallAt(position: Position): WallType {
-    const { x, y } = position;
-    if (y < 0 || y >= this.data.walls.vertical.length) {
-      return null;
-    }
-    const row = this.data.walls.vertical[y];
-    if (x < 0 || x >= row.length) {
-      return null;
-    }
-    return row[x];
-  }
-
   forEachTile(callback: (position: Position, tile: TileType) => void) {
     const rows = this.height();
     const cols = this.width();
@@ -150,5 +126,29 @@ export class Maze {
         }
       });
     });
+  }
+
+  private horizontalWallAt(position: Position): WallType {
+    const { x, y } = position;
+    if (y < 0 || y >= this.data.walls.horizontal.length) {
+      return null;
+    }
+    const row = this.data.walls.horizontal[y];
+    if (x < 0 || x >= row.length) {
+      return null;
+    }
+    return row[x];
+  }
+
+  private verticalWallAt(position: Position): WallType {
+    const { x, y } = position;
+    if (y < 0 || y >= this.data.walls.vertical.length) {
+      return null;
+    }
+    const row = this.data.walls.vertical[y];
+    if (x < 0 || x >= row.length) {
+      return null;
+    }
+    return row[x];
   }
 }

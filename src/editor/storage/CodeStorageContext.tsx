@@ -16,9 +16,7 @@ type CodeStorage = {
   getActiveFile: () => string | null;
 };
 
-export const CodeStorageContext = createContext<CodeStorage | null>(
-  null,
-);
+export const CodeStorageContext = createContext<CodeStorage | null>(null);
 
 export function useCodeStorage() {
   const ctx = useContext(CodeStorageContext);

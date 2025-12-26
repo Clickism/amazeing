@@ -4,13 +4,8 @@ import { Button } from "../../../../../components/Button/Button.tsx";
 
 export function ActiveFile({ activeFile }: { activeFile: string }) {
   return (
-    <Button
-      variant="secondary"
-      className={clsx(
-        styles.activeFile,
-      )}
-    >
+    <Button variant="secondary" className={clsx(styles.activeFile)}>
       {activeFile}
     </Button>
-  )
+  );
 }

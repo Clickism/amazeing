@@ -47,7 +47,9 @@ const comparisonRelations = {
 export function getInstructionDocumentation(
   instruction: string,
 ): Documentation | null {
-  return INSTRUCTION_DOCUMENTATION_LOOKUP[instruction as Instruction["type"]] ?? null;
+  return (
+    INSTRUCTION_DOCUMENTATION_LOOKUP[instruction as Instruction["type"]] ?? null
+  );
 }
 
 const INSTRUCTION_DOCUMENTATION_LOOKUP: {
