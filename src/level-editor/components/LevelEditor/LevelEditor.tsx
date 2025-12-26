@@ -3,7 +3,7 @@ import styles from "./LevelEditor.module.css";
 import clsx from "clsx";
 import { editorReducer } from "../../actions.ts";
 import { createInitialEditorState } from "../../state.ts";
-import { Viewport } from "../../../components/Viewport/Viewport.tsx";
+import { Viewport } from "../../../editor/components/Viewport/Viewport.tsx";
 import { Level } from "../../../game/level.ts";
 import { OwlImpl } from "../../../game/owl.ts";
 import { TileGrid } from "./TileGrid/TileGrid.tsx";

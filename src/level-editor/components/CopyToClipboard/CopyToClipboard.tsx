@@ -1,8 +1,8 @@
-import { type ButtonProps } from "../../../components/ui/Button/Button.tsx";
+import { type ButtonProps } from "../../../components/Button/Button.tsx";
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import { FaCopy } from "react-icons/fa";
-import { TimedButton } from "../../../components/ui/Button/TimedButton/TimedButton.tsx";
+import { TimedButton } from "../../../components/Button/TimedButton/TimedButton.tsx";
 
 export function CopyToClipboard({
   content,

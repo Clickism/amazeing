@@ -8,8 +8,8 @@ import {
   WALL_TYPES,
   type WallType,
 } from "../game/maze.ts";
-import { ButtonGroup } from "../components/ui/Button/ButtonGroup/ButtonGroup.tsx";
-import { Button } from "../components/ui/Button/Button.tsx";
+import { ButtonGroup } from "../components/Button/ButtonGroup/ButtonGroup.tsx";
+import { Button } from "../components/Button/Button.tsx";
 import { getDirectionIcon } from "./utils.tsx";
 
 export type BaseTool = {

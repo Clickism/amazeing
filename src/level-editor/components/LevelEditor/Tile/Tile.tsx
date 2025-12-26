@@ -2,7 +2,7 @@ import type { TileType } from "../../../../game/maze.ts";
 import {
   Button,
   type ButtonProps,
-} from "../../../../components/ui/Button/Button.tsx";
+} from "../../../../components/Button/Button.tsx";
 import clsx from "clsx";
 import styles from "./Tile.module.css";
 import {

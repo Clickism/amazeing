@@ -8,14 +8,20 @@ import "./css/form.css";
 import "./css/codemirror.css";
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/AppRoutes.tsx";
-import { EditorSettingsProvider } from "./context/EditorSettingsProvider.tsx";
+import { CodeEditorSettingsProvider } from "./editor/settings/CodeEditorSettingsProvider.tsx";
+import { ColorSchemeProvider } from "./theme/ColorSchemeProvider.tsx";
+import { EditorThemeProvider } from "./theme/EditorThemeProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <EditorSettingsProvider>
-        <AppRoutes />
-      </EditorSettingsProvider>
+      <ColorSchemeProvider namespace="global">
+        <EditorThemeProvider namespace="editor">
+          <CodeEditorSettingsProvider namespace="code-editor">
+            <AppRoutes />
+          </CodeEditorSettingsProvider>
+        </EditorThemeProvider>
+      </ColorSchemeProvider>
     </BrowserRouter>
   </StrictMode>,
 );

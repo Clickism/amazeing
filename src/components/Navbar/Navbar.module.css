@@ -1,0 +1,48 @@
+:root {
+  --navbar-height: 3.5rem;
+}
+
+.navbar {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  position: sticky;
+  z-index: 100;
+
+  padding: .5rem 1rem;
+  background-color: var(--clr-surface-a10);
+  border-bottom: 1px solid var(--clr-surface-a20);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left, .right {
+  display: flex;
+  gap: 0;
+}
+
+.right {
+  gap: .5rem;
+}
+
+.link {
+  color: var(--text-color) !important;
+  font-weight: 500;
+  padding: var(--padding);
+  border-radius: .5rem;
+  transition: color .2s, background-color .2s;
+}
+
+.link:hover {
+  color: var(--clr-primary-a10) !important;
+}
+
+.currentLink {
+  background-color: var(--clr-surface-a20);
+}

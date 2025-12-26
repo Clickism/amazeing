@@ -1,7 +1,7 @@
-import { FormGroup } from "../../../../components/ui/Form/FormGroup/FormGroup.tsx";
-import { FormField } from "../../../../components/ui/Form/FormField/FormField.tsx";
-import { ButtonGroup } from "../../../../components/ui/Button/ButtonGroup/ButtonGroup.tsx";
-import { Button } from "../../../../components/ui/Button/Button.tsx";
+import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
+import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
+import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
+import { Button } from "../../../../components/Button/Button.tsx";
 import { useTranslation } from "react-i18next";
 import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
 import { GENERAL_TOOLS, TILE_TOOLS, WALL_TOOLS } from "../../../tools.tsx";

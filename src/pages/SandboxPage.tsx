@@ -1,8 +1,10 @@
 import { Layout } from "../components/Layout/Layout.tsx";
-import { CodeStorageProvider } from "../context/CodeStorageProvider.tsx";
-import { Editor } from "../components/Editor/Editor.tsx";
+import { CodeStorageProvider } from "../editor/storage/CodeStorageProvider.tsx";
+import { Editor } from "../editor/components/Editor/Editor.tsx";
 import { Level } from "../game/level.ts";
-import { LevelStorageProvider } from "../context/LevelStorageProvider.tsx";
+import { LevelStorageProvider } from "../game/storage/LevelStorageProvider.tsx";
+import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.tsx";
+import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
 
 const sandboxLevel = new Level({
   id: "sandbox",
@@ -40,7 +42,11 @@ export function SandboxPage() {
     <Layout fullWidth>
       <CodeStorageProvider fileNamespace="sandbox">
         <LevelStorageProvider fileNamespace="custom">
-          <Editor level={sandboxLevel} levelSelector tabbed />
+          <EditorSettingsProvider namespace="sandbox-editor">
+            <EditorRuntimeProvider level={sandboxLevel}>
+              <Editor levelSelector tabbed />
+            </EditorRuntimeProvider>
+          </EditorSettingsProvider>
         </LevelStorageProvider>
       </CodeStorageProvider>
     </Layout>

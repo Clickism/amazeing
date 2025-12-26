@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Navbar } from "./Navbar/Navbar.tsx";
+import { Navbar } from "../Navbar/Navbar.tsx";
 import styles from "./Layout.module.css";
 import clsx from "clsx";
 import { ErrorBoundary } from "react-error-boundary";

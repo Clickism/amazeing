@@ -2,7 +2,7 @@ import type { WallType } from "../../../../game/maze.ts";
 import {
   Button,
   type ButtonProps,
-} from "../../../../components/ui/Button/Button.tsx";
+} from "../../../../components/Button/Button.tsx";
 import clsx from "clsx";
 import styles from "./Wall.module.css";
 import type { LevelEditorState } from "../../../state.ts";

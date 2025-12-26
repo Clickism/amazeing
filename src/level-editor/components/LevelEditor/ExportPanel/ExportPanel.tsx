@@ -4,16 +4,16 @@ import {
   stringifyLevelData,
   toLevelData,
 } from "../../../state.ts";
-import { FormGroup } from "../../../../components/ui/Form/FormGroup/FormGroup.tsx";
-import { FormField } from "../../../../components/ui/Form/FormField/FormField.tsx";
-import { ButtonGroup } from "../../../../components/ui/Button/ButtonGroup/ButtonGroup.tsx";
-import { Button } from "../../../../components/ui/Button/Button.tsx";
-import { Modal } from "../../../../components/ui/Modal/Modal.tsx";
+import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
+import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
+import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
+import { Button } from "../../../../components/Button/Button.tsx";
+import { Modal } from "../../../../components/Modal/Modal.tsx";
 import { CopyToClipboard } from "../../CopyToClipboard/CopyToClipboard.tsx";
 import { useTranslation } from "react-i18next";
-import { useLevelStorage } from "../../../../context/LevelStorageContext.tsx";
+import { useLevelStorage } from "../../../../game/storage/LevelStorageContext.tsx";
 import { BiExport, BiImport } from "react-icons/bi";
-import { TimedButton } from "../../../../components/ui/Button/TimedButton/TimedButton.tsx";
+import { TimedButton } from "../../../../components/Button/TimedButton/TimedButton.tsx";
 
 type ExportPanelProps = {
   editor: LevelEditorState;
