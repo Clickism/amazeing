@@ -111,10 +111,12 @@ export function EditorRuntimeProvider({
     return interpreterRef?.current?.canStep() ?? true;
   }, []);
 
+  // Reset interpreter when code changes
   useEffect(() => {
     reset();
   }, [code, reset]);
 
+  // Restart running if run speed changes
   useEffect(() => {
     if (isRunning) {
       run();
