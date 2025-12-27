@@ -1,16 +1,17 @@
 import type {
   Instruction,
-  ThreeVarIntermediateInstruction,
+  ThreeVarGenericInstruction,
+  ThreeVarInstruction,
 } from "./instruction.ts";
 import { Environment } from "./environment.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { PcTarget } from "./interpreter.ts";
-import { booleanToInteger } from "./types.ts";
+import { booleanToInteger, isValue, type Value } from "./types.ts";
 
 export type Executor<T extends Instruction["type"]> = (
   env: Environment,
   instruction: Extract<Instruction, { type: T }>,
-) => PcTarget | undefined;
+) => PcTarget | void;
 
 type Executors = {
   [K in Instruction["type"]]: Executor<K>;
@@ -19,7 +20,7 @@ type Executors = {
 /**
  * Executors for each instruction type.
  */
-export const EXECUTORS = {
+export const EXECUTORS: Executors = {
   move: (env) => {
     if (!env.level.canOwlMove(env.owl)) {
       throw new Error("Owl cannot move forward due to a wall.");
@@ -91,9 +92,9 @@ export const EXECUTORS = {
   gte: (env, instruction) =>
     logicalExecutor(env, instruction, (a, b) => a >= b),
   eq: (env, instruction) =>
-    logicalExecutor(env, instruction, (a, b) => a === b),
+    genericLogicalExecutor(env, instruction, (a, b) => a === b),
   neq: (env, instruction) =>
-    logicalExecutor(env, instruction, (a, b) => a !== b),
+    genericLogicalExecutor(env, instruction, (a, b) => a !== b),
 
   jump: (env, { target }) => {
     const pc = env.getLabelOrThrow(target).pc;
@@ -154,14 +155,14 @@ export const EXECUTORS = {
       });
     }
   },
-} as Executors;
+};
 
 /**
- * Executes an arithmetic operation.
+ * Executes an arithmetic operation, that only operates on numbers.
  */
 function arithmeticExecutor(
   env: Environment,
-  instruction: ThreeVarIntermediateInstruction<unknown>,
+  instruction: ThreeVarInstruction<unknown>,
   operation: (a: number, b: number) => number,
 ) {
   const { dest, src1, src2 } = instruction;
@@ -172,12 +173,42 @@ function arithmeticExecutor(
 }
 
 /**
+ * Executes a generic arithmetic operation, hat can operate on any Value type.
+ */
+function genericArithmeticExecutor(
+  env: Environment,
+  instruction: ThreeVarGenericInstruction<unknown>,
+  operation: (a: Value, b: Value) => Value,
+) {
+  const { dest, src1, src2 } = instruction;
+  const val1 = env.getValueOrThrow(src1);
+  const val2 = isValue(src2) ? src2 : env.getValueOrThrow(src2);
+  const result = operation(val1, val2);
+  env.setOrThrow(dest, result);
+}
+
+/**
  * Executes a logical operation, storing 1 for true and 0 for false.
  */
 function logicalExecutor(
   env: Environment,
-  instruction: ThreeVarIntermediateInstruction<unknown>,
+  instruction: ThreeVarInstruction<unknown>,
   cond: (a: number, b: number) => boolean,
 ) {
-  return arithmeticExecutor(env, instruction, (a, b) => (cond(a, b) ? 1 : 0));
+  return arithmeticExecutor(env, instruction, (a, b) =>
+    booleanToInteger(cond(a, b)),
+  );
+}
+
+/**
+ * Executes a generic logical operation, storing 1 for true and 0 for false.
+ */
+function genericLogicalExecutor(
+  env: Environment,
+  instruction: ThreeVarGenericInstruction<unknown>,
+  cond: (a: Value, b: Value) => boolean,
+) {
+  return genericArithmeticExecutor(env, instruction, (a, b) =>
+    booleanToInteger(cond(a, b)),
+  );
 }

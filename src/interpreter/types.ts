@@ -1,4 +1,4 @@
-export type Value = Integer;
+export type Value = Integer | Direction;
 
 export type Position = { x: number; y: number };
 
@@ -66,4 +66,26 @@ export function booleanToInteger(value: boolean): Integer {
 
 export function isPositionEqual(a: Position, b: Position): boolean {
   return a.x === b.x && a.y === b.y;
+}
+
+export function isDirection(value: unknown): value is Direction {
+  return (
+    value === "north" ||
+    value === "east" ||
+    value === "south" ||
+    value === "west" ||
+    value === "left" ||
+    value === "right" ||
+    value === "front" ||
+    value === "back" ||
+    value === "here"
+  );
+}
+
+export function isInteger(value: unknown): value is Integer {
+  return typeof value === "number";
+}
+
+export function isValue(value: unknown): value is Value {
+  return isInteger(value) || isDirection(value as Value);
 }

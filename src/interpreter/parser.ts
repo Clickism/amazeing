@@ -4,12 +4,13 @@ import type {
   LabelDefinition,
 } from "./instruction.ts";
 import { ErrorWithTip, LocatableError } from "./error.ts";
-import type {
-  Address,
-  ArrayIndex,
-  Direction,
-  LeftRight,
-  Value,
+import {
+  type Address,
+  type ArrayIndex,
+  type Direction,
+  isDirection,
+  type LeftRight,
+  type Value,
 } from "./types.ts";
 
 const COMMENT_PREFIX = "#";
@@ -230,20 +231,10 @@ function parseLeftRight(arg: string): LeftRight {
 }
 
 function parseDirection(arg: string): Direction {
-  switch (arg) {
-    case "left":
-    case "right":
-    case "north":
-    case "east":
-    case "west":
-    case "south":
-    case "front":
-    case "back":
-    case "here":
-      return arg;
-    default:
-      throw new Error(`Invalid direction: "${arg}"`);
+  if (isDirection(arg)) {
+    return arg;
   }
+  throw new Error(`Invalid direction: "${arg}"`);
 }
 
 function parseIdentifier(arg: string): string {
@@ -275,11 +266,16 @@ function parseAddressOrValue(arg: string): Address | Value {
 }
 
 function parseValue(arg: string): Value {
-  const value = Number(arg);
-  if (isNaN(value)) {
-    throw new Error(`Invalid value: "${arg}", must be a number`);
+  // Direction
+  if (isDirection(arg)) {
+    return arg;
   }
-  return value;
+  // Number
+  const value = Number(arg);
+  if (!isNaN(value)) {
+    return value;
+  }
+  throw new Error(`Invalid value: "${arg}", must be a number or direction.`);
 }
 
 /**

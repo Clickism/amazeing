@@ -1,6 +1,7 @@
 import type {
   Address,
   Direction,
+  Integer,
   LeftRight,
   Value,
   Variable,
@@ -16,11 +17,17 @@ export type TwoVarInstruction<T> = {
   dest: Address;
   src: Address;
 };
-export type ThreeVarIntermediateInstruction<T> = {
+export type ThreeVarInstruction<T> = {
   type: T;
   dest: Address;
   src1: Address;
-  src2: Address | number;
+  src2: Address | Integer;
+};
+export type ThreeVarGenericInstruction<T> = {
+  type: T;
+  dest: Address;
+  src1: Address;
+  src2: Address | Value;
 };
 
 // TODO: Also maybe new instruction "printm" that takes different printing modes, ascii or sth?? or just "printascii"
@@ -33,26 +40,26 @@ export type Instruction =
   | { type: "load"; dest: Address; value: Value }
   | TwoVarInstruction<"copy">
   // Arithmetic instructions
-  | ThreeVarIntermediateInstruction<"add">
-  | ThreeVarIntermediateInstruction<"sub">
-  | ThreeVarIntermediateInstruction<"mul">
-  | ThreeVarIntermediateInstruction<"div">
+  | ThreeVarInstruction<"add">
+  | ThreeVarInstruction<"sub">
+  | ThreeVarInstruction<"mul">
+  | ThreeVarInstruction<"div">
   // Logical instructions
-  | ThreeVarIntermediateInstruction<"and">
-  | ThreeVarIntermediateInstruction<"or">
-  | ThreeVarIntermediateInstruction<"xor">
+  | ThreeVarInstruction<"and">
+  | ThreeVarInstruction<"or">
+  | ThreeVarInstruction<"xor">
   | TwoVarInstruction<"not">
   // Comparison instructions
-  | ThreeVarIntermediateInstruction<"lt">
-  | ThreeVarIntermediateInstruction<"lte">
-  | ThreeVarIntermediateInstruction<"gt">
-  | ThreeVarIntermediateInstruction<"gte">
-  | ThreeVarIntermediateInstruction<"eq">
-  | ThreeVarIntermediateInstruction<"neq">
+  | ThreeVarInstruction<"lt">
+  | ThreeVarInstruction<"lte">
+  | ThreeVarInstruction<"gt">
+  | ThreeVarInstruction<"gte">
+  | ThreeVarGenericInstruction<"eq">
+  | ThreeVarGenericInstruction<"neq">
   // Shifting instructions
-  | ThreeVarIntermediateInstruction<"sll">
-  | ThreeVarIntermediateInstruction<"srl">
-  | ThreeVarIntermediateInstruction<"sra">
+  | ThreeVarInstruction<"sll">
+  | ThreeVarInstruction<"srl">
+  | ThreeVarInstruction<"sra">
   // Control flow instructions
   | { type: "jump"; target: string }
   | { type: "call"; target: string }

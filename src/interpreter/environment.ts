@@ -78,7 +78,7 @@ export class Environment {
     return this.global.get(address);
   }
 
-  getArrayValue(address: ArrayAccess): Value | null | undefined {
+  private getArrayValue(address: ArrayAccess): Value | null | undefined {
     const array = this.getArray(address.array);
     // Get index
     const index = this.getValidArrayIndex(address);
@@ -92,7 +92,7 @@ export class Environment {
     return value;
   }
 
-  getValidArrayIndex(access: ArrayAccess, resize: boolean = false): number {
+  private getValidArrayIndex(access: ArrayAccess, resize: boolean = false): number {
     let index: number;
     if (typeof access.index === "number") {
       index = access.index;
@@ -117,7 +117,7 @@ export class Environment {
     return index;
   }
 
-  resizeArray(array: Array, newSize: number) {
+  private resizeArray(array: Array, newSize: number) {
     while (array.length < newSize) {
       array.push(null);
     }
@@ -180,6 +180,14 @@ export class Environment {
     return value;
   }
 
+  getValueOrThrow(address: Address): Value {
+    const value = this.getOrThrow(address);
+    if (Array.isArray(value)) {
+      throw new Error(`Variable "${address}" is an array, not a value.`);
+    }
+    return value;
+  }
+
   /**
    * Defines a new variable in the current scope.
    * @param identifier The name of the variable.
@@ -237,7 +245,7 @@ export class Environment {
     variables.set(address, value);
   }
 
-  setArrayValue(address: ArrayAccess, value: Value) {
+  private setArrayValue(address: ArrayAccess, value: Value) {
     const arrayName = address.array;
     const array = this.getArray(arrayName);
     const index = this.getValidArrayIndex(address, true);
