@@ -9,8 +9,8 @@ import { Button } from "../../../components/Button/Button.tsx";
 import { FaRegMap } from "react-icons/fa";
 import type { Owl } from "../../../game/owl.ts";
 import type { Level } from "../../../game/level.ts";
-import { Popover } from "../../../components/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
+import { Popover } from "../../../components/popup/Popover/Popover.tsx";
 
 const ZOOM_SPEED = 0.0015;
 

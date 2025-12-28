@@ -20,8 +20,7 @@ import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.
 import { useCodeStorage } from "../../storage/CodeStorageContext.tsx";
 import { useEditorRuntime } from "../../runtime/EditorRuntimeContext.tsx";
 import { useEditorTheme } from "../../../theme/EditorThemeContext.tsx";
-import { Popover } from "../../../components/Popover/Popover.tsx";
-import { Tooltip } from "../../../components/Tooltip/Tooltip.tsx";
+import { Popover } from "../../../components/popup/Popover/Popover.tsx";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -110,13 +109,11 @@ export function CodeEditor({ tabbed, fileName, setFileName }: CodeEditorProps) {
         <Popover
           title={t("codeEditor.settings")}
           trigger={
-            <Tooltip content="Hello">
-              <Button shape="icon" className={styles.settingsButton}>
-                <VscSettings size={20} />
-              </Button>
-            </Tooltip>
+            <Button shape="icon" className={styles.settingsButton}>
+              <VscSettings size={20} />
+            </Button>
           }
-          position="left top"
+          // position="left top"
         >
           <FormGroup>
             <FormField label={t("codeEditor.theme")}>

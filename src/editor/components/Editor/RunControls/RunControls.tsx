@@ -6,7 +6,7 @@ import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { useEditorRuntime } from "../../../runtime/EditorRuntimeContext.tsx";
 import { MAX_RUN_SPEED, MIN_RUN_SPEED } from "../Editor.tsx";
 import { useEditorSettings } from "../../../settings/EditorSettingsContext.tsx";
-import { Popover } from "../../../../components/Popover/Popover.tsx";
+import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
 
 export function RunControls() {
   const { t } = useTranslation();
@@ -34,7 +34,6 @@ export function RunControls() {
 
       <Popover
         title={t("editor.runSettings")}
-        tooltip={t("editor.runSettings")}
         trigger={
           <Button shape="icon">
             <VscSettings size={20} />

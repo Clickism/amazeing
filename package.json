@@ -12,6 +12,7 @@
   "dependencies": {
     "@codemirror/language": "^6.11.3",
     "@codemirror/view": "^6.38.6",
+    "@floating-ui/react": "^0.27.16",
     "@lezer/highlight": "^1.2.3",
     "@types/codemirror": "^5.60.17",
     "@uiw/codemirror-themes-all": "^4.25.3",
