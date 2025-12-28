@@ -9,6 +9,8 @@ import { Button } from "../../../components/Button/Button.tsx";
 import { FaRegMap } from "react-icons/fa";
 import type { Owl } from "../../../game/owl.ts";
 import type { Level } from "../../../game/level.ts";
+import { Popover } from "../../../components/Popover/Popover.tsx";
+import { useTranslation } from "react-i18next";
 
 const ZOOM_SPEED = 0.0015;
 
@@ -19,6 +21,7 @@ export type ViewportProps = {
 };
 
 export function Viewport({ owl, level, levelSelector }: ViewportProps) {
+  const { t} = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [sprites, setSprites] = useState<SpriteMap | null>(null);
 
@@ -105,9 +108,18 @@ export function Viewport({ owl, level, levelSelector }: ViewportProps) {
     <div className={clsx(styles.viewport, "window-border")}>
       {levelSelector && (
         <CornerGroup position="top-right">
-          <Button shape="icon">
-            <FaRegMap />
-          </Button>
+          <Popover
+            title={t("viewport.levelSelector.title")}
+            trigger={
+              <Button shape="icon">
+                <FaRegMap />
+              </Button>
+            }
+          >
+            <>
+              Hello
+            </>
+          </Popover>
         </CornerGroup>
       )}
       <canvas

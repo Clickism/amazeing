@@ -30,7 +30,7 @@ export function Editor({ tabbed, levelSelector }: Props) {
   return (
     <div className={styles.editorContainer}>
       <div className={styles.left}>
-        <div title={t("viewport.title")} className={styles.viewport}>
+        <div className={styles.viewport}>
           <Viewport level={level} owl={owl} levelSelector={levelSelector} />
         </div>
         <ButtonGroup center>
@@ -42,13 +42,12 @@ export function Editor({ tabbed, levelSelector }: Props) {
             <VscDebugRestart /> {t("editor.reset")}
           </Button>
         </ButtonGroup>
-        <div title={t("console.title")} className={styles.console}>
+        <div className={styles.console}>
           <Console messages={output} />
         </div>
       </div>
       <div className={styles.right}>
         <div
-          title={t("codeEditor.title")}
           className={styles.codeEditor}
           style={
             {

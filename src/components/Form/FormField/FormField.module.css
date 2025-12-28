@@ -5,7 +5,7 @@
 }
 
 .formLabel {
-  color: var(--clr-surface-a60);
+  opacity: 60%;
   font-size: 0.875rem;
   padding: 0;
   margin-left: 4px;
@@ -14,5 +14,12 @@
 .formInput > * {
   box-sizing: border-box;
   width: 100% !important;
+}
+
+.unit {
+  display: inline-block;
+  margin-left: 4px;
+  font-weight: 600;
+  color: var(--clr-primary-a30)
 }
 

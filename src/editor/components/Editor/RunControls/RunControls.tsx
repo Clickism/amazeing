@@ -2,11 +2,11 @@ import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGro
 import { Button } from "../../../../components/Button/Button.tsx";
 import { VscDebugContinue, VscDebugStop, VscSettings } from "react-icons/vsc";
 import { useTranslation } from "react-i18next";
-import Popup from "reactjs-popup";
 import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { useEditorRuntime } from "../../../runtime/EditorRuntimeContext.tsx";
 import { MAX_RUN_SPEED, MIN_RUN_SPEED } from "../Editor.tsx";
 import { useEditorSettings } from "../../../settings/EditorSettingsContext.tsx";
+import { Popover } from "../../../../components/Popover/Popover.tsx";
 
 export function RunControls() {
   const { t } = useTranslation();
@@ -32,14 +32,20 @@ export function RunControls() {
         </Button>
       )}
 
-      <Popup
+      <Popover
+        title={t("editor.runSettings")}
+        tooltip={t("editor.runSettings")}
         trigger={
           <Button shape="icon">
             <VscSettings size={20} />
           </Button>
         }
       >
-        <FormField label={t("editor.runSpeed")}>
+        <FormField
+          label={t("editor.runSpeed")}
+          unit={`${instructionsPerSecond} instr/s`}
+          unitWidth={85}
+        >
           <input
             type="range"
             min={MIN_RUN_SPEED}
@@ -50,7 +56,6 @@ export function RunControls() {
             }}
           />
         </FormField>
-        {instructionsPerSecond} instr/s
         <FormField label={t("editor.runInstant")}>
           <input
             type="checkbox"
@@ -61,7 +66,7 @@ export function RunControls() {
             }}
           />
         </FormField>
-      </Popup>
+      </Popover>
     </ButtonGroup>
   );
 }

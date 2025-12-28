@@ -5,16 +5,38 @@ import styles from "./FormField.module.css";
 
 type Props = {
   label: string | ReactNode;
+  unit?: string | ReactNode;
+  unitWidth?: number;
   htmlFor?: string;
   description?: string | ReactNode;
   children: ReactNode;
 };
 
-export function FormField({ label, htmlFor, description, children }: Props) {
+export function FormField({
+  label,
+  unit,
+  unitWidth,
+  htmlFor,
+  description,
+  children,
+}: Props) {
   return (
     <div className={styles.formField}>
       <label htmlFor={htmlFor} className={styles.formLabel}>
         {label}
+        {unit &&
+          (typeof unit === "string" ? (
+            <div
+              className={styles.unit}
+              style={{
+                minWidth: unitWidth ? `${unitWidth}px` : "auto",
+              }}
+            >
+              ({unit})
+            </div>
+          ) : (
+            unit
+          ))}
       </label>
       {description && (
         <Popup

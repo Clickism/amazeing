@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
 import { Button } from "../../../components/Button/Button.tsx";
-import Popup from "reactjs-popup";
 import { ThemeSelect } from "./ThemeSelect/ThemeSelect.tsx";
 import { VscSettings } from "react-icons/vsc";
 import { FormField } from "../../../components/Form/FormField/FormField.tsx";
@@ -21,6 +20,8 @@ import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.
 import { useCodeStorage } from "../../storage/CodeStorageContext.tsx";
 import { useEditorRuntime } from "../../runtime/EditorRuntimeContext.tsx";
 import { useEditorTheme } from "../../../theme/EditorThemeContext.tsx";
+import { Popover } from "../../../components/Popover/Popover.tsx";
+import { Tooltip } from "../../../components/Tooltip/Tooltip.tsx";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -106,13 +107,16 @@ export function CodeEditor({ tabbed, fileName, setFileName }: CodeEditorProps) {
           {filesOpen ? <FaRegFolderOpen /> : <FaRegFolderOpen />}
           {t("codeEditor.files")}
         </Button>
-        <Popup
+        <Popover
+          title={t("codeEditor.settings")}
           trigger={
-            <Button shape="icon" className={styles.settingsButton}>
-              <VscSettings size={20} />
-            </Button>
+            <Tooltip content="Hello">
+              <Button shape="icon" className={styles.settingsButton}>
+                <VscSettings size={20} />
+              </Button>
+            </Tooltip>
           }
-          position="left center"
+          position="left top"
         >
           <FormGroup>
             <FormField label={t("codeEditor.theme")}>
@@ -134,7 +138,7 @@ export function CodeEditor({ tabbed, fileName, setFileName }: CodeEditorProps) {
               />
             </FormField>
           </FormGroup>
-        </Popup>
+        </Popover>
       </CornerGroup>
 
       <ReactCodeMirror

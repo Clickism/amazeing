@@ -18,7 +18,12 @@ export function Modal({
   ...props
 }: ModalProps) {
   return (
-    <Popup modal closeOnDocumentClick {...props}>
+    <Popup
+      modal
+      closeOnDocumentClick
+      contentStyle={{ borderRadius: "1rem" }}
+      {...props}
+    >
       {
         ((close: () => void) => (
           <div className={styles.body}>
