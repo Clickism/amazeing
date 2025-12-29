@@ -1,4 +1,7 @@
 {
+  "colorScheme.toggle": "Farbtheme wechseln",
+  "language.toggle": "Sprache wechseln",
+
   "pages.home": "Startseite",
   "pages.sandbox": "Sandbox",
   "pages.levelEditor": "Level-Editor",

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import styles from "./LanguageToggle.module.css";
 import { FALLBACK_LANGUAGE, type Language } from "../../../i18n/i18n.ts";
 import { changeLanguage } from "i18next";
 import { Button } from "../../Button/Button.tsx";
+import { Tooltip } from "../../popup/Tooltip/Tooltip.tsx";
+import { useTranslation } from "react-i18next";
 
 export function LanguageToggle() {
+  const { t } = useTranslation();
   const [lang, setLang] = useState<Language>(
     (localStorage.getItem("i18nextLng") as Language) || FALLBACK_LANGUAGE,
   );
@@ -20,8 +22,10 @@ export function LanguageToggle() {
   };
 
   return (
-    <Button onClick={handleClick} className={styles.languageToggle}>
-      {lang === "en" ? "EN" : "DE"}
-    </Button>
+    <Tooltip content={t("language.toggle")}>
+      <Button onClick={handleClick} shape="icon" variant="transparent">
+        {lang === "en" ? "🇬🇧" : "🇩🇪"}
+      </Button>
+    </Tooltip>
   );
 }

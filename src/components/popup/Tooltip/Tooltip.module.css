@@ -6,7 +6,6 @@
 .tooltip {
   background: var(--clr-surface-a10);
   border: 1px solid var(--clr-surface-a20);
-  z-index: 2000;
   box-sizing: border-box;
   padding: 4px 8px;
   border-radius: .25rem;

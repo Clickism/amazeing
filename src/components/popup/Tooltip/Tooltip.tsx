@@ -19,6 +19,7 @@ export type TooltipProps = {
   referenceProps?: Record<string, unknown>;
 };
 
+// TODO: Fix stacking issue near navbar and code editor
 export function Tooltip({
   content,
   referenceProps,
