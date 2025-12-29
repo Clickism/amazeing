@@ -60,11 +60,7 @@ export function Popover({ title, tooltip, trigger, children }: PopoverProps) {
   const tooltipElement = tooltip ?? title;
   return (
     <>
-      <Tooltip
-        disabled={!tooltipElement || isOpen}
-        content={tooltipElement}
-        referenceProps={getReferenceProps()}
-      >
+      <Tooltip disabled={!tooltipElement || isOpen} content={tooltipElement}>
         {triggerElement}
       </Tooltip>
       {isMounted && (

@@ -6,8 +6,6 @@ import { Popover } from "../../../../../components/popup/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
 import { useEditorSettings } from "../../../../settings/EditorSettingsContext.tsx";
 
-const INSTANT_RUN_SPEED = MAX_RUN_SPEED + 1;
-
 export function ExecutionSettings() {
   const { t } = useTranslation();
   const {
@@ -25,17 +23,21 @@ export function ExecutionSettings() {
     >
       <FormField
         label={t("editor.settings.speed")}
-        unit={isInstant ? t("editor.settings.speed.unlimited") : `${instructionsPerSecond} instr/s`}
+        unit={
+          isInstant
+            ? t("editor.settings.speed.unlimited")
+            : `${instructionsPerSecond} instr/s`
+        }
         unitWidth={85}
       >
         <input
           type="range"
           min={MIN_RUN_SPEED}
-          max={INSTANT_RUN_SPEED}
+          max={MAX_RUN_SPEED + 1}
           defaultValue={instructionsPerSecond}
           onChange={(e) => {
             const newValue = Number(e.target.value);
-            if (newValue === INSTANT_RUN_SPEED) {
+            if (newValue > MAX_RUN_SPEED) {
               setSettings({ isInstant: true });
             } else {
               setSettings({
@@ -43,16 +45,6 @@ export function ExecutionSettings() {
                 isInstant: false,
               });
             }
-          }}
-        />
-      </FormField>
-      <FormField label={t("editor.runInstant")}>
-        <input
-          type="checkbox"
-          checked={isInstant}
-          onChange={(e) => {
-            stop();
-            setSettings({ isInstant: e.target.checked });
           }}
         />
       </FormField>
