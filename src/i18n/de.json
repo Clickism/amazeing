@@ -3,18 +3,23 @@
   "pages.sandbox": "Sandbox",
   "pages.levelEditor": "Level-Editor",
   "codeEditor.title": "Code-Editor",
+  "codeEditor.settings": "Editor-Einstellungen",
   "codeEditor.theme": "Farbthema",
   "codeEditor.fontSize": "Schriftgröße",
   "codeEditor.files": "Dateien",
+
   "fileList.newFile": "Neue Datei",
   "console.title": "Konsole",
   "viewport.title": "Ansicht",
   "editor.run": "Ausführen",
   "editor.stop": "Stoppen",
   "editor.step": "Schritt",
+  "editor.step.tooltip": "Wie viele Schritte pro Klick ausgeführt werden sollen",
   "editor.reset": "Zurücksetzen",
-  "editor.runSpeed": "Ausführungsgeschwindigkeit",
-  "editor.runInstant": "Sofort",
+  "editor.settings": "Ausführungseinstellungen",
+  "editor.settings.speed": "Ausführungsgeschwindigkeit",
+  "editor.settings.speed.unlimited": "Unbegrenzt",
+
   "button.copyToClipboard": "In die Zwischenablage Kopieren",
   "button.copied": "Kopiert!",
   "button.saved": "Gespeichert!",
@@ -45,5 +50,7 @@
 
   "tile.grass": "Gras",
   "tile.water": "Wasser",
-  "wall.stone": "Stein"
+  "wall.stone": "Stein",
+
+  "viewport.levelSelector.title": "Level auswählen"
 }
