@@ -52,5 +52,6 @@
   "tile.water": "Water",
   "wall.stone": "Stone",
 
-  "viewport.levelSelector.title": "Select Level"
+  "levelSelector.title": "Select Level",
+  "levelSelector.level": "Current Level"
 }

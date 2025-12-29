@@ -13,6 +13,9 @@ export type EditorRuntimeAPI = {
   owl: Owl;
   level: Level;
 
+  startingLevel: Level;
+  setLevel: (level: Level) => void;
+
   code: string;
   setCode: (code: string) => void;
 

@@ -16,14 +16,15 @@ import { Interpreter, LazyInterpreter } from "../../interpreter/interpreter.ts";
 import { useEditorSettings } from "../settings/EditorSettingsContext.tsx";
 
 type EditorRuntimeProviderProps = {
-  level: Level;
+  startingLevel: Level;
   children: ReactNode;
 };
 
 export function EditorRuntimeProvider({
-  level,
+  startingLevel,
   children,
 }: EditorRuntimeProviderProps) {
+  const [level, setLevel] = useState(startingLevel);
   const { settings } = useEditorSettings();
 
   // Interpreter
@@ -111,10 +112,10 @@ export function EditorRuntimeProvider({
     return interpreterRef?.current?.canStep() ?? true;
   }, []);
 
-  // Reset interpreter when code changes
+  // Reset interpreter when code or level changes
   useEffect(() => {
     reset();
-  }, [code, reset]);
+  }, [code, level, reset]);
 
   // Restart running if run speed changes
   useEffect(() => {
@@ -131,6 +132,8 @@ export function EditorRuntimeProvider({
         canStep,
         step,
         level,
+        startingLevel,
+        setLevel,
         code,
         setCode,
         owl,

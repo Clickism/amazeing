@@ -8,7 +8,7 @@ import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvide
 
 const sandboxLevel = new Level({
   id: "sandbox",
-  name: "Test Level",
+  name: "Sandbox Level",
   description: "A tiny 3x3 test maze.",
   maze: {
     tiles: [
@@ -43,8 +43,8 @@ export function SandboxPage() {
       <CodeStorageProvider fileNamespace="sandbox">
         <LevelStorageProvider fileNamespace="custom">
           <EditorSettingsProvider namespace="sandbox-editor">
-            <EditorRuntimeProvider level={sandboxLevel}>
-              <Editor levelSelector tabbed />
+            <EditorRuntimeProvider startingLevel={sandboxLevel}>
+              <Editor allowChangingLevel tabbed />
             </EditorRuntimeProvider>
           </EditorSettingsProvider>
         </LevelStorageProvider>

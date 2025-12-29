@@ -15,18 +15,22 @@ export const MAX_RUN_SPEED = 100;
 export const DEFAULT_RUN_SPEED = 5;
 
 type Props = {
-  levelSelector?: boolean;
   tabbed?: boolean;
+  allowChangingLevel?: boolean;
 };
 
-export function Editor({ tabbed, levelSelector }: Props) {
+export function Editor({ tabbed = false, allowChangingLevel = false }: Props) {
   const { output, isRunning, level, owl } = useEditorRuntime();
   const { settings } = useEditorSettings();
   return (
     <div className={styles.editorContainer}>
       <div className={styles.left}>
         <div className={styles.viewport}>
-          <Viewport level={level} owl={owl} levelSelector={levelSelector} />
+          <Viewport
+            level={level}
+            owl={owl}
+            levelSelector={allowChangingLevel}
+          />
         </div>
         <ButtonGroup center>
           <ExecutionControls />

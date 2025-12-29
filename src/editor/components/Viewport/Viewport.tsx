@@ -5,12 +5,9 @@ import { type Camera, Renderer } from "../../../game/renderer.ts";
 import { loadSprites, type SpriteMap } from "../../../game/sprites.ts";
 import type { Position } from "../../../interpreter/types.ts";
 import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
-import { Button } from "../../../components/Button/Button.tsx";
-import { FaRegMap } from "react-icons/fa";
 import type { Owl } from "../../../game/owl.ts";
 import type { Level } from "../../../game/level.ts";
-import { useTranslation } from "react-i18next";
-import { Popover } from "../../../components/popup/Popover/Popover.tsx";
+import { LevelSelector } from "./LevelSelector/LevelSelector.tsx";
 
 const ZOOM_SPEED = 0.0015;
 
@@ -20,8 +17,7 @@ export type ViewportProps = {
   levelSelector?: boolean;
 };
 
-export function Viewport({ owl, level, levelSelector }: ViewportProps) {
-  const { t} = useTranslation();
+export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [sprites, setSprites] = useState<SpriteMap | null>(null);
 
@@ -108,18 +104,7 @@ export function Viewport({ owl, level, levelSelector }: ViewportProps) {
     <div className={clsx(styles.viewport, "window-border")}>
       {levelSelector && (
         <CornerGroup position="top-right">
-          <Popover
-            title={t("viewport.levelSelector.title")}
-            trigger={
-              <Button shape="icon">
-                <FaRegMap />
-              </Button>
-            }
-          >
-            <>
-              Hello
-            </>
-          </Popover>
+          <LevelSelector />
         </CornerGroup>
       )}
       <canvas

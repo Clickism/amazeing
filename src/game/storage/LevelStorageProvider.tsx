@@ -22,10 +22,6 @@ export function LevelStorageProvider({
     {},
   );
 
-  const getAllLevels = () => Object.values(levels);
-  const getAllLevelIds = () => Object.keys(levels).map((id) => Number(id));
-  const getLevelById = (id: string) => levels[id];
-
   const addLevel = (level: LevelData) => {
     setLevels((prev) => ({
       ...prev,
@@ -44,9 +40,7 @@ export function LevelStorageProvider({
   return (
     <LevelStorageContext.Provider
       value={{
-        getAllLevels,
-        getAllLevelIds,
-        getLevelById,
+        levels: Object.values(levels),
         addLevel,
         deleteLevel,
       }}
