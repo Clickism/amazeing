@@ -35,7 +35,6 @@
   pointer-events: none;
   border-radius: inherit;
   box-shadow: inset var(--surface-shadow);
-  z-index: 10;
 }
 
 .gridWindow {

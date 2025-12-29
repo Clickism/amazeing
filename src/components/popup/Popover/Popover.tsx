@@ -19,11 +19,29 @@ export type PopoverProps = {
   tooltip?: string | ReactNode;
   trigger: ReactNode;
   children: ReactNode;
+  onOpen?: () => void;
+  onClose?: () => void;
 };
 
-export function Popover({ title, tooltip, trigger, children }: PopoverProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function Popover({
+  title,
+  tooltip,
+  trigger,
+  onOpen,
+  onClose,
+  children,
+}: PopoverProps) {
+  const [isOpen, setIsOpenState] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
+  const setIsOpen = (open: boolean) => {
+    setIsOpenState(open);
+    if (open) {
+      onOpen?.();
+    } else {
+      onClose?.();
+    }
+  };
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,

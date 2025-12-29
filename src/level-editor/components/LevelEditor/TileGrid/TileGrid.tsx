@@ -5,7 +5,7 @@ import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
 import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
 import type { Position } from "../../../../interpreter/types.ts";
-import Popup from "reactjs-popup";
+import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
 
 type TileGridProps = {
   editor: LevelEditorState;
@@ -29,8 +29,7 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
               <Fragment key={col}>
                 {/*Tiles*/}
                 {editor.tileTool.tilePopup ? (
-                  <Popup
-                    closeOnDocumentClick
+                  <Popover
                     onOpen={() => {
                       onTileClick({ x: col, y: row });
                     }}
@@ -46,7 +45,7 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
                       x: col,
                       y: row,
                     })}
-                  </Popup>
+                  </Popover>
                 ) : (
                   <Tile
                     tile={maze.tiles[row][col]}
