@@ -1,6 +1,6 @@
 .link {
   position: relative;
-  color: var(--text-color-lighter);
+  color: var(--text-color-t70);
   font-weight: 500;
   padding: var(--padding);
   transition: color .2s ease;
@@ -14,27 +14,8 @@
   color: var(--text-color);
 }
 
-.link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-
-  /*How much to offset the underline from edges*/
-  --offset: 10%;
-
-  left: var(--offset);
-  width: calc(100% - var(--offset) * 2);
-
+.indicator {
+  background-color: var(--clr-primary-a0);
+  margin-top: 4px;
   height: 2px;
-
-  transition: opacity .4s ease;
-}
-
-
-.link:hover::after {
-  background: linear-gradient(to right, transparent, var(--clr-primary-a40), transparent);
-}
-
-.link.active::after {
-  background: linear-gradient(to right, transparent, var(--clr-primary-a0), transparent);
 }

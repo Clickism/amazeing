@@ -1,9 +1,10 @@
 import { PAGES } from "../../routes/pages.tsx";
 import { NavBarLink } from "./NavBarLink/NavBarLink.tsx";
 import styles from "./NavBar.module.css";
-import { LanguageToggle } from "./LanguageToggle/LanguageToggle.tsx";
-import ColorSchemeToggle from "./ThemeToggle/ColorSchemeToggle.tsx";
 import { useTranslatable } from "../../i18n/i18n.ts";
+import { LanguageToggle } from "./LanguageToggle/LanguageToggle.tsx";
+import { ColorSchemeToggle } from "./ThemeToggle/ColorSchemeToggle.tsx";
+import { Logo } from "./Logo/Logo.tsx";
 
 export function NavBar() {
   const { t } = useTranslatable();
@@ -29,10 +30,10 @@ export function NavBar() {
   );
 }
 
-function Logo() {
-  return (
-    <NavBarLink to="/" dontMatch>
-      <div style={{ fontWeight: 700 }}>Amazeing</div>
-    </NavBarLink>
-  );
-}
+// function Logo() {
+//   return (
+//     <NavBarLink to="/" dontMatch>
+//       <div style={{ fontWeight: 700, color: "var(--text-color)"}}>Amazeing</div>
+//     </NavBarLink>
+//   );
+// }

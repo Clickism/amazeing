@@ -5,7 +5,7 @@ import { Button } from "../../Button/Button.tsx";
 import { Tooltip } from "../../popup/Tooltip/Tooltip.tsx";
 import { useTranslation } from "react-i18next";
 
-export default function ColorSchemeToggle() {
+export function ColorSchemeToggle() {
   const { t } = useTranslation();
   const { colorScheme, setColorScheme } = useColorScheme();
   return (

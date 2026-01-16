@@ -1,0 +1,7 @@
+.logo {
+  image-rendering: pixelated;
+  height: 40px;
+  padding: 0 1rem;
+  user-select: none;
+  -webkit-user-select: none;
+}

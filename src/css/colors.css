@@ -3,7 +3,9 @@
 .light-theme {
   color-scheme: light;
   --text-color: var(--clr-dark-a0);
-  --text-color-lighter: color-mix(in srgb, var(--text-color) 80%, var(--clr-surface-a0));
+  --text-color-t90: color-mix(in srgb, var(--text-color) 90%, var(--clr-surface-a0));
+  --text-color-t80: color-mix(in srgb, var(--text-color) 80%, var(--clr-surface-a0));
+  --text-color-t70: color-mix(in srgb, var(--text-color) 70%, var(--clr-surface-a0));
 
   /** Base colors */
   --clr-dark-a0: #000000;
