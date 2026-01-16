@@ -11,6 +11,7 @@ import { AppRoutes } from "./routes/AppRoutes.tsx";
 import { CodeEditorSettingsProvider } from "./editor/settings/CodeEditorSettingsProvider.tsx";
 import { ColorSchemeProvider } from "./theme/ColorSchemeProvider.tsx";
 import { EditorThemeProvider } from "./theme/EditorThemeProvider.tsx";
+import { NavBar } from "./components/NavBar/NavBar.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
       <ColorSchemeProvider namespace="global">
         <EditorThemeProvider namespace="editor">
           <CodeEditorSettingsProvider namespace="code-editor">
+            <NavBar />
             <AppRoutes />
           </CodeEditorSettingsProvider>
         </EditorThemeProvider>

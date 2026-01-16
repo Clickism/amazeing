@@ -1,5 +1,4 @@
 import * as React from "react";
-import { NavBar } from "../NavBar/NavBar.tsx";
 import styles from "./Layout.module.css";
 import clsx from "clsx";
 import { ErrorBoundary } from "react-error-boundary";
@@ -13,7 +12,6 @@ export function Layout({
 }) {
   return (
     <div className={styles.layout}>
-      <NavBar />
       <main className={clsx(fullWidth && styles.fullWidth)}>
         <ErrorBoundary
           fallback={
