@@ -25,6 +25,9 @@ export function ColorSchemeToggle() {
         }}
         whileHover={{ scale: 1.05, borderColor: "var(--clr-primary-a0)" }}
         whileTap={{ scale: 0.95 }}
+        style={{
+          borderColor: "var(--clr-surface-a20)",
+        }}
       >
         {colorSchemes.map((scheme) => (
           <motion.div key={scheme} className={clsx(styles.button)}>
