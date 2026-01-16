@@ -1,5 +1,5 @@
 import { PAGES } from "../../routes/pages.tsx";
-import { NavBarLink } from "./NavbarLink/NavBarLink.tsx";
+import { NavBarLink } from "./NavBarLink/NavBarLink.tsx";
 import styles from "./NavBar.module.css";
 import { LanguageToggle } from "./LanguageToggle/LanguageToggle.tsx";
 import ColorSchemeToggle from "./ThemeToggle/ColorSchemeToggle.tsx";
