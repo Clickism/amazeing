@@ -2,7 +2,7 @@ import { type ReactNode, useEffect } from "react";
 import { type ColorScheme, ColorSchemeContext } from "./ColorSchemeContext.tsx";
 import { usePersistentState, usePersistentStorage } from "../utils/storage.ts";
 
-export const DEFAULT_COLOR_SCHEME = "light";
+export const DEFAULT_COLOR_SCHEME = "dark";
 
 type ColorSchemeProviderProps = {
   namespace: string;
