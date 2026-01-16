@@ -1,6 +1,6 @@
 // src/i18n/i18n.ts
 import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import { initReactI18next, useTranslation } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import en from "./en.json";
 import de from "./de.json";
@@ -23,6 +23,18 @@ export type TranslationKey = { key: string };
 
 export function isTranslationKey(t: string | TranslationKey) {
   return typeof t === "object" && "key" in t;
+}
+
+/**
+ * Hook that provides direct translation for {@link Translatable} types.
+ */
+export function useTranslatable() {
+  const { t } = useTranslation();
+  return {
+    t(translatable: Translatable) {
+      return tryTranslate(t, translatable);
+    },
+  };
 }
 
 /**

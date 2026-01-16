@@ -1,0 +1,52 @@
+:root {
+  --navbar-height: 3.5rem;
+}
+
+.navbar {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  position: sticky;
+  z-index: 100;
+
+  padding: .5rem 1rem;
+  background: linear-gradient(
+      to right,
+      color-mix(var(--clr-primary-a0), var(--clr-surface-a5) 80%),
+      var(--clr-surface-a5) 20%
+  );
+  border-bottom: 1px solid var(--clr-surface-a10);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left, .right {
+  display: flex;
+  gap: 0;
+}
+
+.right {
+  gap: .5rem;
+}
+
+.linkContainer {
+  position: relative;
+  display: flex;
+}
+
+.indicator {
+  /*position: absolute;*/
+  /*bottom: 0;*/
+  /*height: 2px;*/
+  /*background-color: var(--clr-primary-a0);*/
+  /*transition:*/
+  /*    transform .2s ease,*/
+  /*    width .2s ease;*/
+  /*will-change: transform, width;*/
+}
