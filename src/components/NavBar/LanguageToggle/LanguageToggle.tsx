@@ -32,8 +32,11 @@ export function LanguageToggle() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={toggleLanguage}
-        whileHover={{ scale: 1.05, color: "var(--clr-primary-a30)" }}
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        animate={{
+          borderColor: isHovered ? "var(--clr-primary-a30)" : "var(--text-color)",
+        }}
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
