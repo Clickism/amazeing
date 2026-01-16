@@ -6,6 +6,7 @@
   --text-color-t90: color-mix(in srgb, var(--text-color) 90%, var(--clr-surface-a0));
   --text-color-t80: color-mix(in srgb, var(--text-color) 80%, var(--clr-surface-a0));
   --text-color-t70: color-mix(in srgb, var(--text-color) 70%, var(--clr-surface-a0));
+  --box-shadow-color: rgba(0, 0, 0, 0.5);
 
   /** Base colors */
   --clr-dark-a0: #000000;
@@ -73,6 +74,7 @@
 .dark-theme {
   color-scheme: dark;
   --text-color: var(--clr-light-a0);
+  --box-shadow-color: rgba(0, 0, 0, 0.9);
 
   /** Base colors */
   --clr-dark-a0: #000000;

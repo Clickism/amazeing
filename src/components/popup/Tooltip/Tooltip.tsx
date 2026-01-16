@@ -19,7 +19,6 @@ export type TooltipProps = {
   referenceProps?: Record<string, unknown>;
 };
 
-// TODO: Fix stacking issue near navbar and code editor
 export function Tooltip({
   content,
   referenceProps,
@@ -75,7 +74,10 @@ export function Tooltip({
         <FloatingPortal>
           <div
             ref={refs.setFloating}
-            style={floatingStyles}
+            style={{
+              ...floatingStyles,
+              zIndex: 9999,
+            }}
             {...getFloatingProps()}
             className={styles.container}
           >
