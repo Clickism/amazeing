@@ -3,7 +3,7 @@
   border-left: 3px solid var(--clr-surface-a50);
   border-radius: 2px;
   margin-bottom: .5rem;
-  opacity: 70%;
+  opacity: 80%;
 }
 
 .trigger {
@@ -19,39 +19,4 @@
   border-radius: 1rem;
 
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
-
-  transform-origin: top;
-  animation-duration: 120ms;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards;
-}
-
-.body[data-state="open"] {
-  animation-name: popover-in;
-}
-
-.body[data-state="closed"] {
-  animation-name: popover-out;
-}
-
-@keyframes popover-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes popover-out {
-  from {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96) translateY(-4px);
-  }
 }

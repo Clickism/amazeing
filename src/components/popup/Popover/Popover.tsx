@@ -13,6 +13,7 @@ import {
 } from "@floating-ui/react";
 import styles from "./Popover.module.css";
 import { Tooltip } from "../Tooltip/Tooltip.tsx";
+import { AnimatePresence, motion } from "motion/react";
 
 export type PopoverProps = {
   title?: string | ReactNode;
@@ -32,7 +33,7 @@ export function Popover({
   children,
 }: PopoverProps) {
   const [isOpen, setIsOpenState] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const [, setIsMounted] = useState(false);
 
   const setIsOpen = (open: boolean) => {
     setIsOpenState(open);
@@ -81,24 +82,55 @@ export function Popover({
       <Tooltip disabled={!tooltipElement || isOpen} content={tooltipElement}>
         {triggerElement}
       </Tooltip>
-      {isMounted && (
-        <FloatingPortal>
-          <div
-            ref={refs.setFloating}
-            style={floatingStyles}
-            {...getFloatingProps()}
-            className={styles.container}
-          >
+
+      <AnimatePresence>
+        {isOpen && (
+          <FloatingPortal>
             <div
-              className={styles.body}
-              data-state={isOpen ? "open" : "closed"}
+              ref={refs.setFloating}
+              style={{ ...floatingStyles, zIndex: 10000 }}
+              {...getFloatingProps()}
+              className={styles.container}
             >
-              {title && <div className={styles.title}>{title}</div>}
-              {children}
+              <motion.div
+                className={styles.body}
+                initial={{
+                  opacity: 0,
+                  scale: 0.9,
+                  filter: "blur(10px)",
+                  transformOrigin: "top right",
+                  perspective: "1000px",
+                  rotateX: "-10deg",
+                  rotateY: "10deg",
+                  rotateZ: "2deg",
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  filter: "blur(0px)",
+                  perspective: 0,
+                  rotateX: "0deg",
+                  rotateY: "0deg",
+                  rotateZ: "0deg",
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.9,
+                  filter: "blur(10px)",
+                  perspective: "1000px",
+                  rotateX: "-10deg",
+                  rotateY: "10deg",
+                  rotateZ: "2deg",
+                }}
+                transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+              >
+                {title && <div className={styles.title}>{title}</div>}
+                <div className={styles.content}>{children}</div>
+              </motion.div>
             </div>
-          </div>
-        </FloatingPortal>
-      )}
+          </FloatingPortal>
+        )}
+      </AnimatePresence>
     </>
   );
 }

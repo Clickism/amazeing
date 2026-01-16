@@ -10,6 +10,7 @@ import {
   useRole,
 } from "@floating-ui/react";
 import styles from "./Tooltip.module.css";
+import { AnimatePresence, motion } from "framer-motion"; // Add these
 
 export type TooltipProps = {
   content: ReactNode;
@@ -24,7 +25,7 @@ export function Tooltip({
   referenceProps,
   children,
   disabled = false,
-  delay = 200,
+  delay = 150,
 }: TooltipProps) {
   const [isOpen, setIsOpenState] = useState(false);
 
@@ -47,16 +48,13 @@ export function Tooltip({
   });
 
   const role = useRole(context, { role: "tooltip" });
-
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
     role,
   ]);
 
   useEffect(() => {
-    if (disabled) {
-      setIsOpenState(false);
-    }
+    if (disabled) setIsOpenState(false);
   }, [disabled]);
 
   return (
@@ -70,26 +68,28 @@ export function Tooltip({
         {children}
       </span>
 
-      {!disabled && isOpen && (
-        <FloatingPortal>
-          <div
-            ref={refs.setFloating}
-            style={{
-              ...floatingStyles,
-              zIndex: 9999,
-            }}
-            {...getFloatingProps()}
-            className={styles.container}
-          >
+      <AnimatePresence>
+        {!disabled && isOpen && (
+          <FloatingPortal>
             <div
-              className={styles.tooltip}
-              data-state={isOpen ? "open" : "closed"}
+              ref={refs.setFloating}
+              style={{ ...floatingStyles, zIndex: 10000 }}
+              {...getFloatingProps()}
+              className={styles.container}
             >
-              {content}
+              <motion.div
+                className={styles.tooltip}
+                initial={{ opacity: 0, filter: "blur(8px)", scale: 0.95, transformOrigin: "top", translateY: -4}}
+                animate={{ opacity: 1, filter: "blur(0px)", scale: 1, translateY: 0 }}
+                exit={{ opacity: 0, filter: "blur(4px)", scale: 0.95, translateY: -4 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+              >
+                {content}
+              </motion.div>
             </div>
-          </div>
-        </FloatingPortal>
-      )}
+          </FloatingPortal>
+        )}
+      </AnimatePresence>
     </>
   );
 }

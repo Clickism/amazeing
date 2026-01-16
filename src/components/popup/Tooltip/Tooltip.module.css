@@ -13,39 +13,4 @@
 
   box-shadow: 0 0 16px var(--box-shadow-color);
   color: var(--text-color-t90);
-
-  transform-origin: top;
-  animation-duration: 120ms;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards;
-}
-
-.tooltip[data-state="open"] {
-  animation-name: popover-in;
-}
-
-.tooltip[data-state="closed"] {
-  animation-name: popover-out;
-}
-
-@keyframes popover-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes popover-out {
-  from {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96) translateY(-4px);
-  }
 }
