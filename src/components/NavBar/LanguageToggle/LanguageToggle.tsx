@@ -35,7 +35,7 @@ export function LanguageToggle() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         animate={{
-          borderColor: isHovered ? "var(--clr-primary-a30)" : "var(--text-color)",
+          color: isHovered ? "var(--clr-primary-a20)" : "var(--text-color)",
         }}
       >
         <AnimatePresence mode="wait" initial={false}>
