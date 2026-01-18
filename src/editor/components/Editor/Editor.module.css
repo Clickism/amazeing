@@ -6,6 +6,8 @@
   min-height: 0;
   flex: 1;
   gap: var(--gap);
+  overflow: hidden;
+  padding: 1rem;
 }
 
 .left, .right {

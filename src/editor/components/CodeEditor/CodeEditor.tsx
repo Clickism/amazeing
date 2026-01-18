@@ -13,7 +13,7 @@ import { amazeing } from "../../../codemirror/amazeing.ts";
 import { currentLineHighlighter } from "../../../codemirror/currentLineHighlighter.ts";
 import { EditorView } from "@codemirror/view";
 import { amazeingAutocomplete } from "../../../codemirror/autocomplete/autocomplete.ts";
-import { FaRegFolderOpen } from "react-icons/fa6";
+import { FaRegFolderClosed, FaRegFolderOpen } from "react-icons/fa6";
 import { ActiveFile } from "./FileList/ActiveFile/ActiveFile.tsx";
 import { FileList } from "./FileList/FileList.tsx";
 import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.tsx";
@@ -21,6 +21,7 @@ import { useCodeStorage } from "../../storage/CodeStorageContext.tsx";
 import { useEditorRuntime } from "../../runtime/EditorRuntimeContext.tsx";
 import { useEditorTheme } from "../../../theme/EditorThemeContext.tsx";
 import { Popover } from "../../../components/popup/Popover/Popover.tsx";
+import { AnimatePresence, motion } from "motion/react";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -89,102 +90,119 @@ export function CodeEditor({ tabbed, fileName, setFileName }: CodeEditorProps) {
   }, [fileName, saveFile]);
 
   return (
-    <div
-      className={clsx(
-        styles.container,
-        "window-border",
-        theme.isLight ? "light-theme" : "dark-theme",
-      )}
-    >
-      <CornerGroup
-        position="top-right"
-        className={clsx(styles.cornerGroup, styles.blur)}
+    <div className={clsx(styles.editorWrapper)}>
+      <motion.div
+        layout
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className={clsx(
+          styles.container,
+          "window-border",
+          theme.isLight ? "light-theme" : "dark-theme",
+        )}
       >
-        {tabbed && <ActiveFile activeFile={fileName ?? "Untitled"} />}
-        <div style={{ flex: 1 }} />
-        <Button onClick={() => setFilesOpen((prev) => !prev)}>
-          {filesOpen ? <FaRegFolderOpen /> : <FaRegFolderOpen />}
-          {t("codeEditor.files")}
-        </Button>
-        <Popover
-          title={t("codeEditor.settings")}
-          trigger={
-            <Button shape="icon" className={styles.settingsButton}>
-              <VscSettings size={20} />
-            </Button>
-          }
-          // position="left top"
+        <CornerGroup
+          position="top-right"
+          className={clsx(styles.cornerGroup, styles.blur)}
         >
-          <FormGroup>
-            <FormField label={t("codeEditor.theme")}>
-              <ThemeSelect />
-            </FormField>
-            <FormField label={t("codeEditor.fontSize")}>
-              <input
-                type="number"
-                min={8}
-                max={32}
-                defaultValue={settings.fontSize}
-                onChange={(e) => {
-                  const size = Number(e.target.value);
-                  setSettings({
-                    ...settings,
-                    fontSize: size,
-                  });
-                }}
-              />
-            </FormField>
-          </FormGroup>
-        </Popover>
-      </CornerGroup>
-
-      <ReactCodeMirror
-        key={fileName ?? "single-editor"}
-        value={code}
-        className={styles.codeEditor}
-        height="100%"
-        theme={theme.extension}
-        extensions={[
-          amazeing,
-          amazeingAutocomplete,
-          currentLineHighlighter(() => currentLine),
-          tooltips({
-            position: "fixed",
-            parent: document.getElementById("tooltip-root")!,
-          }),
-          // Make space for tabs
-          EditorView.theme({
-            ".cm-scroller": tabbed
-              ? {
-                  paddingTop: "3rem",
-                }
-              : {},
-          }),
-          EditorView.lineWrapping,
-        ]}
-        onChange={(value) => setCode(value)}
-        basicSetup={{
-          lineNumbers: true,
-          searchKeymap: false,
-        }}
-        style={{
-          fontSize: settings.fontSize,
-          fontFamily: "JetBrains Mono, monospace",
-        }}
-      />
-
-      {tabbed && filesOpen && (
-        <FileList
-          activeFile={fileName ?? "Untitled"}
-          setActiveFile={(newFileName, saveOld) => {
-            // Save current file before switching
-            if (fileName && saveOld) {
-              saveFile({ name: fileName, content: code });
+          {tabbed && <ActiveFile activeFile={fileName ?? "Untitled"} />}
+          <div style={{ flex: 1 }} />
+          <Button onClick={() => setFilesOpen((prev) => !prev)}>
+            {filesOpen ? <FaRegFolderOpen /> : <FaRegFolderClosed />}
+            {t("codeEditor.files")}
+          </Button>
+          <Popover
+            title={t("codeEditor.settings")}
+            trigger={
+              <Button shape="icon" className={styles.settingsButton}>
+                <VscSettings size={20} />
+              </Button>
             }
-            setFileName?.(newFileName);
+            // position="left top"
+          >
+            <FormGroup>
+              <FormField label={t("codeEditor.theme")}>
+                <ThemeSelect />
+              </FormField>
+              <FormField label={t("codeEditor.fontSize")}>
+                <input
+                  type="number"
+                  min={8}
+                  max={32}
+                  defaultValue={settings.fontSize}
+                  onChange={(e) => {
+                    const size = Number(e.target.value);
+                    setSettings({
+                      ...settings,
+                      fontSize: size,
+                    });
+                  }}
+                />
+              </FormField>
+            </FormGroup>
+          </Popover>
+        </CornerGroup>
+
+        <ReactCodeMirror
+          key={fileName ?? "single-editor"}
+          value={code}
+          className={styles.codeEditor}
+          height="100%"
+          theme={theme.extension}
+          extensions={[
+            amazeing,
+            amazeingAutocomplete,
+            currentLineHighlighter(() => currentLine),
+            tooltips({
+              position: "fixed",
+              parent: document.getElementById("tooltip-root")!,
+            }),
+            // Make space for tabs
+            EditorView.theme({
+              ".cm-scroller": tabbed
+                ? {
+                    paddingTop: "3rem",
+                  }
+                : {},
+            }),
+            EditorView.lineWrapping,
+          ]}
+          onChange={(value) => setCode(value)}
+          basicSetup={{
+            lineNumbers: true,
+            searchKeymap: false,
+          }}
+          style={{
+            fontSize: settings.fontSize,
+            fontFamily: "JetBrains Mono, monospace",
           }}
         />
-      )}
+
+        <CornerGroup
+          className={styles.bottomCornerGroup}
+          position="bottom-left"
+        />
+      </motion.div>
+      <AnimatePresence mode="popLayout">
+        {tabbed && filesOpen && (
+          <motion.div
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 300, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            <FileList
+              activeFile={fileName ?? "Untitled"}
+              setActiveFile={(newFileName, saveOld) => {
+                // Save current file before switching
+                if (fileName && saveOld) {
+                  saveFile({ name: fileName, content: code });
+                }
+                setFileName?.(newFileName);
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

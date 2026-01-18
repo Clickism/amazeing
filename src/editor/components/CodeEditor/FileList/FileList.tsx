@@ -39,7 +39,7 @@ export function FileList({ activeFile, setActiveFile }: FileListProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, "window-border")}>
       {fileNames.map((name) => (
         <div
           key={name}
