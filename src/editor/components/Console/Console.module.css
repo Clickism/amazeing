@@ -8,7 +8,7 @@
 }
 
 .title {
-  color: var(--clr-surface-a30);
+  opacity: .5;
   margin: .25rem 1rem;
 }
 
