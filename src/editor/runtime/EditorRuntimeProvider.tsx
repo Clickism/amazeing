@@ -15,6 +15,8 @@ import { EditorRuntimeContext } from "./EditorRuntimeContext.tsx";
 import { Interpreter, LazyInterpreter } from "../../interpreter/interpreter.ts";
 import { useEditorSettings } from "../settings/EditorSettingsContext.tsx";
 
+const INSTANT_BATCH_SIZE = 500;
+
 type EditorRuntimeProviderProps = {
   startingLevel: Level;
   children: ReactNode;
@@ -85,11 +87,25 @@ export function EditorRuntimeProvider({
 
   const run = useCallback(() => {
     stop();
+    setIsRunning(true);
     // Instant
     if (settings.isInstant) {
-      interpreterRef.current?.executeAndPrintError((interpreter) => {
-        interpreter.run();
-      });
+      // Run in chunks to avoid UI freezing
+      const runChunk = () => {
+        interpreterRef.current?.executeAndPrintError((interpreter) => {
+          let count = 0;
+          while (interpreter.canStep() && count++ < INSTANT_BATCH_SIZE) {
+            interpreter.step();
+          }
+          if (interpreter.canStep()) {
+            requestAnimationFrame(runChunk);
+          } else {
+            setIsRunning(false);
+            setCurrentLine(interpreter.getCurrentLine());
+          }
+        });
+      };
+      runChunk();
       return;
     }
     // Run with interval
@@ -105,7 +121,6 @@ export function EditorRuntimeProvider({
         stop();
       }
     }, 1000 / settings.instructionsPerSecond);
-    setIsRunning(true);
   }, [settings.instructionsPerSecond, settings.isInstant, stop]);
 
   const canStep = useCallback(() => {
