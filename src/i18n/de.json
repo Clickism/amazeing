@@ -48,6 +48,7 @@
   "levelEditor.export.actions.visualizeMaze": "Maze visualisieren",
   "levelEditor.export.actions.editMaze": "Maze bearbeiten",
   "levelEditor.export.actions.exportJSON": "JSON exportieren",
+  "levelEditor.export.actions.exportJSON.modal": "Exportiertes Level-JSON",
   "levelEditor.export.actions.saveCustomLevel": "In Levels speichern",
   "levelEditor.export.actions.reset": "Zurücksetzen",
 

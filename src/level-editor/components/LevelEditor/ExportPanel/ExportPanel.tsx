@@ -76,7 +76,7 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
         </Button>
         <Modal
           // TODO: Translate
-          title={"Exported Level JSON"}
+          title={t("levelEditor.export.actions.exportJSON.modal")}
           trigger={
             <Button variant="secondary">
               {t("levelEditor.export.actions.exportJSON")}
