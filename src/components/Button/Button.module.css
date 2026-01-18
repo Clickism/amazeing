@@ -59,8 +59,6 @@
 .variant-disabled {
   --background-color: transparent;
   --background-hover: transparent;
-  border: none;
-  box-shadow: inset 0 0 0 1px var(--clr-surface-a20);
 }
 
 .variant-primary {
@@ -96,8 +94,6 @@
 .variant-outlined {
   --background-color: var(--clr-surface-a5);
   --background-hover: var(--clr-surface-a15);
-  border: none;
-  box-shadow: inset 0 0 0 1px var(--clr-surface-a20);
 }
 
 .variant-transparent {
