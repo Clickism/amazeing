@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
 import { GENERAL_TOOLS, TILE_TOOLS, WALL_TOOLS } from "../../../tools.tsx";
 import { tryTranslate } from "../../../../i18n/i18n.ts";
+import { RiToolsFill } from "react-icons/ri";
 
 type ToolPanelProps = {
   editor: LevelEditorState;
@@ -18,7 +19,9 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
   const { t } = useTranslation();
   return (
     <>
-      <h4>{t("levelEditor.title") + " 🎨"}</h4>
+      <h4 className="flex-text">
+        {t("levelEditor.title")} <RiToolsFill size={20} />
+      </h4>
 
       <h5>{t("levelEditor.headers.mazeSize")}</h5>
       <FormGroup horizontal stretch>

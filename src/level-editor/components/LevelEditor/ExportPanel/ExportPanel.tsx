@@ -26,7 +26,9 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
   const { addLevel } = useLevelStorage();
   return (
     <>
-      <h4>{t("levelEditor.export.export") + " 📤"}</h4>
+      <h4 className="flex-text">
+        {t("levelEditor.export.export")} <BiExport />
+      </h4>
       <h5>{t("levelEditor.headers.metadata")}</h5>
       <FormGroup stretch>
         <FormField label={t("levelEditor.export.levelName")}>
