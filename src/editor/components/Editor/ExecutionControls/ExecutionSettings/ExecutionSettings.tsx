@@ -5,6 +5,7 @@ import { MAX_RUN_SPEED, MIN_RUN_SPEED } from "../../Editor.tsx";
 import { Popover } from "../../../../../components/popup/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
 import { useEditorSettings } from "../../../../settings/EditorSettingsContext.tsx";
+import { useState } from "react";
 
 export function ExecutionSettings() {
   const { t } = useTranslation();
@@ -12,6 +13,19 @@ export function ExecutionSettings() {
     settings: { instructionsPerSecond, isInstant },
     setSettings,
   } = useEditorSettings();
+
+  const [localSpeed, setLocalSpeed] = useState(
+    instructionsPerSecond,
+  );
+  const [localIsInstant, setLocalIsInstant] = useState(isInstant);
+
+  const commit = () => {
+    setSettings({
+      instructionsPerSecond: localSpeed,
+      isInstant: localIsInstant,
+    });
+  }
+
   return (
     <Popover
       title={t("editor.settings")}
@@ -24,9 +38,9 @@ export function ExecutionSettings() {
       <FormField
         label={t("editor.settings.speed")}
         unit={
-          isInstant
+          localIsInstant
             ? t("editor.settings.speed.unlimited")
-            : `${instructionsPerSecond} instr/s`
+            : `${localSpeed} instr/s`
         }
         unitWidth={85}
       >
@@ -34,18 +48,18 @@ export function ExecutionSettings() {
           type="range"
           min={MIN_RUN_SPEED}
           max={MAX_RUN_SPEED + 1}
-          defaultValue={instructionsPerSecond}
+          defaultValue={localSpeed}
           onChange={(e) => {
             const newValue = Number(e.target.value);
             if (newValue > MAX_RUN_SPEED) {
-              setSettings({ isInstant: true });
+              setLocalIsInstant(true);
             } else {
-              setSettings({
-                instructionsPerSecond: newValue,
-                isInstant: false,
-              });
+              setLocalSpeed(newValue);
+              setLocalIsInstant(false);
             }
           }}
+          onMouseUp={commit}
+          onTouchEnd={commit}
         />
       </FormField>
     </Popover>
