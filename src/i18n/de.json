@@ -12,6 +12,13 @@
   "codeEditor.files": "Dateien",
 
   "fileList.newFile": "Neue Datei",
+  "fileList.rename": "Umbenennen",
+  "fileList.rename.action": "Datei umbenennen",
+  "fileList.rename.fileName": "Dateiname",
+  "fileList.delete.action": "Datei löschen",
+  "fileList.delete.confirm": "Datei wirklich löschen?",
+  "fileList.delete.confirm.cannotUndo": "Dies kann nicht rückgängig gemacht werden.",
+
   "console.title": "Konsole",
   "viewport.title": "Ansicht",
   "editor.run": "Ausführen",

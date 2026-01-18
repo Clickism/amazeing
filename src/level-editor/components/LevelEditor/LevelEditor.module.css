@@ -7,6 +7,7 @@
   height: calc(100vh - var(--navbar-height) - 2rem);
   align-items: flex-start;
   justify-content: flex-start;
+  padding: 1rem;
 
   --tile-color-grass: lightgreen;
   --tile-color-water: lightblue;

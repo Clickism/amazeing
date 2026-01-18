@@ -12,6 +12,13 @@
   "codeEditor.files": "Files",
 
   "fileList.newFile": "New File",
+  "fileList.rename": "Rename",
+  "fileList.rename.action": "Rename File",
+  "fileList.rename.fileName": "File Name",
+  "fileList.delete.action": "Delete File",
+  "fileList.delete.confirm": "Are you sure you want to delete this file?",
+  "fileList.delete.confirm.cannotUndo": "This action cannot be undone.",
+
   "console.title": "Console",
   "viewport.title": "Viewport",
   "editor.run": "Run",
@@ -51,7 +58,6 @@
   "levelEditor.export.actions.exportJSON.modal": "Exported Level JSON",
   "levelEditor.export.actions.saveCustomLevel": "Save to Custom Levels",
   "levelEditor.export.actions.reset": "Reset",
-
 
   "tile.grass": "Grass",
   "tile.water": "Water",

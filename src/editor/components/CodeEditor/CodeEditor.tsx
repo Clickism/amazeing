@@ -14,7 +14,7 @@ import { currentLineHighlighter } from "../../../codemirror/currentLineHighlight
 import { EditorView } from "@codemirror/view";
 import { amazeingAutocomplete } from "../../../codemirror/autocomplete/autocomplete.ts";
 import { FaRegFolderClosed, FaRegFolderOpen } from "react-icons/fa6";
-import { ActiveFile } from "./FileList/ActiveFile/ActiveFile.tsx";
+import { FileControls } from "./FileList/FileControls/FileControls.tsx";
 import { FileList } from "./FileList/FileList.tsx";
 import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.tsx";
 import { useCodeStorage } from "../../storage/CodeStorageContext.tsx";
@@ -104,7 +104,7 @@ export function CodeEditor({ tabbed, fileName, setFileName }: CodeEditorProps) {
           position="top-right"
           className={clsx(styles.cornerGroup, styles.blur)}
         >
-          {tabbed && <ActiveFile activeFile={fileName ?? "Untitled"} />}
+          {tabbed && <FileControls activeFile={fileName ?? "Untitled"} />}
           <div style={{ flex: 1 }} />
           <Button onClick={() => setFilesOpen((prev) => !prev)}>
             {filesOpen ? <FaRegFolderOpen /> : <FaRegFolderClosed />}

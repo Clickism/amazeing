@@ -49,6 +49,7 @@
   background: inherit;
   transform: none;
   pointer-events: none;
+  color: var(--text-color-t70);
 }
 
 /* Variants */
