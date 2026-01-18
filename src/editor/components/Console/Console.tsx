@@ -1,7 +1,7 @@
 import styles from "./Console.module.css";
 import clsx from "clsx";
 import type { ConsoleMessage } from "../../../interpreter/console.ts";
-import { Fragment, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
 import { useTranslation } from "react-i18next";
 import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.tsx";
@@ -34,41 +34,25 @@ export function Console({ messages }: { messages: ConsoleMessage[] }) {
       <CornerGroup className={styles.title}>{t("console.title")}</CornerGroup>
       <div className={styles.messageContainer} ref={containerRef}>
         {messages.map((message, i) => (
-          <Fragment key={i}>
-            {/*{shouldAnimate ? (*/}
-              <AnimatePresence>
-                <motion.div
-                  key={i}
-                  className={clsx(
-                    styles.message,
-                    styles[`message-${message.type}`],
-                  )}
-                  style={{ fontSize }}
-                  {...(
-                    shouldAnimate ? {
-                      initial: { opacity: 0, y: 10, filter: "blur(8px)" },
-                      animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-                      exit: { opacity: 0, y: -10, filter: "blur(8px)" },
-                      transition: { duration: 0.25, ease: "easeOut" },
-                    } : {}
-                  )}
-                >
-                  {message.text}
-                </motion.div>
-              </AnimatePresence>
-            {/*) : (*/}
-            {/*  <div*/}
-            {/*    key={i}*/}
-            {/*    className={clsx(*/}
-            {/*      styles.message,*/}
-            {/*      styles[`message-${message.type}`],*/}
-            {/*    )}*/}
-            {/*    style={{ fontSize }}*/}
-            {/*  >*/}
-            {/*    {message.text}*/}
-            {/*  </div>*/}
-            {/*)}*/}
-          </Fragment>
+          <AnimatePresence key={i}>
+            <motion.div
+              className={clsx(
+                styles.message,
+                styles[`message-${message.type}`],
+              )}
+              style={{ fontSize }}
+              {...(shouldAnimate
+                ? {
+                    initial: { opacity: 0, y: 10, filter: "blur(8px)" },
+                    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+                    exit: { opacity: 0, y: -10, filter: "blur(8px)" },
+                    transition: { duration: 0.25, ease: "easeOut" },
+                  }
+                : {})}
+            >
+              {message.text}
+            </motion.div>
+          </AnimatePresence>
         ))}
       </div>
     </div>
