@@ -1,0 +1,22 @@
+.title {
+  padding-left: .5rem;
+  border-left: 3px solid var(--clr-surface-a50);
+  border-radius: 2px;
+  margin-bottom: .5rem;
+  opacity: 80%;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+}
+
+.body {
+  background: var(--clr-surface-a10);
+  border: 1px solid var(--clr-surface-a20);
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 1rem;
+
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+}
