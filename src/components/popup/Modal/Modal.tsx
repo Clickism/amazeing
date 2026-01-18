@@ -1,11 +1,10 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useState } from "react";
 import styles from "./Modal.module.css";
 import {
   autoUpdate,
-  flip,
+  FloatingFocusManager,
+  FloatingOverlay,
   FloatingPortal,
-  offset,
-  shift,
   useClick,
   useDismiss,
   useFloating,
@@ -38,7 +37,6 @@ export function Modal({
   children,
 }: ModalProps) {
   const [isOpen, setIsOpenState] = useState(false);
-  const [, setIsMounted] = useState(false);
 
   const setIsOpen = (open: boolean) => {
     setIsOpenState(open);
@@ -49,10 +47,9 @@ export function Modal({
     }
   };
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(8), flip(), shift()],
     whileElementsMounted: autoUpdate,
   });
 
@@ -66,80 +63,92 @@ export function Modal({
     role,
   ]);
 
-  useEffect(() => {
-    if (isOpen) {
-      setIsMounted(true);
-    }
-  }, [isOpen]);
-
-  const triggerElement = (
-    <span
-      ref={refs.setReference}
-      {...getReferenceProps()}
-      className={styles.trigger}
-    >
-      {trigger}
-    </span>
-  );
-  const tooltipElement = tooltip ?? title;
   return (
     <>
-      <Tooltip disabled={!tooltipElement || isOpen} content={tooltipElement}>
-        {triggerElement}
+      {/*Tooltip*/}
+      <Tooltip disabled={!tooltip || isOpen} content={tooltip}>
+        <span
+          ref={refs.setReference}
+          {...getReferenceProps()}
+          className={styles.trigger}
+        >
+          {trigger}
+        </span>
       </Tooltip>
 
       <AnimatePresence>
         {isOpen && (
           <FloatingPortal>
-            <div
-              ref={refs.setFloating}
-              style={{ ...floatingStyles, zIndex: 10000 }}
-              {...getFloatingProps()}
-              className={styles.container}
+            <motion.div
+              initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+              animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
+              exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+              transition={{ duration: 0.3 }}
+              className={styles.overlayWrapper}
             >
-              <motion.div
-                className={styles.body}
-                initial={{
-                  opacity: 0,
-                  scale: 0.9,
-                  filter: "blur(10px)",
-                  transformOrigin: "top right",
-                  perspective: "1000px",
-                  rotateX: "-10deg",
-                  rotateY: "10deg",
-                  rotateZ: "2deg",
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  filter: "blur(0px)",
-                  perspective: 0,
-                  rotateX: "0deg",
-                  rotateY: "0deg",
-                  rotateZ: "0deg",
-                }}
-                exit={{
-                  opacity: 0,
-                  scale: 0.9,
-                  filter: "blur(10px)",
-                  perspective: "1000px",
-                  rotateX: "-10deg",
-                  rotateY: "10deg",
-                  rotateZ: "2deg",
-                }}
-                transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+              <FloatingOverlay
+                lockScroll
+                className={styles.overlay}
+                style={{ zIndex: 10000 }}
               >
-                {title && <div className={styles.title}>{title}</div>}
-                <div className={styles.content}>{children}</div>
-                {closeButton && (
-                  <CornerGroup>
-                    <Button shape="icon" onClick={close}>
-                      <IoClose size={20} />
-                    </Button>
-                  </CornerGroup>
-                )}
-              </motion.div>
-            </div>
+                <FloatingFocusManager context={context}>
+                  <div
+                    ref={refs.setFloating}
+                    className={styles.container}
+                    {...getFloatingProps()}
+                  >
+                    <motion.div
+                      className={styles.body}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.9,
+                        filter: "blur(10px)",
+                        transformOrigin: "top right",
+                        perspective: "1000px",
+                        rotateX: "-10deg",
+                        rotateY: "10deg",
+                        rotateZ: "2deg",
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1,
+                        filter: "blur(0px)",
+                        perspective: 0,
+                        rotateX: "0deg",
+                        rotateY: "0deg",
+                        rotateZ: "0deg",
+                      }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.9,
+                        filter: "blur(10px)",
+                        perspective: "1000px",
+                        rotateX: "-10deg",
+                        rotateY: "10deg",
+                        rotateZ: "2deg",
+                      }}
+                      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                    >
+                      <div className={styles.header}>
+                        {title && <div className={styles.title}>{title}</div>}
+                        {closeButton && (
+                          <CornerGroup>
+                            <Button
+                              variant="background"
+                              shape="icon"
+                              onClick={() => setIsOpenState(false)}
+                            >
+                              <IoClose size={20} />
+                            </Button>
+                          </CornerGroup>
+                        )}
+                      </div>
+                      <div className={styles.content}>{children}</div>
+                    </motion.div>
+                  </div>
+                </FloatingFocusManager>
+              </FloatingOverlay>
+            </motion.div>
           </FloatingPortal>
         )}
       </AnimatePresence>

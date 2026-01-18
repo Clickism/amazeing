@@ -8,12 +8,12 @@ import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
 import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../../../components/Button/Button.tsx";
-import { Modal } from "../../../../components/Modal/Modal.tsx";
 import { CopyToClipboard } from "../../CopyToClipboard/CopyToClipboard.tsx";
 import { useTranslation } from "react-i18next";
 import { useLevelStorage } from "../../../../game/storage/LevelStorageContext.tsx";
 import { BiExport, BiImport } from "react-icons/bi";
 import { TimedButton } from "../../../../components/Button/TimedButton/TimedButton.tsx";
+import { Modal } from "../../../../components/popup/Modal/Modal.tsx";
 
 type ExportPanelProps = {
   editor: LevelEditorState;
