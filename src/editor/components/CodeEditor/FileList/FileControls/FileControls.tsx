@@ -9,10 +9,12 @@ import { FormField } from "../../../../../components/Form/FormField/FormField.ts
 import { FormGroup } from "../../../../../components/Form/FormGroup/FormGroup.tsx";
 import { useState } from "react";
 
+const MAX_FILE_NAME_LENGTH = 32;
+
 export function FileControls({ activeFile }: { activeFile: string }) {
   const { t } = useTranslation();
   const [newFileName, setNewFileName] = useState(activeFile);
-  const isValid = newFileName.length > 0;
+  const isValid = newFileName.length > 0 && newFileName.length <= MAX_FILE_NAME_LENGTH;
   const canRename = newFileName !== activeFile && isValid;
   return (
     <ButtonGroup>

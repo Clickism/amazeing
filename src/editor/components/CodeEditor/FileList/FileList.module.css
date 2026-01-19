@@ -4,7 +4,8 @@
   gap: .5rem;
   padding: .5rem;
   background-color: var(--clr-surface-a5);
-  min-width: 200px;
+  min-width: 250px;
+  max-width: 600px;
   box-sizing: border-box;
   overflow: auto;
   height: 100%;
