@@ -6,6 +6,7 @@
   --text-color-t90: color-mix(in srgb, var(--text-color) 90%, var(--clr-surface-a0));
   --text-color-t80: color-mix(in srgb, var(--text-color) 80%, var(--clr-surface-a0));
   --text-color-t70: color-mix(in srgb, var(--text-color) 70%, var(--clr-surface-a0));
+  --text-color-t60: color-mix(in srgb, var(--text-color) 60%, var(--clr-surface-a0));
   --box-shadow-color: rgba(0, 0, 0, 0.5);
 
   /** Base colors */
@@ -22,7 +23,9 @@
 
   /** Theme surface colors */
   --clr-surface-a0: #ffffff;
+  --clr-surface-a3: #FCFCFC;
   --clr-surface-a5: #F8F8F8;
+  --clr-surface-a7: #F4F4F4;
   --clr-surface-a10: #f0f0f0;
   --clr-surface-a15: #E9E9E9;
   --clr-surface-a20: #e1e1e1;
@@ -98,7 +101,9 @@
 
   /** Theme tonal surface colors */
   --clr-surface-a0: #0e121a;
+  --clr-surface-a3: #141820;
   --clr-surface-a5: #1A1D25;
+  --clr-surface-a7: #20232A;
   --clr-surface-a10: #25282f;
   --clr-surface-a15: #31343A;
   --clr-surface-a20: #3c3f45;

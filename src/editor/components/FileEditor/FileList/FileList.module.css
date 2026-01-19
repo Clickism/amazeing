@@ -1,0 +1,57 @@
+.container {
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--clr-surface-a0);
+  overflow: auto;
+  height: 100%;
+}
+
+.fileContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.file {
+  display: inline-flex;
+  position: relative;
+  background-color: var(--clr-surface-a3);
+  border-bottom: 1px solid var(--clr-surface-a10);
+  transition: color .2s, background-color .2s;
+  color: var(--text-color-t60);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.fileName {
+  padding: .5rem 1rem;
+}
+
+.file:hover {
+  cursor: pointer;
+}
+
+.file:hover,
+.file.active {
+  background-color: var(--clr-surface-a7);
+  color: var(--text-color);
+}
+
+.indicator {
+  position: absolute;
+  background-color: var(--clr-primary-a0);
+  width: 4px;
+  height: 100%;
+  z-index: 1;
+}
+
+/*.indicator::after {*/
+/*  content: '';*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  background-color: rgba(255, 255, 255, 0.05);*/
+
+/*  width: 1000px;*/
+/*  height: 100%;*/
+/*}*/

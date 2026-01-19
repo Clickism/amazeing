@@ -1,12 +1,10 @@
-import clsx from "clsx";
-import styles from "./FileControls.module.css";
-import { Button } from "../../../../../components/Button/Button.tsx";
-import { ButtonGroup } from "../../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
+import { Button } from "../../../../components/Button/Button.tsx";
+import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
-import { Popover } from "../../../../../components/popup/Popover/Popover.tsx";
-import { FormField } from "../../../../../components/Form/FormField/FormField.tsx";
-import { FormGroup } from "../../../../../components/Form/FormGroup/FormGroup.tsx";
+import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
+import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
+import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
 import { useState } from "react";
 
 const MAX_FILE_NAME_LENGTH = 32;
@@ -14,14 +12,11 @@ const MAX_FILE_NAME_LENGTH = 32;
 export function FileControls({ activeFile }: { activeFile: string }) {
   const { t } = useTranslation();
   const [newFileName, setNewFileName] = useState(activeFile);
-  const isValid = newFileName.length > 0 && newFileName.length <= MAX_FILE_NAME_LENGTH;
+  const isValid =
+    newFileName.length > 0 && newFileName.length <= MAX_FILE_NAME_LENGTH;
   const canRename = newFileName !== activeFile && isValid;
   return (
     <ButtonGroup>
-      <Button variant="secondary" className={clsx(styles.activeFile)}>
-        {activeFile}
-      </Button>
-
       <Popover
         title={t("fileList.rename.action")}
         onClose={() => setNewFileName(activeFile)}

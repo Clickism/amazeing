@@ -11,14 +11,21 @@ export class PersistentStorage {
   }
 
   load<T>(key: string): T | null;
-  load<T>(key: string, defaultValue: T): T;
-  load<T>(key: string, defaultValue: T | null = null): T | null {
+  load<T>(key: string, defaultValue: T | (() => T)): T;
+  load<T>(key: string, defaultValue: T | (() => T) | null = null): T | null {
     const value = localStorage.getItem(this.keyOf(key));
-    if (value === null) return defaultValue;
+    const getDefaultValue = () => {
+      if (typeof defaultValue === "function") {
+        return (defaultValue as () => T)();
+      } else {
+        return defaultValue;
+      }
+    };
+    if (value === null) return getDefaultValue();
     try {
       return JSON.parse(value) as T;
     } catch {
-      return defaultValue;
+      return getDefaultValue();
     }
   }
 
@@ -54,7 +61,7 @@ export class PersistentStorage {
 export function usePersistentState<T>(
   storage: PersistentStorage,
   key: string,
-  defaultValue: T,
+  defaultValue: T | (() => T),
 ): [T, (value: T | ((prev: T) => T)) => void] {
   const [state, setState] = useState<T>(() =>
     storage.load<T>(key, defaultValue),

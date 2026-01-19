@@ -1,19 +1,12 @@
 import { createContext, useContext } from "react";
 
-export type CodeFile = {
-  name: string;
-  content: string;
-};
-
 type CodeStorage = {
   fileNames: string[];
-  saveFile: (file: CodeFile) => void;
-  loadFile: (name: string) => CodeFile | null;
+  saveFile: (name: string, code: string) => void;
+  loadFile: (name: string) => string | null;
   deleteFile: (name: string) => void;
   renameFile: (oldName: string, newName: string) => void;
-  clearAll: () => void;
-  setActiveFile: (name: string) => void;
-  getActiveFile: () => string | null;
+  fileNamespace: string;
 };
 
 export const CodeStorageContext = createContext<CodeStorage | null>(null);

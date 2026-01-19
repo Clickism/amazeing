@@ -14,14 +14,6 @@
   --line-number-transition-duration: 0.1s;
 }
 
-.editorWrapper {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  gap: 1rem;
-  position: relative;
-}
-
 .codeEditor {
   font-family: "JetBrains Mono", monospace;
   flex: 1;
@@ -51,6 +43,7 @@
 
 .bottomCornerGroup {
   height: 5rem;
+  pointer-events: none;
 }
 
 .bottomCornerGroup::before {

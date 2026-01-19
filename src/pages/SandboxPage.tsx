@@ -6,7 +6,7 @@ import { LevelStorageProvider } from "../game/storage/LevelStorageProvider.tsx";
 import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.tsx";
 import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
 
-const sandboxLevel = new Level({
+export const sandboxLevel = new Level({
   id: "sandbox",
   name: "Sandbox Level",
   description: "A tiny 3x3 test maze.",
@@ -44,7 +44,7 @@ export function SandboxPage() {
         <LevelStorageProvider fileNamespace="custom">
           <EditorSettingsProvider namespace="sandbox-editor">
             <EditorRuntimeProvider startingLevel={sandboxLevel}>
-              <Editor allowChangingLevel tabbed />
+              <Editor allowChangingLevel file />
             </EditorRuntimeProvider>
           </EditorSettingsProvider>
         </LevelStorageProvider>
