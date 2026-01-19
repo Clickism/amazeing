@@ -19,6 +19,9 @@
   "fileList.delete.confirm": "Are you sure you want to delete this file?",
   "fileList.delete.confirm.cannotUndo": "This action cannot be undone.",
 
+  "codeStorage.newFile.name": "Untitled #{{num}}",
+  "codeStorage.newFile.content": "# Write your code here",
+
   "console.title": "Console",
   "viewport.title": "Viewport",
   "editor.run": "Run",

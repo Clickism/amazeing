@@ -19,6 +19,9 @@
   "fileList.delete.confirm": "Datei wirklich löschen?",
   "fileList.delete.confirm.cannotUndo": "Dies kann nicht rückgängig gemacht werden.",
 
+  "codeStorage.newFile.name": "Unbenannt #{{num}}",
+  "codeStorage.newFile.content": "# Schreibe deinen Code hier",
+
   "console.title": "Konsole",
   "viewport.title": "Ansicht",
   "editor.run": "Ausführen",
