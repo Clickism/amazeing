@@ -32,7 +32,7 @@ export function FileEditor({ editorExtensions, setCode }: FileEditorProps) {
           setCode={setCode}
           editorExtensions={editorExtensions}
           topBar={{
-            leftContent: <FileControls activeFile={"File Editor"} />,
+            leftContent: <FileControls />,
             rightContent: (
               <Button onClick={() => setFilesOpen((prev) => !prev)}>
                 {filesOpen ? <FaRegFolderOpen /> : <FaRegFolderClosed />}
