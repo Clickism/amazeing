@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import Popup from "reactjs-popup";
 import { FaInfoCircle } from "react-icons/fa";
 import styles from "./FormField.module.css";
+import { Tooltip } from "../../popup/Tooltip/Tooltip.tsx";
 
 type Props = {
   label: string | ReactNode;
@@ -39,16 +39,11 @@ export function FormField({
           ))}
       </label>
       {description && (
-        <Popup
-          trigger={
-            <div className={styles.infoIcon}>
-              <FaInfoCircle />
-            </div>
-          }
-          on={["hover", "click"]}
-        >
-          <div className={styles.descriptionPopup}>{description}</div>
-        </Popup>
+        <Tooltip content={description}>
+          <div className={styles.infoIcon}>
+            <FaInfoCircle />
+          </div>
+        </Tooltip>
       )}
       <div className={styles.formInput}>{children}</div>
     </div>
