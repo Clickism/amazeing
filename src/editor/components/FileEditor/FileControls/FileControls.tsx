@@ -6,11 +6,13 @@ import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
 import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
 import { useState } from "react";
+import { useSource } from "../../../source/SourceContext.tsx";
 
 const MAX_FILE_NAME_LENGTH = 32;
 
-export function FileControls({ activeFile }: { activeFile: string }) {
+export function FileControls() {
   const { t } = useTranslation();
+  const { name: activeFile, renameSource, deleteSource } = useSource();
   const [newFileName, setNewFileName] = useState(activeFile);
   const isValid =
     newFileName.length > 0 && newFileName.length <= MAX_FILE_NAME_LENGTH;
@@ -34,7 +36,13 @@ export function FileControls({ activeFile }: { activeFile: string }) {
               onChange={(e) => setNewFileName(e.target.value)}
             />
           </FormField>
-          <Button variant="primary" disabled={!canRename}>
+          <Button
+            variant="primary"
+            disabled={!canRename}
+            onClick={() => {
+              renameSource(newFileName);
+            }}
+          >
             <BiPencil />
             {t("fileList.rename.action")}
           </Button>
@@ -42,7 +50,7 @@ export function FileControls({ activeFile }: { activeFile: string }) {
       </Popover>
 
       <Popover
-        title={t("fileList.delete.action")}
+        title={t("fileList.delete.title")}
         trigger={
           <Button variant="danger" shape="icon">
             <BiTrash />
@@ -55,9 +63,9 @@ export function FileControls({ activeFile }: { activeFile: string }) {
             <br />
             <strong>{t("fileList.delete.confirm.cannotUndo")}</strong>
           </div>
-          <Button variant="danger">
+          <Button variant="danger" onClick={() => deleteSource()}>
             <BiTrash />
-            {t("fileList.delete.action")}
+            {t("fileList.delete.action", { file: activeFile })}
           </Button>
         </ButtonGroup>
       </Popover>

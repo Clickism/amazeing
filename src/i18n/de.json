@@ -15,7 +15,8 @@
   "fileList.rename": "Umbenennen",
   "fileList.rename.action": "Datei umbenennen",
   "fileList.rename.fileName": "Dateiname",
-  "fileList.delete.action": "Datei löschen",
+  "fileList.delete.title": "Datei löschen",
+  "fileList.delete.action": "{{file}} löschen",
   "fileList.delete.confirm": "Datei wirklich löschen?",
   "fileList.delete.confirm.cannotUndo": "Dies kann nicht rückgängig gemacht werden.",
 

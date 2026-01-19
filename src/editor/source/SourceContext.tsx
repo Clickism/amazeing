@@ -9,6 +9,7 @@ type SourceAPI = {
 
   sourceNames?: string[];
   switchSource?(name: string): void;
+  newSource?(): void;
 };
 
 export const SourceContext = createContext<SourceAPI | null>(null);

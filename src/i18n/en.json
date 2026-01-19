@@ -15,7 +15,8 @@
   "fileList.rename": "Rename",
   "fileList.rename.action": "Rename File",
   "fileList.rename.fileName": "File Name",
-  "fileList.delete.action": "Delete File",
+  "fileList.delete.title": "Delete File",
+  "fileList.delete.action": "Delete {{file}}",
   "fileList.delete.confirm": "Are you sure you want to delete this file?",
   "fileList.delete.confirm.cannotUndo": "This action cannot be undone.",
 

@@ -186,6 +186,7 @@ export function FileSourceProvider({
         deleteSource,
         switchSource,
         sourceNames: fileNames,
+        newSource: createNewFile,
       }}
     >
       {children}
