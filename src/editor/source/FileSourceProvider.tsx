@@ -32,14 +32,20 @@ export function FileSourceProvider({
   } = useCodeStorage();
   const storage = usePersistentStorage(fileNamespace);
 
-  const newFileName = useCallback(() => {
-    let i = 1;
-    let name: string;
-    do {
-      name = t("codeStorage.newFile.name", { num: i++ });
-    } while (fileNames.includes(name));
-    return name;
-  }, [fileNames, t]);
+  const newFileName = useCallback(
+    (num: number | undefined = undefined) => {
+      if (num !== undefined) {
+        return t("codeStorage.newFile.name", { num });
+      }
+      let i = 1;
+      let name: string;
+      do {
+        name = t("codeStorage.newFile.name", { num: i++ });
+      } while (fileNames.includes(name));
+      return name;
+    },
+    [fileNames, t],
+  );
 
   const [activeFile, setActiveFile] = usePersistentState<string | null>(
     storage,
@@ -61,7 +67,6 @@ export function FileSourceProvider({
       if (content === undefined) {
         content = codeRef.current;
       }
-      console.log("saveCode", content);
       saveFile(activeFile, content);
       savedCodeRef.current = content;
     },
@@ -77,12 +82,15 @@ export function FileSourceProvider({
   }, [newFileName, saveFile, setActiveFile, t]);
 
   const switchSource = useCallback(
-    (name: string, saveCurrent = true) => {
-      console.log("switchSource", name);
+    (
+      name: string,
+      saveCurrent = true,
+      code: string | undefined = undefined,
+    ) => {
       if (saveCurrent && activeFile !== null) {
         saveCode();
       }
-      const newCode = loadFile(name);
+      const newCode = code ?? loadFile(name);
       if (newCode !== null) {
         setActiveFile(name);
         setCode(newCode);
@@ -123,10 +131,10 @@ export function FileSourceProvider({
       const next = newFileNames[Math.max(0, idx - 1)];
       switchSource(next, false);
     } else {
-      const next = newFileName();
+      const next = newFileName(1);
       const content = t("codeStorage.newFile.content");
       saveFile(next, content);
-      switchSource(next, false);
+      switchSource(next, false, content);
     }
   }, [
     activeFile,
@@ -160,7 +168,6 @@ export function FileSourceProvider({
       const code = codeRef.current;
       if (savedCodeRef.current === code) return;
       saveCode(code);
-      console.log("Saved code!");
     }, AUTO_SAVE_INTERVAL);
     return () => clearInterval(interval);
   }, [saveCode]);
@@ -179,7 +186,7 @@ export function FileSourceProvider({
   return (
     <SourceContext.Provider
       value={{
-        name: activeFile || "",
+        name: activeFile ?? "",
         loadSource,
         saveSource,
         renameSource,
