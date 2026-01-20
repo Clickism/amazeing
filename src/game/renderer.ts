@@ -3,8 +3,8 @@ import type { Owl } from "./owl";
 import type { Position } from "../interpreter/types";
 import type { SpriteMap } from "./sprites";
 
-const OWL_SIZE = 32;
-const CELL_SIZE = 32;
+export const OWL_SIZE = 32;
+export const CELL_SIZE = 32;
 
 export type Camera = {
   position: Position;
@@ -18,11 +18,7 @@ export class Renderer {
   owl: Owl;
   sprites: SpriteMap;
   dpr: number = window.devicePixelRatio || 1;
-  scale: number;
   camera: Camera;
-
-  offsetX: number;
-  offsetY: number;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -30,7 +26,6 @@ export class Renderer {
     owl: Owl,
     sprites: SpriteMap,
     camera: Camera,
-    scale: number = 4,
   ) {
     this.canvas = canvas;
     const ctx = canvas.getContext("2d");
@@ -40,35 +35,18 @@ export class Renderer {
     this.owl = owl;
     this.sprites = sprites;
     this.camera = camera;
-    this.scale = scale;
-
-    const mazeWidth = this.maze.width() * CELL_SIZE;
-    const mazeHeight = this.maze.height() * CELL_SIZE;
-
-    const canvasWidth = this.canvas.width / (this.dpr * this.scale);
-    const canvasHeight = this.canvas.height / (this.dpr * this.scale);
-
-    this.offsetX = (canvasWidth - mazeWidth) / 2;
-    this.offsetY = (canvasHeight - mazeHeight) / 2;
   }
 
   render() {
     const ctx = this.ctx;
+    const dpr = this.dpr;
 
     ctx.save();
-
-    // Reset
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // Scale
-    ctx.scale(this.scale * this.dpr, this.scale * this.dpr);
-
-    // Center
-    ctx.translate(this.offsetX, this.offsetY);
-
-    // Camera
-    ctx.scale(this.camera.zoom, this.camera.zoom);
+    ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+    ctx.scale(dpr * this.camera.zoom, dpr * this.camera.zoom);
     ctx.translate(-this.camera.position.x, -this.camera.position.y);
 
     ctx.imageSmoothingEnabled = false;
@@ -76,28 +54,26 @@ export class Renderer {
     this.drawWaterTiles();
     this.drawTiles();
     this.drawWalls();
-    this.drawOwl();
+    this.drawOwl(); // Now uses visualOwlPos
     ctx.restore();
   }
 
   drawWaterTiles() {
     const img = this.sprites.tiles.water;
+    // Calculate visible bounds in world space to cull tiles
+    const zoomScale = this.dpr * this.camera.zoom;
+    const halfW = this.canvas.width / 2 / zoomScale;
+    const halfH = this.canvas.height / 2 / zoomScale;
 
-    const viewWidth =
-      this.canvas.width / (this.scale * this.dpr * this.camera.zoom);
-    const viewHeight =
-      this.canvas.height / (this.scale * this.dpr * this.camera.zoom);
+    const left = this.camera.position.x - halfW;
+    const top = this.camera.position.y - halfH;
+    const right = this.camera.position.x + halfW;
+    const bottom = this.camera.position.y + halfH;
 
-    const left = this.camera.position.x - this.offsetX;
-    const top = this.camera.position.y - this.offsetY;
-
-    const right = left + viewWidth;
-    const bottom = top + viewHeight;
-
-    const startX = Math.floor(left / CELL_SIZE) - 20;
-    const startY = Math.floor(top / CELL_SIZE) - 20;
-    const endX = Math.ceil(right / CELL_SIZE) + 20;
-    const endY = Math.ceil(bottom / CELL_SIZE) + 20;
+    const startX = Math.floor(left / CELL_SIZE) - 1;
+    const startY = Math.floor(top / CELL_SIZE) - 1;
+    const endX = Math.ceil(right / CELL_SIZE) + 1;
+    const endY = Math.ceil(bottom / CELL_SIZE) + 1;
 
     for (let y = startY; y < endY; y++) {
       for (let x = startX; x < endX; x++) {
