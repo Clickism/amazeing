@@ -5,18 +5,32 @@ import { useTranslation } from "react-i18next";
 import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
 import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSource } from "../../../source/SourceContext.tsx";
 
 const MAX_FILE_NAME_LENGTH = 32;
 
 export function FileControls() {
   const { t } = useTranslation();
-  const { name: activeFile, renameSource, deleteSource } = useSource();
+  const {
+    name: activeFile,
+    renameSource,
+    deleteSource,
+    sourceNames,
+  } = useSource();
   const [newFileName, setNewFileName] = useState(activeFile);
-  const isValid =
-    newFileName.length > 0 && newFileName.length <= MAX_FILE_NAME_LENGTH;
+  const [isValid, invalidMessage] = checkValidFileName(
+    t,
+    newFileName,
+    sourceNames ?? [],
+    activeFile,
+  );
   const canRename = newFileName !== activeFile && isValid;
+
+  useEffect(() => {
+    setNewFileName(activeFile);
+  }, [activeFile]);
+
   return (
     <ButtonGroup>
       <Popover
@@ -44,7 +58,7 @@ export function FileControls() {
             }}
           >
             <BiPencil />
-            {t("fileList.rename.action")}
+            {invalidMessage ?? t("fileList.rename.action")}
           </Button>
         </FormGroup>
       </Popover>
@@ -71,4 +85,22 @@ export function FileControls() {
       </Popover>
     </ButtonGroup>
   );
+}
+
+function checkValidFileName(
+  t: (key: string) => string,
+  name: string,
+  sourceNames: string[],
+  currentName: string,
+): [boolean, string | null] {
+  if (name.length === 0) {
+    return [false, null];
+  }
+  if (name.length > MAX_FILE_NAME_LENGTH) {
+    return [false, t("fileList.rename.invalid.tooLong")];
+  }
+  if (name !== currentName && sourceNames.includes(name)) {
+    return [false, t("fileList.rename.invalid.exists")];
+  }
+  return [true, null];
 }

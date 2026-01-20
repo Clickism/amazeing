@@ -15,6 +15,8 @@
   "fileList.rename": "Umbenennen",
   "fileList.rename.action": "Datei umbenennen",
   "fileList.rename.fileName": "Dateiname",
+  "fileList.rename.invalid.exists": "Datei existiert",
+  "fileList.rename.invalid.tooLong": "Name zu lang",
   "fileList.delete.title": "Datei löschen",
   "fileList.delete.action": "{{file}} löschen",
   "fileList.delete.confirm": "Datei wirklich löschen?",
