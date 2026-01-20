@@ -6,8 +6,10 @@ import { Button } from "../../../../components/Button/Button.tsx";
 import { CornerGroup } from "../../../../components/CornerGroup/CornerGroup.tsx";
 import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 export function FileList() {
+  const { t } = useTranslation();
   const {
     sourceNames,
     name: activeName,
@@ -52,7 +54,7 @@ export function FileList() {
               container.scrollTop = container.scrollHeight;
             }}
           >
-            + New File
+            + {t("fileList.newFile")}
           </Button>
         </ButtonGroup>
       </CornerGroup>
