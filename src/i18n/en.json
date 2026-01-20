@@ -27,6 +27,8 @@
 
   "console.title": "Console",
   "viewport.title": "Viewport",
+  "viewport.camera.lock": "Lock Camera to Owl",
+  "viewport.camera.unlock": "Unlock Camera",
   "editor.run": "Run",
   "editor.stop": "Stop",
   "editor.step": "Step",

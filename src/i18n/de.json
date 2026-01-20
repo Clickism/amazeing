@@ -27,6 +27,8 @@
 
   "console.title": "Konsole",
   "viewport.title": "Ansicht",
+  "viewport.camera.lock": "Kamera an Eule binden",
+  "viewport.camera.unlock": "Kamera entbinden",
   "editor.run": "Ausführen",
   "editor.stop": "Stoppen",
   "editor.step": "Schritt",

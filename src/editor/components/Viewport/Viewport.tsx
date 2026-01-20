@@ -12,6 +12,7 @@ import { Button } from "../../../components/Button/Button.tsx";
 import { ButtonGroup } from "../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Tooltip } from "../../../components/popup/Tooltip/Tooltip.tsx";
 import { TbLock, TbLockOpen2 } from "react-icons/tb";
+import { useTranslation } from "react-i18next";
 
 const ZOOM_SPEED = 0.0015;
 const DEFAULT_ZOOM = 4;
@@ -25,6 +26,7 @@ export type ViewportProps = {
 };
 
 export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
+  const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [sprites, setSprites] = useState<SpriteMap | null>(null);
   const [following, setFollowing] = useState(true);
@@ -70,6 +72,7 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
 
   // Mouse events
   const handleDragStart = (x: number, y: number) => {
+    if (following) return;
     dragging.current = true;
     lastInputPos.current = { x, y };
   };
@@ -99,7 +102,10 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
   const onWheel = (e: React.WheelEvent) => {
     const zoomDelta = Math.exp(-e.deltaY * ZOOM_SPEED);
     setCamera((c) => {
-      const newZoom = Math.min(Math.max(c.zoom * zoomDelta, MIN_ZOOM), MAX_ZOOM);
+      const newZoom = Math.min(
+        Math.max(c.zoom * zoomDelta, MIN_ZOOM),
+        MAX_ZOOM,
+      );
       return {
         ...c,
         zoom: newZoom,
@@ -111,7 +117,13 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
     <div className={clsx(styles.viewport, "window-border")}>
       <CornerGroup position="top-right">
         <ButtonGroup>
-          <Tooltip content={"Lock Camera to Owl"}>
+          <Tooltip
+            content={
+              following
+                ? t("viewport.camera.unlock")
+                : t("viewport.camera.lock")
+            }
+          >
             <Button
               variant={following ? "secondary" : "success"}
               shape="icon"
@@ -126,7 +138,7 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
 
       <canvas
         ref={canvasRef}
-        className={styles.canvas}
+        className={clsx(styles.canvas, !following && styles.unlocked)}
         style={{ touchAction: "none" }}
         onMouseDown={(e) => handleDragStart(e.clientX, e.clientY)}
         onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
