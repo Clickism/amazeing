@@ -44,8 +44,6 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
   const lastInputPos = useRef<Position>({ x: 0, y: 0 });
   const dpr = window.devicePixelRatio || 1;
 
-  const maze = level.maze;
-
   // Load sprites once
   useEffect(() => {
     loadSprites().then(setSprites);
@@ -61,14 +59,14 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
 
-      const renderer = new Renderer(canvas, maze, owl, sprites, camera);
+      const renderer = new Renderer(canvas, level, owl, sprites, camera);
       renderer.render();
     };
 
     renderFrame();
     window.addEventListener("resize", renderFrame);
     return () => window.removeEventListener("resize", renderFrame);
-  }, [camera, dpr, maze, owl, sprites]);
+  }, [camera, dpr, level, owl, sprites]);
 
   // Mouse events
   const handleDragStart = (x: number, y: number) => {

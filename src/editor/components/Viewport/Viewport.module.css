@@ -5,7 +5,7 @@
   user-select: none;
   -webkit-user-select: none;
 
-  background: linear-gradient(180deg, #cbe8ff, #f8faff);
+  background: var(--clr-surface-a0);
   overscroll-behavior: none;
   position: relative;
 }

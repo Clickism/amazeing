@@ -1,7 +1,8 @@
-import { Maze, type WallType } from "./maze";
+import { type WallType } from "./maze";
 import type { Owl } from "./owl";
 import type { Position } from "../interpreter/types";
 import type { SpriteMap } from "./sprites";
+import type { Level } from "./level.ts";
 
 export const OWL_SIZE = 32;
 export const CELL_SIZE = 32;
@@ -14,7 +15,7 @@ export type Camera = {
 export class Renderer {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
-  maze: Maze;
+  level: Level;
   owl: Owl;
   sprites: SpriteMap;
   dpr: number = window.devicePixelRatio || 1;
@@ -22,7 +23,7 @@ export class Renderer {
 
   constructor(
     canvas: HTMLCanvasElement,
-    maze: Maze,
+    level: Level,
     owl: Owl,
     sprites: SpriteMap,
     camera: Camera,
@@ -31,7 +32,7 @@ export class Renderer {
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Failed to get canvas 2D context");
     this.ctx = ctx;
-    this.maze = maze;
+    this.level = level;
     this.owl = owl;
     this.sprites = sprites;
     this.camera = camera;
@@ -54,6 +55,7 @@ export class Renderer {
     this.drawWaterTiles();
     this.drawTiles();
     this.drawWalls();
+    this.drawFinish(this.level.data.finishPosition);
     this.drawOwl(); // Now uses visualOwlPos
     ctx.restore();
   }
@@ -77,42 +79,32 @@ export class Renderer {
 
     for (let y = startY; y < endY; y++) {
       for (let x = startX; x < endX; x++) {
-        this.ctx.drawImage(
-          img,
-          x * CELL_SIZE,
-          y * CELL_SIZE,
-          CELL_SIZE,
-          CELL_SIZE,
-        );
+        this.drawImageAt(img, { x, y });
       }
     }
   }
 
   drawTiles() {
-    const rows = this.maze.height();
-    const cols = this.maze.width();
+    const maze = this.level.maze;
+    const rows = maze.height();
+    const cols = maze.width();
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        const tile = this.maze.tileAt({ x, y });
+        const tile = maze.tileAt({ x, y });
         if (!tile) continue;
         const img = this.sprites.tiles[tile];
-        this.ctx.drawImage(
-          img,
-          x * CELL_SIZE,
-          y * CELL_SIZE,
-          CELL_SIZE,
-          CELL_SIZE,
-        );
+        this.drawImageAt(img, { x, y });
       }
     }
   }
 
   drawWalls() {
-    this.maze.forEachHorizontalWall((position, wall) => {
+    const maze = this.level.maze;
+    maze.forEachHorizontalWall((position, wall) => {
       this.drawHorizontalWall(position, wall);
     });
-    this.maze.forEachVerticalWall((position, wall) => {
+    maze.forEachVerticalWall((position, wall) => {
       this.drawVerticalWall(position, wall);
     });
   }
@@ -135,12 +127,21 @@ export class Renderer {
 
   drawOwl() {
     const img = this.sprites.owl[this.owl.direction];
+    this.drawImageAt(img, this.owl.position);
+  }
+
+  drawFinish(position: Position) {
+    const img = this.sprites.finish;
+    this.drawImageAt(img, position);
+  }
+
+  drawImageAt(img: HTMLImageElement, position: Position) {
     this.ctx.drawImage(
       img,
-      this.owl.position.x * CELL_SIZE + (CELL_SIZE - OWL_SIZE) / 2,
-      this.owl.position.y * CELL_SIZE + (CELL_SIZE - OWL_SIZE) / 2,
-      OWL_SIZE,
-      OWL_SIZE,
+      position.x * CELL_SIZE + (CELL_SIZE - img.width) / 2,
+      position.y * CELL_SIZE + (CELL_SIZE - img.height) / 2,
+      img.width,
+      img.height,
     );
   }
 }

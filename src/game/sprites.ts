@@ -11,6 +11,8 @@ import owlSouth from "../assets/sprites/game/owl/south.png";
 import owlEast from "../assets/sprites/game/owl/east.png";
 import owlWest from "../assets/sprites/game/owl/west.png";
 
+import finish from "../assets/sprites/game/finish.png";
+
 export type SpriteMap = {
   tiles: Record<Exclude<TileType, null>, HTMLImageElement>;
   walls: {
@@ -20,6 +22,7 @@ export type SpriteMap = {
     };
   };
   owl: Record<CardinalDirection, HTMLImageElement>;
+  finish: HTMLImageElement;
 };
 
 export async function loadSprites(): Promise<SpriteMap> {
@@ -49,5 +52,6 @@ export async function loadSprites(): Promise<SpriteMap> {
       east: await load(owlEast),
       west: await load(owlWest),
     },
+    finish: await load(finish),
   };
 }
