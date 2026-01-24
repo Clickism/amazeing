@@ -31,3 +31,14 @@ export function getTransitionSpeed(isRunning: boolean, runSpeed: number) {
     runSpeed < DEFAULT_RUN_SPEED ? belowDefault : aboveOrAtDefault,
   );
 }
+
+/**
+ * Clamps a number between min and max
+ * @param value The number to clamp
+ * @param min The minimum value
+ * @param max The maximum value
+ * @returns The clamped value
+ */
+export function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}

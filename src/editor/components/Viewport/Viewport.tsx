@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Viewport.module.css";
 import clsx from "clsx";
-import { type Camera, CELL_SIZE, Renderer } from "../../../game/renderer.ts";
-import { loadSprites, type SpriteMap } from "../../../game/sprites.ts";
+import { type Camera, CELL_SIZE, Renderer } from "../../../game/rendering/renderer.ts";
+import { loadSprites, type SpriteMap } from "../../../game/rendering/sprites.ts";
 import type { Position } from "../../../interpreter/types.ts";
 import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
 import type { Owl } from "../../../game/owl.ts";
@@ -98,6 +98,7 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
   };
 
   const onWheel = (e: React.WheelEvent) => {
+    if (following) return;
     const zoomDelta = Math.exp(-e.deltaY * ZOOM_SPEED);
     setCamera((c) => {
       const newZoom = Math.min(

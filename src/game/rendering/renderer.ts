@@ -1,8 +1,9 @@
-import { type WallType } from "./maze";
-import type { Owl } from "./owl";
-import type { Position } from "../interpreter/types";
-import type { SpriteMap } from "./sprites";
-import type { Level } from "./level.ts";
+import { type TileType, type WallType } from "../maze.ts";
+import type { Owl } from "../owl.ts";
+import type { Position } from "../../interpreter/types.ts";
+import type { SpriteMap } from "./sprites.ts";
+import type { Level } from "../level.ts";
+import { clamp } from "../../editor/utils.ts";
 
 export const OWL_SIZE = 32;
 export const CELL_SIZE = 32;
@@ -61,7 +62,7 @@ export class Renderer {
   }
 
   drawWaterTiles() {
-    const img = this.sprites.tiles.water;
+    const img = this.sprites.tiles.water.image;
     // Calculate visible bounds in world space to cull tiles
     const zoomScale = this.dpr * this.camera.zoom;
     const halfW = this.canvas.width / 2 / zoomScale;
@@ -89,12 +90,17 @@ export class Renderer {
     const rows = maze.height();
     const cols = maze.width();
 
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const tile = maze.tileAt({ x, y });
+    // Render fake tiles including border
+    for (let y = -1; y <= rows; y++) {
+      for (let x = -1; x <= cols; x++) {
+        const tile = this.fakeTileAt({ x, y });
         if (!tile) continue;
-        const img = this.sprites.tiles[tile];
-        this.drawImageAt(img, { x, y }, true);
+        const sprite = this.sprites.tiles[tile];
+        if (sprite.type === "tileset") {
+          this.drawTilesetTile(sprite.image, { x, y });
+        } else {
+          this.drawImageAt(sprite.image, { x, y }, true);
+        }
       }
     }
   }
@@ -151,7 +157,57 @@ export class Renderer {
     this.drawImageAt(img, position);
   }
 
-  drawImageAt(img: HTMLImageElement, position: Position, buffer = false) {
+  private fakeTileAt(position: Position): TileType | null {
+    const maze = this.level.maze;
+    const { x, y } = position;
+    // Clamp to border bounds
+    const clampedX = clamp(x, -1, maze.width());
+    const clampedY = clamp(y, -1, maze.height());
+    // Within border bounds
+    if (clampedX === x && clampedY === y) {
+      const clampedPos = {
+        x: clamp(x, 0, maze.width() - 1),
+        y: clamp(y, 0, maze.height() - 1),
+      };
+      return maze.tileAt(clampedPos);
+    }
+    // Outside border bounds
+    return null;
+  }
+
+  private drawTilesetTile(img: HTMLImageElement, pos: Position) {
+    const north = this.fakeTileAt({ x: pos.x, y: pos.y - 1 }) !== null;
+    const south = this.fakeTileAt({ x: pos.x, y: pos.y + 1 }) !== null;
+    const west = this.fakeTileAt({ x: pos.x - 1, y: pos.y }) !== null;
+    const east = this.fakeTileAt({ x: pos.x + 1, y: pos.y }) !== null;
+
+    let sx = 1; // Center
+    let sy = 1; // Center
+    // Determine column
+    if (west) sx += 1;
+    if (east) sx -= 1;
+    // Determine row
+    if (north) sy += 1;
+    if (south) sy -= 1;
+
+    this.ctx.drawImage(
+      img,
+      sx * CELL_SIZE,
+      sy * CELL_SIZE,
+      CELL_SIZE,
+      CELL_SIZE,
+      pos.x * CELL_SIZE,
+      pos.y * CELL_SIZE,
+      CELL_SIZE + 1, // Buffer
+      CELL_SIZE + 1, // Buffer
+    );
+  }
+
+  private drawImageAt(
+    img: HTMLImageElement,
+    position: Position,
+    buffer = false,
+  ) {
     const width = img.width;
     const height = img.height;
     this.ctx.drawImage(
