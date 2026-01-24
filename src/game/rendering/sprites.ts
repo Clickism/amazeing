@@ -13,19 +13,15 @@ import owlWest from "../../assets/sprites/game/owl/west.png";
 
 import finish from "../../assets/sprites/game/finish.png";
 
-export type TileSprite = {
-  type: "single" | "tileset";
-  image: HTMLImageElement;
-};
-
 export type SpriteMap = {
-  tiles: Record<Exclude<TileType, null>, TileSprite>;
+  tilesets: Record<Exclude<TileType, null>, HTMLImageElement>;
   walls: {
     [key in Exclude<WallType, null>]: {
       horizontal: HTMLImageElement;
       vertical: HTMLImageElement;
     };
   };
+  water: HTMLImageElement;
   owl: Record<CardinalDirection, HTMLImageElement>;
   finish: HTMLImageElement;
 };
@@ -41,15 +37,8 @@ export async function loadSprites(): Promise<SpriteMap> {
     });
 
   return {
-    tiles: {
-      grass: {
-        type: "tileset",
-        image: await load(grass),
-      },
-      water: {
-        type: "single",
-        image: await load(water),
-      },
+    tilesets: {
+      grass: await load(grass),
     },
     walls: {
       stone: {
@@ -57,6 +46,7 @@ export async function loadSprites(): Promise<SpriteMap> {
         vertical: await load(wallStoneVertical),
       },
     },
+    water: await load(water),
     owl: {
       north: await load(owlNorth),
       south: await load(owlSouth),

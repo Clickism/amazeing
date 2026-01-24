@@ -6,16 +6,14 @@ import { LevelStorageProvider } from "../game/storage/LevelStorageProvider.tsx";
 import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.tsx";
 import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
 
-export const sandboxLevel = new Level({
+const sandboxLevel = new Level({
   id: "sandbox",
   name: "Sandbox Level",
   description: "A tiny 3x3 test maze.",
   maze: {
-    tiles: [
-      ["grass", "grass", "grass"],
-      ["grass", "grass", "grass"],
-      ["grass", "grass", "grass"],
-    ],
+    tileType: "grass",
+    width: 3,
+    height: 3,
     walls: {
       horizontal: [
         [null, null, null],

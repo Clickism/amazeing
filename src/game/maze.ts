@@ -1,23 +1,26 @@
 import { type CardinalDirection, type Position } from "../interpreter/types.ts";
 
 export type MazeData = {
-  tiles: TileType[][];
+  tileType: TileType;
+  width: number;
+  height: number;
   walls: {
     horizontal: WallType[][];
     vertical: WallType[][];
   };
 };
 
-export type TileType = "grass" | "water" | null;
+export type TileType = "grass";
 export type WallType = "stone" | null;
 
-export const TILE_TYPES: TileType[] = ["grass", "water"];
+export const TILE_TYPES: TileType[] = ["grass"];
 export const WALL_TYPES: WallType[] = ["stone"];
 
-export function createEmptyMazeData(width: number, height: number): MazeData {
-  const tiles: TileType[][] = Array.from({ length: height }, () =>
-    Array.from({ length: width }, () => null),
-  );
+export function createEmptyMazeData(
+  width: number,
+  height: number,
+  tileType: TileType = "grass",
+): MazeData {
   const horizontalWalls: WallType[][] = Array.from({ length: height - 1 }, () =>
     Array.from({ length: width }, () => null),
   );
@@ -26,7 +29,9 @@ export function createEmptyMazeData(width: number, height: number): MazeData {
   );
 
   return {
-    tiles,
+    tileType,
+    width,
+    height,
     walls: {
       horizontal: horizontalWalls,
       vertical: verticalWalls,
@@ -48,29 +53,29 @@ export class Maze {
    * Gets the width of the maze.
    */
   width(): number {
-    return this.data.tiles[0].length;
+    return this.data.width;
   }
 
   /**
    * Gets the height of the maze.
    */
   height(): number {
-    return this.data.tiles.length;
+    return this.data.height;
   }
 
   /**
    * Gets the tile at a given position.
    * @param position
    */
-  tileAt(position: Position): TileType | null {
+  hasTileAt(position: Position): boolean {
     const { x, y } = position;
-    if (y < 0 || y >= this.data.tiles.length) {
-      return null;
+    if (y < 0 || y >= this.height()) {
+      return false;
     }
-    if (x < 0 || x >= this.data.tiles[y].length) {
-      return null;
+    if (x < 0 || x >= this.width()) {
+      return false;
     }
-    return this.data.tiles[y][x];
+    return true;
   }
 
   /**
@@ -89,20 +94,6 @@ export class Maze {
         return this.verticalWallAt({ x, y });
       case "west":
         return this.verticalWallAt({ x: x - 1, y });
-    }
-  }
-
-  forEachTile(callback: (position: Position, tile: TileType) => void) {
-    const rows = this.height();
-    const cols = this.width();
-
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const tile = this.tileAt({ x, y });
-        if (tile !== null) {
-          callback({ x, y }, tile);
-        }
-      }
     }
   }
 

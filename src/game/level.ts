@@ -41,8 +41,8 @@ export class Level {
   canOwlMove(owl: Owl, direction?: CardinalDirection): boolean {
     const directionToCheck = direction ?? owl.direction;
     const wall = this.maze.wallAt(owl.position, directionToCheck);
-    const tile = this.maze.tileAt(inDirection(owl.position, directionToCheck));
-    return wall === null && tile !== null;
+    const hasTile = this.maze.hasTileAt(inDirection(owl.position, directionToCheck));
+    return wall === null && hasTile;
   }
 
   isOwlAtFinish(owl: Owl): boolean {

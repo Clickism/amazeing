@@ -20,9 +20,11 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
   const onWallClick = (position: Position, horizontal: boolean) => {
     editor.wallTool.onWallClick(editor, dispatch, position, horizontal);
   };
+  const rows = Array.from({ length: maze.height });
+  const columns = Array.from({ length: maze.width });
   return (
     <div className={styles.grid}>
-      {maze.tiles.map((columns, row) => (
+      {rows.map((_, row) => (
         <Fragment key={row}>
           <div className={styles.gridRow}>
             {columns.map((_, col) => (
@@ -35,7 +37,7 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
                     }}
                     trigger={
                       <Tile
-                        tile={maze.tiles[row][col]}
+                        tile={maze.tileType}
                         editor={editor}
                         position={{ x: col, y: row }}
                       />
@@ -48,7 +50,7 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
                   </Popover>
                 ) : (
                   <Tile
-                    tile={maze.tiles[row][col]}
+                    tile={maze.tileType}
                     editor={editor}
                     position={{ x: col, y: row }}
                     onClick={() => onTileClick({ x: col, y: row })}
@@ -60,7 +62,6 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
                   <Wall
                     wall={maze.walls.vertical[row][col]}
                     editor={editor}
-                    position={{ x: col, y: row }}
                     onClick={() => onWallClick({ x: col, y: row }, false)}
                   />
                 )}
@@ -76,7 +77,6 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
                   key={col}
                   wall={maze.walls.horizontal[row][col]}
                   editor={editor}
-                  position={{ x: col, y: row }}
                   horizontal
                   onClick={() => onWallClick({ x: col, y: row }, true)}
                 />

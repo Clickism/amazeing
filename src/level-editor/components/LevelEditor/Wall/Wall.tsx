@@ -6,34 +6,16 @@ import {
 import clsx from "clsx";
 import styles from "./Wall.module.css";
 import type { LevelEditorState } from "../../../state.ts";
-import type { Position } from "../../../../interpreter/types.ts";
 import type { CSSProperties } from "react";
 
 type WallProps = {
   wall: WallType;
   horizontal?: boolean;
-  position: Position;
   editor: LevelEditorState;
 } & ButtonProps;
 
-export function Wall({
-  wall,
-  horizontal,
-  position,
-  editor,
-  ...props
-}: WallProps) {
-  // const inBetween =
-  const { x, y } = position;
-  let tileA, tileB;
-  if (horizontal) {
-    tileA = editor.maze.tiles[y][x];
-    tileB = editor.maze.tiles[y + 1][x];
-  } else {
-    tileA = editor.maze.tiles[y][x];
-    tileB = editor.maze.tiles[y][x + 1];
-  }
-  const inBetween = tileA === tileB ? tileA : null;
+export function Wall({ wall, horizontal, editor, ...props }: WallProps) {
+  const inBetween = editor.maze.tileType;
   return (
     <Button
       variant="none"
@@ -42,9 +24,7 @@ export function Wall({
         {
           "--background-color": wall
             ? `var(--wall-color-${wall})`
-            : inBetween
-              ? `var(--tile-color-${inBetween})`
-              : undefined,
+            : `var(--tile-color-${inBetween})`,
         } as CSSProperties
       }
       {...props}

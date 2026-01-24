@@ -1,4 +1,4 @@
-import { type TileType, type WallType } from "../maze.ts";
+import { type WallType } from "../maze.ts";
 import type { Owl } from "../owl.ts";
 import type { Position } from "../../interpreter/types.ts";
 import type { SpriteMap } from "./sprites.ts";
@@ -62,7 +62,7 @@ export class Renderer {
   }
 
   drawWaterTiles() {
-    const img = this.sprites.tiles.water.image;
+    const img = this.sprites.water;
     // Calculate visible bounds in world space to cull tiles
     const zoomScale = this.dpr * this.camera.zoom;
     const halfW = this.canvas.width / 2 / zoomScale;
@@ -93,14 +93,10 @@ export class Renderer {
     // Render fake tiles including border
     for (let y = -1; y <= rows; y++) {
       for (let x = -1; x <= cols; x++) {
-        const tile = this.fakeTileAt({ x, y });
-        if (!tile) continue;
-        const sprite = this.sprites.tiles[tile];
-        if (sprite.type === "tileset") {
-          this.drawTilesetTile(sprite.image, { x, y });
-        } else {
-          this.drawImageAt(sprite.image, { x, y }, true);
-        }
+        const hasTile = this.hasFakeTileAt({ x, y });
+        if (!hasTile) continue;
+        const tileset = this.sprites.tilesets[maze.data.tileType];
+        this.drawTilesetTile(tileset, { x, y });
       }
     }
   }
@@ -157,7 +153,7 @@ export class Renderer {
     this.drawImageAt(img, position);
   }
 
-  private fakeTileAt(position: Position): TileType | null {
+  private hasFakeTileAt(position: Position): boolean {
     const maze = this.level.maze;
     const { x, y } = position;
     // Clamp to border bounds
@@ -169,17 +165,17 @@ export class Renderer {
         x: clamp(x, 0, maze.width() - 1),
         y: clamp(y, 0, maze.height() - 1),
       };
-      return maze.tileAt(clampedPos);
+      return maze.hasTileAt(clampedPos);
     }
     // Outside border bounds
-    return null;
+    return false;
   }
 
   private drawTilesetTile(img: HTMLImageElement, pos: Position) {
-    const north = this.fakeTileAt({ x: pos.x, y: pos.y - 1 }) !== null;
-    const south = this.fakeTileAt({ x: pos.x, y: pos.y + 1 }) !== null;
-    const west = this.fakeTileAt({ x: pos.x - 1, y: pos.y }) !== null;
-    const east = this.fakeTileAt({ x: pos.x + 1, y: pos.y }) !== null;
+    const north = this.hasFakeTileAt({ x: pos.x, y: pos.y - 1 });
+    const south = this.hasFakeTileAt({ x: pos.x, y: pos.y + 1 });
+    const west = this.hasFakeTileAt({ x: pos.x - 1, y: pos.y });
+    const east = this.hasFakeTileAt({ x: pos.x + 1, y: pos.y });
 
     let sx = 1; // Center
     let sy = 1; // Center

@@ -2,12 +2,7 @@ import type { Translatable } from "../i18n/i18n.ts";
 import { CARDINAL_DIRECTIONS, type Position } from "../interpreter/types.ts";
 import type { ReactNode } from "react";
 import type { LevelEditorDispatch, LevelEditorState } from "./state.ts";
-import {
-  TILE_TYPES,
-  type TileType,
-  WALL_TYPES,
-  type WallType,
-} from "../game/maze.ts";
+import { type TileType, WALL_TYPES, type WallType } from "../game/maze.ts";
 import { ButtonGroup } from "../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../components/Button/Button.tsx";
 import { getDirectionIcon } from "./utils.tsx";
@@ -45,18 +40,6 @@ export type GeneralTool = BaseTool & {
 };
 
 export const TILE_TOOLS: TileTool[] = [
-  ...TILE_TYPES.filter((t) => t != "water").map(
-    (tile) =>
-      ({
-        name: { key: `tile.${tile}` },
-        onTileClick: (editor, dispatch, position) => {
-          const currentTile = editor.maze.tiles[position.y][position.x];
-          const newTile = currentTile === tile ? null : tile;
-          dispatch({ type: "setTile", position, tile: newTile });
-        },
-        tileType: tile,
-      }) as TileTool,
-  ),
   {
     name: { key: "levelEditor.tools.start" },
     onTileClick: (editor, dispatch, position) => {
@@ -71,6 +54,8 @@ export const TILE_TOOLS: TileTool[] = [
         <ButtonGroup>
           {CARDINAL_DIRECTIONS.map((direction) => (
             <Button
+              key={direction}
+              variant="outlined"
               onClick={() => {
                 dispatch({
                   type: "setStart",
@@ -116,19 +101,6 @@ export const WALL_TOOLS = [
 ];
 
 export const GENERAL_TOOLS: GeneralTool[] = [
-  {
-    name: { key: "levelEditor.tools.fillAllTiles" },
-    onClick: (editor, dispatch) => {
-      const selectedTile = editor.tileTool.tileType ?? null;
-      dispatch({ type: "setAllTiles", tile: selectedTile });
-    },
-  },
-  {
-    name: { key: "levelEditor.tools.clearAllTiles" },
-    onClick: (_, dispatch) => {
-      dispatch({ type: "setAllTiles", tile: null });
-    },
-  },
   {
     name: { key: "levelEditor.tools.fillAllWalls" },
     onClick: (editor, dispatch) => {

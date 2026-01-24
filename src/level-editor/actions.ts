@@ -1,4 +1,4 @@
-import { type TileType, type WallType } from "../game/maze.ts";
+import { type WallType } from "../game/maze.ts";
 import {
   createEditorState,
   createInitialEditorState,
@@ -10,10 +10,8 @@ import type { TileTool, WallTool } from "./tools.tsx";
 export type LevelEditorAction =
   | { type: "reset" }
   | { type: "resize"; width: number; height: number }
-  | { type: "setTile"; position: Position; tile: TileType }
   | { type: "setHorizontalWall"; position: Position; wall: WallType }
   | { type: "setVerticalWall"; position: Position; wall: WallType }
-  | { type: "setAllTiles"; tile: TileType }
   | { type: "setAllWalls"; wall: WallType }
   | { type: "setMetadata"; name: string; description: string }
   | { type: "toggleVisualize" }
@@ -46,19 +44,6 @@ const actionExecutors: ActionExecutors = {
     };
   },
 
-  setTile: (state, { position, tile }) => {
-    const tiles = clone2DArray(state.maze.tiles);
-    tiles[position.y][position.x] = tile;
-    state = {
-      ...state,
-      maze: {
-        ...state.maze,
-        tiles,
-      },
-    };
-    return state;
-  },
-
   setHorizontalWall: (state, { position, wall }) => {
     const horizontal = clone2DArray(state.maze.walls.horizontal);
     horizontal[position.y][position.x] = wall;
@@ -86,18 +71,6 @@ const actionExecutors: ActionExecutors = {
           ...state.maze.walls,
           vertical,
         },
-      },
-    };
-    return state;
-  },
-
-  setAllTiles: (state, { tile }) => {
-    const tiles = state.maze.tiles.map((row) => row.map(() => tile));
-    state = {
-      ...state,
-      maze: {
-        ...state.maze,
-        tiles,
       },
     };
     return state;
