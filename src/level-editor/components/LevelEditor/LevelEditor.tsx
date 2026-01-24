@@ -32,6 +32,8 @@ export function LevelEditor() {
               )
             }
             level={new Level(editor)}
+            lockCamera={false}
+            lockCameraControls={false}
           />
         ) : (
           <div className={clsx(styles.gridContainer)}>

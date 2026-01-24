@@ -1,8 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Viewport.module.css";
 import clsx from "clsx";
-import { type Camera, CELL_SIZE, Renderer } from "../../../game/rendering/renderer.ts";
-import { loadSprites, type SpriteMap } from "../../../game/rendering/sprites.ts";
+import {
+  type Camera,
+  CELL_SIZE,
+  Renderer,
+} from "../../../game/rendering/renderer.ts";
+import {
+  loadSprites,
+  type SpriteMap,
+} from "../../../game/rendering/sprites.ts";
 import type { Position } from "../../../interpreter/types.ts";
 import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
 import type { Owl } from "../../../game/owl.ts";
@@ -23,13 +30,21 @@ export type ViewportProps = {
   owl: Owl;
   level: Level;
   levelSelector?: boolean;
+  lockCamera?: boolean;
+  lockCameraControls?: boolean;
 };
 
-export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
+export function Viewport({
+  owl,
+  level,
+  levelSelector = false,
+  lockCamera = true,
+  lockCameraControls = true,
+}: ViewportProps) {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [sprites, setSprites] = useState<SpriteMap | null>(null);
-  const [following, setFollowing] = useState(true);
+  const [following, setFollowing] = useState(lockCamera);
 
   // Camera at center
   const [camera, setCamera] = useState<Camera>({
@@ -116,21 +131,23 @@ export function Viewport({ owl, level, levelSelector = false }: ViewportProps) {
     <div className={clsx(styles.viewport, "window-border")}>
       <CornerGroup position="top-right">
         <ButtonGroup>
-          <Tooltip
-            content={
-              following
-                ? t("viewport.camera.unlock")
-                : t("viewport.camera.lock")
-            }
-          >
-            <Button
-              variant={following ? "secondary" : "success"}
-              shape="icon"
-              onClick={() => setFollowing((f) => !f)}
+          {lockCameraControls && (
+            <Tooltip
+              content={
+                following
+                  ? t("viewport.camera.unlock")
+                  : t("viewport.camera.lock")
+              }
             >
-              {following ? <TbLock size={18} /> : <TbLockOpen2 size={18} />}
-            </Button>
-          </Tooltip>
+              <Button
+                variant={following ? "secondary" : "success"}
+                shape="icon"
+                onClick={() => setFollowing((f) => !f)}
+              >
+                {following ? <TbLock size={18} /> : <TbLockOpen2 size={18} />}
+              </Button>
+            </Tooltip>
+          )}
           {levelSelector && <LevelSelector />}
         </ButtonGroup>
       </CornerGroup>
