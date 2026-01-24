@@ -7,8 +7,8 @@ import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.t
 import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
 
 const sandboxLevel = new Level({
-  id: "sandbox",
-  name: "Sandbox Level",
+  name: "sandbox",
+  title: "Sandbox Level",
   description: "A tiny 3x3 test maze.",
   maze: {
     tileType: "grass",

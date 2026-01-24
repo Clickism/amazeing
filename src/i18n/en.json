@@ -25,6 +25,9 @@
   "codeStorage.newFile.name": "Untitled #{{num}}",
   "codeStorage.newFile.content": "# Write your code here",
 
+  "levelStorage.newLevel.name": "Level #{{num}}",
+  "levelStorage.newLevel.description": "A custom level!",
+
   "console.title": "Console",
   "viewport.title": "Viewport",
   "viewport.camera.lock": "Lock Camera to Owl",

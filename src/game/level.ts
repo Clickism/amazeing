@@ -7,8 +7,10 @@ import {
 import { type Owl, OwlImpl } from "./owl.ts";
 
 export type LevelData = {
-  id: string;
+  // The unique name of the level (within the level storage)
   name: string;
+  // The displayed title of the level
+  title: string;
   description: string;
   maze: MazeData;
   owlStart: {
@@ -41,7 +43,9 @@ export class Level {
   canOwlMove(owl: Owl, direction?: CardinalDirection): boolean {
     const directionToCheck = direction ?? owl.direction;
     const wall = this.maze.wallAt(owl.position, directionToCheck);
-    const hasTile = this.maze.hasTileAt(inDirection(owl.position, directionToCheck));
+    const hasTile = this.maze.hasTileAt(
+      inDirection(owl.position, directionToCheck),
+    );
     return wall === null && hasTile;
   }
 

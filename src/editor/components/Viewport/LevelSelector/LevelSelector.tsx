@@ -24,16 +24,16 @@ export function LevelSelector() {
         <select
           onChange={(e) => {
             const selectedLevel =
-              levels.find((lvl) => lvl.id === e.target.value) ??
+              levels.find((lvl) => lvl.name === e.target.value) ??
               startingLevel.data;
             if (selectedLevel) {
               setLevel(new Level(selectedLevel));
             }
           }}
-          defaultValue={level.data.id}
+          defaultValue={level.data.name}
         >
           {[startingLevel.data, ...levels].map((level) => (
-            <option key={level.id} value={level.id}>
+            <option key={level.name} value={level.name}>
               {level.name}
             </option>
           ))}

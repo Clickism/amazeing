@@ -25,6 +25,9 @@
   "codeStorage.newFile.name": "Unbenannt #{{num}}",
   "codeStorage.newFile.content": "# Schreibe deinen Code hier",
 
+  "levelStorage.newLevel.name": "Level #{{num}}",
+  "levelStorage.newLevel.description": "Ein benutzerdefiniertes Level!",
+
   "console.title": "Konsole",
   "viewport.title": "Ansicht",
   "viewport.camera.lock": "Kamera an Eule binden",

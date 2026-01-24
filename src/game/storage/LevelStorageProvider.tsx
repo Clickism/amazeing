@@ -25,7 +25,7 @@ export function LevelStorageProvider({
   const addLevel = (level: LevelData) => {
     setLevels((prev) => ({
       ...prev,
-      [level.id]: level,
+      [level.name]: level,
     }));
   };
 

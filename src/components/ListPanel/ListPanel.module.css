@@ -8,13 +8,13 @@
   position: relative;
 }
 
-.fileContainer {
+.list {
   display: flex;
   flex-direction: column;
   overflow: auto;
 }
 
-.file {
+.element {
   display: inline-flex;
   position: relative;
   background-color: var(--clr-surface-a3);
@@ -25,16 +25,16 @@
   -webkit-user-select: none;
 }
 
-.fileName {
+.elementName {
   padding: .5rem 1rem;
 }
 
-.file:hover {
+.element:hover {
   cursor: pointer;
 }
 
-.file:hover,
-.file.active {
+.element:hover,
+.element.active {
   background-color: var(--clr-surface-a7);
   color: var(--text-color);
 }

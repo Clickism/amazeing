@@ -19,16 +19,16 @@ export type LevelEditorState = {
   visualize: boolean;
 } & LevelData;
 
-export function createInitialEditorState(): LevelEditorState {
-  return createEditorState(5, 5);
+export function createInitialEditorState(name: string): LevelEditorState {
+  return createEditorState(name, 5, 5);
 }
 
 export function createEditorState(
+  name: string,
   width: number,
   height: number,
 ): LevelEditorState {
   return {
-    id: crypto.randomUUID(),
     width,
     height,
     tileTool: TILE_TOOLS[0],
@@ -40,7 +40,8 @@ export function createEditorState(
       x: width - 1,
       y: height - 1,
     },
-    name: "Level Name",
+    name,
+    title: name,
     owlStart: {
       direction: "south",
       position: {
@@ -53,8 +54,8 @@ export function createEditorState(
 
 export function toLevelData(editor: LevelEditorState): LevelData {
   return {
-    id: editor.id,
     name: editor.name,
+    title: editor.name,
     description: editor.description,
     maze: editor.maze,
     owlStart: editor.owlStart,

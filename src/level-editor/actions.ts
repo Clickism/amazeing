@@ -6,8 +6,10 @@ import {
 } from "./state.ts";
 import type { CardinalDirection, Position } from "../interpreter/types.ts";
 import type { TileTool, WallTool } from "./tools.tsx";
+import type { LevelData } from "../game/level.ts";
 
 export type LevelEditorAction =
+  | { type: "setLevel"; level: LevelData }
   | { type: "reset" }
   | { type: "resize"; width: number; height: number }
   | { type: "setHorizontalWall"; position: Position; wall: WallType }
@@ -28,12 +30,19 @@ type ActionExecutors = {
 };
 
 const actionExecutors: ActionExecutors = {
-  reset: () => {
-    return createInitialEditorState();
+  setLevel: (state, { level }) => {
+    return {
+      ...state,
+      ...level,
+    };
+  },
+
+  reset: (state) => {
+    return createInitialEditorState(state.name);
   },
 
   resize: (state, { width, height }) => {
-    const newState = createEditorState(width, height);
+    const newState = createEditorState(state.name, width, height);
     return {
       ...state,
       width: newState.width,
