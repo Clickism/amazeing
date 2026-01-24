@@ -7,6 +7,7 @@ import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
 import { GENERAL_TOOLS, TILE_TOOLS, WALL_TOOLS } from "../../../tools.tsx";
 import { tryTranslate } from "../../../../i18n/i18n.ts";
 import { RiToolsFill } from "react-icons/ri";
+import { TILE_TYPES, type TileType } from "../../../../game/maze.ts";
 
 type ToolPanelProps = {
   editor: LevelEditorState;
@@ -56,6 +57,27 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
               });
             }}
           />
+        </FormField>
+      </FormGroup>
+
+      <h5>{t("levelEditor.headers.theme")}</h5>
+      <FormGroup horizontal stretch>
+        <FormField label={t("levelEditor.tools.tileType")}>
+          <select
+            value={editor.maze.tileType}
+            onChange={(e) =>
+              dispatch({
+                type: "setTileType",
+                tileType: e.target.value as TileType,
+              })
+            }
+          >
+            {TILE_TYPES.map((tileType, i) => (
+              <option key={i} value={tileType}>
+                {t(`tile.${tileType}`)}
+              </option>
+            ))}
+          </select>
         </FormField>
       </FormGroup>
 

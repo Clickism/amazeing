@@ -1,4 +1,4 @@
-import { type WallType } from "../game/maze.ts";
+import { type TileType, type WallType } from "../game/maze.ts";
 import {
   createEditorState,
   createInitialEditorState,
@@ -12,6 +12,7 @@ export type LevelEditorAction =
   | { type: "setLevel"; level: LevelData }
   | { type: "reset" }
   | { type: "resize"; width: number; height: number }
+  | { type: "setTileType"; tileType: TileType }
   | { type: "setHorizontalWall"; position: Position; wall: WallType }
   | { type: "setVerticalWall"; position: Position; wall: WallType }
   | { type: "setAllWalls"; wall: WallType }
@@ -51,6 +52,17 @@ const actionExecutors: ActionExecutors = {
       finishPosition: newState.finishPosition,
       owlStart: newState.owlStart,
     };
+  },
+
+  setTileType: (state, { tileType }) => {
+    state = {
+      ...state,
+      maze: {
+        ...state.maze,
+        tileType,
+      },
+    };
+    return state;
   },
 
   setHorizontalWall: (state, { position, wall }) => {
