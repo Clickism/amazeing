@@ -79,7 +79,7 @@ export class Renderer {
 
     for (let y = startY; y < endY; y++) {
       for (let x = startX; x < endX; x++) {
-        this.drawImageAt(img, { x, y });
+        this.drawImageAt(img, { x, y }, true);
       }
     }
   }
@@ -94,7 +94,7 @@ export class Renderer {
         const tile = maze.tileAt({ x, y });
         if (!tile) continue;
         const img = this.sprites.tiles[tile];
-        this.drawImageAt(img, { x, y });
+        this.drawImageAt(img, { x, y }, true);
       }
     }
   }
@@ -107,22 +107,38 @@ export class Renderer {
     maze.forEachVerticalWall((position, wall) => {
       this.drawVerticalWall(position, wall);
     });
+    this.drawOuterWalls();
+  }
+
+  drawOuterWalls() {
+    const maze = this.level.maze;
+    const rows = maze.height();
+    const cols = maze.width();
+    const outerWall = "stone";
+    for (let x = 0; x < cols; x++) {
+      this.drawHorizontalWall({ x, y: -1 }, outerWall);
+      this.drawHorizontalWall({ x, y: rows - 1 }, outerWall);
+    }
+    for (let y = 0; y < rows; y++) {
+      this.drawVerticalWall({ x: -1, y }, outerWall);
+      this.drawVerticalWall({ x: cols - 1, y }, outerWall);
+    }
   }
 
   drawHorizontalWall(position: Position, wall: WallType) {
     if (!wall) return;
-    const x = position.x * CELL_SIZE;
-    const y = (position.y + 0.5) * CELL_SIZE;
+    const x = position.x;
+    const y = position.y + 0.5;
     const img = this.sprites.walls[wall].horizontal;
-    this.ctx.drawImage(img, x, y, CELL_SIZE, CELL_SIZE);
+    this.drawImageAt(img, { x, y });
   }
 
   drawVerticalWall(position: Position, wall: WallType) {
     if (!wall) return;
-    const x = (position.x + 0.5) * CELL_SIZE;
-    const y = position.y * CELL_SIZE;
+    const x = position.x + 0.5;
+    const y = position.y;
     const img = this.sprites.walls[wall].vertical;
-    this.ctx.drawImage(img, x, y, CELL_SIZE, CELL_SIZE);
+    this.drawImageAt(img, { x, y });
   }
 
   drawOwl() {
@@ -135,13 +151,15 @@ export class Renderer {
     this.drawImageAt(img, position);
   }
 
-  drawImageAt(img: HTMLImageElement, position: Position) {
+  drawImageAt(img: HTMLImageElement, position: Position, buffer = false) {
+    const width = img.width;
+    const height = img.height;
     this.ctx.drawImage(
       img,
-      position.x * CELL_SIZE + (CELL_SIZE - img.width) / 2,
-      position.y * CELL_SIZE + (CELL_SIZE - img.height) / 2,
-      img.width,
-      img.height,
+      position.x * CELL_SIZE + (CELL_SIZE - width) / 2,
+      position.y * CELL_SIZE + (CELL_SIZE - height) / 2,
+      width + (buffer ? 1 : 0),
+      height + (buffer ? 1 : 0),
     );
   }
 }

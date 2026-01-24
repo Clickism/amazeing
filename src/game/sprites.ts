@@ -3,8 +3,8 @@ import type { CardinalDirection } from "../interpreter/types.ts";
 
 import grass from "../assets/sprites/game/tiles/grass.png";
 import water from "../assets/sprites/game/tiles/water.png";
-import wallStoneVertical from "../assets/sprites/game/walls/fence_vertical.png";
-import wallStoneHorizontal from "../assets/sprites/game/walls/fence_horizontal.png";
+import wallStoneVertical from "../assets/sprites/game/walls/stone_vertical.png";
+import wallStoneHorizontal from "../assets/sprites/game/walls/stone_horizontal.png";
 
 import owlNorth from "../assets/sprites/game/owl/north.png";
 import owlSouth from "../assets/sprites/game/owl/south.png";
