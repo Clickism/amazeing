@@ -34,15 +34,12 @@ export function Editor({ file, allowChangingLevel = false }: Props) {
     <div className={styles.editorContainer}>
       <PanelContainer
         orientation="horizontal"
-        initialSplit={0.5}
         minSize={0.3}
-        maxSize={0.7}
       >
         <PanelContainer
           orientation="vertical"
-          initialSplit={0.6}
-          minSize={0.3}
-          maxSize={0.8}
+          initialSizes={[0.6, 0.4]}
+          minSize={0.2}
         >
           <Panel paddingless>
             <Viewport

@@ -13,6 +13,9 @@ export function TestPage() {
         <Panel>
           <p>This is a test page for development purposes.</p>
         </Panel>
+        <Panel>
+          <p>Feel free to add more panels and test the layout.</p>
+        </Panel>
       </PanelContainer>
     </Layout>
   );

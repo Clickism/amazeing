@@ -7,61 +7,75 @@ import React, {
 } from "react";
 import clsx from "clsx";
 import styles from "./PanelContainer.module.css";
-import { clamp } from "../../editor/utils.ts";
 
 type PanelContainerProps = {
   children: ReactNode[];
   orientation?: "horizontal" | "vertical";
-  initialSplit?: number;
+  initialSizes?: number[];
   minSize?: number;
-  maxSize?: number;
 };
 
 export function PanelContainer({
   children,
   orientation = "horizontal",
-  initialSplit = 0.5,
+  initialSizes,
   minSize = 0.1,
-  maxSize = 0.9,
 }: PanelContainerProps) {
-  const [splitSize, setSplitSize] = useState<number>(initialSplit);
-  const [isDragging, setIsDragging] = useState(false);
+  const panelCount = children.length;
+  const [sizes, setSizes] = useState<number[]>(
+    initialSizes && initialSizes.length === panelCount
+      ? initialSizes
+      : Array(panelCount).fill(1 / panelCount),
+  );
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isHorizontal = orientation === "horizontal";
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+  const handleMouseDown = (index: number) => (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsDragging(true);
-  }, []);
+    setDraggingIndex(index);
+  };
 
   const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
+    setDraggingIndex(null);
   }, []);
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (!isDragging || !containerRef.current) return;
+      if (draggingIndex === null || !containerRef.current) return;
 
-      const containerRect = containerRef.current.getBoundingClientRect();
-      let newSplit;
+      const rect = containerRef.current.getBoundingClientRect();
+      const delta = isHorizontal
+        ? e.movementX / rect.width
+        : e.movementY / rect.height;
 
-      if (isHorizontal) {
-        const relativeX = e.clientX - containerRect.left;
-        newSplit = relativeX / containerRect.width;
-      } else {
-        const relativeY = e.clientY - containerRect.top;
-        newSplit = relativeY / containerRect.height;
-      }
+      setSizes((prev) => {
+        const next = [...prev];
 
-      newSplit = clamp(newSplit, minSize, maxSize);
-      setSplitSize(newSplit);
+        const a = next[draggingIndex];
+        const b = next[draggingIndex + 1];
+
+        const maxPositive = b - minSize;
+        const maxNegative = a - minSize;
+
+        const clampedDelta = Math.max(
+          -maxNegative,
+          Math.min(maxPositive, delta),
+        );
+
+        next[draggingIndex] = a + clampedDelta;
+        next[draggingIndex + 1] = b - clampedDelta;
+
+        return next;
+      });
     },
-    [isDragging, isHorizontal, maxSize, minSize],
+    [draggingIndex, isHorizontal, minSize],
   );
 
   useEffect(() => {
-    if (isDragging) {
+    if (draggingIndex !== null) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
       document.body.style.cursor = isHorizontal ? "col-resize" : "row-resize";
@@ -79,7 +93,7 @@ export function PanelContainer({
       document.body.style.cursor = "";
       document.body.style.userSelect = "";
     };
-  }, [isDragging, handleMouseMove, handleMouseUp, isHorizontal]);
+  }, [draggingIndex, handleMouseMove, handleMouseUp, isHorizontal]);
 
   return (
     <div
@@ -87,38 +101,33 @@ export function PanelContainer({
       className={styles.container}
       style={{ flexDirection: isHorizontal ? "row" : "column" }}
     >
-      <div
-        style={{
-          flexBasis: `${splitSize * 100}%`,
-          flexGrow: 0,
-          flexShrink: 0,
-          minWidth: 0,
-          minHeight: 0,
-        }}
-      >
-        {children[0]}
-      </div>
-
-      <div className={styles.resizerContainer}>
-        <div
-          className={clsx(
-            styles.resizer,
-            isDragging && styles.active,
-            isHorizontal ? styles.horizontal : styles.vertical,
+      {children.map((child, i) => (
+        <React.Fragment key={i}>
+          <div
+            style={{
+              flexBasis: 0,
+              flexGrow: sizes[i],
+              flexShrink: 0,
+              minWidth: 0,
+              minHeight: 0,
+            }}
+          >
+            {child}
+          </div>
+          {i < panelCount - 1 && (
+            <div className={styles.resizerContainer}>
+              <div
+                className={clsx(
+                  styles.resizer,
+                  draggingIndex === i && styles.active,
+                  isHorizontal ? styles.horizontal : styles.vertical,
+                )}
+                onMouseDown={handleMouseDown(i)}
+              />
+            </div>
           )}
-          onMouseDown={handleMouseDown}
-        />
-      </div>
-
-      <div
-        style={{
-          flexGrow: 1,
-          minWidth: 0,
-          minHeight: 0,
-        }}
-      >
-        {children[1]}
-      </div>
+        </React.Fragment>
+      ))}
     </div>
   );
 }
