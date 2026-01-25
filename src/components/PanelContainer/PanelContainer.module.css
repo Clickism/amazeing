@@ -6,11 +6,13 @@
 
 .resizer {
   display: block;
+  opacity: 0;
+  border: 1px solid transparent;
   background-color: var(--clr-surface-a0);
   --resizer-thickness: .5rem;
   --resizer-margin: .25rem;
   border-radius: .25rem;
-  transition: background-color .2s ease-in-out;
+  transition: background-color .2s ease-in-out, border .2s ease-in-out, opacity .2s ease-in-out;
 }
 
 .resizer.horizontal {
@@ -28,10 +30,14 @@
 }
 
 .resizer:hover {
-  background-color: var(--clr-surface-a10);
+  opacity: 1;
+  border: 1px solid var(--clr-surface-a30);
+  background-color: var(--clr-surface-a20);
 }
 
 .resizer.active {
+  opacity: 1;
+  border: 1px solid var(--clr-surface-a30);
   background-color: var(--clr-primary-a0);
 }
 

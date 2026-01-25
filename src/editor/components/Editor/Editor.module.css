@@ -10,12 +10,12 @@
   padding: 1rem;
 }
 
-.viewportPanel {
+.consolePanel {
   display: flex;
   flex-direction: column;
   gap: 1rem !important;
 }
 
-.viewportPanel:first-child {
+.consolePanel:last-child {
   height: 100%;
 }

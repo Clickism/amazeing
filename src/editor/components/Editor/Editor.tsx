@@ -44,22 +44,21 @@ export function Editor({ file, allowChangingLevel = false }: Props) {
           minSize={0.3}
           maxSize={0.8}
         >
-          <div className={styles.viewportPanel}>
-            <Panel paddingless>
-              <Viewport
-                level={level}
-                owl={owl}
-                levelSelector={allowChangingLevel}
-              />
-            </Panel>
+          <Panel paddingless>
+            <Viewport
+              level={level}
+              owl={owl}
+              levelSelector={allowChangingLevel}
+            />
+          </Panel>
+          <div className={styles.consolePanel}>
             <ButtonGroup center>
               <ExecutionControls />
             </ButtonGroup>
+            <Panel className={styles.console} paddingless>
+              <Console messages={output} />
+            </Panel>
           </div>
-
-          <Panel className={styles.console} paddingless>
-            <Console messages={output} />
-          </Panel>
         </PanelContainer>
         {file ? (
           <FileSourceProvider code={code} setCode={setCode}>
