@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import clsx from "clsx";
 import styles from "./Panel.module.css";
 
-type PanelProps = {
+export type PanelProps = {
   children: ReactNode;
   className?: string;
   style?: CSSProperties;

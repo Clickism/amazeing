@@ -2,6 +2,7 @@
   border-radius: 1rem;
   border: 2px solid var(--clr-surface-a10);
   box-shadow: var(--surface-shadow-light);
+  background-color: var(--clr-surface-a3);
 }
 
 .panel {

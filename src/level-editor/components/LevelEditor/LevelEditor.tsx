@@ -21,6 +21,7 @@ import {
 import { Panel } from "../../../components/Panel/Panel.tsx";
 import { PanelContainer } from "../../../components/PanelContainer/PanelContainer.tsx";
 import { useLevelStorage } from "../../../game/storage/LevelStorageContext.tsx";
+import { TextPanel } from "../../../components/Panel/TextPanel/TextPanel.tsx";
 
 export function LevelEditor() {
   const { t } = useTranslation();
@@ -55,10 +56,10 @@ export function LevelEditor() {
   return (
     <div className={styles.levelEditor}>
       <PanelContainer initialSizes={[0.1, 0.8, 0.1]} minSize={0.1}>
-        <Panel>
+        <TextPanel>
           <ToolPanel editor={editor} dispatch={dispatch} />
           <ExportPanel editor={editor} dispatch={dispatch} />
-        </Panel>
+        </TextPanel>
         <Panel className={styles.gridWindow}>
           {editor.visualize ? (
             <Viewport
