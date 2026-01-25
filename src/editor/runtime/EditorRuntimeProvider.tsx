@@ -43,6 +43,7 @@ export function EditorRuntimeProvider({
   // Refs
   const interpreterRef = useRef<Interpreter | null>(null);
   const runIntervalRef = useRef<number | null>(null);
+  const runAnimationFrameRef = useRef<number | null>(null);
 
   const appendOutput = useCallback((message: ConsoleMessage) => {
     setOutput((prev) => [...prev, message]);
@@ -52,8 +53,13 @@ export function EditorRuntimeProvider({
     if (runIntervalRef.current !== null) {
       clearInterval(runIntervalRef.current);
       runIntervalRef.current = null;
-      setIsRunning(false);
     }
+    if (runAnimationFrameRef.current !== null) {
+      cancelAnimationFrame(runAnimationFrameRef.current);
+      runAnimationFrameRef.current = null;
+    }
+    setIsRunning(false);
+    setCurrentLine(interpreterRef.current?.getCurrentLine() ?? null);
   }, []);
 
   const reset = useCallback(() => {
@@ -97,13 +103,18 @@ export function EditorRuntimeProvider({
           while (interpreter.canStep() && count++ < INSTANT_BATCH_SIZE) {
             interpreter.step();
           }
-          if (interpreter.canStep()) {
-            requestAnimationFrame(runChunk);
-          } else {
-            setIsRunning(false);
-            setCurrentLine(interpreter.getCurrentLine());
-          }
         });
+        const interpreter = interpreterRef.current;
+        if (interpreter) {
+          setCurrentLine(interpreter.getCurrentLine());
+          if (interpreter.canStep()) {
+            runAnimationFrameRef.current = requestAnimationFrame(runChunk);
+          } else {
+            stop();
+          }
+        } else {
+          stop();
+        }
       };
       runChunk();
       return;
