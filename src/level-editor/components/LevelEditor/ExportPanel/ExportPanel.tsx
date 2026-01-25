@@ -2,7 +2,6 @@ import {
   type LevelEditorDispatch,
   type LevelEditorState,
   stringifyLevelData,
-  toLevelData,
 } from "../../../state.ts";
 import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
 import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
@@ -10,10 +9,13 @@ import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGro
 import { Button } from "../../../../components/Button/Button.tsx";
 import { CopyToClipboard } from "../../CopyToClipboard/CopyToClipboard.tsx";
 import { useTranslation } from "react-i18next";
-import { useLevelStorage } from "../../../../game/storage/LevelStorageContext.tsx";
-import { BiExport, BiImport } from "react-icons/bi";
+import { useLevelStorage } from "../../../storage/LevelStorageContext.tsx";
+import { BiExport, BiImport, BiPencil, BiTrash } from "react-icons/bi";
 import { TimedButton } from "../../../../components/Button/TimedButton/TimedButton.tsx";
 import { Modal } from "../../../../components/floating/Modal/Modal.tsx";
+import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
+import { useEffect, useState } from "react";
+import { checkValidName, findNextName } from "../../../../editor/utils.ts";
 
 type ExportPanelProps = {
   editor: LevelEditorState;
@@ -23,20 +25,36 @@ type ExportPanelProps = {
 export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
   const { t } = useTranslation();
   const editorStateJSON = stringifyLevelData(editor);
-  const { addLevel } = useLevelStorage();
+  const { saveLevel, loadLevel, levelNames, renameLevel, deleteLevel } =
+    useLevelStorage();
+  const currentLevelName = editor.level.name;
+  const [newLevelName, setNewLevelName] = useState(currentLevelName);
+  const [isValid, invalidMessage] = checkValidName(
+    t,
+    newLevelName,
+    levelNames,
+    currentLevelName,
+  );
+  const canRename = newLevelName !== currentLevelName && isValid;
+
+  useEffect(() => {
+    setNewLevelName(currentLevelName);
+  }, [currentLevelName]);
+
   return (
     <>
       <h5>{t("levelEditor.headers.metadata")}</h5>
       <FormGroup stretch>
-        <FormField label={t("levelEditor.export.levelName")}>
+        <FormField label={t("levelEditor.export.levelTitle")}>
           <input
             type="text"
-            value={editor.name}
+            value={editor.level.title}
             onChange={(e) => {
               dispatch({
                 type: "setMetadata",
-                name: e.target.value,
-                description: editor.description,
+                name: currentLevelName,
+                title: e.target.value,
+                description: editor.level.description,
               });
             }}
             style={{
@@ -44,13 +62,15 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
             }}
           />
         </FormField>
+
         <FormField label={t("levelEditor.export.levelDescription")}>
           <textarea
-            value={editor.description}
+            value={editor.level.description}
             onChange={(e) => {
               dispatch({
                 type: "setMetadata",
-                name: editor.name,
+                name: currentLevelName,
+                title: editor.level.title,
                 description: e.target.value,
               });
             }}
@@ -60,6 +80,75 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
             }}
           />
         </FormField>
+
+        <Popover
+          title={t("fileList.rename.action")}
+          onClose={() => {
+            setNewLevelName((prev) =>
+              prev !== editor.level.name ? editor.level.name : prev,
+            );
+          }}
+          trigger={
+            <Button variant="outlined" shape="icon">
+              <BiPencil />
+            </Button>
+          }
+        >
+          <FormGroup>
+            <FormField label={t("fileList.rename.fileName")}>
+              <input
+                type="text"
+                value={newLevelName}
+                onChange={(e) => setNewLevelName(e.target.value)}
+              />
+            </FormField>
+            <Button
+              variant="primary"
+              disabled={!canRename}
+              onClick={() => {
+                renameLevel(currentLevelName, newLevelName);
+              }}
+            >
+              <BiPencil />
+              {invalidMessage ?? t("fileList.rename.action")}
+            </Button>
+          </FormGroup>
+        </Popover>
+
+        <Popover
+          title={t("fileList.delete.title")}
+          trigger={
+            <Button variant="danger" shape="icon">
+              <BiTrash />
+            </Button>
+          }
+        >
+          <ButtonGroup vertical stretch>
+            <div style={{ color: "var(--text-color-t90)", maxWidth: "250px" }}>
+              {t("fileList.delete.confirm")}
+              <br />
+              <strong>{t("fileList.delete.confirm.cannotUndo")}</strong>
+            </div>
+            <Button
+              variant="danger"
+              onClick={() => {
+                deleteLevel(currentLevelName);
+                const nextLevelName = findNextName(
+                  currentLevelName,
+                  levelNames,
+                );
+                if (!nextLevelName) return;
+                const nextLevel = loadLevel(nextLevelName);
+                if (nextLevel) {
+                  dispatch({ type: "setLevel", level: nextLevel });
+                }
+              }}
+            >
+              <BiTrash />
+              {t("fileList.delete.action", { file: currentLevelName })}
+            </Button>
+          </ButtonGroup>
+        </Popover>
       </FormGroup>
 
       <h5>{t("levelEditor.headers.actions")}</h5>
@@ -96,7 +185,7 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
         <TimedButton
           variant="secondary"
           onClick={() => {
-            addLevel(toLevelData(editor));
+            saveLevel(editor.level);
           }}
         >
           {(active) =>

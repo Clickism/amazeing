@@ -3,7 +3,7 @@
   border-radius: .5rem;
   padding: var(--padding);
   will-change: transform;
-  transition: transform .2s, background-color .2s;
+  transition: transform .2s, background-color .2s, box-shadow .2s, color .2s;
   background-color: var(--background-color);
   font-weight: 500;
   font-size: 16px;
@@ -130,4 +130,13 @@
   /* Default */
   --height: 36px;
   font-size: 16px;
+}
+
+/* Borders */
+.border-default {
+  box-shadow: inset 0 0 0 0 var(--clr-primary-a0);
+}
+
+.border-active {
+  box-shadow: inset 0 -2px 0 var(--clr-primary-a0);
 }

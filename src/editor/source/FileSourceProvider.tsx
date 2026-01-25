@@ -6,6 +6,7 @@ import {
   usePersistentStorage,
 } from "../../utils/storage.ts";
 import { useTranslation } from "react-i18next";
+import { findNextName } from "../utils.ts";
 
 const AUTO_SAVE_INTERVAL = 5000; // ms
 
@@ -123,13 +124,11 @@ export function FileSourceProvider({
 
   const deleteSource = useCallback(() => {
     if (activeFile == null) return;
-    const idx = fileNames.indexOf(activeFile);
-    const newFileNames = fileNames.filter((_, i) => i !== idx);
-    if (idx == -1) return;
+    if (!fileNames.includes(activeFile)) return;
     deleteFile(activeFile);
-    if (newFileNames.length > 0) {
-      const next = newFileNames[Math.max(0, idx - 1)];
-      switchSource(next, false);
+    const nextName = findNextName(activeFile, fileNames);
+    if (nextName !== null) {
+      switchSource(nextName, false);
     } else {
       const next = newFileName(1);
       const content = t("codeStorage.newFile.content");

@@ -29,7 +29,7 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
         <FormField label={t("levelEditor.tools.width")}>
           <input
             type="number"
-            value={editor.width}
+            value={editor.level.maze.width}
             min={2}
             max={MAX_MAZE_SIZE}
             onChange={(e) => {
@@ -37,7 +37,7 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
               dispatch({
                 type: "resize",
                 width: width,
-                height: editor.height,
+                height: editor.level.maze.height,
               });
             }}
           />
@@ -45,14 +45,14 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
         <FormField label={t("levelEditor.tools.height")}>
           <input
             type="number"
-            value={editor.height}
+            value={editor.level.maze.height}
             min={2}
             max={MAX_MAZE_SIZE}
             onChange={(e) => {
               const height = Number(e.target.value);
               dispatch({
                 type: "resize",
-                width: editor.width,
+                width: editor.level.maze.width,
                 height: height,
               });
             }}
@@ -64,7 +64,7 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
       <FormGroup horizontal stretch>
         <FormField label={t("levelEditor.tools.tileType")}>
           <select
-            value={editor.maze.tileType}
+            value={editor.level.maze.tileType}
             onChange={(e) =>
               dispatch({
                 type: "setTileType",
@@ -87,7 +87,8 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
         {TILE_TOOLS.map((tileTool, i) => (
           <Button
             key={i}
-            variant={editor.tileTool === tileTool ? "secondary" : "outlined"}
+            variant={editor.tileTool === tileTool ? "secondary" : "transparent"}
+            border={editor.tileTool === tileTool ? "active" : "default"}
             onClick={() => dispatch({ type: "setTileTool", tileTool })}
           >
             {tryTranslate(t, tileTool.name)}
@@ -101,7 +102,8 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
         {WALL_TOOLS.map((wallTool, i) => (
           <Button
             key={i}
-            variant={editor.wallTool === wallTool ? "secondary" : "outlined"}
+            variant={editor.wallTool === wallTool ? "secondary" : "transparent"}
+            border={editor.wallTool === wallTool ? "active" : "default"}
             onClick={() => dispatch({ type: "setWallTool", wallTool })}
           >
             {tryTranslate(t, wallTool.name)}

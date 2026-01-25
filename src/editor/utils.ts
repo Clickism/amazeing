@@ -42,3 +42,50 @@ export function getTransitionSpeed(isRunning: boolean, runSpeed: number) {
 export function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
+
+/**
+ * Maximum length for a file name
+ * @param t
+ * @param name
+ * @param sourceNames
+ * @param currentName
+ * @param maxLength
+ */
+export function checkValidName(
+  t: (key: string) => string,
+  name: string,
+  sourceNames: string[],
+  currentName: string,
+  maxLength: number = 32,
+): [boolean, string | null] {
+  if (name.length === 0) {
+    return [false, null];
+  }
+  if (name.length > maxLength) {
+    return [false, t("rename.invalid.tooLong")];
+  }
+  if (name !== currentName && sourceNames.includes(name)) {
+    return [false, t("rename.invalid.exists")];
+  }
+  return [true, null];
+}
+
+/**
+ * Finds the next name in the list after removing the current name
+ * @param currentName
+ * @param sourceNames
+ */
+export function findNextName(
+  currentName: string,
+  sourceNames: string[],
+): string | null {
+  const idx = sourceNames.indexOf(currentName);
+  const newNames = sourceNames.filter((_, i) => i !== idx);
+  if (idx == -1) {
+    throw new Error("Current name not found in source names");
+  }
+  if (newNames.length > 0) {
+    return newNames[Math.max(0, idx - 1)];
+  }
+  return null;
+}

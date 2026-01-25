@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react";
-import type { LevelData } from "../level.ts";
+import type { LevelData } from "../../game/level.ts";
 
 export type LevelStorage = {
   levelNames: string[];
   loadLevel: (name: string) => LevelData | null;
-  addLevel: (level: LevelData) => void;
+  saveLevel: (level: LevelData) => void;
   renameLevel: (oldName: string, newName: string) => void;
   deleteLevel: (name: string) => void;
 };

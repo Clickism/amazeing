@@ -13,7 +13,7 @@ type TileGridProps = {
 };
 
 export function TileGrid({ editor, dispatch }: TileGridProps) {
-  const maze = editor.maze;
+  const maze = editor.level.maze;
   const onTileClick = (position: Position) => {
     editor.tileTool.onTileClick(editor, dispatch, position);
   };
@@ -58,7 +58,7 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
                 )}
 
                 {/*Horizontal Walls*/}
-                {col < editor.width - 1 && (
+                {col < maze.width - 1 && (
                   <Wall
                     wall={maze.walls.vertical[row][col]}
                     editor={editor}
@@ -70,7 +70,7 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
           </div>
 
           {/*Vertical Walls*/}
-          {row < editor.height - 1 && (
+          {row < maze.height - 1 && (
             <div className={clsx(styles.gridRow, styles.wallRow)}>
               {columns.map((_, col) => (
                 <Wall

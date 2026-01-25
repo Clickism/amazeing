@@ -21,8 +21,9 @@ type TileProps = {
 } & ButtonProps;
 
 export function Tile({ tile, editor, position, ...props }: TileProps) {
-  const isStart = isPositionEqual(editor.owlStart.position, position);
-  const isFinish = isPositionEqual(editor.finishPosition, position);
+  const level = editor.level;
+  const isStart = isPositionEqual(level.owlStart.position, position);
+  const isFinish = isPositionEqual(level.finishPosition, position);
   return (
     <Button
       variant="none"
@@ -41,7 +42,7 @@ export function Tile({ tile, editor, position, ...props }: TileProps) {
       flex
     >
       {isStart &&
-        getDirectionIcon(editor.owlStart.direction, {
+        getDirectionIcon(level.owlStart.direction, {
           className: styles.startArrow,
           size: 32,
         })}

@@ -1,11 +1,8 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import styles from "./LevelEditor.module.css";
 import clsx from "clsx";
 import { editorReducer } from "../../actions.ts";
-import {
-  createEditorStateFromLevelData,
-  createInitialEditorState,
-} from "../../state.ts";
+import { emptyEditorState, emptyLevelData } from "../../state.ts";
 import { Viewport } from "../../../editor/components/Viewport/Viewport.tsx";
 import { Level } from "../../../game/level.ts";
 import { OwlImpl } from "../../../game/owl.ts";
@@ -20,12 +17,12 @@ import {
 } from "../../../utils/storage.ts";
 import { Panel } from "../../../components/Panel/Panel.tsx";
 import { PanelContainer } from "../../../components/PanelContainer/PanelContainer.tsx";
-import { useLevelStorage } from "../../../game/storage/LevelStorageContext.tsx";
+import { useLevelStorage } from "../../storage/LevelStorageContext.tsx";
 import { TextPanel } from "../../../components/Panel/TextPanel/TextPanel.tsx";
 
 export function LevelEditor() {
   const { t } = useTranslation();
-  const { loadLevel } = useLevelStorage();
+  const { loadLevel, saveLevel } = useLevelStorage();
   const storage = usePersistentStorage("level-editor");
   const [activeLevel, setActiveLevel] = usePersistentState(
     storage,
@@ -34,24 +31,43 @@ export function LevelEditor() {
   );
   const [editor, dispatch] = useReducer(
     editorReducer,
-    activeLevel,
-    (levelName) => {
-      const loadedLevel = loadLevel(levelName);
-      if (loadedLevel) {
-        return createEditorStateFromLevelData(loadedLevel);
-      } else {
-        return createInitialEditorState(
-          levelName,
-          t("levelStorage.newLevel.description"),
-        );
-      }
-    },
+    emptyEditorState(activeLevel, t("levelStorage.newLevel.description")),
   );
+  const loadedLevelRef = useRef<string | null>(null);
 
-  // Keep active level in sync with editor state
   useEffect(() => {
-    setActiveLevel(editor.name);
-  }, [editor.name, setActiveLevel]);
+    if (loadedLevelRef.current === activeLevel) return;
+    loadedLevelRef.current = activeLevel;
+    const loadedLevel = loadLevel(activeLevel);
+    if (loadedLevel) {
+      dispatch({ type: "setLevel", level: loadedLevel });
+    } else {
+      dispatch({
+        type: "setLevel",
+        level: emptyLevelData(
+          activeLevel,
+          t("levelStorage.newLevel.description"),
+        ),
+      });
+    }
+  }, [activeLevel, loadLevel, t]);
+
+  useEffect(() => {
+    if (editor.level.name !== activeLevel) {
+      setActiveLevel(editor.level.name);
+    }
+  }, [editor.level.name, activeLevel, setActiveLevel]);
+
+  const prevLevelRef = useRef(editor.level);
+
+  useEffect(() => {
+    // Avoid saving on rename
+    console.log("Saving!");
+    if (prevLevelRef.current?.name === editor.level.name) {
+      prevLevelRef.current = editor.level;
+      saveLevel(editor.level);
+    }
+  }, [editor.level, saveLevel]);
 
   return (
     <div className={styles.levelEditor}>
@@ -65,12 +81,12 @@ export function LevelEditor() {
             <Viewport
               owl={
                 new OwlImpl(
-                  editor.owlStart.position,
-                  editor.owlStart.direction,
+                  editor.level.owlStart.position,
+                  editor.level.owlStart.direction,
                   () => {},
                 )
               }
-              level={new Level(editor)}
+              level={new Level(editor.level)}
               lockCamera={false}
               lockCameraControls={false}
             />

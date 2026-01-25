@@ -14,6 +14,8 @@ export type ButtonVariant =
   | "transparent"
   | "outlined";
 
+export type ButtonBorder = "default" | "active";
+
 export type ButtonShape = "default" | "icon";
 
 export type ButtonSize = "small" | "medium" | "large";
@@ -24,6 +26,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   shape?: ButtonShape;
   size?: ButtonSize;
   flex?: boolean;
+  border?: ButtonBorder;
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -34,6 +37,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       shape = "default",
       size = "large",
       flex = false,
+      border = "default",
       className,
       children,
       ...props
@@ -49,6 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           styles[`variant-${variant}`],
           styles[`shape-${shape}`],
           styles[`size-${size}`],
+          styles[`border-${border}`],
           className,
         )}
         {...props}

@@ -2,7 +2,7 @@ import { Layout } from "../components/Layout/Layout.tsx";
 import { CodeStorageProvider } from "../editor/storage/CodeStorageProvider.tsx";
 import { Editor } from "../editor/components/Editor/Editor.tsx";
 import { Level } from "../game/level.ts";
-import { LevelStorageProvider } from "../game/storage/LevelStorageProvider.tsx";
+import { LevelStorageProvider } from "../level-editor/storage/LevelStorageProvider.tsx";
 import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.tsx";
 import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
 

@@ -1,7 +1,11 @@
-import { type TileType, type WallType } from "../game/maze.ts";
 import {
-  createEditorState,
-  createInitialEditorState,
+  createEmptyMazeData,
+  type TileType,
+  type WallType,
+} from "../game/maze.ts";
+import {
+  emptyEditorState,
+  fromLevelData,
   type LevelEditorState,
 } from "./state.ts";
 import type { CardinalDirection, Position } from "../interpreter/types.ts";
@@ -16,7 +20,7 @@ export type LevelEditorAction =
   | { type: "setHorizontalWall"; position: Position; wall: WallType }
   | { type: "setVerticalWall"; position: Position; wall: WallType }
   | { type: "setAllWalls"; wall: WallType }
-  | { type: "setMetadata"; name: string; description: string }
+  | { type: "setMetadata"; name: string; title: string; description: string }
   | { type: "toggleVisualize" }
   | { type: "setTileTool"; tileTool: TileTool }
   | { type: "setWallTool"; wallTool: WallTool }
@@ -31,50 +35,51 @@ type ActionExecutors = {
 };
 
 const actionExecutors: ActionExecutors = {
-  setLevel: (state, { level }) => {
-    return {
-      ...state,
-      ...level,
-    };
+  setLevel: (_, { level }) => {
+    return fromLevelData(level);
   },
 
   reset: (state) => {
-    return createInitialEditorState(state.name);
+    return emptyEditorState(state.level.name, state.level.description);
   },
 
   resize: (state, { width, height }) => {
-    const newState = createEditorState(state.name, width, height);
     return {
       ...state,
-      width: newState.width,
-      height: newState.height,
-      maze: newState.maze,
-      finishPosition: newState.finishPosition,
-      owlStart: newState.owlStart,
+      level: {
+        ...state.level,
+        maze: createEmptyMazeData(width, height),
+      },
     };
   },
 
   setTileType: (state, { tileType }) => {
     state = {
       ...state,
-      maze: {
-        ...state.maze,
-        tileType,
+      level: {
+        ...state.level,
+        maze: {
+          ...state.level.maze,
+          tileType,
+        },
       },
     };
     return state;
   },
 
   setHorizontalWall: (state, { position, wall }) => {
-    const horizontal = clone2DArray(state.maze.walls.horizontal);
+    const horizontal = clone2DArray(state.level.maze.walls.horizontal);
     horizontal[position.y][position.x] = wall;
     state = {
       ...state,
-      maze: {
-        ...state.maze,
-        walls: {
-          ...state.maze.walls,
-          horizontal,
+      level: {
+        ...state.level,
+        maze: {
+          ...state.level.maze,
+          walls: {
+            ...state.level.maze.walls,
+            horizontal,
+          },
         },
       },
     };
@@ -82,15 +87,18 @@ const actionExecutors: ActionExecutors = {
   },
 
   setVerticalWall: (state, { position, wall }) => {
-    const vertical = clone2DArray(state.maze.walls.vertical);
+    const vertical = clone2DArray(state.level.maze.walls.vertical);
     vertical[position.y][position.x] = wall;
     state = {
       ...state,
-      maze: {
-        ...state.maze,
-        walls: {
-          ...state.maze.walls,
-          vertical,
+      level: {
+        ...state.level,
+        maze: {
+          ...state.level.maze,
+          walls: {
+            ...state.level.maze.walls,
+            vertical,
+          },
         },
       },
     };
@@ -98,30 +106,37 @@ const actionExecutors: ActionExecutors = {
   },
 
   setAllWalls: (state, { wall }) => {
-    const horizontal = state.maze.walls.horizontal.map((row) =>
+    const horizontal = state.level.maze.walls.horizontal.map((row) =>
       row.map(() => wall),
     );
-    const vertical = state.maze.walls.vertical.map((row) =>
+    const vertical = state.level.maze.walls.vertical.map((row) =>
       row.map(() => wall),
     );
     state = {
       ...state,
-      maze: {
-        ...state.maze,
-        walls: {
-          horizontal,
-          vertical,
+      level: {
+        ...state.level,
+        maze: {
+          ...state.level.maze,
+          walls: {
+            horizontal,
+            vertical,
+          },
         },
       },
     };
     return state;
   },
 
-  setMetadata: (state, { name, description }) => {
+  setMetadata: (state, { name, title, description }) => {
     state = {
       ...state,
-      name,
-      description,
+      level: {
+        ...state.level,
+        name,
+        title,
+        description,
+      },
     };
     return state;
   },
@@ -150,16 +165,22 @@ const actionExecutors: ActionExecutors = {
   setFinish: (state, { position }) => {
     return {
       ...state,
-      finishPosition: position,
+      level: {
+        ...state.level,
+        finishPosition: position,
+      },
     };
   },
 
   setStart: (state, { position, direction }) => {
     return {
       ...state,
-      owlStart: {
-        position,
-        direction,
+      level: {
+        ...state.level,
+        owlStart: {
+          position,
+          direction,
+        },
       },
     };
   },

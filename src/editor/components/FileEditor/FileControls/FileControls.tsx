@@ -7,8 +7,7 @@ import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
 import { useEffect, useState } from "react";
 import { useSource } from "../../../source/SourceContext.tsx";
-
-const MAX_FILE_NAME_LENGTH = 32;
+import { checkValidName } from "../../../utils.ts";
 
 export function FileControls() {
   const { t } = useTranslation();
@@ -19,7 +18,7 @@ export function FileControls() {
     sourceNames,
   } = useSource();
   const [newFileName, setNewFileName] = useState(activeFile);
-  const [isValid, invalidMessage] = checkValidFileName(
+  const [isValid, invalidMessage] = checkValidName(
     t,
     newFileName,
     sourceNames ?? [],
@@ -85,22 +84,4 @@ export function FileControls() {
       </Popover>
     </ButtonGroup>
   );
-}
-
-function checkValidFileName(
-  t: (key: string) => string,
-  name: string,
-  sourceNames: string[],
-  currentName: string,
-): [boolean, string | null] {
-  if (name.length === 0) {
-    return [false, null];
-  }
-  if (name.length > MAX_FILE_NAME_LENGTH) {
-    return [false, t("fileList.rename.invalid.tooLong")];
-  }
-  if (name !== currentName && sourceNames.includes(name)) {
-    return [false, t("fileList.rename.invalid.exists")];
-  }
-  return [true, null];
 }

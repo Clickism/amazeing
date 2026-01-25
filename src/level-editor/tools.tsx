@@ -46,7 +46,7 @@ export const TILE_TOOLS: TileTool[] = [
       dispatch({
         type: "setStart",
         position,
-        direction: editor.owlStart.direction,
+        direction: editor.level.owlStart.direction,
       });
     },
     tilePopup: (_, dispatch, position) => (
@@ -86,8 +86,8 @@ export const WALL_TOOLS = [
         name: { key: `wall.${wall}` },
         onWallClick: (editor, dispatch, position, horizontal) => {
           const currentWall = horizontal
-            ? editor.maze.walls.horizontal[position.y][position.x]
-            : editor.maze.walls.vertical[position.y][position.x];
+            ? editor.level.maze.walls.horizontal[position.y][position.x]
+            : editor.level.maze.walls.vertical[position.y][position.x];
           const newWall = currentWall === wall ? null : wall;
           if (horizontal) {
             dispatch({ type: "setHorizontalWall", position, wall: newWall });

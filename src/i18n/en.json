@@ -15,12 +15,13 @@
   "fileList.rename": "Rename",
   "fileList.rename.action": "Rename File",
   "fileList.rename.fileName": "File Name",
-  "fileList.rename.invalid.exists": "File exists",
-  "fileList.rename.invalid.tooLong": "Name too long",
   "fileList.delete.title": "Delete File",
   "fileList.delete.action": "Delete {{file}}",
   "fileList.delete.confirm": "Are you sure you want to delete this file?",
   "fileList.delete.confirm.cannotUndo": "This action cannot be undone.",
+
+  "rename.invalid.exists": "Already exists",
+  "rename.invalid.tooLong": "Name too long",
 
   "codeStorage.newFile.name": "Untitled #{{num}}",
   "codeStorage.newFile.content": "# Write your code here",
@@ -64,6 +65,7 @@
   "levelEditor.tools.finish": "Finish",
   "levelEditor.export.export": "Export",
   "levelEditor.export.levelName": "Level Name",
+  "levelEditor.export.levelTitle": "Level Title",
   "levelEditor.export.levelDescription": "Level Description",
   "levelEditor.export.actions.visualizeMaze": "Visualize Maze",
   "levelEditor.export.actions.editMaze": "Edit Maze",

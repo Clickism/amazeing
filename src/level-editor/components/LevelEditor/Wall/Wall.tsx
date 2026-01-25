@@ -15,7 +15,7 @@ type WallProps = {
 } & ButtonProps;
 
 export function Wall({ wall, horizontal, editor, ...props }: WallProps) {
-  const inBetween = editor.maze.tileType;
+  const inBetween = editor.level.maze.tileType;
   return (
     <Button
       variant="none"

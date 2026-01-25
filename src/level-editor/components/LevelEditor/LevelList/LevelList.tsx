@@ -1,11 +1,11 @@
 import { Button } from "../../../../components/Button/Button.tsx";
 import {
-  createInitialEditorState,
+  emptyLevelData,
   type LevelEditorDispatch,
   type LevelEditorState,
 } from "../../../state.ts";
 import { List } from "../../../../components/List/List.tsx";
-import { useLevelStorage } from "../../../../game/storage/LevelStorageContext.tsx";
+import { useLevelStorage } from "../../../storage/LevelStorageContext.tsx";
 import { useTranslation } from "react-i18next";
 
 type LevelListProps = {
@@ -15,11 +15,11 @@ type LevelListProps = {
 
 export function LevelList({ editor, dispatch }: LevelListProps) {
   const { t } = useTranslation();
-  const { levelNames, loadLevel, addLevel } = useLevelStorage();
+  const { levelNames, loadLevel, saveLevel } = useLevelStorage();
   return (
     <List
       elements={levelNames}
-      activeElement={editor.name}
+      activeElement={editor.level.name}
       onSelectElement={(name) => {
         const selectedLevel = loadLevel(name);
         if (selectedLevel) {
@@ -34,12 +34,12 @@ export function LevelList({ editor, dispatch }: LevelListProps) {
           do {
             newName = t("levelStorage.newLevel.name", { num: i++ });
           } while (levelNames.includes(newName));
-          addLevel(
-            createInitialEditorState(
-              newName,
-              t("levelStorage.newLevel.description"),
-            ),
+          const level = emptyLevelData(
+            newName,
+            t("levelStorage.newLevel.description"),
           );
+          saveLevel(level);
+          dispatch({ type: "setLevel", level });
         }}
       >
         + New Level
