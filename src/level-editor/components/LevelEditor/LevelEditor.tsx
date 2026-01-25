@@ -2,7 +2,10 @@ import { useEffect, useReducer } from "react";
 import styles from "./LevelEditor.module.css";
 import clsx from "clsx";
 import { editorReducer } from "../../actions.ts";
-import { createInitialEditorState } from "../../state.ts";
+import {
+  createEditorStateFromLevelData,
+  createInitialEditorState,
+} from "../../state.ts";
 import { Viewport } from "../../../editor/components/Viewport/Viewport.tsx";
 import { Level } from "../../../game/level.ts";
 import { OwlImpl } from "../../../game/owl.ts";
@@ -16,9 +19,12 @@ import {
   usePersistentStorage,
 } from "../../../utils/storage.ts";
 import { Panel } from "../../../components/Panel/Panel.tsx";
+import { PanelContainer } from "../../../components/PanelContainer/PanelContainer.tsx";
+import { useLevelStorage } from "../../../game/storage/LevelStorageContext.tsx";
 
 export function LevelEditor() {
   const { t } = useTranslation();
+  const { loadLevel } = useLevelStorage();
   const storage = usePersistentStorage("level-editor");
   const [activeLevel, setActiveLevel] = usePersistentState(
     storage,
@@ -27,7 +33,18 @@ export function LevelEditor() {
   );
   const [editor, dispatch] = useReducer(
     editorReducer,
-    createInitialEditorState(activeLevel),
+    activeLevel,
+    (levelName) => {
+      const loadedLevel = loadLevel(levelName);
+      if (loadedLevel) {
+        return createEditorStateFromLevelData(loadedLevel);
+      } else {
+        return createInitialEditorState(
+          levelName,
+          t("levelStorage.newLevel.description"),
+        );
+      }
+    },
   );
 
   // Keep active level in sync with editor state
@@ -37,38 +54,35 @@ export function LevelEditor() {
 
   return (
     <div className={styles.levelEditor}>
-      <div className={clsx(styles.panel, "window-border")}>
-        <ToolPanel editor={editor} dispatch={dispatch} />
-      </div>
-
-      <div className={clsx(styles.gridWindow, "window-border")}>
-        {editor.visualize ? (
-          <Viewport
-            owl={
-              new OwlImpl(
-                editor.owlStart.position,
-                editor.owlStart.direction,
-                () => {},
-              )
-            }
-            level={new Level(editor)}
-            lockCamera={false}
-            lockCameraControls={false}
-          />
-        ) : (
-          <div className={clsx(styles.gridContainer)}>
-            <TileGrid editor={editor} dispatch={dispatch} />
-          </div>
-        )}
-      </div>
-
-      <div className={clsx(styles.panel, "window-border")}>
-        <ExportPanel editor={editor} dispatch={dispatch} />
-      </div>
-
-      <Panel paddingless>
-        <LevelList editor={editor} dispatch={dispatch} />
-      </Panel>
+      <PanelContainer initialSizes={[0.1, 0.8, 0.1]} minSize={0.1}>
+        <Panel>
+          <ToolPanel editor={editor} dispatch={dispatch} />
+          <ExportPanel editor={editor} dispatch={dispatch} />
+        </Panel>
+        <Panel className={styles.gridWindow}>
+          {editor.visualize ? (
+            <Viewport
+              owl={
+                new OwlImpl(
+                  editor.owlStart.position,
+                  editor.owlStart.direction,
+                  () => {},
+                )
+              }
+              level={new Level(editor)}
+              lockCamera={false}
+              lockCameraControls={false}
+            />
+          ) : (
+            <div className={clsx(styles.gridContainer)}>
+              <TileGrid editor={editor} dispatch={dispatch} />
+            </div>
+          )}
+        </Panel>
+        <Panel paddingless>
+          <LevelList editor={editor} dispatch={dispatch} />
+        </Panel>
+      </PanelContainer>
     </div>
   );
 }

@@ -1,11 +1,6 @@
 import type { LevelData } from "../game/level.ts";
 import { createEmptyMazeData } from "../game/maze.ts";
-import {
-  TILE_TOOLS,
-  type TileTool,
-  WALL_TOOLS,
-  type WallTool,
-} from "./tools.tsx";
+import { TILE_TOOLS, type TileTool, WALL_TOOLS, type WallTool } from "./tools.tsx";
 import type { ActionDispatch } from "react";
 import type { LevelEditorAction } from "./actions.ts";
 
@@ -19,12 +14,29 @@ export type LevelEditorState = {
   visualize: boolean;
 } & LevelData;
 
-export function createInitialEditorState(name: string): LevelEditorState {
-  return createEditorState(name, 5, 5);
+export function createInitialEditorState(
+  name: string,
+  description: string,
+): LevelEditorState {
+  return createEditorState(name, description, 5, 5);
+}
+
+export function createEditorStateFromLevelData(
+  level: LevelData,
+): LevelEditorState {
+  return {
+    width: level.maze.width,
+    height: level.maze.height,
+    tileTool: TILE_TOOLS[0],
+    wallTool: WALL_TOOLS[0],
+    visualize: false,
+    ...level,
+  };
 }
 
 export function createEditorState(
   name: string,
+  description: string,
   width: number,
   height: number,
 ): LevelEditorState {
@@ -35,13 +47,13 @@ export function createEditorState(
     wallTool: WALL_TOOLS[0],
     visualize: false,
     maze: createEmptyMazeData(width, height),
-    description: "Level Description",
     finishPosition: {
       x: width - 1,
       y: height - 1,
     },
     name,
     title: name,
+    description,
     owlStart: {
       direction: "south",
       position: {

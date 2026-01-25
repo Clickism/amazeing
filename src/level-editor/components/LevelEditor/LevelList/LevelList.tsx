@@ -34,7 +34,12 @@ export function LevelList({ editor, dispatch }: LevelListProps) {
           do {
             newName = t("levelStorage.newLevel.name", { num: i++ });
           } while (levelNames.includes(newName));
-          addLevel(createInitialEditorState(newName));
+          addLevel(
+            createInitialEditorState(
+              newName,
+              t("levelStorage.newLevel.description"),
+            ),
+          );
         }}
       >
         + New Level
