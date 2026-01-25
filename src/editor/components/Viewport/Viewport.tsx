@@ -17,7 +17,7 @@ import type { Level } from "../../../game/level.ts";
 import { LevelSelector } from "./LevelSelector/LevelSelector.tsx";
 import { Button } from "../../../components/Button/Button.tsx";
 import { ButtonGroup } from "../../../components/Button/ButtonGroup/ButtonGroup.tsx";
-import { Tooltip } from "../../../components/popup/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../../components/floating/Tooltip/Tooltip.tsx";
 import { TbLock, TbLockOpen2 } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 

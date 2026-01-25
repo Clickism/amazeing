@@ -2,7 +2,7 @@ import { Button } from "../../../../components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
-import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
+import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
 import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
 import { useEffect, useState } from "react";

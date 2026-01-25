@@ -5,7 +5,7 @@ import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
 import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
 import type { Position } from "../../../../interpreter/types.ts";
-import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
+import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
 
 type TileGridProps = {
   editor: LevelEditorState;

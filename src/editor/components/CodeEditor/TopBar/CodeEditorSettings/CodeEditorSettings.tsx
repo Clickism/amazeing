@@ -4,7 +4,7 @@ import { VscSettings } from "react-icons/vsc";
 import { FormGroup } from "../../../../../components/Form/FormGroup/FormGroup.tsx";
 import { FormField } from "../../../../../components/Form/FormField/FormField.tsx";
 import { ThemeSelect } from "../../ThemeSelect/ThemeSelect.tsx";
-import { Popover } from "../../../../../components/popup/Popover/Popover.tsx";
+import { Popover } from "../../../../../components/floating/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
 import { useCodeEditorSettings } from "../../../../settings/CodeEditorSettingsContext.tsx";
 

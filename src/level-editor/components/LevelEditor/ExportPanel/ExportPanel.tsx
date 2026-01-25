@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useLevelStorage } from "../../../../game/storage/LevelStorageContext.tsx";
 import { BiExport, BiImport } from "react-icons/bi";
 import { TimedButton } from "../../../../components/Button/TimedButton/TimedButton.tsx";
-import { Modal } from "../../../../components/popup/Modal/Modal.tsx";
+import { Modal } from "../../../../components/floating/Modal/Modal.tsx";
 
 type ExportPanelProps = {
   editor: LevelEditorState;

@@ -1,6 +1,6 @@
 import { Button } from "../../../../components/Button/Button.tsx";
 import { FaRegMap } from "react-icons/fa";
-import { Popover } from "../../../../components/popup/Popover/Popover.tsx";
+import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
 import { Level } from "../../../../game/level.ts";
 import { useLevelStorage } from "../../../../game/storage/LevelStorageContext.tsx";

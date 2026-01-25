@@ -2,7 +2,7 @@ import { Button } from "../../../../../components/Button/Button.tsx";
 import { VscSettings } from "react-icons/vsc";
 import { FormField } from "../../../../../components/Form/FormField/FormField.tsx";
 import { MAX_RUN_SPEED, MIN_RUN_SPEED } from "../../Editor.tsx";
-import { Popover } from "../../../../../components/popup/Popover/Popover.tsx";
+import { Popover } from "../../../../../components/floating/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
 import { useEditorSettings } from "../../../../settings/EditorSettingsContext.tsx";
 import { useState } from "react";

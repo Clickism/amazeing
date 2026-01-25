@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FALLBACK_LANGUAGE, type Language } from "../../../i18n/i18n.ts";
 import { changeLanguage } from "i18next";
-import { Tooltip } from "../../popup/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../floating/Tooltip/Tooltip.tsx";
 import { useTranslation } from "react-i18next";
 import { IoLanguageOutline } from "react-icons/io5";
 import { AnimatePresence, motion } from "motion/react";

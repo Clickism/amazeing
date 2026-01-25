@@ -9,7 +9,7 @@ import {
   VscDebugStop,
 } from "react-icons/vsc";
 import { useState } from "react";
-import { Tooltip } from "../../../../components/popup/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../../../components/floating/Tooltip/Tooltip.tsx";
 import { ExecutionSettings } from "./ExecutionSettings/ExecutionSettings.tsx";
 
 export function ExecutionControls() {
