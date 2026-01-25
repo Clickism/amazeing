@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { HomePage } from "../pages/HomePage.tsx";
+import { HomePage } from "../pages/home/HomePage.tsx";
 import { SandboxPage } from "../pages/SandboxPage.tsx";
 import { LevelEditorPage } from "../pages/LevelEditorPage.tsx";
 import type { Translatable } from "../i18n/i18n.ts";

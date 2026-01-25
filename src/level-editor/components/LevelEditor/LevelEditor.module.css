@@ -10,6 +10,8 @@
   padding: 1rem;
 
   --tile-color-grass: lightgreen;
+  --tile-color-oldgrass: darkorange;
+  --tile-color-redgrass: tomato;
   --tile-color-water: lightblue;
 
   --wall-color-stone: gray;

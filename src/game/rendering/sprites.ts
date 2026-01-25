@@ -2,9 +2,13 @@ import type { TileType, WallType } from "../maze.ts";
 import type { CardinalDirection } from "../../interpreter/types.ts";
 
 import grass from "../../assets/sprites/game/tilesets/grass.png";
+import oldgrass from "../../assets/sprites/game/tilesets/oldgrass.png";
+import redgrass from "../../assets/sprites/game/tilesets/redgrass.png";
 import water from "../../assets/sprites/game/tiles/water.png";
 import wallStoneVertical from "../../assets/sprites/game/walls/stone_vertical.png";
 import wallStoneHorizontal from "../../assets/sprites/game/walls/stone_horizontal.png";
+import wallBlackstoneVertical from "../../assets/sprites/game/walls/blackstone_vertical.png";
+import wallBlackstoneHorizontal from "../../assets/sprites/game/walls/blackstone_horizontal.png";
 
 import owlNorth from "../../assets/sprites/game/owl/north.png";
 import owlSouth from "../../assets/sprites/game/owl/south.png";
@@ -39,12 +43,18 @@ export async function loadSprites(): Promise<SpriteMap> {
   return {
     tilesets: {
       grass: await load(grass),
+      oldgrass: await load(oldgrass),
+      redgrass: await load(redgrass),
     },
     walls: {
       stone: {
         horizontal: await load(wallStoneHorizontal),
         vertical: await load(wallStoneVertical),
       },
+      blackstone: {
+        horizontal: await load(wallBlackstoneHorizontal),
+        vertical: await load(wallBlackstoneVertical),
+      }
     },
     water: await load(water),
     owl: {

@@ -75,9 +75,18 @@
   "levelEditor.export.actions.reset": "Reset",
 
   "tile.grass": "Grass",
+  "tile.oldgrass": "Old Grass",
+  "tile.redgrass": "Red Grass",
   "tile.water": "Water",
   "wall.stone": "Stone",
 
   "levelSelector.title": "Select Level",
-  "levelSelector.level": "Current Level"
+  "levelSelector.level": "Current Level",
+
+  "home.tasks.day1.title": "Day 1: Getting Started",
+  "home.tasks.day1.description": "Getting started with AmazeingASM, simple maze algorithms.",
+  "home.tasks.day2.title": "Day 2: Diving Deeper",
+  "home.tasks.day2.description": "More advanced maze algorithms and introduction data structures.",
+  "home.tasks.day3.title": "Day 3: Mastering Mazes",
+  "home.tasks.day3.description": "Pathfinding algorithms, marks and advanced data structures."
 }

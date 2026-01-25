@@ -10,11 +10,11 @@ export type MazeData = {
   };
 };
 
-export type TileType = "grass";
-export type WallType = "stone" | null;
+export type TileType = "grass" | "oldgrass" | "redgrass";
+export type WallType = "stone" | "blackstone" | null;
 
-export const TILE_TYPES: TileType[] = ["grass"];
-export const WALL_TYPES: WallType[] = ["stone"];
+export const TILE_TYPES: TileType[] = ["grass", "oldgrass", "redgrass"];
+export const WALL_TYPES: WallType[] = ["stone", "blackstone"];
 
 export function createEmptyMazeData(
   width: number,
