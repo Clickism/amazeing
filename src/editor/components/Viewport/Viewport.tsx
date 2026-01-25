@@ -68,9 +68,11 @@ export function Viewport({
   useEffect(() => {
     if (!sprites || !canvasRef.current) return;
     const canvas = canvasRef.current;
+    const parent = canvas.parentElement;
 
     const renderFrame = () => {
-      const rect = canvas.parentElement!.getBoundingClientRect();
+      if (!parent) return;
+      const rect = parent.getBoundingClientRect();
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
 
@@ -79,8 +81,16 @@ export function Viewport({
     };
 
     renderFrame();
-    window.addEventListener("resize", renderFrame);
-    return () => window.removeEventListener("resize", renderFrame);
+
+    const resizeObserver = new ResizeObserver(renderFrame);
+
+    if (parent) {
+      resizeObserver.observe(parent);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, [camera, dpr, level, owl, sprites]);
 
   // Mouse events
@@ -128,7 +138,7 @@ export function Viewport({
   };
 
   return (
-    <div className={clsx(styles.viewport, "window-border")}>
+    <div className={styles.viewport}>
       <CornerGroup position="top-right">
         <ButtonGroup>
           {lockCameraControls && (
@@ -155,7 +165,6 @@ export function Viewport({
       <canvas
         ref={canvasRef}
         className={clsx(styles.canvas, !following && styles.unlocked)}
-        style={{ touchAction: "none" }}
         onMouseDown={(e) => handleDragStart(e.clientX, e.clientY)}
         onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
         onMouseUp={handleDragEnd}

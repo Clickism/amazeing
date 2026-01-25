@@ -4,7 +4,7 @@ import {
   type LevelEditorDispatch,
   type LevelEditorState,
 } from "../../../state.ts";
-import { ListPanel } from "../../../../components/ListPanel/ListPanel.tsx";
+import { List } from "../../../../components/List/List.tsx";
 import { useLevelStorage } from "../../../../game/storage/LevelStorageContext.tsx";
 import { useTranslation } from "react-i18next";
 
@@ -17,7 +17,7 @@ export function LevelList({ editor, dispatch }: LevelListProps) {
   const { t } = useTranslation();
   const { levelNames, loadLevel, addLevel } = useLevelStorage();
   return (
-    <ListPanel
+    <List
       elements={levelNames}
       activeElement={editor.name}
       onSelectElement={(name) => {
@@ -39,6 +39,6 @@ export function LevelList({ editor, dispatch }: LevelListProps) {
       >
         + New Level
       </Button>
-    </ListPanel>
+    </List>
   );
 }

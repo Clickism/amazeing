@@ -2,7 +2,7 @@ import { useSource } from "../../../source/SourceContext.tsx";
 import { Button } from "../../../../components/Button/Button.tsx";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { ListPanel } from "../../../../components/ListPanel/ListPanel.tsx";
+import { List } from "../../../../components/List/List.tsx";
 
 export function FileList() {
   const { t } = useTranslation();
@@ -14,7 +14,7 @@ export function FileList() {
   } = useSource();
   const fileContainerRef = useRef<HTMLDivElement>(null);
   return (
-    <ListPanel
+    <List
       elements={sourceNames ?? []}
       activeElement={activeName}
       onSelectElement={(name) => {
@@ -32,6 +32,6 @@ export function FileList() {
       >
         + {t("fileList.newFile")}
       </Button>
-    </ListPanel>
+    </List>
   );
 }

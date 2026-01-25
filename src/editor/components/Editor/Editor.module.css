@@ -10,36 +10,12 @@
   padding: 1rem;
 }
 
-.left, .right {
+.viewportPanel {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
+  gap: 1rem !important;
 }
 
-.left {
-  flex: 0 0 50%;
+.viewportPanel:first-child {
+  height: 100%;
 }
-
-.right {
-  flex: 1 1 50%;
-}
-
-.viewport,
-.console,
-.codeEditor {
-  display: flex;
-  min-height: 0;
-}
-
-.codeEditor {
-  flex: 1;
-}
-
-.viewport {
-  flex: 0 0 60%;
-}
-
-.console {
-  flex: 1 1 40%;
-}
-

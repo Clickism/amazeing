@@ -5,6 +5,7 @@
   white-space: pre-wrap;
   word-break: break-word;
   position: relative;
+  overflow: hidden;
 }
 
 .title {
@@ -17,6 +18,8 @@
   width: 100%;
   overflow: auto;
   padding: 1rem 5rem 1rem 1rem;
+  flex: 1;
+  min-height: 0;
 }
 
 .message {

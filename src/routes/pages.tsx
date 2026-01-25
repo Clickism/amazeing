@@ -3,10 +3,10 @@ import { HomePage } from "../pages/HomePage.tsx";
 import { SandboxPage } from "../pages/SandboxPage.tsx";
 import { LevelEditorPage } from "../pages/LevelEditorPage.tsx";
 import type { Translatable } from "../i18n/i18n.ts";
+import { TestPage } from "../pages/TestPage.tsx";
 
 export type Page = {
   path: string;
-  // TODO: Translate
   title: Translatable;
   element: ReactNode;
   /**
@@ -35,5 +35,10 @@ export const PAGES: Page[] = [
     title: { key: "pages.levelEditor" },
     element: <LevelEditorPage />,
     navbar: true,
+  },
+  {
+    path: "/test",
+    title: "Test Page",
+    element: <TestPage />,
   },
 ];

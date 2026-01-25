@@ -9,6 +9,7 @@ import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.
 import { useEditorTheme } from "../../../theme/EditorThemeContext.tsx";
 import type { Extension } from "@codemirror/state";
 import { TopBar, type TopBarProps } from "./TopBar/TopBar.tsx";
+import type { CSSProperties } from "react";
 
 export type CodeEditorProps = {
   title?: string;
@@ -16,6 +17,7 @@ export type CodeEditorProps = {
   setCode: (code: string) => void;
   editorExtensions?: Extension[];
   topBar?: TopBarProps;
+  transitionDuration: number;
 };
 
 export function CodeEditor({
@@ -24,6 +26,7 @@ export function CodeEditor({
   setCode,
   editorExtensions,
   topBar = {},
+  transitionDuration,
 }: CodeEditorProps) {
   const { theme } = useEditorTheme();
   const { settings } = useCodeEditorSettings();
@@ -31,9 +34,13 @@ export function CodeEditor({
     <div
       className={clsx(
         styles.container,
-        "window-border",
         theme.isLight ? "light-theme" : "dark-theme",
       )}
+      style={
+        {
+          "--exec-line-transition-duration": `${transitionDuration}s`,
+        } as CSSProperties
+      }
     >
       <CornerGroup position="top-right" className={styles.cornerGroup}>
         <TopBar title={title} {...topBar} />

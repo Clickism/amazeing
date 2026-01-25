@@ -30,7 +30,7 @@ export function Console({ messages }: { messages: ConsoleMessage[] }) {
   const shouldAnimate = !isRunning || !isInstant;
 
   return (
-    <div className={clsx(styles.console, "window-border")}>
+    <div className={clsx(styles.console)}>
       <CornerGroup className={styles.title}>{t("console.title")}</CornerGroup>
       <div className={styles.messageContainer} ref={containerRef}>
         {messages.map((message, i) => (

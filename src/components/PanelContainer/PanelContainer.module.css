@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.resizer {
+  display: block;
+  background-color: var(--clr-surface-a0);
+  --resizer-thickness: .5rem;
+  --resizer-margin: .25rem;
+  border-radius: .25rem;
+  transition: background-color .2s ease-in-out;
+}
+
+.resizer.horizontal {
+  cursor: col-resize;
+  margin: 0 var(--resizer-margin);
+  width: var(--resizer-thickness);
+  height: 100%;
+}
+
+.resizer.vertical {
+  cursor: row-resize;
+  margin: var(--resizer-margin) 0;
+  width: 100%;
+  height: var(--resizer-thickness);
+}
+
+.resizer:hover {
+  background-color: var(--clr-surface-a10);
+}
+
+.resizer.active {
+  background-color: var(--clr-primary-a0);
+}
+

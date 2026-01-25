@@ -15,6 +15,7 @@ import {
   usePersistentState,
   usePersistentStorage,
 } from "../../../utils/storage.ts";
+import { Panel } from "../../../components/Panel/Panel.tsx";
 
 export function LevelEditor() {
   const { t } = useTranslation();
@@ -65,7 +66,9 @@ export function LevelEditor() {
         <ExportPanel editor={editor} dispatch={dispatch} />
       </div>
 
-      <LevelList editor={editor} dispatch={dispatch} />
+      <Panel paddingless>
+        <LevelList editor={editor} dispatch={dispatch} />
+      </Panel>
     </div>
   );
 }

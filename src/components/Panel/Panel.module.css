@@ -1,0 +1,24 @@
+.border {
+  border-radius: 1rem;
+  border: 2px solid var(--clr-surface-a10);
+  box-shadow: var(--surface-shadow-light);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: .5rem;
+}
+
+.padding {
+  padding: .5rem 1rem;
+}
+
+.stretchVertical {
+  height: 100%;
+}
+
+.stretchHorizontal {
+  width: 100%;
+}

@@ -1,11 +1,11 @@
 import clsx from "clsx";
-import styles from "./ListPanel.module.css";
+import styles from "./List.module.css";
 import { motion } from "motion/react";
 import { type ReactNode, useRef } from "react";
 import { CornerGroup } from "../CornerGroup/CornerGroup.tsx";
 import { ButtonGroup } from "../Button/ButtonGroup/ButtonGroup.tsx";
 
-type ListPanelProps = {
+type ListProps = {
   elements: string[];
   activeElement: string | null;
   onSelectElement?: (name: string) => void;
@@ -13,16 +13,16 @@ type ListPanelProps = {
   layoutId?: string;
 };
 
-export function ListPanel({
+export function List({
   elements,
   activeElement,
   onSelectElement,
   layoutId = "list-indicator",
   children,
-}: ListPanelProps) {
+}: ListProps) {
   const listRef = useRef<HTMLDivElement>(null);
   return (
-    <div className={clsx(styles.container, "window-border")}>
+    <div className={styles.container}>
       <div className={clsx(styles.list)} ref={listRef}>
         {elements.map((name) => (
           <div
