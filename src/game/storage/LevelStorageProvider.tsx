@@ -22,11 +22,28 @@ export function LevelStorageProvider({
     {},
   );
 
+  const loadLevel = (name: string): LevelData | null => {
+    return levels[name] || null;
+  };
+
   const addLevel = (level: LevelData) => {
     setLevels((prev) => ({
       ...prev,
       [level.name]: level,
     }));
+  };
+
+  const renameLevel = (oldName: string, newName: string) => {
+    setLevels((prev) => {
+      const newLevels = { ...prev };
+      const levelData = newLevels[oldName];
+      if (levelData) {
+        levelData.name = newName;
+        newLevels[newName] = levelData;
+        delete newLevels[oldName];
+      }
+      return newLevels;
+    });
   };
 
   const deleteLevel = (id: string) => {
@@ -37,11 +54,15 @@ export function LevelStorageProvider({
     });
   };
 
+  const levelNames = Object.keys(levels);
+
   return (
     <LevelStorageContext.Provider
       value={{
-        levels: Object.values(levels),
+        levelNames,
+        loadLevel,
         addLevel,
+        renameLevel,
         deleteLevel,
       }}
     >

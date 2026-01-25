@@ -2,9 +2,11 @@ import { createContext, useContext } from "react";
 import type { LevelData } from "../level.ts";
 
 export type LevelStorage = {
-  levels: readonly LevelData[];
+  levelNames: string[];
+  loadLevel: (name: string) => LevelData | null;
   addLevel: (level: LevelData) => void;
-  deleteLevel: (id: string) => void;
+  renameLevel: (oldName: string, newName: string) => void;
+  deleteLevel: (name: string) => void;
 };
 
 export const LevelStorageContext = createContext<LevelStorage | null>(null);

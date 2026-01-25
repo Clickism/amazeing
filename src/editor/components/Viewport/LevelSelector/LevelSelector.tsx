@@ -9,7 +9,7 @@ import { useEditorRuntime } from "../../../runtime/EditorRuntimeContext.tsx";
 
 export function LevelSelector() {
   const { t } = useTranslation();
-  const { levels } = useLevelStorage();
+  const { levelNames, loadLevel } = useLevelStorage();
   const { level, startingLevel, setLevel } = useEditorRuntime();
   return (
     <Popover
@@ -23,18 +23,17 @@ export function LevelSelector() {
       <FormField label={t("levelSelector.level")}>
         <select
           onChange={(e) => {
-            const selectedLevel =
-              levels.find((lvl) => lvl.name === e.target.value) ??
-              startingLevel.data;
+            const name = e.target.value;
+            const selectedLevel = loadLevel(name) ?? startingLevel.data;
             if (selectedLevel) {
               setLevel(new Level(selectedLevel));
             }
           }}
           defaultValue={level.data.name}
         >
-          {[startingLevel.data, ...levels].map((level) => (
-            <option key={level.name} value={level.name}>
-              {level.name}
+          {[startingLevel.data.name, ...levelNames].map((name) => (
+            <option key={name} value={name}>
+              {name}
             </option>
           ))}
         </select>
