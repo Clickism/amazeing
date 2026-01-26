@@ -5,6 +5,7 @@
 .cm-execLine {
   position: relative;
   overflow: visible;
+  isolation: isolate;
 }
 
 .cm-execLine::before {
@@ -19,8 +20,9 @@
   opacity: 0.6;
   mix-blend-mode: overlay;
   pointer-events: none;
-  animation: spawn-animation var(--exec-line-transition-duration) ease-out;
+  animation: spawn-animation var(--exec-line-transition-duration) ease-out forwards;
   border-radius: 4px;
+  transform: translateZ(0);
 }
 
 @keyframes spawn-animation {
