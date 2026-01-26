@@ -76,6 +76,7 @@ export function PanelContainer({
 
   useEffect(() => {
     if (draggingIndex !== null) {
+      // TODO: Make mobile compatible
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
       document.body.style.cursor = isHorizontal ? "col-resize" : "row-resize";
