@@ -79,9 +79,25 @@ export function Tooltip({
             >
               <motion.div
                 className={styles.tooltip}
-                initial={{ opacity: 0, filter: "blur(8px)", scale: 0.95, transformOrigin: "top", translateY: -4}}
-                animate={{ opacity: 1, filter: "blur(0px)", scale: 1, translateY: 0 }}
-                exit={{ opacity: 0, filter: "blur(4px)", scale: 0.95, translateY: -4 }}
+                initial={{
+                  opacity: 0,
+                  filter: "blur(8px)",
+                  scale: 0.95,
+                  transformOrigin: "top",
+                  translateY: -4,
+                }}
+                animate={{
+                  opacity: 1,
+                  filter: "blur(0px)",
+                  scale: 1,
+                  translateY: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  filter: "blur(4px)",
+                  scale: 0.95,
+                  translateY: -4,
+                }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
               >
                 {content}

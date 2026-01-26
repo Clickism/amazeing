@@ -32,10 +32,7 @@ export function Editor({ file, allowChangingLevel = false }: Props) {
   );
   return (
     <div className={styles.editorContainer}>
-      <PanelContainer
-        orientation="horizontal"
-        minSize={0.3}
-      >
+      <PanelContainer orientation="horizontal" minSize={0.3}>
         <PanelContainer
           orientation="vertical"
           initialSizes={[0.6, 0.4]}

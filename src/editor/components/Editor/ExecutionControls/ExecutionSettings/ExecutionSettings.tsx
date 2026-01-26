@@ -14,9 +14,7 @@ export function ExecutionSettings() {
     setSettings,
   } = useEditorSettings();
 
-  const [localSpeed, setLocalSpeed] = useState(
-    instructionsPerSecond,
-  );
+  const [localSpeed, setLocalSpeed] = useState(instructionsPerSecond);
   const [localIsInstant, setLocalIsInstant] = useState(isInstant);
 
   const commit = () => {
@@ -24,7 +22,7 @@ export function ExecutionSettings() {
       instructionsPerSecond: localSpeed,
       isInstant: localIsInstant,
     });
-  }
+  };
 
   return (
     <Popover

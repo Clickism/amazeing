@@ -54,7 +54,7 @@ export async function loadSprites(): Promise<SpriteMap> {
       blackstone: {
         horizontal: await load(wallBlackstoneHorizontal),
         vertical: await load(wallBlackstoneVertical),
-      }
+      },
     },
     water: await load(water),
     owl: {

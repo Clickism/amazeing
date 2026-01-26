@@ -8,7 +8,7 @@ import {
   type Integer,
   isArrayAccess,
   type Value,
-  type Variable,
+  type Variable
 } from "./types.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { Level } from "../game/level.ts";
@@ -76,51 +76,6 @@ export class Environment {
       return this.args.get(address);
     }
     return this.global.get(address);
-  }
-
-  private getArrayValue(address: ArrayAccess): Value | null | undefined {
-    const array = this.getArray(address.array);
-    // Get index
-    const index = this.getValidArrayIndex(address);
-    const value = array[index];
-    if (value === null || value === undefined) {
-      throw new ErrorWithTip(
-        `Array element at index ${index} of array "${address.array}" is not set.`,
-        `Make sure you initialize all elements of the array in order before accessing them.`,
-      );
-    }
-    return value;
-  }
-
-  private getValidArrayIndex(access: ArrayAccess, resize: boolean = false): number {
-    let index: number;
-    if (typeof access.index === "number") {
-      index = access.index;
-    } else {
-      const val = this.getOrThrow(access.index);
-      if (typeof val !== "number") {
-        throw new Error(
-          `Array index "${access.index}" does not store a number.`,
-        );
-      }
-      index = val;
-    }
-    const array = this.getArray(access.array);
-    if (resize && index >= array.length) {
-      this.resizeArray(array, index + 1);
-    }
-    if (index < 0 || index >= array.length) {
-      throw new Error(
-        `Array index out of bounds: ${index} for array "${access.array}" of length ${array.length}.`,
-      );
-    }
-    return index;
-  }
-
-  private resizeArray(array: Array, newSize: number) {
-    while (array.length < newSize) {
-      array.push(null);
-    }
   }
 
   getArray(name: Variable): Array {
@@ -245,23 +200,6 @@ export class Environment {
     variables.set(address, value);
   }
 
-  private setArrayValue(address: ArrayAccess, value: Value) {
-    const arrayName = address.array;
-    const array = this.getArray(arrayName);
-    const index = this.getValidArrayIndex(address, true);
-    // Check type
-    if (array.length > 0) {
-      const elem = array[0];
-      if (elem !== null && elem !== undefined && typeof elem !== typeof value) {
-        // TODO: Better message
-        throw new Error(
-          `Cannot add value of type "${typeof value}" to array "${arrayName}" of type "${typeof array[0]}"`,
-        );
-      }
-    }
-    array[index] = value;
-  }
-
   /**
    * Checks if a variable is defined in the current scope.
    * @param address The name of the variable.
@@ -331,5 +269,70 @@ export class Environment {
    */
   popStackFrame(): StackFrame | undefined {
     return this.stack.pop();
+  }
+
+  private getArrayValue(address: ArrayAccess): Value | null | undefined {
+    const array = this.getArray(address.array);
+    // Get index
+    const index = this.getValidArrayIndex(address);
+    const value = array[index];
+    if (value === null || value === undefined) {
+      throw new ErrorWithTip(
+        `Array element at index ${index} of array "${address.array}" is not set.`,
+        `Make sure you initialize all elements of the array in order before accessing them.`,
+      );
+    }
+    return value;
+  }
+
+  private getValidArrayIndex(
+    access: ArrayAccess,
+    resize: boolean = false,
+  ): number {
+    let index: number;
+    if (typeof access.index === "number") {
+      index = access.index;
+    } else {
+      const val = this.getOrThrow(access.index);
+      if (typeof val !== "number") {
+        throw new Error(
+          `Array index "${access.index}" does not store a number.`,
+        );
+      }
+      index = val;
+    }
+    const array = this.getArray(access.array);
+    if (resize && index >= array.length) {
+      this.resizeArray(array, index + 1);
+    }
+    if (index < 0 || index >= array.length) {
+      throw new Error(
+        `Array index out of bounds: ${index} for array "${access.array}" of length ${array.length}.`,
+      );
+    }
+    return index;
+  }
+
+  private resizeArray(array: Array, newSize: number) {
+    while (array.length < newSize) {
+      array.push(null);
+    }
+  }
+
+  private setArrayValue(address: ArrayAccess, value: Value) {
+    const arrayName = address.array;
+    const array = this.getArray(arrayName);
+    const index = this.getValidArrayIndex(address, true);
+    // Check type
+    if (array.length > 0) {
+      const elem = array[0];
+      if (elem !== null && elem !== undefined && typeof elem !== typeof value) {
+        // TODO: Better message
+        throw new Error(
+          `Cannot add value of type "${typeof value}" to array "${arrayName}" of type "${typeof array[0]}"`,
+        );
+      }
+    }
+    array[index] = value;
   }
 }
