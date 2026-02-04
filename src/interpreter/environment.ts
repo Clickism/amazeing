@@ -103,10 +103,10 @@ export class Environment {
             `Argument "${address}" was not set before calling this function.`,
           );
         }
-        throw new Error(
-          `Variable "${address}" is defined outside of the current scope. ` +
-            "When calling a subroutine, you can't access variables defined outside of it. " +
-            "To pass data to a subroutine, use arguments, i.E: arg0, arg1, etc.",
+        throw new ErrorWithTip(
+          `Variable "${address}" is defined outside of the current scope.`,
+          "When calling a subroutine, you can't access variables defined outside of it. " +
+            "To pass data to a subroutine, use arguments. i.E: arg0, arg1, etc.",
         );
       }
       throw new Error(`Variable "${address}" is not defined.`);
