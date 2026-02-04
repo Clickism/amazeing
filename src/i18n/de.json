@@ -42,6 +42,10 @@
   "editor.settings.speed": "Ausführungsgeschwindigkeit",
   "editor.settings.speed.unlimited": "Unbegrenzt",
 
+  "editor.owlControls.left": "Links",
+  "editor.owlControls.right": "Rechts",
+  "editor.owlControls.move": "Bewegen",
+
   "button.copyToClipboard": "In die Zwischenablage Kopieren",
   "button.copied": "Kopiert!",
   "button.saved": "Gespeichert!",

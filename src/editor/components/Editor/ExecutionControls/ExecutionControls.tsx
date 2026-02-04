@@ -11,8 +11,15 @@ import {
 import { useState } from "react";
 import { Tooltip } from "../../../../components/floating/Tooltip/Tooltip.tsx";
 import { ExecutionSettings } from "./ExecutionSettings/ExecutionSettings.tsx";
+import { OwlControls } from "./OwlControls/OwlControls.tsx";
 
-export function ExecutionControls() {
+type ExecutionControlsProps = {
+  owlControls?: boolean;
+};
+
+export function ExecutionControls({
+  owlControls = false,
+}: ExecutionControlsProps) {
   const [steps, setSteps] = useState(1);
 
   const { t } = useTranslation();
@@ -71,6 +78,13 @@ export function ExecutionControls() {
       <Button onClick={reset}>
         <VscDebugRestart /> {t("editor.reset")}
       </Button>
+
+      {owlControls && (
+        <>
+          <ButtonGroup.Separator />
+          <OwlControls />
+        </>
+      )}
     </ButtonGroup>
   );
 }

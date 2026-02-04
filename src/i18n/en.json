@@ -42,6 +42,10 @@
   "editor.settings.speed": "Execution Speed",
   "editor.settings.speed.unlimited": "Unlimited",
 
+  "editor.owlControls.left": "Left",
+  "editor.owlControls.right": "Right",
+  "editor.owlControls.move": "Move",
+
   "button.copyToClipboard": "Copy To Clipboard",
   "button.copied": "Copied!",
   "button.saved": "Saved!",

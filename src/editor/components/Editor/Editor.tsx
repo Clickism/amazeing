@@ -19,10 +19,15 @@ export const DEFAULT_RUN_SPEED = 5;
 
 type Props = {
   file?: boolean;
+  owlControls?: boolean;
   allowChangingLevel?: boolean;
 };
 
-export function Editor({ file, allowChangingLevel = false }: Props) {
+export function Editor({
+  file,
+  allowChangingLevel = false,
+  owlControls = false,
+}: Props) {
   const { output, isRunning, level, owl, code, setCode, currentLine } =
     useEditorRuntime();
   const { settings } = useEditorSettings();
@@ -47,7 +52,7 @@ export function Editor({ file, allowChangingLevel = false }: Props) {
           </Panel>
           <div className={styles.consolePanel}>
             <ButtonGroup center>
-              <ExecutionControls />
+              <ExecutionControls owlControls={owlControls} />
             </ButtonGroup>
             <Panel className={styles.console} paddingless>
               <Console messages={output} />

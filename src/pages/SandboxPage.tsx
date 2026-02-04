@@ -42,7 +42,7 @@ export function SandboxPage() {
         <LevelStorageProvider fileNamespace="custom">
           <EditorSettingsProvider namespace="sandbox-editor">
             <EditorRuntimeProvider startingLevel={sandboxLevel}>
-              <Editor allowChangingLevel file />
+              <Editor allowChangingLevel owlControls file />
             </EditorRuntimeProvider>
           </EditorSettingsProvider>
         </LevelStorageProvider>
