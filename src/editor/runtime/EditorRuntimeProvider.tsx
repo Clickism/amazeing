@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { Owl } from "../../game/owl.ts";
+import { LevelOwl, type OwlData } from "../../game/owl.ts";
 import {
   type ConsoleMessage,
   InterpreterConsole,
@@ -36,9 +36,7 @@ export function EditorRuntimeProvider({
   const [isRunning, setIsRunning] = useState(false);
 
   // Game
-  const [owl, setOwl] = useState<Owl>(() =>
-    level.createOwl((newOwl) => setOwl({ ...newOwl })),
-  );
+  const [owlData, setOwlData] = useState<OwlData>(() => level.createOwlData());
 
   // Refs
   const interpreterRef = useRef<Interpreter | null>(null);
@@ -65,13 +63,13 @@ export function EditorRuntimeProvider({
   const reset = useCallback(() => {
     stop();
     try {
-      const newOwl = level.createOwl((newOwl) => setOwl({ ...newOwl }));
-      setOwl(newOwl);
+      const newOwlData = level.createOwlData();
+      setOwlData(newOwlData);
       setOutput([]);
       const interpreter = LazyInterpreter.fromCode(
         code,
         new InterpreterConsole(appendOutput),
-        newOwl,
+        new LevelOwl(newOwlData, setOwlData, level),
         level,
       );
       interpreterRef.current = interpreter;
@@ -162,7 +160,8 @@ export function EditorRuntimeProvider({
         setLevel,
         code,
         setCode,
-        owl,
+        owlData,
+        setOwlData,
         output,
         currentLine,
         isRunning,

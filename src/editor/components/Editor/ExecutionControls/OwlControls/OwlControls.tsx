@@ -1,24 +1,23 @@
 import { Popover } from "../../../../../components/floating/Popover/Popover.tsx";
-import {
-  IoArrowBack,
-  IoArrowForward,
-  IoArrowUp,
-  IoMove,
-} from "react-icons/io5";
+import { IoArrowBack, IoArrowForward, IoArrowUp } from "react-icons/io5";
 import { Button } from "../../../../../components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { useTranslation } from "react-i18next";
 import { useEditorRuntime } from "../../../../runtime/EditorRuntimeContext.tsx";
+import { LevelOwl } from "../../../../../game/owl.ts";
+import { RxMove } from "react-icons/rx";
 
 export function OwlControls() {
   const { t } = useTranslation();
-  const { owl } = useEditorRuntime();
-  console.log(owl)
+  const { owlData, setOwlData, level } = useEditorRuntime();
+  const owl = new LevelOwl(owlData, setOwlData, level);
+  const canMove = owl.canMove();
   return (
     <Popover
+      tooltip={t("editor.owlControls.tooltip")}
       trigger={
         <Button shape="icon">
-          <IoMove />
+          <RxMove size={20} />
         </Button>
       }
     >
@@ -27,7 +26,11 @@ export function OwlControls() {
           <IoArrowBack />
           {t("editor.owlControls.left")}
         </Button>
-        <Button variant="outlined" onClick={() => owl.move()}>
+        <Button
+          disabled={!canMove}
+          variant="outlined"
+          onClick={() => owl.move()}
+        >
           <IoArrowUp />
           {t("editor.owlControls.move")}
         </Button>

@@ -5,7 +5,6 @@ import { editorReducer } from "../../actions.ts";
 import { emptyEditorState, emptyLevelData } from "../../state.ts";
 import { Viewport } from "../../../editor/components/Viewport/Viewport.tsx";
 import { Level } from "../../../game/level.ts";
-import { OwlImpl } from "../../../game/owl.ts";
 import { TileGrid } from "./TileGrid/TileGrid.tsx";
 import { ToolPanel } from "./ToolPanel/ToolPanel.tsx";
 import { ExportPanel } from "./ExportPanel/ExportPanel.tsx";
@@ -79,13 +78,10 @@ export function LevelEditor() {
         <Panel className={styles.gridWindow}>
           {editor.visualize ? (
             <Viewport
-              owl={
-                new OwlImpl(
-                  editor.level.owlStart.position,
-                  editor.level.owlStart.direction,
-                  () => {},
-                )
-              }
+              owl={{
+                position: editor.level.owlStart.position,
+                direction: editor.level.owlStart.direction,
+              }}
               level={new Level(editor.level)}
               lockCamera={false}
               lockCameraControls={false}

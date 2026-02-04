@@ -22,10 +22,9 @@ type Executors = {
  */
 export const EXECUTORS: Executors = {
   move: (env) => {
-    if (!env.level.canOwlMove(env.owl)) {
+    if (!env.owl.move()) {
       throw new Error("Owl cannot move forward due to a wall.");
     }
-    env.owl.move();
   },
 
   turn: (env, { direction }) => {
@@ -34,9 +33,9 @@ export const EXECUTORS: Executors = {
 
   explore: (env, { dest, direction }) => {
     const owl = env.owl;
-    const normalized = owl.normalizeDirection(direction ?? owl.direction);
+    const normalized = owl.normalizeDirection(direction ?? owl.data.direction);
     const isWalkable =
-      normalized === "here" ? true : env.level.canOwlMove(owl, normalized);
+      normalized === "here" ? true : env.level.canOwlMove(owl.data, normalized);
     env.setOrThrow(dest, booleanToInteger(isWalkable));
   },
 

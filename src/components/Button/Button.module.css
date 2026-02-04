@@ -43,13 +43,18 @@
   transform: scale(0.95);
 }
 
+/* Disabled state */
 .button:disabled,
 .button[aria-disabled="true"] {
   cursor: default;
   background: inherit;
   transform: none;
-  pointer-events: none;
   color: var(--text-color-t70);
+}
+
+.button:disabled:hover,
+.button[aria-disabled="true"]:hover {
+  cursor: not-allowed;
 }
 
 /* Variants */

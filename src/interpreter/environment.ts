@@ -1,6 +1,6 @@
 import type { LabelDefinition } from "./instruction.ts";
 import { InterpreterConsole } from "./console.ts";
-import type { Owl } from "../game/owl.ts";
+import { Owl } from "../game/owl.ts";
 import {
   type Address,
   type Array,
@@ -8,7 +8,7 @@ import {
   type Integer,
   isArrayAccess,
   type Value,
-  type Variable
+  type Variable,
 } from "./types.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { Level } from "../game/level.ts";

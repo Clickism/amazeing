@@ -28,7 +28,7 @@ export function Editor({
   allowChangingLevel = false,
   owlControls = false,
 }: Props) {
-  const { output, isRunning, level, owl, code, setCode, currentLine } =
+  const { output, isRunning, level, owlData, code, setCode, currentLine } =
     useEditorRuntime();
   const { settings } = useEditorSettings();
   const transitionDuration = getTransitionSpeed(
@@ -46,7 +46,7 @@ export function Editor({
           <Panel paddingless>
             <Viewport
               level={level}
-              owl={owl}
+              owl={owlData}
               levelSelector={allowChangingLevel}
             />
           </Panel>

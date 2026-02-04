@@ -1,5 +1,5 @@
 import type { ConsoleMessage } from "../../interpreter/console.ts";
-import type { Owl } from "../../game/owl.ts";
+import { type OwlData } from "../../game/owl.ts";
 import { createContext, useContext } from "react";
 import type { Level } from "../../game/level.ts";
 
@@ -10,7 +10,8 @@ export type EditorRuntimeAPI = {
   step: (steps?: number) => void;
   reset: () => void;
 
-  owl: Owl;
+  owlData: OwlData;
+  setOwlData: (owlData: OwlData) => void;
   level: Level;
 
   startingLevel: Level;

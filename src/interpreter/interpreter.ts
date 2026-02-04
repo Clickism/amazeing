@@ -4,7 +4,7 @@ import { ErrorWithTip, LocatableError } from "./error.ts";
 import { Environment } from "./environment.ts";
 import { type InterpreterConsole } from "./console.ts";
 import { EXECUTORS } from "./executor.ts";
-import type { Owl } from "../game/owl.ts";
+import { Owl } from "../game/owl.ts";
 import type { Level } from "../game/level.ts";
 
 const MAX_STEPS = 10000;
@@ -193,7 +193,7 @@ export class InterpreterImpl extends Interpreter {
     }
     this.steps++;
     // Check for level completion
-    if (this.env.level.isOwlAtFinish(this.env.owl)) {
+    if (this.env.level.isOwlAtFinish(this.env.owl.data)) {
       this.env.console.log({ type: "success", text: "Level completed!" });
       this.isLocked = true;
     }

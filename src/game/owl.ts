@@ -7,50 +7,61 @@ import {
   oppositeDirection,
   type Position
 } from "../interpreter/types.ts";
+import type { Level } from "./level.ts";
 
 /**
- * Represents the owl in the map.
+ * Owl data type
  */
-export interface Owl {
+export type OwlData = {
   position: Position;
   direction: CardinalDirection;
+};
 
-  move(): void;
-  nextPosition(): Position;
-  turn(direction: LeftRight): void;
-  normalizeDirection(direction: Direction): CardinalDirection | "here";
-}
+/**
+ * Owl class
+ */
+export class Owl {
+  data: OwlData;
+  setData: (data: OwlData) => void;
 
-export class OwlImpl implements Owl {
-  position: Position;
-  direction: CardinalDirection;
-  updateCallback: (owl: Owl) => void;
-
-  constructor(
-    position: Position,
-    direction: CardinalDirection,
-    updateCallback: (owl: Owl) => void,
-  ) {
-    this.position = position;
-    this.direction = direction;
-    this.updateCallback = updateCallback;
+  constructor(data: OwlData, setData: (data: OwlData) => void) {
+    this.data = data;
+    this.setData = setData;
   }
 
-  move(): void {
-    this.position = this.nextPosition();
-    this.updateCallback(this);
+  /**
+   * Move the owl forward in the direction it is currently facing.
+   * @return Whether the move was successful.
+   */
+  move(): boolean {
+    this.data.position = this.nextPosition();
+    this.setData(this.cloneData());
+    return true;
   }
 
+  /**
+   * Get the position in front of the owl based on its current direction.
+   */
   nextPosition(): Position {
-    return inDirection(this.position, this.direction);
+    const { position, direction } = this.data;
+    return inDirection(position, direction);
   }
 
+  /**
+   * Turn the owl left or right.
+   * @param direction The direction to turn (left or right).
+   */
   turn(direction: LeftRight): void {
-    this.direction = this.normalizeLeftRight(direction);
-    this.updateCallback(this);
+    this.data.direction = this.normalizeLeftRight(direction);
+    this.setData(this.cloneData());
   }
 
+  /**
+   * Normalize a direction relative to the owl's current direction.
+   * @param direction The direction to normalize.
+   */
   normalizeDirection(direction: Direction): CardinalDirection | "here" {
+    const owlDirection = this.data.direction;
     switch (direction) {
       case "north":
       case "east":
@@ -61,21 +72,54 @@ export class OwlImpl implements Owl {
       case "right":
         return this.normalizeLeftRight(direction);
       case "front":
-        return this.direction;
+        return owlDirection;
       case "back":
-        return oppositeDirection(this.direction);
+        return oppositeDirection(owlDirection);
       case "here":
         return "here";
     }
   }
 
   private normalizeLeftRight(direction: LeftRight): CardinalDirection {
-    let currentIndex = CARDINAL_DIRECTIONS.indexOf(this.direction);
+    let currentIndex = CARDINAL_DIRECTIONS.indexOf(this.data.direction);
     if (direction === "left") {
       currentIndex = (currentIndex + 3) % 4;
     } else {
       currentIndex = (currentIndex + 1) % 4;
     }
     return CARDINAL_DIRECTIONS[currentIndex];
+  }
+
+  private cloneData(): OwlData {
+    return {
+      position: { ...this.data.position },
+      direction: this.data.direction,
+    };
+  }
+}
+
+/**
+ * Owl class that can only move within the constraints of a level.
+ */
+export class LevelOwl extends Owl {
+  level: Level;
+
+  constructor(data: OwlData, setData: (data: OwlData) => void, level: Level) {
+    super(data, setData);
+    this.level = level;
+  }
+
+  move(): boolean {
+    if (!this.canMove()) {
+      return false;
+    }
+    return super.move();
+  }
+
+  /**
+   * Check if the owl can move in its current direction.
+   */
+  canMove(): boolean {
+    return this.level.canOwlMove(this.data, this.data.direction);
   }
 }

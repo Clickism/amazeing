@@ -12,7 +12,7 @@ import {
 } from "../../../game/rendering/sprites.ts";
 import type { Position } from "../../../interpreter/types.ts";
 import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
-import type { Owl } from "../../../game/owl.ts";
+import type { OwlData } from "../../../game/owl.ts";
 import type { Level } from "../../../game/level.ts";
 import { LevelSelector } from "./LevelSelector/LevelSelector.tsx";
 import { Button } from "../../../components/Button/Button.tsx";
@@ -27,7 +27,7 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 8;
 
 export type ViewportProps = {
-  owl: Owl;
+  owl: OwlData;
   level: Level;
   levelSelector?: boolean;
   lockCamera?: boolean;

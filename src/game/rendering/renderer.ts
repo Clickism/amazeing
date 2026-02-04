@@ -1,5 +1,5 @@
 import { type WallType } from "../maze.ts";
-import type { Owl } from "../owl.ts";
+import type { OwlData } from "../owl.ts";
 import type { Position } from "../../interpreter/types.ts";
 import type { SpriteMap } from "./sprites.ts";
 import type { Level } from "../level.ts";
@@ -17,7 +17,7 @@ export class Renderer {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   level: Level;
-  owl: Owl;
+  owl: OwlData;
   sprites: SpriteMap;
   dpr: number = window.devicePixelRatio || 1;
   camera: Camera;
@@ -25,7 +25,7 @@ export class Renderer {
   constructor(
     canvas: HTMLCanvasElement,
     level: Level,
-    owl: Owl,
+    owl: OwlData,
     sprites: SpriteMap,
     camera: Camera,
   ) {

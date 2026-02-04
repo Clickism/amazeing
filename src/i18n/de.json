@@ -42,6 +42,7 @@
   "editor.settings.speed": "Ausführungsgeschwindigkeit",
   "editor.settings.speed.unlimited": "Unbegrenzt",
 
+  "editor.owlControls.tooltip": "Eule manuell steuern",
   "editor.owlControls.left": "Links",
   "editor.owlControls.right": "Rechts",
   "editor.owlControls.move": "Bewegen",

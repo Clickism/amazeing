@@ -4,7 +4,7 @@ import {
   inDirection,
   type Position,
 } from "../interpreter/types.ts";
-import { type Owl, OwlImpl } from "./owl.ts";
+import { type OwlData } from "./owl.ts";
 
 export type LevelData = {
   // The unique name of the level (within the level storage)
@@ -32,15 +32,14 @@ export class Level {
     this.maze = new Maze(data.maze);
   }
 
-  createOwl(updateCallback: (owl: Owl) => void): Owl {
-    return new OwlImpl(
-      { ...this.data.owlStart.position },
-      this.data.owlStart.direction,
-      (newOwl) => updateCallback({ ...newOwl }),
-    );
+  createOwlData(): OwlData {
+    return {
+      position: { ...this.data.owlStart.position },
+      direction: this.data.owlStart.direction,
+    };
   }
 
-  canOwlMove(owl: Owl, direction?: CardinalDirection): boolean {
+  canOwlMove(owl: OwlData, direction?: CardinalDirection): boolean {
     const directionToCheck = direction ?? owl.direction;
     const wall = this.maze.wallAt(owl.position, directionToCheck);
     const hasTile = this.maze.hasTileAt(
@@ -49,7 +48,7 @@ export class Level {
     return wall === null && hasTile;
   }
 
-  isOwlAtFinish(owl: Owl): boolean {
+  isOwlAtFinish(owl: OwlData): boolean {
     return (
       owl.position.x === this.data.finishPosition.x &&
       owl.position.y === this.data.finishPosition.y
