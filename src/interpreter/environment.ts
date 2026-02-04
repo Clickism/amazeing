@@ -150,9 +150,13 @@ export class Environment {
    * @throws {Error} if the variable is already defined in the current scope.
    */
   define(identifier: Variable, isArray: boolean = false) {
-    if (this.isDefined(identifier)) {
-      throw new Error(`Variable "${identifier}" is already defined.`);
-    }
+    // ----------
+    // Note: We allow redefining of variables for simplicity!
+    //
+    // if (this.isDefined(identifier)) {
+    //   throw new Error(`Variable "${identifier}" is already defined.`);
+    // }
+    // ----------
     if (isArray) {
       this.set(identifier, []);
       return;
