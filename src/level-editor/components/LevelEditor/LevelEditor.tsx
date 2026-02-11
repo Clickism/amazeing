@@ -19,6 +19,7 @@ import { PanelContainer } from "../../../components/PanelContainer/PanelContaine
 import { useLevelStorage } from "../../storage/LevelStorageContext.tsx";
 import { TextPanel } from "../../../components/Panel/TextPanel/TextPanel.tsx";
 
+// TODO: Fix panel container resizing weird
 export function LevelEditor() {
   const { t } = useTranslation();
   const { loadLevel, saveLevel } = useLevelStorage();

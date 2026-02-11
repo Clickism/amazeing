@@ -5,11 +5,14 @@
   "pages.home": "Home",
   "pages.sandbox": "Sandbox",
   "pages.levelEditor": "Level Editor",
+  "pages.tasks": "Tasks",
+
   "codeEditor.title": "Code Editor",
   "codeEditor.settings": "Editor Settings",
   "codeEditor.theme": "Theme",
   "codeEditor.fontSize": "Font Size",
   "codeEditor.files": "Files",
+  "codeEditor.tasks": "Tasks",
 
   "fileList.newFile": "New File",
   "fileList.rename": "Rename",

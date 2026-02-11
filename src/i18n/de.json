@@ -5,11 +5,14 @@
   "pages.home": "Startseite",
   "pages.sandbox": "Sandbox",
   "pages.levelEditor": "Level-Editor",
+  "pages.tasks": "Aufgaben",
+
   "codeEditor.title": "Code-Editor",
   "codeEditor.settings": "Editor-Einstellungen",
   "codeEditor.theme": "Farbthema",
   "codeEditor.fontSize": "Schriftgröße",
   "codeEditor.files": "Dateien",
+  "codeEditor.tasks": "Aufgaben",
 
   "fileList.newFile": "Neue Datei",
   "fileList.rename": "Umbenennen",

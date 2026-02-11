@@ -1,10 +1,9 @@
 import { Layout } from "../components/Layout/Layout.tsx";
 import { CodeStorageProvider } from "../editor/storage/CodeStorageProvider.tsx";
+import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
+import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.tsx";
 import { Editor } from "../editor/components/Editor/Editor.tsx";
 import { Level } from "../game/level.ts";
-import { LevelStorageProvider } from "../level-editor/storage/LevelStorageProvider.tsx";
-import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.tsx";
-import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
 
 const sandboxLevel = new Level({
   name: "sandbox",
@@ -35,17 +34,15 @@ const sandboxLevel = new Level({
   finishPosition: { x: 2, y: 2 },
 });
 
-export function SandboxPage() {
+export function TasksPage() {
   return (
     <Layout fullWidth>
-      <CodeStorageProvider fileNamespace="sandbox">
-        <LevelStorageProvider fileNamespace="custom">
-          <EditorSettingsProvider namespace="sandbox-editor">
-            <EditorRuntimeProvider startingLevel={sandboxLevel}>
-              <Editor type="file" allowChangingLevel owlControls />
-            </EditorRuntimeProvider>
-          </EditorSettingsProvider>
-        </LevelStorageProvider>
+      <CodeStorageProvider fileNamespace="tasks">
+        <EditorSettingsProvider namespace="sandbox-editor">
+          <EditorRuntimeProvider startingLevel={sandboxLevel}>
+            <Editor type="task" />
+          </EditorRuntimeProvider>
+        </EditorSettingsProvider>
       </CodeStorageProvider>
     </Layout>
   );

@@ -1,16 +1,16 @@
 import { Button } from "../../../../components/Button/Button.tsx";
 import { CodeEditorSettings } from "./CodeEditorSettings/CodeEditorSettings.tsx";
-import { type ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import styles from "./TopBar.module.css";
 import clsx from "clsx";
 
 export type TopBarProps = {
   title?: string;
-  leftContent?: ReactNode | ReactNode[];
-  rightContent?: ReactNode | ReactNode[];
+  left?: ReactNode[];
+  right?: ReactNode[];
 };
 
-export function TopBar({ title, leftContent, rightContent }: TopBarProps) {
+export function TopBar({ title, left, right }: TopBarProps) {
   return (
     <div className={styles.topBar}>
       {title && (
@@ -18,9 +18,13 @@ export function TopBar({ title, leftContent, rightContent }: TopBarProps) {
           {title}
         </Button>
       )}
-      {leftContent}
+      {left?.map((item, i) => (
+        <Fragment key={i}>{item}</Fragment>
+      ))}
       <div className={styles.separator} />
-      {rightContent}
+      {right?.map((item, i) => (
+        <Fragment key={i}>{item}</Fragment>
+      ))}
       <CodeEditorSettings />
     </div>
   );

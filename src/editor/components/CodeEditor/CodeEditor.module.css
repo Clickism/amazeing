@@ -23,7 +23,7 @@
 
 .cornerGroup,
 .bottomCornerGroup {
-  position: relative;
+  position: absolute;
   width: 100%;
   gap: .5rem;
   z-index: 5;
