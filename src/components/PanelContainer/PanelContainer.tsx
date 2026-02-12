@@ -7,12 +7,14 @@ import React, {
 } from "react";
 import clsx from "clsx";
 import styles from "./PanelContainer.module.css";
+import { clamp } from "../../editor/utils.ts";
 
 type PanelContainerProps = {
   children: ReactNode[];
   orientation?: "horizontal" | "vertical";
   initialSizes?: number[];
   minSize?: number;
+  minPixels?: number[];
 };
 
 export function PanelContainer({
@@ -20,6 +22,7 @@ export function PanelContainer({
   orientation = "horizontal",
   initialSizes,
   minSize = 0.1,
+  minPixels,
 }: PanelContainerProps) {
   const panelCount = children.length;
   const [sizes, setSizes] = useState<number[]>(
@@ -32,6 +35,17 @@ export function PanelContainer({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isHorizontal = orientation === "horizontal";
+
+  const getMinFraction = useCallback(
+    (index: number, containerSize: number): number => {
+      const fractionFromPixels =
+        minPixels && minPixels[index] !== undefined && containerSize > 0
+          ? minPixels[index] / containerSize
+          : 0;
+      return Math.max(minSize, fractionFromPixels);
+    },
+    [minPixels, minSize],
+  );
 
   const handleMouseDown = (index: number) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -47,6 +61,7 @@ export function PanelContainer({
       if (draggingIndex === null || !containerRef.current) return;
 
       const rect = containerRef.current.getBoundingClientRect();
+      const containerSize = isHorizontal ? rect.width : rect.height;
       const delta = isHorizontal
         ? e.movementX / rect.width
         : e.movementY / rect.height;
@@ -57,13 +72,13 @@ export function PanelContainer({
         const a = next[draggingIndex];
         const b = next[draggingIndex + 1];
 
-        const maxPositive = b - minSize;
-        const maxNegative = a - minSize;
+        const minA = getMinFraction(draggingIndex, containerSize);
+        const minB = getMinFraction(draggingIndex + 1, containerSize);
 
-        const clampedDelta = Math.max(
-          -maxNegative,
-          Math.min(maxPositive, delta),
-        );
+        const maxPositive = b - minB;
+        const maxNegative = a - minA;
+
+        const clampedDelta = clamp(delta, -maxNegative, maxPositive);
 
         next[draggingIndex] = a + clampedDelta;
         next[draggingIndex + 1] = b - clampedDelta;
@@ -71,7 +86,7 @@ export function PanelContainer({
         return next;
       });
     },
-    [draggingIndex, isHorizontal, minSize],
+    [draggingIndex, isHorizontal, getMinFraction],
   );
 
   useEffect(() => {
@@ -109,8 +124,8 @@ export function PanelContainer({
               flexBasis: 0,
               flexGrow: sizes[i],
               flexShrink: 0,
-              minWidth: 0,
-              minHeight: 0,
+              minWidth: isHorizontal && minPixels?.[i] ? minPixels[i] : 0,
+              minHeight: !isHorizontal && minPixels?.[i] ? minPixels[i] : 0,
             }}
           >
             {child}
