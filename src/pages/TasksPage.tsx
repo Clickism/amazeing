@@ -4,6 +4,9 @@ import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvide
 import { EditorRuntimeProvider } from "../editor/runtime/EditorRuntimeProvider.tsx";
 import { Editor } from "../editor/components/Editor/Editor.tsx";
 import { Level } from "../game/level.ts";
+import { TasksProvider } from "../precourse/context/TasksProvider.tsx";
+import { useTasks } from "../precourse/context/TasksContext.tsx";
+import { taskIdOf } from "../precourse/day.ts";
 
 const sandboxLevel = new Level({
   name: "sandbox",
@@ -39,11 +42,21 @@ export function TasksPage() {
     <Layout fullWidth>
       <CodeStorageProvider fileNamespace="tasks">
         <EditorSettingsProvider namespace="sandbox-editor">
-          <EditorRuntimeProvider startingLevel={sandboxLevel}>
-            <Editor type="task" />
-          </EditorRuntimeProvider>
+          <TasksProvider taskId={taskIdOf(1, 1)}>
+            <EditorWrapper startingLevel={sandboxLevel} />
+          </TasksProvider>
         </EditorSettingsProvider>
       </CodeStorageProvider>
     </Layout>
+  );
+}
+
+// Wrapper to access tasks context
+function EditorWrapper({ startingLevel }: { startingLevel: Level }) {
+  const { task } = useTasks();
+  return (
+    <EditorRuntimeProvider task={task} startingLevel={startingLevel}>
+      <Editor type="task" />
+    </EditorRuntimeProvider>
   );
 }

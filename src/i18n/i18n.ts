@@ -18,11 +18,18 @@ await i18n
     interpolation: { escapeValue: false },
   });
 
-export type Translatable = string | TranslationKey;
+export type Translatable = string | TranslationKey | PackagedTranslation;
 export type TranslationKey = { key: string };
+export type PackagedTranslation = Record<Language, string>;
 
-export function isTranslationKey(t: string | TranslationKey) {
+export function isTranslationKey(t: Translatable): t is TranslationKey {
   return typeof t === "object" && "key" in t;
+}
+
+export function isPackagedTranslation(
+  t: Translatable,
+): t is PackagedTranslation {
+  return typeof t === "object" && SUPPORTED_LANGUAGES.some((lang) => lang in t);
 }
 
 /**
@@ -30,10 +37,14 @@ export function isTranslationKey(t: string | TranslationKey) {
  */
 export function useTranslatable() {
   const { t } = useTranslation();
+  const translator: AutoTranslator = (
+    translatable: Translatable,
+    parameters: TranslationParameters = {},
+  ) => {
+    return tryTranslate(t, translatable, parameters);
+  };
   return {
-    t(translatable: Translatable) {
-      return tryTranslate(t, translatable);
-    },
+    t: translator,
   };
 }
 
@@ -41,10 +52,34 @@ export function useTranslatable() {
  * Translates the given key or returns the original string.
  * @param t Translation function
  * @param translatable Raw string or translation key
+ * @param parameters Optional parameters for translation interpolation
  */
 export function tryTranslate(
-  t: (s: string) => string,
+  t: Translator,
   translatable: Translatable,
+  parameters: TranslationParameters = {},
 ): string {
-  return isTranslationKey(translatable) ? t(translatable.key) : translatable;
+  if (isPackagedTranslation(translatable)) {
+    const currentLanguage = i18n.language as Language;
+    return translatable[currentLanguage] || translatable[FALLBACK_LANGUAGE];
+  }
+  if (isTranslationKey(translatable)) {
+    return t(translatable.key, parameters);
+  }
+  // If plain key, just translate it
+  const isPlainKey = i18n.exists(translatable);
+  if (isPlainKey) {
+    return t(translatable, parameters);
+  }
+  return translatable;
 }
+
+export type DefaultTranslator = ReturnType<typeof useTranslation>["t"];
+export type AutoTranslator = (
+  translatable: Translatable,
+  parameters?: TranslationParameters,
+) => string;
+
+export type Translator = DefaultTranslator | AutoTranslator;
+
+export type TranslationParameters = Parameters<DefaultTranslator>[2];

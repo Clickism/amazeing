@@ -96,5 +96,8 @@
   "home.tasks.day2.title": "Day 2: Diving Deeper",
   "home.tasks.day2.description": "More advanced maze algorithms and introduction data structures.",
   "home.tasks.day3.title": "Day 3: Mastering Mazes",
-  "home.tasks.day3.description": "Pathfinding algorithms, marks and advanced data structures."
+  "home.tasks.day3.description": "Pathfinding algorithms, marks and advanced data structures.",
+
+  "day.day": "Day {{num}}",
+  "day.task": "Task {{num}}"
 }

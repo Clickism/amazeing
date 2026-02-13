@@ -1,0 +1,15 @@
+.dayContainer {
+
+}
+
+.day {
+  padding: var(--padding);
+  font-weight: 700;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.day:hover {
+  cursor: pointer;
+  background-color: var(--clr-surface-a7);
+}

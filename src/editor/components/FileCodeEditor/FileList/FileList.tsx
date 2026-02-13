@@ -15,8 +15,8 @@ export function FileList() {
   const fileContainerRef = useRef<HTMLDivElement>(null);
   return (
     <List
-      elements={sourceNames ?? []}
-      activeElement={activeName}
+      elements={sourceNames?.map((name) => ({ id: name, name })) ?? []}
+      activeElementId={activeName}
       onSelectElement={(name) => {
         switchSource?.(name);
       }}

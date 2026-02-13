@@ -26,6 +26,9 @@
 }
 
 .elementName {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   padding: .5rem 1rem;
 }
 
@@ -37,6 +40,26 @@
 .element.active {
   background-color: var(--clr-surface-a7);
   color: var(--text-color);
+}
+
+.groupContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.group {
+  color: var(--text-color-t70);
+  font-weight: 600;
+  border-bottom: 1px solid var(--clr-surface-a20);
+}
+
+.activeGroup {
+  color: var(--text-color);
+}
+
+.groupListContainer {
+  padding-left: 1rem;
+  background-color: var(--clr-surface-a3);
 }
 
 .indicator {

@@ -18,8 +18,8 @@ export function LevelList({ editor, dispatch }: LevelListProps) {
   const { levelNames, loadLevel, saveLevel } = useLevelStorage();
   return (
     <List
-      elements={levelNames}
-      activeElement={editor.level.name}
+      elements={levelNames.map((name) => ({ id: name, name }))}
+      activeElementId={editor.level.name}
       onSelectElement={(name) => {
         const selectedLevel = loadLevel(name);
         if (selectedLevel) {

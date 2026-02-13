@@ -19,7 +19,7 @@ export const DEFAULT_RUN_SPEED = 5;
 
 export type EditorType = "task" | "file";
 
-type Props = {
+export type EditorProps = {
   type: EditorType;
   owlControls?: boolean;
   allowChangingLevel?: boolean;
@@ -29,7 +29,7 @@ export function Editor({
   type,
   allowChangingLevel = false,
   owlControls = false,
-}: Props) {
+}: EditorProps) {
   const { output, isRunning, level, owlData, code, setCode, currentLine } =
     useEditorRuntime();
   const { settings } = useEditorSettings();

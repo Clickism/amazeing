@@ -7,9 +7,13 @@ import {
 import { type OwlData } from "./owl.ts";
 
 export type LevelData = {
-  // The unique name of the level (within the level storage)
+  /**
+   * The unique name of the level (within the level storage)
+   */
   name: string;
-  // The displayed title of the level
+  /**
+   * The displayed title of the level
+   */
   title: string;
   description: string;
   maze: MazeData;

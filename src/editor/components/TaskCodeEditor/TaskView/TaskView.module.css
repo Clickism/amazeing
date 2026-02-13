@@ -1,0 +1,34 @@
+.currentTaskContainer {
+  padding: 1.5rem 1rem;
+  min-width: 250px;
+  background-color: var(--clr-surface-a10);
+  border-radius: 1rem;
+  border-bottom: 1px solid var(--clr-surface-a20);
+  box-shadow: 0 4px 0px var(--clr-primary-a0);
+
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.dayTask {
+  color: var(--text-color-t60);
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.description {
+  font-size: 14px;
+  color: var(--text-color-t80);
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: var(--clr-surface-a20);
+}

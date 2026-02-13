@@ -1,7 +1,9 @@
 import { CodeEditorWithPanel } from "../CodeEditorWithPanel/CodeEditorWithPanel.tsx";
 import type { Extension } from "@codemirror/state";
-import { useTranslation } from "react-i18next";
 import { GrTask } from "react-icons/gr";
+import { TaskView } from "./TaskView/TaskView.tsx";
+import { useTasks } from "../../../precourse/context/TasksContext.tsx";
+import { useTranslatable } from "../../../i18n/i18n.ts";
 
 type TaskCodeEditorProps = {
   setCode: (code: string) => void;
@@ -14,10 +16,11 @@ export function TaskCodeEditor({
   editorExtensions,
   transitionDuration,
 }: TaskCodeEditorProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslatable();
+  const { task } = useTasks();
   return (
     <CodeEditorWithPanel
-      title="Day 1"
+      title={t(task.title)}
       code={""}
       setCode={setCode}
       transitionDuration={transitionDuration}
@@ -25,12 +28,7 @@ export function TaskCodeEditor({
       initialOpen
       panel={{
         name: t("codeEditor.tasks"),
-        content: (
-          <>
-            <h1>Tasks</h1>
-            <p>This panel is for managing tasks related to the code.</p>
-          </>
-        ),
+        content: <TaskView />,
         icon: () => <GrTask />,
       }}
     />
