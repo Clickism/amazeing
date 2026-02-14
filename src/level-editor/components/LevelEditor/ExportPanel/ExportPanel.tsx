@@ -1,31 +1,27 @@
-import {
-  type LevelEditorDispatch,
-  type LevelEditorState,
-  stringifyLevelData,
-} from "../../../state.ts";
+import { emptyLevelData } from "../../../state.ts";
 import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../../../components/Button/Button.tsx";
 import { CopyToClipboard } from "../../CopyToClipboard/CopyToClipboard.tsx";
 import { useTranslation } from "react-i18next";
-import { BiExport, BiImport } from "react-icons/bi";
-import { TimedButton } from "../../../../components/Button/TimedButton/TimedButton.tsx";
+import { BiExport } from "react-icons/bi";
 import { Modal } from "../../../../components/floating/Modal/Modal.tsx";
 import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
 
-type ExportPanelProps = {
-  editor: LevelEditorState;
-  dispatch: LevelEditorDispatch;
-};
-
 // TODO: Refactor
-export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
+export function ExportPanel({
+  visualize,
+  setVisualize,
+}: {
+  visualize: boolean;
+  setVisualize: (visualize: boolean) => void;
+}) {
   const { t } = useTranslation();
-  const editorStateJSON = stringifyLevelData(editor);
-  const { saveSource } = useLevelSource();
+  const { source, setSource: setLevel } = useLevelSource();
+  const editorStateJSON = JSON.stringify(source);
 
   return (
     <>
-      <h5>{t("levelEditor.headers.metadata")}</h5>
+      {/*<h5>{t("levelEditor.headers.metadata")}</h5>*/}
       {/*<FormField label={t("levelEditor.export.levelTitle")}>*/}
       {/*  <input*/}
       {/*    type="text"*/}
@@ -65,11 +61,8 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
       <h5>{t("levelEditor.headers.actions")}</h5>
 
       <ButtonGroup vertical stretch>
-        <Button
-          variant="success"
-          onClick={() => dispatch({ type: "toggleVisualize" })}
-        >
-          {editor.visualize
+        <Button variant="success" onClick={() => setVisualize(!visualize)}>
+          {visualize
             ? t("levelEditor.export.actions.editMaze")
             : t("levelEditor.export.actions.visualizeMaze")}
         </Button>
@@ -93,28 +86,10 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
           <CopyToClipboard content={editorStateJSON} />
         </Modal>
 
-        <TimedButton
-          variant="secondary"
-          onClick={() => {
-            saveSource(editor.level);
-          }}
-        >
-          {(active) =>
-            active ? (
-              <strong>{t("button.saved")}</strong>
-            ) : (
-              <>
-                {t("levelEditor.export.actions.saveCustomLevel")}
-                <BiImport />
-              </>
-            )
-          }
-        </TimedButton>
-
         <Button
           variant="danger"
           onClick={() => {
-            dispatch({ type: "reset" });
+            setLevel(emptyLevelData());
           }}
         >
           {t("levelEditor.export.actions.reset")}

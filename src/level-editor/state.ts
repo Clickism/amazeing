@@ -17,6 +17,12 @@ export type LevelEditorState = {
   visualize: boolean;
 
   level: LevelData;
+
+  // // For exporting as task data
+  // taskData: {
+  //   title: string;
+  //   description: string;
+  // }
 };
 
 export function emptyLevelData(

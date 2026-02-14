@@ -90,3 +90,27 @@ h6 {
   color: var(--clr-surface-a50);
 }
 
+[data-floating-ui-portal] .fancy-headers h3,
+[data-floating-ui-portal] .fancy-headers h4,
+[data-floating-ui-portal] .fancy-headers h5,
+[data-floating-ui-portal] .fancy-headers h6,
+[data-floating-ui-portal] h3.fancy-headers,
+[data-floating-ui-portal] h4.fancy-headers,
+[data-floating-ui-portal] h5.fancy-headers,
+[data-floating-ui-portal] h6.fancy-headers {
+  border-color: var(--clr-surface-a20);
+}
+
+.fancy-headers h3,
+.fancy-headers h4,
+.fancy-headers h5,
+.fancy-headers h6,
+h3.fancy-headers,
+h4.fancy-headers,
+h5.fancy-headers,
+h6.fancy-headers {
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--clr-surface-a10);
+}
+
+

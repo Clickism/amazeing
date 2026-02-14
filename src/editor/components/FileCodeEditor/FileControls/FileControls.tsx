@@ -6,17 +6,21 @@ import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
 import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
 import { useEffect, useState } from "react";
-import { useFileSource } from "../../../source/SourceContext.tsx";
+import { type SourceAPI } from "../../../source/SourceContext.tsx";
 import { checkValidName } from "../../../utils.ts";
 
-export function FileControls() {
+type FileControlsProps<T> = {
+  sourceApi: SourceAPI<T>;
+};
+
+export function FileControls<T>({ sourceApi }: FileControlsProps<T>) {
   const { t } = useTranslation();
   const {
     name: activeFile,
     renameSource,
     deleteSource,
     sourceNames,
-  } = useFileSource();
+  } = sourceApi;
   const [newFileName, setNewFileName] = useState(activeFile);
   const [isValid, invalidMessage] = checkValidName(
     t,

@@ -3,6 +3,10 @@ import type { LevelData } from "../../game/level.ts";
 
 export type SourceAPI<T> = {
   name: string;
+
+  source: T;
+  setSource: (source: T) => void;
+
   loadSource(): T | null;
   saveSource(content: T): void;
   renameSource(newTitle: string): void;

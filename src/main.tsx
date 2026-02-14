@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./css/index.css";
 import "./css/colors.css";
 import "./css/border.css";
-import "./css/popup.css";
 import "./css/form.css";
 import "./css/codemirror.css";
 import { BrowserRouter } from "react-router-dom";

@@ -1,5 +1,5 @@
 import { FileSourceContext } from "./SourceContext.tsx";
-import { type ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
 import { useCodeStorage } from "../storage/CodeStorageContext.tsx";
 import { useTranslation } from "react-i18next";
 import { findNextAvailableName } from "../utils.ts";
@@ -26,6 +26,16 @@ export function FileSourceProvider({
     renameFile,
     fileNamespace,
   } = useCodeStorage();
+  const fileStorage = useMemo(
+    () => ({
+      fileNames,
+      loadFile,
+      saveFile,
+      deleteFile,
+      renameFile,
+    }),
+    [deleteFile, fileNames, loadFile, renameFile, saveFile],
+  );
   const sourceApi = useSourceApi<string>({
     source: code,
     setSource: setCode,
@@ -38,13 +48,7 @@ export function FileSourceProvider({
       const content = t("codeStorage.newFile.content");
       return { name, content };
     },
-    fileStorage: {
-      fileNames,
-      loadFile,
-      saveFile,
-      deleteFile,
-      renameFile,
-    },
+    fileStorage,
   });
 
   return (

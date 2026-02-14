@@ -1,4 +1,4 @@
-import { Maze, type MazeData } from "./maze.ts";
+import { Maze, type MazeData, resizeMaze } from "./maze.ts";
 import {
   type CardinalDirection,
   inDirection,
@@ -44,7 +44,7 @@ export class Level {
     const hasTile = this.maze.hasTileAt(
       inDirection(owl.position, directionToCheck),
     );
-    return wall === null && hasTile;
+    return !wall && hasTile;
   }
 
   isOwlAtFinish(owl: OwlData): boolean {
@@ -53,4 +53,35 @@ export class Level {
       owl.position.y === this.data.finishPosition.y
     );
   }
+}
+
+/**
+ * Resizes a level to new dimensions, adjusting the maze and positions accordingly.
+ * @param level The level to resize
+ * @param newWidth The new width of the level
+ * @param newHeight The new height of the level
+ */
+export function resizeLevel(
+  level: LevelData,
+  newWidth: number,
+  newHeight: number,
+): LevelData {
+  const newMazeData = resizeMaze(level.maze, newWidth, newHeight);
+  const newOwlStart = {
+    position: {
+      x: Math.min(level.owlStart.position.x, newWidth - 1),
+      y: Math.min(level.owlStart.position.y, newHeight - 1),
+    },
+    direction: level.owlStart.direction,
+  };
+  const newFinishPosition = {
+    x: Math.min(level.finishPosition.x, newWidth - 1),
+    y: Math.min(level.finishPosition.y, newHeight - 1),
+  };
+  return {
+    ...level,
+    maze: newMazeData,
+    owlStart: newOwlStart,
+    finishPosition: newFinishPosition,
+  };
 }

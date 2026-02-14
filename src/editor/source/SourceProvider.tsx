@@ -114,8 +114,19 @@ export function useSourceApi<T>({
     }
   }, [activeSource, createNewSource, fileStorage, switchSource]);
 
+  const prevActiveSourceRef = useRef(activeSource);
+  const initializedRef = useRef(false);
+
   // Initial file
   useEffect(() => {
+    // Only run on activeSource change, not on every render
+    if (prevActiveSourceRef.current !== activeSource) {
+      prevActiveSourceRef.current = activeSource;
+      initializedRef.current = false;
+    }
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
     if (activeSource !== null) {
       const content = fileStorage.loadFile(activeSource);
       if (content !== null) {
@@ -153,6 +164,8 @@ export function useSourceApi<T>({
 
   return {
     name: activeSource ?? "",
+    source,
+    setSource,
     loadSource,
     saveSource,
     renameSource,

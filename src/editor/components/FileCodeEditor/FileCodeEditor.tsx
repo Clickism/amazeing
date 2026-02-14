@@ -18,7 +18,8 @@ export function FileCodeEditor({
   transitionDuration,
 }: FileEditorProps) {
   const { t } = useTranslation();
-  const { name, loadSource } = useFileSource();
+  const sourceApi = useFileSource();
+  const { name, loadSource } = sourceApi;
   return (
     <CodeEditorWithPanel
       title={name}
@@ -27,7 +28,7 @@ export function FileCodeEditor({
       editorExtensions={editorExtensions}
       transitionDuration={transitionDuration}
       topBar={{
-        left: [<FileControls />],
+        left: [<FileControls sourceApi={sourceApi} />],
       }}
       panel={{
         name: t("codeEditor.files"),

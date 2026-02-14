@@ -139,3 +139,33 @@ export class Maze {
     return row[x];
   }
 }
+
+/**
+ * Resizes the maze to the new dimensions, preserving existing walls where possible.
+ * @param maze The maze to resize
+ * @param newWidth The new width of the maze
+ * @param newHeight The new height of the maze
+ */
+export function resizeMaze(
+  maze: MazeData,
+  newWidth: number,
+  newHeight: number,
+): MazeData {
+  const newMazeData = createEmptyMazeData(newWidth, newHeight, maze.theme);
+
+  // Copy existing horizontal walls
+  for (let y = 0; y < Math.min(maze.height - 1, newHeight - 1); y++) {
+    for (let x = 0; x < Math.min(maze.width, newWidth); x++) {
+      newMazeData.walls.horizontal[y][x] = maze.walls.horizontal[y][x];
+    }
+  }
+
+  // Copy existing vertical walls
+  for (let y = 0; y < Math.min(maze.height, newHeight); y++) {
+    for (let x = 0; x < Math.min(maze.width - 1, newWidth - 1); x++) {
+      newMazeData.walls.vertical[y][x] = maze.walls.vertical[y][x];
+    }
+  }
+
+  return newMazeData;
+}

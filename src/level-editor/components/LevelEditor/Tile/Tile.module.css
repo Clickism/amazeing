@@ -4,18 +4,17 @@
   box-sizing: border-box;
   display: inline-block;
   --background-color: var(--clr-surface-a10);
+  background-color: var(--background-color);
   border-radius: .5rem;
   padding: 0;
 }
 
 .startTile {
-  outline: 4px solid var(--clr-success-a0)
-}
-
-.startArrow {
-  fill: var(--clr-success-a0);
+  --background-color: var(--clr-success-a0);
+  border-color: var(--clr-success-a10);
 }
 
 .finishTile {
-  outline: 4px solid var(--clr-danger-a10)
+  --background-color: var(--clr-danger-a10);
+  border-color: var(--clr-danger-a20);
 }

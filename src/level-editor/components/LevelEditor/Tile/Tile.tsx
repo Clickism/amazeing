@@ -8,17 +8,16 @@ import {
   isPositionEqual,
   type Position,
 } from "../../../../interpreter/types.ts";
-import type { LevelEditorState } from "../../../state.ts";
 import { ImExit } from "react-icons/im";
 import { getDirectionIcon } from "../../../utils.tsx";
+import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
 
 type TileProps = {
-  editor: LevelEditorState;
   position: Position;
 } & ButtonProps;
 
-export function Tile({ editor, position, ...props }: TileProps) {
-  const level = editor.level;
+export function Tile({ position, ...props }: TileProps) {
+  const { source: level } = useLevelSource();
   const isStart = isPositionEqual(level.owlStart.position, position);
   const isFinish = isPositionEqual(level.finishPosition, position);
   return (
@@ -37,7 +36,7 @@ export function Tile({ editor, position, ...props }: TileProps) {
           className: styles.startArrow,
           size: 32,
         })}
-      {isFinish && <ImExit size={28} fill={"var(--clr-danger-a10)"} />}
+      {isFinish && <ImExit size={28} />}
     </Button>
   );
 }

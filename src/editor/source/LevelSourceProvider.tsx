@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { LevelSourceContext } from "./SourceContext.tsx";
 import type { LevelData } from "../../game/level.ts";
@@ -28,6 +28,16 @@ export function LevelSourceProvider({
     renameLevel,
     fileNamespace,
   } = useLevelStorage();
+  const fileStorage = useMemo(
+    () => ({
+      fileNames: levelNames,
+      loadFile: loadLevel,
+      saveFile: saveLevel,
+      deleteFile: deleteLevel,
+      renameFile: renameLevel,
+    }),
+    [deleteLevel, levelNames, loadLevel, renameLevel, saveLevel],
+  );
   const sourceApi = useSourceApi<LevelData>({
     source: level,
     setSource: setLevel,
@@ -40,13 +50,7 @@ export function LevelSourceProvider({
       const content = emptyLevelData();
       return { name, content };
     },
-    fileStorage: {
-      fileNames: levelNames,
-      loadFile: loadLevel,
-      saveFile: saveLevel,
-      deleteFile: deleteLevel,
-      renameFile: renameLevel,
-    },
+    fileStorage,
   });
 
   return (

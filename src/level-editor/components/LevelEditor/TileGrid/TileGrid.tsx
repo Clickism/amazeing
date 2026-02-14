@@ -3,25 +3,45 @@ import { Fragment } from "react";
 import { Tile } from "../Tile/Tile.tsx";
 import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
-import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
-import type { Position } from "../../../../interpreter/types.ts";
 import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
+import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
+import { TilePlacer } from "./TilePlacer/TilePlacer.tsx";
+import { useTranslation } from "react-i18next";
 
-type TileGridProps = {
-  editor: LevelEditorState;
-  dispatch: LevelEditorDispatch;
-};
-
-export function TileGrid({ editor, dispatch }: TileGridProps) {
-  const maze = editor.level.maze;
-  const onTileClick = (position: Position) => {
-    editor.tileTool.onTileClick(editor, dispatch, position);
-  };
-  const onWallClick = (position: Position, horizontal: boolean) => {
-    editor.wallTool.onWallClick(editor, dispatch, position, horizontal);
-  };
+export function TileGrid() {
+  const { t } = useTranslation();
+  const { source: level, setSource: setLevel } = useLevelSource();
+  const maze = level.maze;
   const rows = Array.from({ length: maze.height });
   const columns = Array.from({ length: maze.width });
+
+  const onWallClick = (
+    position: { x: number; y: number },
+    horizontal: boolean,
+  ) => {
+    const walls = level.maze.walls;
+    const currentWall = horizontal
+      ? walls.horizontal[position.y][position.x]
+      : walls.vertical[position.y][position.x];
+    const newWall = !currentWall;
+    if (horizontal) {
+      walls.horizontal[position.y][position.x] = newWall;
+    } else {
+      walls.vertical[position.y][position.x] = newWall;
+    }
+    setLevel({
+      ...level,
+      maze: {
+        ...level.maze,
+        walls: {
+          ...walls,
+          horizontal: walls.horizontal,
+          vertical: walls.vertical,
+        },
+      },
+    });
+  };
+
   return (
     <div className={styles.grid}>
       {rows.map((_, row) => (
@@ -29,31 +49,12 @@ export function TileGrid({ editor, dispatch }: TileGridProps) {
           <div className={styles.gridRow}>
             {columns.map((_, col) => (
               <Fragment key={col}>
-                {/*Tiles*/}
-                {editor.tileTool.tilePopup ? (
-                  <Popover
-                    onOpen={() => {
-                      onTileClick({ x: col, y: row });
-                    }}
-                    trigger={
-                      <Tile
-                        editor={editor}
-                        position={{ x: col, y: row }}
-                      />
-                    }
-                  >
-                    {editor.tileTool.tilePopup(editor, dispatch, {
-                      x: col,
-                      y: row,
-                    })}
-                  </Popover>
-                ) : (
-                  <Tile
-                    editor={editor}
-                    position={{ x: col, y: row }}
-                    onClick={() => onTileClick({ x: col, y: row })}
-                  />
-                )}
+                <Popover
+                  title={t("levelEditor.tools.tileOptions")}
+                  trigger={<Tile position={{ x: col, y: row }} />}
+                >
+                  <TilePlacer position={{ x: col, y: row }} />
+                </Popover>
 
                 {/*Horizontal Walls*/}
                 {col < maze.width - 1 && (
