@@ -55,32 +55,34 @@
   "button.saved": "Gespeichert!",
 
   "levelEditor.title": "Level-Editor",
-  "levelEditor.headers.tileTool": "Tile-Tool",
-  "levelEditor.headers.wallTool": "Wand-Tool",
-  "levelEditor.headers.theme": "Level-Thema",
-  "levelEditor.headers.mazeSize": "Mazegröße",
+  "levelEditor.headers.mode": "",
+  "levelEditor.headers.maze": "Maze",
   "levelEditor.headers.tools": "Tools",
-  "levelEditor.headers.metadata": "Metadaten",
   "levelEditor.headers.actions": "Aktionen",
+
+  "levelEditor.modes.visualize": "Visualisieren",
+  "levelEditor.modes.edit": "Bearbeiten",
 
   "levelEditor.tools.width": "Breite",
   "levelEditor.tools.height": "Höhe",
-  "levelEditor.tools.mazeTheme": "Maze-Thema",
+  "levelEditor.tools.mazeTheme": "Thema",
   "levelEditor.tools.tileOptions": "Tile-Eigenschaften",
   "levelEditor.tools.tileOptions.start": "Start platzieren",
   "levelEditor.tools.tileOptions.finish": "Ziel platzieren",
   "levelEditor.tools.fillAllWalls": "Alle Wände füllen",
   "levelEditor.tools.clearAllWalls": "Alle Wände leeren",
 
-  "levelEditor.export.export": "Exportieren",
-  "levelEditor.export.levelName": "Level-Name",
-  "levelEditor.export.levelTitle": "Level-Titel",
-  "levelEditor.export.levelDescription": "Level-Beschreibung",
-  "levelEditor.export.actions.visualizeMaze": "Maze visualisieren",
-  "levelEditor.export.actions.editMaze": "Maze bearbeiten",
-  "levelEditor.export.actions.exportJSON": "Aufgabe-Json exportieren",
-  "levelEditor.export.actions.exportJSON.modal": "Exportiertes Aufgabe-Json",
-  "levelEditor.export.actions.reset": "Zurücksetzen",
+  "levelEditor.actions.exportTask": "Aufgabe exportieren",
+  "levelEditor.actions.reset": "Zurücksetzen",
+
+  "levelEditor.taskExport.taskMeta": "Aufgabe-Metadaten",
+  "levelEditor.taskExport.taskMeta.title": "Aufgabetitel",
+  "levelEditor.taskExport.taskMeta.description": "Aufgabebeschreibung",
+  "levelEditor.taskExport.exportJson": "Json exportieren",
+  "levelEditor.taskExport.exportedJson": "Exportiertes Aufgabe-Json",
+
+  "levelEditor.taskExport.taskMeta.default.title": "Unbenannte Aufgabe",
+  "levelEditor.taskExport.taskMeta.default.description": "Keine Beschreibung vorhanden.",
 
   "levelList.newLevel": "Neues Level",
 
@@ -88,7 +90,8 @@
   "maze.theme.drylands": "Drylands",
   "maze.theme.lava": "Lava",
 
-  "viewport.levelSelector.title": "Level auswählen",
+  "levelSelector.title": "Level auswählen",
+  "levelSelector.level": "Aktives Level",
 
   "home.tasks.day1.title": "1. Tag: Erste Schritte",
   "home.tasks.day1.description": "Getting started with AmazeingASM, simple maze algorithms.",

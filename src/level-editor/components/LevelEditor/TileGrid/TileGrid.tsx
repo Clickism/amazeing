@@ -5,7 +5,7 @@ import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
 import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
 import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
-import { TilePlacer } from "./TilePlacer/TilePlacer.tsx";
+import { TileProperties } from "./TileProperties/TileProperties.tsx";
 import { useTranslation } from "react-i18next";
 
 export function TileGrid() {
@@ -54,7 +54,7 @@ export function TileGrid() {
                   noTooltip
                   trigger={<Tile position={{ x: col, y: row }} />}
                 >
-                  <TilePlacer position={{ x: col, y: row }} />
+                  <TileProperties position={{ x: col, y: row }} />
                 </Popover>
 
                 {/*Horizontal Walls*/}

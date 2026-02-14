@@ -9,14 +9,16 @@
 .trigger {
   display: inline-flex;
   align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .body {
-  background: var(--clr-surface-a10);
+  background: var(--clr-surface-a5);
   border: 1px solid var(--clr-surface-a20);
   box-sizing: border-box;
   padding: 1rem;
   border-radius: 1rem;
 
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.6);
 }

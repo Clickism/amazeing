@@ -20,7 +20,7 @@ await i18n
 
 export type Translatable = string | TranslationKey | PackagedTranslation;
 export type TranslationKey = { key: string };
-export type PackagedTranslation = Record<Language, string>;
+export type PackagedTranslation = Partial<Record<Language, string>>;
 
 export function isTranslationKey(t: Translatable): t is TranslationKey {
   return typeof t === "object" && "key" in t;
@@ -61,7 +61,9 @@ export function tryTranslate(
 ): string {
   if (isPackagedTranslation(translatable)) {
     const currentLanguage = i18n.language as Language;
-    return translatable[currentLanguage] || translatable[FALLBACK_LANGUAGE];
+    return (
+      translatable[currentLanguage] ?? translatable[FALLBACK_LANGUAGE] ?? ""
+    );
   }
   if (isTranslationKey(translatable)) {
     return t(translatable.key, parameters);
@@ -72,6 +74,17 @@ export function tryTranslate(
     return t(translatable, parameters);
   }
   return translatable;
+}
+
+export function packageTranslation(
+  key: string,
+  parameters: TranslationParameters = {},
+): PackagedTranslation {
+  const translation: PackagedTranslation = {};
+  SUPPORTED_LANGUAGES.forEach((lang) => {
+    translation[lang] = i18n.t(key, { ...parameters, lng: lang });
+  });
+  return translation;
 }
 
 export type DefaultTranslator = ReturnType<typeof useTranslation>["t"];

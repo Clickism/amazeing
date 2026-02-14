@@ -9,7 +9,7 @@ import { getDirectionIcon } from "../../../../utils.tsx";
 import { useLevelSource } from "../../../../../editor/source/SourceContext.tsx";
 import { useTranslation } from "react-i18next";
 
-export function TilePlacer({ position }: { position: Position }) {
+export function TileProperties({ position }: { position: Position }) {
   const { source: level, setSource: setLevel } = useLevelSource();
   const { t } = useTranslation();
   return (
@@ -21,7 +21,6 @@ export function TilePlacer({ position }: { position: Position }) {
         {CARDINAL_DIRECTIONS.map((direction) => (
           <Button
             key={direction}
-            variant="outlined"
             disabled={isPositionEqual(level.finishPosition, position)}
             onClick={() => {
               setLevel({
@@ -41,7 +40,6 @@ export function TilePlacer({ position }: { position: Position }) {
         {t("levelEditor.tools.tileOptions.finish")}
       </h6>
       <Button
-        variant="outlined"
         disabled={isPositionEqual(level.owlStart.position, position)}
         onClick={() => {
           setLevel({
@@ -50,7 +48,7 @@ export function TilePlacer({ position }: { position: Position }) {
           });
         }}
       >
-        Place Finish
+        {t("levelEditor.tools.tileOptions.finish")}
       </Button>
     </ButtonGroup>
   );

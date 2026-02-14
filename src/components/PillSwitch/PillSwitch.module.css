@@ -1,0 +1,52 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  padding: .25rem;
+  width: 100%;
+  border-radius: .625rem;
+  background: var(--clr-surface-a10);
+  border: 1px solid var(--clr-surface-a20);
+}
+
+.buttonContainer {
+  flex: 1;
+  position: relative;
+}
+
+.pillButton {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 1.75rem;
+  cursor: pointer;
+  padding: 0 1rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  color: var(--text-color-t80);
+  transition: color .2s;
+  font-weight: 600;
+}
+
+.indicator {
+  position: absolute;
+  inset: 0;
+  background: var(--clr-surface-a20);
+  border-radius: .5rem;
+}
+
+.indicator:hover {
+  background: var(--clr-surface-a30);
+}
+
+.selected {
+  color: var(--text-color);
+}
+
+.pillButton:hover {
+  color: var(--text-color);
+}

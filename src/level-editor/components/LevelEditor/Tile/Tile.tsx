@@ -8,9 +8,9 @@ import {
   isPositionEqual,
   type Position,
 } from "../../../../interpreter/types.ts";
-import { ImExit } from "react-icons/im";
 import { getDirectionIcon } from "../../../utils.tsx";
 import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
+import { FaFlag } from "react-icons/fa6";
 
 type TileProps = {
   position: Position;
@@ -36,7 +36,7 @@ export function Tile({ position, ...props }: TileProps) {
           className: styles.startArrow,
           size: 32,
         })}
-      {isFinish && <ImExit size={28} />}
+      {isFinish && <FaFlag size={28} />}
     </Button>
   );
 }

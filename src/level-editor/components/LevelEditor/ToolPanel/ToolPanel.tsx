@@ -1,20 +1,24 @@
-import { FormGroup } from "../../../../components/Form/FormGroup/FormGroup.tsx";
-import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
 import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../../../components/Button/Button.tsx";
 import { useTranslation } from "react-i18next";
 import { GENERAL_TOOLS } from "../../../tools.tsx";
 import { tryTranslate } from "../../../../i18n/i18n.ts";
-import { MAZE_THEMES, type MazeTheme } from "../../../../game/maze.ts";
 import { CornerGroup } from "../../../../components/CornerGroup/CornerGroup.tsx";
 import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
 import styles from "./ToolPanel.module.css";
 import { FileControls } from "../../../../editor/components/FileCodeEditor/FileControls/FileControls.tsx";
-import { resizeLevel } from "../../../../game/level.ts";
+import { PillSwitch } from "../../../../components/PillSwitch/PillSwitch.tsx";
+import { TaskExport } from "./TaskExport/TaskExport.tsx";
+import { emptyLevelData } from "../../../state.ts";
+import { VscDebugRestart } from "react-icons/vsc";
+import { MazeProperties } from "./MazeProperties/MazeProperties.tsx";
 
-const MAX_MAZE_SIZE = 50;
+type ToolPanelProps = {
+  visualize: boolean;
+  setVisualize: (visualize: boolean) => void;
+};
 
-export function ToolPanel() {
+export function ToolPanel({ visualize, setVisualize }: ToolPanelProps) {
   const { t } = useTranslation();
   const sourceApi = useLevelSource();
   const {
@@ -33,55 +37,21 @@ export function ToolPanel() {
 
       <div className={styles.separator} />
 
-      <h5>{t("levelEditor.headers.mazeSize")}</h5>
-      <FormGroup horizontal stretch>
-        <FormField label={t("levelEditor.tools.width")}>
-          <input
-            type="number"
-            value={level.maze.width}
-            min={2}
-            max={MAX_MAZE_SIZE}
-            onChange={(e) => {
-              const width = Number(e.target.value);
-              setLevel(resizeLevel(level, width, level.maze.height));
-            }}
-          />
-        </FormField>
-        <FormField label={t("levelEditor.tools.height")}>
-          <input
-            type="number"
-            value={level.maze.height}
-            min={2}
-            max={MAX_MAZE_SIZE}
-            onChange={(e) => {
-              const height = Number(e.target.value);
-              setLevel(resizeLevel(level, level.maze.width, height));
-            }}
-          />
-        </FormField>
-      </FormGroup>
-      <FormGroup horizontal stretch>
-        <FormField label={t("levelEditor.tools.mazeTheme")}>
-          <select
-            value={level.maze.theme}
-            onChange={(e) =>
-              setLevel({
-                ...level,
-                maze: {
-                  ...level.maze,
-                  theme: e.target.value as MazeTheme,
-                },
-              })
-            }
-          >
-            {MAZE_THEMES.map((theme, i) => (
-              <option key={i} value={theme}>
-                {t(`maze.theme.${theme}`)}
-              </option>
-            ))}
-          </select>
-        </FormField>
-      </FormGroup>
+      <h5>{t("levelEditor.headers.mode")}</h5>
+
+      <PillSwitch
+        layoutId="tool-mode-switch"
+        options={[
+          { id: "edit", name: t("levelEditor.modes.edit") },
+          { id: "visualize", name: t("levelEditor.modes.visualize") },
+        ]}
+        selectedOptionId={visualize ? "visualize" : "edit"}
+        onSelect={(id: string) => setVisualize(id === "visualize")}
+      />
+
+      <h5>{t("levelEditor.headers.maze")}</h5>
+
+      <MazeProperties />
 
       <h5>{t("levelEditor.headers.tools")}</h5>
 
@@ -91,6 +61,21 @@ export function ToolPanel() {
             {tryTranslate(t, generalTool.name)}
           </Button>
         ))}
+      </ButtonGroup>
+
+      <h5>{t("levelEditor.headers.actions")}</h5>
+
+      <ButtonGroup vertical stretch>
+        <TaskExport />
+        <Button
+          variant="danger"
+          onClick={() => {
+            setLevel(emptyLevelData());
+          }}
+        >
+          <VscDebugRestart />
+          {t("levelEditor.actions.reset")}
+        </Button>
       </ButtonGroup>
     </>
   );

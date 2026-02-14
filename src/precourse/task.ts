@@ -1,5 +1,9 @@
 import { type LevelData } from "../game/level.ts";
-import type { Translatable } from "../i18n/i18n.ts";
+import {
+  type PackagedTranslation,
+  SUPPORTED_LANGUAGES,
+  type Translatable,
+} from "../i18n/i18n.ts";
 
 export type TaskData = {
   /**
@@ -33,3 +37,41 @@ export type Task = {
    */
   taskNumber: number | null;
 } & TaskData;
+
+/**
+ * Converts a LevelData object into a JSON string that represents a TaskData object.
+ * @param level The LevelData object to convert.
+ */
+export function stringifyToTask(level: LevelData): string {
+  const task: TaskData = {
+    title: reorderLanguageKeys(
+      level.taskMeta?.title ?? {
+        en: "Untitled Task",
+        de: "Unbenannte Aufgabe",
+      },
+    ),
+    description: reorderLanguageKeys(
+      level.taskMeta?.description ?? {
+        en: "No description provided.",
+        de: "Keine Beschreibung angegeben.",
+      },
+    ),
+    levelData: {
+      ...level,
+      taskMeta: undefined,
+    },
+  };
+  return JSON.stringify(task, null, 2);
+}
+
+function reorderLanguageKeys(
+  translation: PackagedTranslation,
+): PackagedTranslation {
+  const orderedTranslation: PackagedTranslation = {};
+  SUPPORTED_LANGUAGES.forEach((lang) => {
+    if (lang in translation) {
+      orderedTranslation[lang] = translation[lang];
+    }
+  });
+  return orderedTranslation;
+}

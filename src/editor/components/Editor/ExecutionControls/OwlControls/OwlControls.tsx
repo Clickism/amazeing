@@ -22,19 +22,18 @@ export function OwlControls() {
       }
     >
       <ButtonGroup>
-        <Button variant="outlined" onClick={() => owl.turn("left")}>
+        <Button  onClick={() => owl.turn("left")}>
           <IoArrowBack />
           {t("editor.owlControls.left")}
         </Button>
         <Button
           disabled={!canMove}
-          variant="outlined"
           onClick={() => owl.move()}
         >
           <IoArrowUp />
           {t("editor.owlControls.move")}
         </Button>
-        <Button variant="outlined" onClick={() => owl.turn("right")}>
+        <Button  onClick={() => owl.turn("right")}>
           <IoArrowForward />
           {t("editor.owlControls.right")}
         </Button>

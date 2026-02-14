@@ -5,6 +5,7 @@ import {
   type Position,
 } from "../interpreter/types.ts";
 import { type OwlData } from "./owl.ts";
+import type { PackagedTranslation } from "../i18n/i18n.ts";
 
 export type LevelData = {
   /**
@@ -17,6 +18,15 @@ export type LevelData = {
     direction: CardinalDirection;
   };
   finishPosition: Position;
+
+  /**
+   * Task metadata for the level, used for saving task metadata
+   * for the custom level storage.
+   */
+  taskMeta?: {
+    title?: PackagedTranslation;
+    description?: PackagedTranslation;
+  };
 };
 
 /**

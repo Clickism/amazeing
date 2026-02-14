@@ -20,8 +20,9 @@ export function CopyToClipboard({
           <div style={{ fontWeight: "bold" }}>{t("button.copied")}</div>
         ) : (
           <>
-            {t("button.copyToClipboard")}
             <FaCopy />
+
+            {t("button.copyToClipboard")}
           </>
         )
       }

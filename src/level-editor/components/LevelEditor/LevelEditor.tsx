@@ -5,7 +5,6 @@ import { Viewport } from "../../../editor/components/Viewport/Viewport.tsx";
 import { Level } from "../../../game/level.ts";
 import { TileGrid } from "./TileGrid/TileGrid.tsx";
 import { ToolPanel } from "./ToolPanel/ToolPanel.tsx";
-import { ExportPanel } from "./ExportPanel/ExportPanel.tsx";
 import { LevelList } from "./LevelList/LevelList.tsx";
 import { Panel } from "../../../components/Panel/Panel.tsx";
 import { PanelContainer } from "../../../components/PanelContainer/PanelContainer.tsx";
@@ -23,8 +22,7 @@ export function LevelEditor() {
         minPixels={[300, 400, 210]}
       >
         <Panel className="fancy-headers">
-          <ToolPanel />
-          <ExportPanel visualize={visualize} setVisualize={setVisualize} />
+          <ToolPanel visualize={visualize} setVisualize={setVisualize} />
         </Panel>
         <Panel paddingless className={styles.gridWindow}>
           {visualize ? (
