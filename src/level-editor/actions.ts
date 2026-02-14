@@ -1,8 +1,4 @@
-import {
-  createEmptyMazeData,
-  type TileType,
-  type WallType,
-} from "../game/maze.ts";
+import { createEmptyMazeData, type MazeTheme } from "../game/maze.ts";
 import {
   emptyEditorState,
   fromLevelData,
@@ -16,10 +12,10 @@ export type LevelEditorAction =
   | { type: "setLevel"; level: LevelData }
   | { type: "reset" }
   | { type: "resize"; width: number; height: number }
-  | { type: "setTileType"; tileType: TileType }
-  | { type: "setHorizontalWall"; position: Position; wall: WallType }
-  | { type: "setVerticalWall"; position: Position; wall: WallType }
-  | { type: "setAllWalls"; wall: WallType }
+  | { type: "setMazeTheme"; theme: MazeTheme }
+  | { type: "setHorizontalWall"; position: Position; wall: boolean }
+  | { type: "setVerticalWall"; position: Position; wall: boolean }
+  | { type: "setAllWalls"; wall: boolean }
   | { type: "toggleVisualize" }
   | { type: "setTileTool"; tileTool: TileTool }
   | { type: "setWallTool"; wallTool: WallTool }
@@ -52,14 +48,14 @@ const actionExecutors: ActionExecutors = {
     };
   },
 
-  setTileType: (state, { tileType }) => {
+  setMazeTheme: (state, { theme }) => {
     state = {
       ...state,
       level: {
         ...state.level,
         maze: {
           ...state.level.maze,
-          tileType,
+          theme,
         },
       },
     };

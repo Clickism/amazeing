@@ -15,3 +15,7 @@
   min-height: var(--short-size);
 }
 
+.filledWall {
+  background-color: var(--clr-surface-a50);
+}
+

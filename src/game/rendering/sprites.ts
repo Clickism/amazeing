@@ -1,4 +1,4 @@
-import type { TileType, WallType } from "../maze.ts";
+import type { MazeTheme } from "../maze.ts";
 import type { CardinalDirection } from "../../interpreter/types.ts";
 
 import grass from "../../assets/sprites/game/tilesets/grass.png";
@@ -18,9 +18,9 @@ import owlWest from "../../assets/sprites/game/owl/west.png";
 import finish from "../../assets/sprites/game/finish.png";
 
 export type SpriteMap = {
-  tilesets: Record<Exclude<TileType, null>, HTMLImageElement>;
+  tilesets: Record<MazeTheme, HTMLImageElement>;
   walls: {
-    [key in Exclude<WallType, null>]: {
+    [key in MazeTheme]: {
       horizontal: HTMLImageElement;
       vertical: HTMLImageElement;
     };
@@ -42,16 +42,20 @@ export async function loadSprites(): Promise<SpriteMap> {
 
   return {
     tilesets: {
-      grass: await load(grass),
-      oldgrass: await load(oldgrass),
-      redgrass: await load(redgrass),
+      plains: await load(grass),
+      drylands: await load(oldgrass),
+      lava: await load(redgrass),
     },
     walls: {
-      stone: {
+      plains: {
         horizontal: await load(wallStoneHorizontal),
         vertical: await load(wallStoneVertical),
       },
-      blackstone: {
+      drylands: {
+        horizontal: await load(wallStoneHorizontal),
+        vertical: await load(wallStoneVertical),
+      },
+      lava: {
         horizontal: await load(wallBlackstoneHorizontal),
         vertical: await load(wallBlackstoneVertical),
       },

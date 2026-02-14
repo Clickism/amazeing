@@ -1,0 +1,13 @@
+.cornerGroup {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.title {
+  flex: 1;
+}
+
+.separator {
+  height: 2.25rem;
+}

@@ -9,20 +9,20 @@
   },
   "levelData": {
     "maze": {
-      "tileType": "grass",
+      "theme": "plains",
       "width": 3,
       "height": 3,
       "walls": {
         "horizontal": [
-          [null, null, null],
-          ["stone", null, "stone"],
-          [null, null, null],
-          [null, null, null]
+          [false, false, false],
+          [true, false, true],
+          [false, false, false],
+          [false, false, false]
         ],
         "vertical": [
-          [null, null, null, null],
-          [null, "stone", "stone", null],
-          [null, null, null, null]
+          [false, false, false, false],
+          [false, true, true, false],
+          [false, false, false, false]
         ]
       }
     },

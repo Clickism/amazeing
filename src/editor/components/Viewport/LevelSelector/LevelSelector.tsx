@@ -2,14 +2,10 @@ import { Button } from "../../../../components/Button/Button.tsx";
 import { FaRegMap } from "react-icons/fa";
 import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
-import { Level } from "../../../../game/level.ts";
-import { useLevelStorage } from "../../../../level-editor/storage/LevelStorageContext.tsx";
-import { FormField } from "../../../../components/Form/FormField/FormField.tsx";
-import { useEditorRuntime } from "../../../runtime/EditorRuntimeContext.tsx";
 
 export function LevelSelector() {
   const { t } = useTranslation();
-  const { levelNames, loadLevel } = useLevelStorage();
+  // const { levelNames, loadLevel } = useLevelStorage();
   // const { level, initialLevel, setLevel } = useEditorRuntime();
   return (
     <Popover
@@ -20,6 +16,7 @@ export function LevelSelector() {
         </Button>
       }
     >
+      TODO: Fix
       {/*<FormField label={t("levelSelector.level")}>*/}
       {/*  <select*/}
       {/*    onChange={(e) => {*/}

@@ -1,35 +1,33 @@
 import { type CardinalDirection, type Position } from "../interpreter/types.ts";
 
 export type MazeData = {
-  tileType: TileType;
+  theme: MazeTheme;
   width: number;
   height: number;
   walls: {
-    horizontal: WallType[][];
-    vertical: WallType[][];
+    horizontal: boolean[][];
+    vertical: boolean[][];
   };
 };
 
-export type TileType = "grass" | "oldgrass" | "redgrass";
-export type WallType = "stone" | "blackstone" | null;
+export type MazeTheme = "plains" | "drylands" | "lava";
 
-export const TILE_TYPES: TileType[] = ["grass", "oldgrass", "redgrass"];
-export const WALL_TYPES: WallType[] = ["stone", "blackstone"];
+export const MAZE_THEMES: MazeTheme[] = ["plains", "drylands", "lava"];
 
 export function createEmptyMazeData(
   width: number,
   height: number,
-  tileType: TileType = "grass",
+  theme: MazeTheme = "plains",
 ): MazeData {
-  const horizontalWalls: WallType[][] = Array.from({ length: height - 1 }, () =>
-    Array.from({ length: width }, () => null),
+  const horizontalWalls: boolean[][] = Array.from({ length: height - 1 }, () =>
+    Array.from({ length: width }, () => false),
   );
-  const verticalWalls: WallType[][] = Array.from({ length: height }, () =>
-    Array.from({ length: width - 1 }, () => null),
+  const verticalWalls: boolean[][] = Array.from({ length: height }, () =>
+    Array.from({ length: width - 1 }, () => false),
   );
 
   return {
-    tileType,
+    theme,
     width,
     height,
     walls: {
@@ -83,7 +81,7 @@ export class Maze {
    * @param position
    * @param direction
    */
-  wallAt(position: Position, direction: CardinalDirection): WallType | null {
+  wallAt(position: Position, direction: CardinalDirection): boolean {
     const { x, y } = position;
     switch (direction) {
       case "north":
@@ -97,48 +95,46 @@ export class Maze {
     }
   }
 
-  forEachHorizontalWall(
-    callback: (position: Position, wall: WallType) => void,
-  ) {
+  forEachHorizontalWall(callback: (position: Position) => void) {
     this.data.walls.horizontal.forEach((row, y) => {
       row.forEach((wall, x) => {
-        if (wall !== null) {
-          callback({ x, y }, wall);
+        if (wall) {
+          callback({ x, y });
         }
       });
     });
   }
 
-  forEachVerticalWall(callback: (position: Position, wall: WallType) => void) {
+  forEachVerticalWall(callback: (position: Position) => void) {
     this.data.walls.vertical.forEach((row, y) => {
       row.forEach((wall, x) => {
-        if (wall !== null) {
-          callback({ x, y }, wall);
+        if (wall) {
+          callback({ x, y });
         }
       });
     });
   }
 
-  private horizontalWallAt(position: Position): WallType {
+  private horizontalWallAt(position: Position): boolean {
     const { x, y } = position;
     if (y < 0 || y >= this.data.walls.horizontal.length) {
-      return null;
+      return false;
     }
     const row = this.data.walls.horizontal[y];
     if (x < 0 || x >= row.length) {
-      return null;
+      return false;
     }
     return row[x];
   }
 
-  private verticalWallAt(position: Position): WallType {
+  private verticalWallAt(position: Position): boolean {
     const { x, y } = position;
     if (y < 0 || y >= this.data.walls.vertical.length) {
-      return null;
+      return false;
     }
     const row = this.data.walls.vertical[y];
     if (x < 0 || x >= row.length) {
-      return null;
+      return false;
     }
     return row[x];
   }

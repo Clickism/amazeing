@@ -1,11 +1,11 @@
 import type { CardinalDirection } from "../interpreter/types.ts";
 import type { IconBaseProps } from "react-icons";
 import {
-  FaArrowCircleDown,
-  FaArrowCircleLeft,
-  FaArrowCircleRight,
-  FaArrowCircleUp,
-} from "react-icons/fa";
+  IoArrowBack,
+  IoArrowDown,
+  IoArrowForward,
+  IoArrowUp,
+} from "react-icons/io5";
 
 export function getDirectionIcon(
   direction: CardinalDirection,
@@ -13,12 +13,12 @@ export function getDirectionIcon(
 ) {
   switch (direction) {
     case "north":
-      return <FaArrowCircleUp {...props} />;
+      return <IoArrowUp {...props} />;
     case "east":
-      return <FaArrowCircleRight {...props} />;
+      return <IoArrowForward {...props} />;
     case "south":
-      return <FaArrowCircleDown {...props} />;
+      return <IoArrowDown {...props} />;
     case "west":
-      return <FaArrowCircleLeft {...props} />;
+      return <IoArrowBack {...props} />;
   }
 }

@@ -1,4 +1,3 @@
-import type { TileType } from "../../../../game/maze.ts";
 import {
   Button,
   type ButtonProps,
@@ -11,16 +10,14 @@ import {
 } from "../../../../interpreter/types.ts";
 import type { LevelEditorState } from "../../../state.ts";
 import { ImExit } from "react-icons/im";
-import type { CSSProperties } from "react";
 import { getDirectionIcon } from "../../../utils.tsx";
 
 type TileProps = {
-  tile: TileType;
   editor: LevelEditorState;
   position: Position;
 } & ButtonProps;
 
-export function Tile({ tile, editor, position, ...props }: TileProps) {
+export function Tile({ editor, position, ...props }: TileProps) {
   const level = editor.level;
   const isStart = isPositionEqual(level.owlStart.position, position);
   const isFinish = isPositionEqual(level.finishPosition, position);
@@ -29,15 +26,9 @@ export function Tile({ tile, editor, position, ...props }: TileProps) {
       variant="none"
       className={clsx(
         styles.tile,
-        styles[`tile-${tile}`],
         isStart && styles.startTile,
         isFinish && styles.finishTile,
       )}
-      style={
-        {
-          "--background-color": tile ? `var(--tile-color-${tile})` : undefined,
-        } as CSSProperties
-      }
       {...props}
       flex
     >

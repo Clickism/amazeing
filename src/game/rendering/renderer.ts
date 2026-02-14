@@ -1,4 +1,3 @@
-import { type WallType } from "../maze.ts";
 import type { OwlData } from "../owl.ts";
 import type { Position } from "../../interpreter/types.ts";
 import type { SpriteMap } from "./sprites.ts";
@@ -95,7 +94,7 @@ export class Renderer {
       for (let x = -1; x <= cols; x++) {
         const hasTile = this.hasFakeTileAt({ x, y });
         if (!hasTile) continue;
-        const tileset = this.sprites.tilesets[maze.data.tileType];
+        const tileset = this.sprites.tilesets[maze.data.theme];
         this.drawTilesetTile(tileset, { x, y });
       }
     }
@@ -103,11 +102,11 @@ export class Renderer {
 
   drawWalls() {
     const maze = this.level.maze;
-    maze.forEachHorizontalWall((position, wall) => {
-      this.drawHorizontalWall(position, wall);
+    maze.forEachHorizontalWall((position) => {
+      this.drawHorizontalWall(position);
     });
-    maze.forEachVerticalWall((position, wall) => {
-      this.drawVerticalWall(position, wall);
+    maze.forEachVerticalWall((position) => {
+      this.drawVerticalWall(position);
     });
     this.drawOuterWalls();
   }
@@ -116,30 +115,29 @@ export class Renderer {
     const maze = this.level.maze;
     const rows = maze.height();
     const cols = maze.width();
-    const outerWall = "stone";
     for (let x = 0; x < cols; x++) {
-      this.drawHorizontalWall({ x, y: -1 }, outerWall);
-      this.drawHorizontalWall({ x, y: rows - 1 }, outerWall);
+      this.drawHorizontalWall({ x, y: -1 });
+      this.drawHorizontalWall({ x, y: rows - 1 });
     }
     for (let y = 0; y < rows; y++) {
-      this.drawVerticalWall({ x: -1, y }, outerWall);
-      this.drawVerticalWall({ x: cols - 1, y }, outerWall);
+      this.drawVerticalWall({ x: -1, y });
+      this.drawVerticalWall({ x: cols - 1, y });
     }
   }
 
-  drawHorizontalWall(position: Position, wall: WallType) {
-    if (!wall) return;
+  drawHorizontalWall(position: Position) {
     const x = position.x;
     const y = position.y + 0.5;
-    const img = this.sprites.walls[wall].horizontal;
+    const theme = this.level.maze.data.theme;
+    const img = this.sprites.walls[theme].horizontal;
     this.drawImageAt(img, { x, y });
   }
 
-  drawVerticalWall(position: Position, wall: WallType) {
-    if (!wall) return;
+  drawVerticalWall(position: Position) {
     const x = position.x + 0.5;
     const y = position.y;
-    const img = this.sprites.walls[wall].vertical;
+    const theme = this.level.maze.data.theme;
+    const img = this.sprites.walls[theme].vertical;
     this.drawImageAt(img, { x, y });
   }
 

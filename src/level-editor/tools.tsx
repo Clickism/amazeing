@@ -2,7 +2,6 @@ import type { Translatable } from "../i18n/i18n.ts";
 import { CARDINAL_DIRECTIONS, type Position } from "../interpreter/types.ts";
 import type { ReactNode } from "react";
 import type { LevelEditorDispatch, LevelEditorState } from "./state.ts";
-import { type TileType, WALL_TYPES, type WallType } from "../game/maze.ts";
 import { ButtonGroup } from "../components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../components/Button/Button.tsx";
 import { getDirectionIcon } from "./utils.tsx";
@@ -22,7 +21,6 @@ export type TileTool = BaseTool & {
     dispatch: LevelEditorDispatch,
     position: Position,
   ) => ReactNode;
-  tileType?: TileType;
 };
 
 export type WallTool = BaseTool & {
@@ -32,7 +30,6 @@ export type WallTool = BaseTool & {
     position: Position,
     horizontal: boolean,
   ) => void;
-  wallType?: WallType;
 };
 
 export type GeneralTool = BaseTool & {
@@ -40,6 +37,44 @@ export type GeneralTool = BaseTool & {
 };
 
 export const TILE_TOOLS: TileTool[] = [
+  {
+    name: "Start/Finish",
+    onTileClick: () => {},
+    tilePopup: (_, dispatch, position) => (
+      <ButtonGroup vertical stretch>
+        <h6>Place Start</h6>
+        <ButtonGroup>
+          {CARDINAL_DIRECTIONS.map((direction) => (
+            <Button
+              key={direction}
+              variant="outlined"
+              onClick={() => {
+                dispatch({
+                  type: "setStart",
+                  position,
+                  direction,
+                });
+              }}
+            >
+              {getDirectionIcon(direction, { size: 22 })}
+            </Button>
+          ))}
+        </ButtonGroup>
+        <h6>Place Finish</h6>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            dispatch({
+              type: "setFinish",
+              position,
+            });
+          }}
+        >
+          Place Finish
+        </Button>
+      </ButtonGroup>
+    ),
+  },
   {
     name: { key: "levelEditor.tools.start" },
     onTileClick: (editor, dispatch, position) => {
@@ -79,39 +114,34 @@ export const TILE_TOOLS: TileTool[] = [
   },
 ];
 
-export const WALL_TOOLS = [
-  ...WALL_TYPES.map(
-    (wall) =>
-      ({
-        name: { key: `wall.${wall}` },
-        onWallClick: (editor, dispatch, position, horizontal) => {
-          const currentWall = horizontal
-            ? editor.level.maze.walls.horizontal[position.y][position.x]
-            : editor.level.maze.walls.vertical[position.y][position.x];
-          const newWall = currentWall === wall ? null : wall;
-          if (horizontal) {
-            dispatch({ type: "setHorizontalWall", position, wall: newWall });
-          } else {
-            dispatch({ type: "setVerticalWall", position, wall: newWall });
-          }
-        },
-        wallType: wall,
-      }) as WallTool,
-  ),
+export const WALL_TOOLS: WallTool[] = [
+  {
+    name: { key: "wall" },
+    onWallClick: (editor, dispatch, position, horizontal) => {
+      const currentWall = horizontal
+        ? editor.level.maze.walls.horizontal[position.y][position.x]
+        : editor.level.maze.walls.vertical[position.y][position.x];
+      const newWall = !currentWall;
+      if (horizontal) {
+        dispatch({ type: "setHorizontalWall", position, wall: newWall });
+      } else {
+        dispatch({ type: "setVerticalWall", position, wall: newWall });
+      }
+    },
+  },
 ];
 
 export const GENERAL_TOOLS: GeneralTool[] = [
   {
     name: { key: "levelEditor.tools.fillAllWalls" },
-    onClick: (editor, dispatch) => {
-      const selectedWall = editor.wallTool.wallType ?? null;
-      dispatch({ type: "setAllWalls", wall: selectedWall });
+    onClick: (_, dispatch) => {
+      dispatch({ type: "setAllWalls", wall: true });
     },
   },
   {
     name: { key: "levelEditor.tools.clearAllWalls" },
     onClick: (_, dispatch) => {
-      dispatch({ type: "setAllWalls", wall: null });
+      dispatch({ type: "setAllWalls", wall: false });
     },
   },
 ];

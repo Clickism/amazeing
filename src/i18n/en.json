@@ -64,6 +64,7 @@
   "levelEditor.headers.actions": "Actions",
   "levelEditor.tools.width": "Width",
   "levelEditor.tools.height": "Height",
+  "levelEditor.tools.mazeTheme": "Maze Theme",
   "levelEditor.tools.tileType": "Tile Type",
   "levelEditor.tools.fillAllTiles": "Fill All Tiles",
   "levelEditor.tools.clearAllTiles": "Clear All Tiles",
@@ -82,11 +83,9 @@
   "levelEditor.export.actions.saveCustomLevel": "Save to Custom Levels",
   "levelEditor.export.actions.reset": "Reset",
 
-  "tile.grass": "Grass",
-  "tile.oldgrass": "Old Grass",
-  "tile.redgrass": "Red Grass",
-  "tile.water": "Water",
-  "wall.stone": "Stone",
+  "maze.theme.plains": "Plains",
+  "maze.theme.drylands": "Drylands",
+  "maze.theme.lava": "Lava",
 
   "levelSelector.title": "Select Level",
   "levelSelector.level": "Current Level",

@@ -12,7 +12,8 @@ export type ButtonVariant =
   | "danger"
   | "background"
   | "transparent"
-  | "outlined";
+  | "outlined"
+  | "highlighted";
 
 export type ButtonBorder = "default" | "active";
 

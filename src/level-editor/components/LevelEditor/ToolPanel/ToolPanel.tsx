@@ -4,10 +4,16 @@ import { ButtonGroup } from "../../../../components/Button/ButtonGroup/ButtonGro
 import { Button } from "../../../../components/Button/Button.tsx";
 import { useTranslation } from "react-i18next";
 import type { LevelEditorDispatch, LevelEditorState } from "../../../state.ts";
-import { GENERAL_TOOLS, TILE_TOOLS, WALL_TOOLS } from "../../../tools.tsx";
+import { GENERAL_TOOLS } from "../../../tools.tsx";
 import { tryTranslate } from "../../../../i18n/i18n.ts";
-import { RiToolsFill } from "react-icons/ri";
-import { TILE_TYPES, type TileType } from "../../../../game/maze.ts";
+import { MAZE_THEMES, type MazeTheme } from "../../../../game/maze.ts";
+import { CornerGroup } from "../../../../components/CornerGroup/CornerGroup.tsx";
+import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
+import { Popover } from "../../../../components/floating/Popover/Popover.tsx";
+import { BiPencil, BiTrash } from "react-icons/bi";
+import { useEffect, useState } from "react";
+import { checkValidName } from "../../../../editor/utils.ts";
+import styles from "./ToolPanel.module.css";
 
 type ToolPanelProps = {
   editor: LevelEditorState;
@@ -18,11 +24,92 @@ const MAX_MAZE_SIZE = 50;
 
 export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
   const { t } = useTranslation();
+  const {
+    name: currentLevelName,
+    sourceNames: levelNames,
+    renameSource,
+    deleteSource,
+  } = useLevelSource();
+  const [newLevelName, setNewLevelName] = useState(currentLevelName);
+  const [isValid, invalidMessage] = checkValidName(
+    t,
+    newLevelName,
+    levelNames ?? [],
+    currentLevelName,
+  );
+  const canRename = newLevelName !== currentLevelName && isValid;
+
+  useEffect(() => {
+    setNewLevelName(currentLevelName);
+  }, [currentLevelName]);
   return (
     <>
-      <h4 className="flex-text">
-        {t("levelEditor.title")} <RiToolsFill size={20} />
-      </h4>
+      <CornerGroup position="top-left" className={styles.cornerGroup}>
+        <Button variant="highlighted" className={styles.title}>
+          {currentLevelName}
+        </Button>
+        <Popover
+          title={t("fileList.rename.action")}
+          onClose={() => {
+            setNewLevelName((prev) =>
+              prev !== currentLevelName ? currentLevelName : prev,
+            );
+          }}
+          trigger={
+            <Button variant="outlined" shape="icon">
+              <BiPencil />
+            </Button>
+          }
+        >
+          <FormGroup>
+            <FormField label={t("fileList.rename.fileName")}>
+              <input
+                type="text"
+                value={newLevelName}
+                onChange={(e) => setNewLevelName(e.target.value)}
+              />
+            </FormField>
+            <Button
+              variant="primary"
+              disabled={!canRename}
+              onClick={() => {
+                renameSource(newLevelName);
+              }}
+            >
+              <BiPencil />
+              {invalidMessage ?? t("fileList.rename.action")}
+            </Button>
+          </FormGroup>
+        </Popover>
+
+        <Popover
+          title={t("fileList.delete.title")}
+          trigger={
+            <Button variant="danger" shape="icon">
+              <BiTrash />
+            </Button>
+          }
+        >
+          <ButtonGroup vertical stretch>
+            <div style={{ color: "var(--text-color-t90)", maxWidth: "250px" }}>
+              {t("fileList.delete.confirm")}
+              <br />
+              <strong>{t("fileList.delete.confirm.cannotUndo")}</strong>
+            </div>
+            <Button
+              variant="danger"
+              onClick={() => {
+                deleteSource();
+              }}
+            >
+              <BiTrash />
+              {t("fileList.delete.action", { file: currentLevelName })}
+            </Button>
+          </ButtonGroup>
+        </Popover>
+      </CornerGroup>
+
+      <div className={styles.separator} />
 
       <h5>{t("levelEditor.headers.mazeSize")}</h5>
       <FormGroup horizontal stretch>
@@ -59,57 +146,25 @@ export function ToolPanel({ editor, dispatch }: ToolPanelProps) {
           />
         </FormField>
       </FormGroup>
-
-      <h5>{t("levelEditor.headers.theme")}</h5>
       <FormGroup horizontal stretch>
-        <FormField label={t("levelEditor.tools.tileType")}>
+        <FormField label={t("levelEditor.tools.mazeTheme")}>
           <select
-            value={editor.level.maze.tileType}
+            value={editor.level.maze.theme}
             onChange={(e) =>
               dispatch({
-                type: "setTileType",
-                tileType: e.target.value as TileType,
+                type: "setMazeTheme",
+                theme: e.target.value as MazeTheme,
               })
             }
           >
-            {TILE_TYPES.map((tileType, i) => (
-              <option key={i} value={tileType}>
-                {t(`tile.${tileType}`)}
+            {MAZE_THEMES.map((theme, i) => (
+              <option key={i} value={theme}>
+                {t(`maze.theme.${theme}`)}
               </option>
             ))}
           </select>
         </FormField>
       </FormGroup>
-
-      <h5>{t("levelEditor.headers.tileTool")}</h5>
-
-      <ButtonGroup vertical stretch>
-        {TILE_TOOLS.map((tileTool, i) => (
-          <Button
-            key={i}
-            variant={editor.tileTool === tileTool ? "secondary" : "transparent"}
-            border={editor.tileTool === tileTool ? "active" : "default"}
-            onClick={() => dispatch({ type: "setTileTool", tileTool })}
-          >
-            {tryTranslate(t, tileTool.name)}
-          </Button>
-        ))}
-      </ButtonGroup>
-
-      <h5>{t("levelEditor.headers.wallTool")}</h5>
-
-      <ButtonGroup vertical stretch>
-        {WALL_TOOLS.map((wallTool, i) => (
-          <Button
-            key={i}
-            variant={editor.wallTool === wallTool ? "secondary" : "transparent"}
-            border={editor.wallTool === wallTool ? "active" : "default"}
-            onClick={() => dispatch({ type: "setWallTool", wallTool })}
-          >
-            {tryTranslate(t, wallTool.name)}
-          </Button>
-        ))}
-      </ButtonGroup>
 
       <h5>{t("levelEditor.headers.tools")}</h5>
 
