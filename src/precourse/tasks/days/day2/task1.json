@@ -9,45 +9,24 @@
   },
   "levelData": {
     "maze": {
-      "tileType": "grass",
-      "width": 8,
-      "height": 10,
+      "theme": "plains",
+      "width": 3,
+      "height": 3,
       "walls": {
         "horizontal": [
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null, null]
+          [false, false, false],
+          [true, false, true],
+          [false, false, false],
+          [false, false, false]
         ],
         "vertical": [
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null],
-          [null, null, null, null, null, null, null]
+          [false, false, false, false],
+          [false, true, true, false],
+          [false, false, false, false]
         ]
       }
     },
-    "finishPosition": {
-      "x": 4,
-      "y": 4
-    },
-    "owlStart": {
-      "position": {
-        "x": 0,
-        "y": 0
-      },
-      "direction": "south"
-    }
+    "owlStart": { "position": { "x": 0, "y": 0 }, "direction": "south" },
+    "finishPosition": { "x": 2, "y": 2 }
   }
 }

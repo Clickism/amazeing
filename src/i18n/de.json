@@ -62,15 +62,16 @@
   "levelEditor.headers.tools": "Tools",
   "levelEditor.headers.metadata": "Metadaten",
   "levelEditor.headers.actions": "Aktionen",
+
   "levelEditor.tools.width": "Breite",
   "levelEditor.tools.height": "Höhe",
-  "levelEditor.tools.tileType": "Tile-Typ",
-  "levelEditor.tools.fillAllTiles": "Alle Tiles füllen",
-  "levelEditor.tools.clearAllTiles": "Alle Tiles leeren",
+  "levelEditor.tools.mazeTheme": "Maze-Thema",
+  "levelEditor.tools.tileOptions": "Tile-Eigenschaften",
+  "levelEditor.tools.tileOptions.start": "Start platzieren",
+  "levelEditor.tools.tileOptions.finish": "Ziel platzieren",
   "levelEditor.tools.fillAllWalls": "Alle Wände füllen",
   "levelEditor.tools.clearAllWalls": "Alle Wände leeren",
-  "levelEditor.tools.start": "Start",
-  "levelEditor.tools.finish": "Ziel",
+
   "levelEditor.export.export": "Exportieren",
   "levelEditor.export.levelName": "Level-Name",
   "levelEditor.export.levelTitle": "Level-Titel",
@@ -82,11 +83,9 @@
   "levelEditor.export.actions.saveCustomLevel": "In Levels speichern",
   "levelEditor.export.actions.reset": "Zurücksetzen",
 
-  "tile.grass": "Gras",
-  "tile.oldgrass": "Altes Gras",
-  "tile.redgrass": "Rotes Gras",
-  "tile.water": "Wasser",
-  "wall.stone": "Stein",
+  "maze.theme.plains": "Plains",
+  "maze.theme.drylands": "Drylands",
+  "maze.theme.lava": "Lava",
 
   "viewport.levelSelector.title": "Level auswählen",
 
