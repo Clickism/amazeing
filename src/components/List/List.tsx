@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import styles from "./List.module.css";
 import { motion } from "motion/react";
-import { type ReactNode, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useRef, useState } from "react";
 import { CornerGroup } from "../CornerGroup/CornerGroup.tsx";
 import { ButtonGroup } from "../Button/ButtonGroup/ButtonGroup.tsx";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
@@ -30,6 +30,7 @@ type ListProps = {
    */
   children?: ReactNode | ReactNode[];
   layoutId?: string;
+  nestingLevel?: number;
 };
 
 export function List({
@@ -38,6 +39,7 @@ export function List({
   activeElementId,
   onSelectElement,
   layoutId = "list-indicator",
+  nestingLevel = 0,
   children,
 }: ListProps) {
   const listRef = useRef<HTMLDivElement>(null);
@@ -60,7 +62,15 @@ export function List({
 
   return (
     <div className={styles.container}>
-      <div className={clsx(styles.list)} ref={listRef}>
+      <div
+        className={clsx(styles.list)}
+        ref={listRef}
+        style={
+          {
+            "--nesting-level": nestingLevel,
+          } as CSSProperties
+        }
+      >
         {elements.map((element) =>
           isGroup(element) ? (
             <GroupElement
@@ -71,6 +81,7 @@ export function List({
               layoutId={layoutId}
               openGroups={openGroups}
               toggleGroup={() => toggleGroup(element.id)}
+              nestingLevel={nestingLevel}
             />
           ) : (
             <SingleElement
@@ -104,6 +115,7 @@ type GroupProps = Omit<ElementProps, "element"> & {
   group: Group;
   openGroups: Set<string>;
   toggleGroup: () => void;
+  nestingLevel: number;
 };
 
 function GroupElement({
@@ -113,6 +125,7 @@ function GroupElement({
   layoutId,
   openGroups,
   toggleGroup,
+  nestingLevel,
 }: GroupProps) {
   const isOpen = openGroups.has(group.id);
   const isActive = group.elements.some((el) => el.id === activeElementId);
@@ -127,17 +140,6 @@ function GroupElement({
         )}
         onClick={toggleGroup}
       >
-        {isActive && (
-          <motion.div
-            layoutId={layoutId + "-group"}
-            className={styles.indicator}
-            transition={{
-              type: "spring",
-              stiffness: 500,
-              damping: 50,
-            }}
-          />
-        )}
         <div className={styles.elementName}>
           {isOpen ? <IoIosArrowDown /> : <IoIosArrowForward />}
           {group.name}
@@ -150,7 +152,8 @@ function GroupElement({
             elements={group.elements}
             activeElementId={activeElementId}
             onSelectElement={onSelectElement}
-            layoutId={layoutId}
+            layoutId={layoutId + "-" + group.id}
+            nestingLevel={nestingLevel + 1}
           />
         </div>
       )}

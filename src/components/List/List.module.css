@@ -6,6 +6,7 @@
   overflow: hidden;
   height: 100%;
   position: relative;
+  --nesting-level: 0;
 }
 
 .list {
@@ -29,7 +30,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: .5rem 1rem;
+  padding: .5rem calc((var(--nesting-level) + 1) * 1rem);
+  /*padding: .5rem 1rem;*/
 }
 
 .element:hover {
@@ -48,17 +50,18 @@
 }
 
 .group {
-  color: var(--text-color-t70);
+  color: var(--text-color-t80);
   font-weight: 600;
   border-bottom: 1px solid var(--clr-surface-a20);
+  transition: color .2s, font-weight .2s;
 }
 
 .activeGroup {
   color: var(--text-color);
+  font-weight: 700;
 }
 
 .groupListContainer {
-  padding-left: 1rem;
   background-color: var(--clr-surface-a3);
 }
 
