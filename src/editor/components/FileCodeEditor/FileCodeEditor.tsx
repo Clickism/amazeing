@@ -2,7 +2,7 @@ import type { Extension } from "@codemirror/state";
 import { useTranslation } from "react-i18next";
 import { FaRegFolderClosed, FaRegFolderOpen } from "react-icons/fa6";
 import { FileControls } from "./FileControls/FileControls.tsx";
-import { useSource } from "../../source/SourceContext.tsx";
+import { useFileSource } from "../../source/SourceContext.tsx";
 import { FileList } from "./FileList/FileList.tsx";
 import { CodeEditorWithPanel } from "../CodeEditorWithPanel/CodeEditorWithPanel.tsx";
 
@@ -18,7 +18,7 @@ export function FileCodeEditor({
   transitionDuration,
 }: FileEditorProps) {
   const { t } = useTranslation();
-  const { name, loadSource } = useSource();
+  const { name, loadSource } = useFileSource();
   return (
     <CodeEditorWithPanel
       title={name}

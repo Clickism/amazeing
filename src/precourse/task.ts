@@ -1,4 +1,4 @@
-import type { LevelData } from "../game/level.ts";
+import { type LevelData } from "../game/level.ts";
 import type { Translatable } from "../i18n/i18n.ts";
 
 export type TaskData = {
@@ -31,5 +31,5 @@ export type Task = {
   /**
    * Task number within the day. (i.E: 1)
    */
-  taskNumber: number;
+  taskNumber: number | null;
 } & TaskData;

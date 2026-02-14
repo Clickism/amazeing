@@ -2,7 +2,6 @@ import type { ConsoleMessage } from "../../interpreter/console.ts";
 import { type OwlData } from "../../game/owl.ts";
 import { createContext, useContext } from "react";
 import type { Level } from "../../game/level.ts";
-import type { Task } from "../../precourse/task.ts";
 
 export type EditorRuntimeAPI = {
   // Game controls
@@ -18,13 +17,6 @@ export type EditorRuntimeAPI = {
   owlData: OwlData;
   setOwlData: (owlData: OwlData) => void;
   level: Level;
-  startingLevel: Level;
-  setLevel: (level: Level) => void;
-
-  // Task data
-
-  task: Task | null;
-  setTask: (task: Task) => void;
 
   // Editor
 

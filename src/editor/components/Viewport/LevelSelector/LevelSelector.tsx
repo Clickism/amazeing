@@ -10,7 +10,7 @@ import { useEditorRuntime } from "../../../runtime/EditorRuntimeContext.tsx";
 export function LevelSelector() {
   const { t } = useTranslation();
   const { levelNames, loadLevel } = useLevelStorage();
-  const { level, startingLevel, setLevel } = useEditorRuntime();
+  // const { level, initialLevel, setLevel } = useEditorRuntime();
   return (
     <Popover
       title={t("levelSelector.title")}
@@ -20,24 +20,24 @@ export function LevelSelector() {
         </Button>
       }
     >
-      <FormField label={t("levelSelector.level")}>
-        <select
-          onChange={(e) => {
-            const name = e.target.value;
-            const selectedLevel = loadLevel(name) ?? startingLevel.data;
-            if (selectedLevel) {
-              setLevel(new Level(selectedLevel));
-            }
-          }}
-          defaultValue={level.data.name}
-        >
-          {[startingLevel.data.name, ...levelNames].map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
-      </FormField>
+      {/*<FormField label={t("levelSelector.level")}>*/}
+      {/*  <select*/}
+      {/*    onChange={(e) => {*/}
+      {/*      // const name = e.target.value;*/}
+      {/*      // const selectedLevel = loadLevel(name) ?? initialLevel.data;*/}
+      {/*      // if (selectedLevel) {*/}
+      {/*      //   setLevel(new Level(selectedLevel));*/}
+      {/*      // }*/}
+      {/*    }}*/}
+      {/*    defaultValue={level.data.name}*/}
+      {/*  >*/}
+      {/*    {[initialLevel.data.name, ...levelNames].map((name) => (*/}
+      {/*      <option key={name} value={name}>*/}
+      {/*        {name}*/}
+      {/*      </option>*/}
+      {/*    ))}*/}
+      {/*  </select>*/}
+      {/*</FormField>*/}
     </Popover>
   );
 }

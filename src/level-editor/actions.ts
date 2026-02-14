@@ -20,7 +20,6 @@ export type LevelEditorAction =
   | { type: "setHorizontalWall"; position: Position; wall: WallType }
   | { type: "setVerticalWall"; position: Position; wall: WallType }
   | { type: "setAllWalls"; wall: WallType }
-  | { type: "setMetadata"; name: string; title: string; description: string }
   | { type: "toggleVisualize" }
   | { type: "setTileTool"; tileTool: TileTool }
   | { type: "setWallTool"; wallTool: WallTool }
@@ -40,7 +39,7 @@ const actionExecutors: ActionExecutors = {
   },
 
   reset: (state) => {
-    return emptyEditorState(state.level.name, state.level.description);
+    return emptyEditorState(state.level.name);
   },
 
   resize: (state, { width, height }) => {
@@ -123,19 +122,6 @@ const actionExecutors: ActionExecutors = {
             vertical,
           },
         },
-      },
-    };
-    return state;
-  },
-
-  setMetadata: (state, { name, title, description }) => {
-    state = {
-      ...state,
-      level: {
-        ...state.level,
-        name,
-        title,
-        description,
       },
     };
     return state;

@@ -14,23 +14,18 @@ import {
 import { EditorRuntimeContext } from "./EditorRuntimeContext.tsx";
 import { Interpreter, LazyInterpreter } from "../../interpreter/interpreter.ts";
 import { useEditorSettings } from "../settings/EditorSettingsContext.tsx";
-import type { Task } from "../../precourse/task.ts";
 
 const INSTANT_BATCH_SIZE = 500;
 
 type EditorRuntimeProviderProps = {
-  task: Task | null;
-  startingLevel: Level;
+  level: Level;
   children: ReactNode;
 };
 
 export function EditorRuntimeProvider({
-  task: initialTask,
-  startingLevel,
+  level,
   children,
 }: EditorRuntimeProviderProps) {
-  const [level, setLevel] = useState(startingLevel);
-  const [task, setTask] = useState(initialTask);
   const { settings } = useEditorSettings();
 
   // Interpreter
@@ -160,8 +155,6 @@ export function EditorRuntimeProvider({
         canStep,
         step,
         level,
-        startingLevel,
-        setLevel,
         code,
         setCode,
         owlData,
@@ -170,8 +163,6 @@ export function EditorRuntimeProvider({
         currentLine,
         isRunning,
         reset,
-        task,
-        setTask,
       }}
     >
       {children}

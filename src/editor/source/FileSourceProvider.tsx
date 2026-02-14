@@ -1,14 +1,9 @@
-import { SourceContext } from "./SourceContext.tsx";
-import { type ReactNode, useCallback, useEffect, useRef } from "react";
+import { FileSourceContext } from "./SourceContext.tsx";
+import { type ReactNode } from "react";
 import { useCodeStorage } from "../storage/CodeStorageContext.tsx";
-import {
-  usePersistentState,
-  usePersistentStorage,
-} from "../../utils/storage.ts";
 import { useTranslation } from "react-i18next";
-import { findNextName } from "../utils.ts";
-
-const AUTO_SAVE_INTERVAL = 5000; // ms
+import { findNextAvailableName } from "../utils.ts";
+import { useSourceApi } from "./SourceProvider.tsx";
 
 type FileSourceProviderProps = {
   // Should be stable
@@ -31,171 +26,30 @@ export function FileSourceProvider({
     renameFile,
     fileNamespace,
   } = useCodeStorage();
-  const storage = usePersistentStorage(fileNamespace);
-
-  const newFileName = useCallback(
-    (num: number | undefined = undefined) => {
-      if (num !== undefined) {
-        return t("codeStorage.newFile.name", { num });
-      }
-      let i = 1;
-      let name: string;
-      do {
-        name = t("codeStorage.newFile.name", { num: i++ });
-      } while (fileNames.includes(name));
-      return name;
-    },
-    [fileNames, t],
-  );
-
-  const [activeFile, setActiveFile] = usePersistentState<string | null>(
-    storage,
-    "activeFile",
-    null,
-  );
-
-  const savedCodeRef = useRef<string | null>(null);
-  const codeRef = useRef(code);
-
-  // Keep ref updated
-  useEffect(() => {
-    codeRef.current = code;
-  }, [code]);
-
-  const saveCode = useCallback(
-    (content?: string) => {
-      if (activeFile === null) return;
-      if (content === undefined) {
-        content = codeRef.current;
-      }
-      saveFile(activeFile, content);
-      savedCodeRef.current = content;
-    },
-    [activeFile, saveFile],
-  );
-
-  const createNewFile = useCallback(() => {
-    const name = newFileName();
-    const content = t("codeStorage.newFile.content");
-    setActiveFile(name);
-    saveFile(name, content);
-    savedCodeRef.current = content;
-  }, [newFileName, saveFile, setActiveFile, t]);
-
-  const switchSource = useCallback(
-    (
-      name: string,
-      saveCurrent = true,
-      code: string | undefined = undefined,
-    ) => {
-      if (saveCurrent && activeFile !== null) {
-        saveCode();
-      }
-      const newCode = code ?? loadFile(name);
-      if (newCode !== null) {
-        setActiveFile(name);
-        setCode(newCode);
-        savedCodeRef.current = newCode;
-      }
-    },
-    [activeFile, loadFile, saveCode, setActiveFile, setCode],
-  );
-
-  const loadSource = useCallback(() => {
-    if (activeFile == null) return null;
-    return loadFile(activeFile);
-  }, [activeFile, loadFile]);
-
-  const saveSource = useCallback(
-    (code: string) => {
-      saveCode(code);
-    },
-    [saveCode],
-  );
-
-  const renameSource = useCallback(
-    (newName: string) => {
-      if (activeFile == null) return;
-      renameFile(activeFile, newName);
-      setActiveFile(newName);
-    },
-    [activeFile, renameFile, setActiveFile],
-  );
-
-  const deleteSource = useCallback(() => {
-    if (activeFile == null) return;
-    if (!fileNames.includes(activeFile)) return;
-    deleteFile(activeFile);
-    const nextName = findNextName(activeFile, fileNames);
-    if (nextName !== null) {
-      switchSource(nextName, false);
-    } else {
-      const next = newFileName(1);
+  const sourceApi = useSourceApi<string>({
+    source: code,
+    setSource: setCode,
+    storageNamespace: fileNamespace,
+    createNewSource: () => {
+      const name = findNextAvailableName(
+        (i) => t("codeStorage.newFile.name", { num: i }),
+        fileNames,
+      );
       const content = t("codeStorage.newFile.content");
-      saveFile(next, content);
-      switchSource(next, false, content);
-    }
-  }, [
-    activeFile,
-    deleteFile,
-    fileNames,
-    newFileName,
-    saveFile,
-    switchSource,
-    t,
-  ]);
-
-  // Initial file
-  useEffect(() => {
-    if (activeFile !== null) {
-      const content = loadFile(activeFile);
-      if (content !== null) {
-        setCode(content);
-      }
-      return;
-    }
-    if (fileNames.length > 0) {
-      switchSource(fileNames[0]);
-    } else {
-      createNewFile();
-    }
-  }, [activeFile, createNewFile, fileNames, loadFile, setCode, switchSource]);
-
-  // Auto-save
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const code = codeRef.current;
-      if (savedCodeRef.current === code) return;
-      saveCode(code);
-    }, AUTO_SAVE_INTERVAL);
-    return () => clearInterval(interval);
-  }, [saveCode]);
-
-  // Save on close
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      saveCode();
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [saveCode]);
+      return { name, content };
+    },
+    fileStorage: {
+      fileNames,
+      loadFile,
+      saveFile,
+      deleteFile,
+      renameFile,
+    },
+  });
 
   return (
-    <SourceContext.Provider
-      value={{
-        name: activeFile ?? "",
-        loadSource,
-        saveSource,
-        renameSource,
-        deleteSource,
-        switchSource,
-        sourceNames: fileNames,
-        newSource: createNewFile,
-      }}
-    >
+    <FileSourceContext.Provider value={sourceApi}>
       {children}
-    </SourceContext.Provider>
+    </FileSourceContext.Provider>
   );
 }

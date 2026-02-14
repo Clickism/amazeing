@@ -1,12 +1,10 @@
 import { LevelStorageContext } from "./LevelStorageContext.tsx";
-import { type ReactNode, useCallback, useEffect } from "react";
+import { type ReactNode, useCallback } from "react";
 import type { LevelData } from "../../game/level.ts";
 import {
   usePersistentState,
   usePersistentStorage,
 } from "../../utils/storage.ts";
-import { useTranslation } from "react-i18next";
-import { emptyLevelData } from "../state.ts";
 
 type LevelStorageProviderProps = {
   fileNamespace: string;
@@ -17,8 +15,7 @@ export function LevelStorageProvider({
   children,
   fileNamespace,
 }: LevelStorageProviderProps) {
-  const { t } = useTranslation();
-  const storage = usePersistentStorage(`levels:${fileNamespace}`);
+  const storage = usePersistentStorage(fileNamespace);
   const [levels, setLevels] = usePersistentState<Record<string, LevelData>>(
     storage,
     "levels",
@@ -33,10 +30,10 @@ export function LevelStorageProvider({
   );
 
   const saveLevel = useCallback(
-    (level: LevelData) => {
+    (name: string, level: LevelData) => {
       setLevels((prev) => ({
         ...prev,
-        [level.name]: level,
+        [name]: level,
       }));
     },
     [setLevels],
@@ -71,17 +68,6 @@ export function LevelStorageProvider({
 
   const levelNames = Object.keys(levels);
 
-  useEffect(() => {
-    if (levelNames.length === 0) {
-      saveLevel(
-        emptyLevelData(
-          t("levelStorage.newLevel.name", { num: 1 }),
-          t("levelStorage.newLevel.description"),
-        ),
-      );
-    }
-  }, [levelNames.length, levels, saveLevel, t]);
-
   return (
     <LevelStorageContext.Provider
       value={{
@@ -90,6 +76,7 @@ export function LevelStorageProvider({
         saveLevel,
         renameLevel,
         deleteLevel,
+        fileNamespace,
       }}
     >
       {children}

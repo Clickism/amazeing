@@ -1,5 +1,5 @@
 import { TasksContext } from "./TasksContext.tsx";
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { loadDays } from "../day.ts";
 
 type DaysProviderProps = {
@@ -7,7 +7,11 @@ type DaysProviderProps = {
   children: ReactNode;
 };
 
-export function TasksProvider({ taskId, children }: DaysProviderProps) {
+export function TasksProvider({
+  taskId: initialTaskId,
+  children,
+}: DaysProviderProps) {
+  const [taskId, setTaskId] = useState<string | null>(initialTaskId ?? null);
   const days = useMemo(() => loadDays(), []);
   const task = useMemo(() => {
     const allTasks = days.flatMap((day) => day.tasks);
@@ -17,6 +21,7 @@ export function TasksProvider({ taskId, children }: DaysProviderProps) {
     <TasksContext.Provider
       value={{
         task,
+        setTaskId,
         days,
       }}
     >

@@ -20,20 +20,17 @@ export type LevelEditorState = {
 };
 
 export function emptyLevelData(
-  name: string,
-  description: string,
+  name?: string,
   width: number = 5,
   height: number = 5,
 ): LevelData {
   return {
+    name,
     maze: createEmptyMazeData(width, height),
     finishPosition: {
       x: width - 1,
       y: height - 1,
     },
-    name,
-    title: name,
-    description,
     owlStart: {
       direction: "south",
       position: {
@@ -54,8 +51,7 @@ export function fromLevelData(level: LevelData): LevelEditorState {
 }
 
 export function emptyEditorState(
-  name: string,
-  description: string,
+  name?: string,
   width: number = 5,
   height: number = 5,
 ): LevelEditorState {
@@ -63,7 +59,7 @@ export function emptyEditorState(
     tileTool: TILE_TOOLS[0],
     wallTool: WALL_TOOLS[0],
     visualize: false,
-    level: emptyLevelData(name, description, width, height),
+    level: emptyLevelData(name, width, height),
   };
 }
 

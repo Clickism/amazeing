@@ -89,3 +89,15 @@ export function findNextName(
   }
   return null;
 }
+
+export function findNextAvailableName(
+  nameFn: (num: number) => string,
+  existingNames: string[],
+  startNum: number = 1,
+): string {
+  let num = startNum;
+  while (existingNames.includes(nameFn(num))) {
+    num++;
+  }
+  return nameFn(num);
+}

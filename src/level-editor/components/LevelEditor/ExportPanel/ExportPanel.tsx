@@ -22,12 +22,13 @@ type ExportPanelProps = {
   dispatch: LevelEditorDispatch;
 };
 
+// TODO: Refactor
 export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
   const { t } = useTranslation();
   const editorStateJSON = stringifyLevelData(editor);
   const { saveLevel, loadLevel, levelNames, renameLevel, deleteLevel } =
     useLevelStorage();
-  const currentLevelName = editor.level.name;
+  const currentLevelName = editor.level.name ?? "Untitled";
   const [newLevelName, setNewLevelName] = useState(currentLevelName);
   const [isValid, invalidMessage] = checkValidName(
     t,
@@ -45,41 +46,41 @@ export function ExportPanel({ editor, dispatch }: ExportPanelProps) {
     <>
       <h5>{t("levelEditor.headers.metadata")}</h5>
       <FormGroup stretch>
-        <FormField label={t("levelEditor.export.levelTitle")}>
-          <input
-            type="text"
-            value={editor.level.title}
-            onChange={(e) => {
-              dispatch({
-                type: "setMetadata",
-                name: currentLevelName,
-                title: e.target.value,
-                description: editor.level.description,
-              });
-            }}
-            style={{
-              width: "200px",
-            }}
-          />
-        </FormField>
+        {/*<FormField label={t("levelEditor.export.levelTitle")}>*/}
+        {/*  <input*/}
+        {/*    type="text"*/}
+        {/*    value={editor.level.title}*/}
+        {/*    onChange={(e) => {*/}
+        {/*      dispatch({*/}
+        {/*        type: "setMetadata",*/}
+        {/*        name: currentLevelName,*/}
+        {/*        title: e.target.value,*/}
+        {/*        description: editor.level.description,*/}
+        {/*      });*/}
+        {/*    }}*/}
+        {/*    style={{*/}
+        {/*      width: "200px",*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*</FormField>*/}
 
-        <FormField label={t("levelEditor.export.levelDescription")}>
-          <textarea
-            value={editor.level.description}
-            onChange={(e) => {
-              dispatch({
-                type: "setMetadata",
-                name: currentLevelName,
-                title: editor.level.title,
-                description: e.target.value,
-              });
-            }}
-            style={{
-              height: "100px",
-              width: "200px",
-            }}
-          />
-        </FormField>
+        {/*<FormField label={t("levelEditor.export.levelDescription")}>*/}
+        {/*  <textarea*/}
+        {/*    value={editor.level.description}*/}
+        {/*    onChange={(e) => {*/}
+        {/*      dispatch({*/}
+        {/*        type: "setMetadata",*/}
+        {/*        name: currentLevelName,*/}
+        {/*        title: editor.level.title,*/}
+        {/*        description: e.target.value,*/}
+        {/*      });*/}
+        {/*    }}*/}
+        {/*    style={{*/}
+        {/*      height: "100px",*/}
+        {/*      width: "200px",*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*</FormField>*/}
 
         <Popover
           title={t("fileList.rename.action")}

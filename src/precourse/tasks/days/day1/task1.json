@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Getting Started",
+    "de": "Erste Schritte"
+  },
+  "description": {
+    "en": "Getting started with AmazeingASM, simple maze algorithms.",
+    "de": "Erste Schritte mit AmazeingASM, einfache Maze-Algorithmen."
+  },
+  "levelData": {
+    "maze": {
+      "tileType": "grass",
+      "width": 3,
+      "height": 3,
+      "walls": {
+        "horizontal": [
+          [null, null, null],
+          ["stone", null, "stone"],
+          [null, null, null],
+          [null, null, null]
+        ],
+        "vertical": [
+          [null, null, null, null],
+          [null, "stone", "stone", null],
+          [null, null, null, null]
+        ]
+      }
+    },
+    "owlStart": { "position": { "x": 0, "y": 0 }, "direction": "south" },
+    "finishPosition": { "x": 2, "y": 2 }
+  }
+}

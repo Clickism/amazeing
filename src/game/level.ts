@@ -10,12 +10,7 @@ export type LevelData = {
   /**
    * The unique name of the level (within the level storage)
    */
-  name: string;
-  /**
-   * The displayed title of the level
-   */
-  title: string;
-  description: string;
+  name?: string;
   maze: MazeData;
   owlStart: {
     position: Position;

@@ -1,4 +1,4 @@
-import { useSource } from "../../../source/SourceContext.tsx";
+import { useFileSource } from "../../../source/SourceContext.tsx";
 import { Button } from "../../../../components/Button/Button.tsx";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ export function FileList() {
     name: activeName,
     switchSource,
     newSource,
-  } = useSource();
+  } = useFileSource();
   const fileContainerRef = useRef<HTMLDivElement>(null);
   return (
     <List

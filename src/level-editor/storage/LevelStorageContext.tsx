@@ -4,9 +4,10 @@ import type { LevelData } from "../../game/level.ts";
 export type LevelStorage = {
   levelNames: string[];
   loadLevel: (name: string) => LevelData | null;
-  saveLevel: (level: LevelData) => void;
+  saveLevel: (name: string, level: LevelData) => void;
   renameLevel: (oldName: string, newName: string) => void;
   deleteLevel: (name: string) => void;
+  fileNamespace: string;
 };
 
 export const LevelStorageContext = createContext<LevelStorage | null>(null);

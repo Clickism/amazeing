@@ -6,15 +6,18 @@ export type Day = {
   tasks: Task[];
 };
 
+const taskModules = import.meta.glob("./tasks/**/*.json", {
+  eager: true,
+  import: "default",
+});
+
 export function loadDays(): Day[] {
-  const pathToTasks = import.meta.glob("./tasks/**/*.json", {
-    eager: true,
-    import: "default",
-  });
   const daysMap: Record<string, Task[]> = {};
 
-  for (const path in pathToTasks) {
-    const taskData = pathToTasks[path] as TaskData;
+  for (const path in taskModules) {
+    // Only consider days tasks
+    if (!path.startsWith("./tasks/days/")) continue;
+    const taskData = taskModules[path] as TaskData;
     const { dayId, taskKey } = extractDayAndTask(path);
 
     const taskNumber = parseInt(taskKey.replace("task", ""), 10);
@@ -36,6 +39,18 @@ export function loadDays(): Day[] {
     id: key,
     tasks,
   }));
+}
+
+/**
+ * Loads a task from the specified path.
+ * @param pathToTask relative path to the task JSON file (e.g., "sandbox/task1") without the ".json" extension.
+ */
+export function loadTask(pathToTask: string): TaskData {
+  const fullPath = `./tasks/${pathToTask}.json`;
+  if (!(fullPath in taskModules)) {
+    throw new Error(`Task not found at path: ${fullPath}`);
+  }
+  return taskModules[fullPath] as TaskData;
 }
 
 function extractDayAndTask(path: string): { dayId: string; taskKey: string } {

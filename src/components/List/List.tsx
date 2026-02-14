@@ -46,7 +46,6 @@ export function List({
   const [openGroups, setOpenGroups] = useState<Set<string>>(
     new Set(openGroupIds),
   );
-  console.log(openGroups);
 
   const toggleGroup = (groupId: string) => {
     setOpenGroups((prev) => {
