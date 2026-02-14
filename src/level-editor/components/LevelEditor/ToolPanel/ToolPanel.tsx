@@ -9,8 +9,6 @@ import styles from "./ToolPanel.module.css";
 import { FileControls } from "../../../../editor/components/FileCodeEditor/FileControls/FileControls.tsx";
 import { PillSwitch } from "../../../../components/PillSwitch/PillSwitch.tsx";
 import { TaskExport } from "./TaskExport/TaskExport.tsx";
-import { emptyLevelData } from "../../../state.ts";
-import { VscDebugRestart } from "react-icons/vsc";
 import { MazeProperties } from "./MazeProperties/MazeProperties.tsx";
 
 type ToolPanelProps = {
@@ -67,15 +65,15 @@ export function ToolPanel({ visualize, setVisualize }: ToolPanelProps) {
 
       <ButtonGroup vertical stretch>
         <TaskExport />
-        <Button
-          variant="danger"
-          onClick={() => {
-            setLevel(emptyLevelData());
-          }}
-        >
-          <VscDebugRestart />
-          {t("levelEditor.actions.reset")}
-        </Button>
+        {/*<Button*/}
+        {/*  variant="danger"*/}
+        {/*  onClick={() => {*/}
+        {/*    setLevel(emptyLevelData());*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  <VscDebugRestart />*/}
+        {/*  {t("levelEditor.actions.reset")}*/}
+        {/*</Button>*/}
       </ButtonGroup>
     </>
   );
