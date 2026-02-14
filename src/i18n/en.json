@@ -78,10 +78,11 @@
   "levelEditor.export.levelDescription": "Level Description",
   "levelEditor.export.actions.visualizeMaze": "Visualize Maze",
   "levelEditor.export.actions.editMaze": "Edit Maze",
-  "levelEditor.export.actions.exportJSON": "Export JSON",
-  "levelEditor.export.actions.exportJSON.modal": "Exported Level JSON",
-  "levelEditor.export.actions.saveCustomLevel": "Save to Custom Levels",
+  "levelEditor.export.actions.exportJSON": "Export Task Json",
+  "levelEditor.export.actions.exportJSON.modal": "Exported Level Json",
   "levelEditor.export.actions.reset": "Reset",
+
+  "levelList.newLevel": "New Level",
 
   "maze.theme.plains": "Plains",
   "maze.theme.drylands": "Drylands",

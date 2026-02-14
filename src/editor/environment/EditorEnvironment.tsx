@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { CodeStorageProvider } from "../storage/CodeStorageProvider.tsx";
 import { EditorSettingsProvider } from "../settings/EditorSettingsProvider.tsx";
 import { EditorRuntimeProvider } from "../runtime/EditorRuntimeProvider.tsx";
+import { LevelProvider } from "../runtime/LevelProvider.tsx";
+import { useLevel } from "../runtime/LevelContext.tsx";
 
 export type EditorEnvironmentProps = {
   level: Level;
@@ -17,12 +19,23 @@ export function EditorEnvironment({
   settingsNamespace,
   children,
 }: EditorEnvironmentProps) {
-  const settingsNamespaceToUse = settingsNamespace ?? `${storageNamespace}-editor`;
+  const settingsNamespaceToUse =
+    settingsNamespace ?? `${storageNamespace}-editor`;
   return (
     <CodeStorageProvider fileNamespace={storageNamespace}>
       <EditorSettingsProvider namespace={settingsNamespaceToUse}>
-        <EditorRuntimeProvider level={level}>{children}</EditorRuntimeProvider>
+        <LevelProvider level={level}>
+          <LevelWrapper>{children}</LevelWrapper>
+        </LevelProvider>
       </EditorSettingsProvider>
     </CodeStorageProvider>
+  );
+}
+
+// Wrapper to access useLevel
+function LevelWrapper({ children }: { children: ReactNode }) {
+  const { level } = useLevel();
+  return (
+    <EditorRuntimeProvider level={level}>{children}</EditorRuntimeProvider>
   );
 }

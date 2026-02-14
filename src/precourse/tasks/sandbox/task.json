@@ -8,6 +8,7 @@
     "de": "Ein winziges 3x3 Testlabyrinth."
   },
   "levelData": {
+    "name": "Sandbox Level",
     "maze": {
       "theme": "plains",
       "width": 3,

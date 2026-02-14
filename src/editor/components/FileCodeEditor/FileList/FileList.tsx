@@ -21,6 +21,10 @@ export function FileList() {
         switchSource?.(name);
       }}
       layoutId="file-list-indicator"
+      style={{
+        // Keep same as level editor list for consistency
+        minWidth: "210px",
+      }}
     >
       <Button
         onClick={() => {

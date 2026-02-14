@@ -11,7 +11,6 @@ import { Panel } from "../../../components/Panel/Panel.tsx";
 import { PanelContainer } from "../../../components/PanelContainer/PanelContainer.tsx";
 import { useLevelSource } from "../../../editor/source/SourceContext.tsx";
 
-// TODO: Refactor for new structure and fix level/file editing
 export function LevelEditor() {
   const { source: level } = useLevelSource();
   const [visualize, setVisualize] = useState(false);
@@ -21,7 +20,7 @@ export function LevelEditor() {
       <PanelContainer
         initialSizes={[0.1, 0.8, 0.1]}
         minSize={0.1}
-        minPixels={[300, 400, 200]}
+        minPixels={[300, 400, 210]}
       >
         <Panel className="fancy-headers">
           <ToolPanel />

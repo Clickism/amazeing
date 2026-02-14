@@ -17,7 +17,7 @@ export function ExportPanel({
 }) {
   const { t } = useTranslation();
   const { source, setSource: setLevel } = useLevelSource();
-  const editorStateJSON = JSON.stringify(source);
+  const editorStateJSON = JSON.stringify(source, null, 2);
 
   return (
     <>
@@ -80,7 +80,10 @@ export function ExportPanel({
             readOnly
             value={editorStateJSON}
             style={{
-              height: "200px",
+              height: "300px",
+              fontFamily: "JetBrains Mono, monospace",
+              whiteSpace: "pre",
+              fontSize: "14px",
             }}
           />
           <CopyToClipboard content={editorStateJSON} />

@@ -1,7 +1,13 @@
 import clsx from "clsx";
 import styles from "./List.module.css";
 import { motion } from "motion/react";
-import { type CSSProperties, type ReactNode, useRef, useState } from "react";
+import {
+  type CSSProperties,
+  type HTMLAttributes,
+  type ReactNode,
+  useRef,
+  useState,
+} from "react";
 import { CornerGroup } from "../CornerGroup/CornerGroup.tsx";
 import { ButtonGroup } from "../Button/ButtonGroup/ButtonGroup.tsx";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
@@ -31,7 +37,7 @@ type ListProps = {
   children?: ReactNode | ReactNode[];
   layoutId?: string;
   nestingLevel?: number;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 export function List({
   elements,
@@ -41,6 +47,8 @@ export function List({
   layoutId = "list-indicator",
   nestingLevel = 0,
   children,
+  className,
+  ...props
 }: ListProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const [openGroups, setOpenGroups] = useState<Set<string>>(
@@ -60,7 +68,7 @@ export function List({
   };
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, className)} {...props}>
       <div
         className={clsx(styles.list)}
         ref={listRef}

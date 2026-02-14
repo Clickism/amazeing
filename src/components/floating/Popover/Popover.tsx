@@ -22,6 +22,7 @@ export type PopoverProps = {
   children: ReactNode;
   onOpen?: () => void;
   onClose?: () => void;
+  noTooltip?: boolean;
 };
 
 export function Popover({
@@ -31,6 +32,7 @@ export function Popover({
   onOpen,
   onClose,
   children,
+  noTooltip = false,
 }: PopoverProps) {
   const [isOpen, setIsOpenState] = useState(false);
   const [, setIsMounted] = useState(false);
@@ -76,7 +78,7 @@ export function Popover({
       {trigger}
     </span>
   );
-  const tooltipElement = tooltip ?? title;
+  const tooltipElement = noTooltip ? null : tooltip ?? title;
   return (
     <>
       <Tooltip disabled={!tooltipElement || isOpen} content={tooltipElement}>

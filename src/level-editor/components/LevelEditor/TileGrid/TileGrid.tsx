@@ -51,6 +51,7 @@ export function TileGrid() {
               <Fragment key={col}>
                 <Popover
                   title={t("levelEditor.tools.tileOptions")}
+                  noTooltip
                   trigger={<Tile position={{ x: col, y: row }} />}
                 >
                   <TilePlacer position={{ x: col, y: row }} />

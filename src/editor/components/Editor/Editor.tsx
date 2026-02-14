@@ -39,7 +39,7 @@ export function Editor({
   );
   return (
     <div className={styles.editorContainer}>
-      <PanelContainer orientation="horizontal" minSize={0.3}>
+      <PanelContainer orientation="horizontal" minSize={0.3} minPixels={[owlControls ? 500 : 450, 400]}>
         <PanelContainer
           orientation="vertical"
           initialSizes={[0.6, 0.4]}
