@@ -35,8 +35,9 @@ export function Tile({ position, ...props }: TileProps) {
         getDirectionIcon(level.owlStart.direction, {
           className: styles.startArrow,
           size: 32,
+          color: "#fff",
         })}
-      {isFinish && <FaFlag size={28} />}
+      {isFinish && <FaFlag size={28} fill={"#fff"} />}
     </Button>
   );
 }
