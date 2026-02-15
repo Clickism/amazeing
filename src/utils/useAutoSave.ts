@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 const AUTO_SAVE_INTERVAL = 5000; // 5 seconds
 
@@ -33,13 +33,16 @@ export function useAutoSave<T>(
   const savedContentRef = useRef<T | null>(null);
 
   // Keep ref updated
-  contentRef.current = content;
+  useLayoutEffect(() => {
+    contentRef.current = content;
+  });
 
-  // Save function to check for changes and save the latest content if needed
   const handleSave = useCallback(
     (toSave?: T) => {
       toSave = toSave ?? contentRef.current;
-      if (savedContentRef.current === toSave) return;
+      // Use deep equality instead of reference equality for safety
+      if (savedContentRef.current !== null &&
+        JSON.stringify(savedContentRef.current) === JSON.stringify(toSave)) return;
       saveContent(toSave);
       savedContentRef.current = toSave;
     },
