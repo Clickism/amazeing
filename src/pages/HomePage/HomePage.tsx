@@ -1,5 +1,5 @@
 import { Layout } from "../../shared/components/Layout/Layout.tsx";
-import { TaskCard } from "./components/TaskCard.tsx";
+import { TaskCard } from "./TaskCard/TaskCard.tsx";
 import styles from "./HomePage.module.css";
 
 import day1Image from "../../assets/tasks/cards/day1.png";

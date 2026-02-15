@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import { HomePage } from "../pages/home/HomePage.tsx";
-import { SandboxPage } from "../pages/SandboxPage.tsx";
-import { LevelEditorPage } from "../pages/LevelEditorPage.tsx";
+import { HomePage } from "../pages/HomePage/HomePage.tsx";
+import { SandboxPage } from "../pages/SandboxPage/SandboxPage.tsx";
+import { LevelEditorPage } from "../pages/LevelEditorPage/LevelEditorPage.tsx";
 import type { Translatable } from "../shared/i18n/i18n.ts";
-import { TasksPage } from "../pages/TasksPage.tsx";
+import { TasksPage } from "../pages/TasksPage/TasksPage.tsx";
 
 export type Page = {
   path: string;
