@@ -5,8 +5,7 @@ import {
 } from "../../utils/storage.ts";
 import { findNextName } from "../utils.ts";
 import { type SourceAPI } from "./SourceContext.tsx";
-
-const AUTO_SAVE_INTERVAL = 5000; // ms
+import { useAutoSave } from "../../utils/useAutoSave.ts";
 
 type SourceProviderProps<T> = {
   source: T;
@@ -37,46 +36,41 @@ export function useSourceApi<T>({
     null,
   );
 
-  const savedSourceRef = useRef<T | null>(null);
-  const sourceRef = useRef(source);
-
-  // Keep ref updated
-  useEffect(() => {
-    sourceRef.current = source;
-  }, [source]);
-
-  const saveContent = useCallback(
-    (content?: T) => {
+  const { saveManually, setLastSavedContent } = useAutoSave(
+    source,
+    (content) => {
       if (activeSource === null) return;
-      if (content === undefined) {
-        content = sourceRef.current;
-      }
       fileStorage.saveFile(activeSource, content);
-      savedSourceRef.current = content;
     },
-    [activeSource, fileStorage],
   );
 
   const newSource = useCallback(() => {
     const { name, content } = createNewSource(false);
     setActiveSource(name);
     fileStorage.saveFile(name, content);
-    savedSourceRef.current = content;
-  }, [createNewSource, fileStorage, setActiveSource]);
+    setLastSavedContent(content);
+  }, [createNewSource, fileStorage, setActiveSource, setLastSavedContent]);
 
   const switchSource = useCallback(
     (name: string, saveCurrent = true, content: T | undefined = undefined) => {
       if (saveCurrent && activeSource !== null) {
-        saveContent();
+        saveManually();
       }
       const newContent = content ?? fileStorage.loadFile(name);
       if (newContent !== null) {
         setActiveSource(name);
         setSource(newContent);
-        savedSourceRef.current = newContent;
+        setLastSavedContent(newContent);
       }
     },
-    [activeSource, fileStorage, saveContent, setActiveSource, setSource],
+    [
+      activeSource,
+      fileStorage,
+      saveManually,
+      setActiveSource,
+      setLastSavedContent,
+      setSource,
+    ],
   );
 
   const loadSource = useCallback(() => {
@@ -86,9 +80,9 @@ export function useSourceApi<T>({
 
   const saveSource = useCallback(
     (content: T) => {
-      saveContent(content);
+      saveManually(content);
     },
-    [saveContent],
+    [saveManually],
   );
 
   const renameSource = useCallback(
@@ -140,27 +134,6 @@ export function useSourceApi<T>({
       newSource();
     }
   }, [activeSource, fileStorage, newSource, setSource, switchSource]);
-
-  // Auto-save
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const code = sourceRef.current;
-      if (savedSourceRef.current === code) return;
-      saveContent(code);
-    }, AUTO_SAVE_INTERVAL);
-    return () => clearInterval(interval);
-  }, [saveContent]);
-
-  // Save on close
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      saveContent();
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [saveContent]);
 
   return {
     name: activeSource ?? "",
