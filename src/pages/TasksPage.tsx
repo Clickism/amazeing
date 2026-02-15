@@ -1,12 +1,12 @@
-import { Layout } from "../components/Layout/Layout.tsx";
-import { CodeStorageProvider } from "../editor/storage/CodeStorageProvider.tsx";
-import { EditorSettingsProvider } from "../editor/settings/EditorSettingsProvider.tsx";
-import { Editor } from "../editor/components/Editor/Editor.tsx";
-import { Level } from "../game/level.ts";
-import { TasksProvider } from "../precourse/context/TasksProvider.tsx";
-import { useTasks } from "../precourse/context/TasksContext.tsx";
-import { taskIdOf } from "../precourse/day.ts";
-import { EditorEnvironment } from "../editor/environment/EditorEnvironment.tsx";
+import { Layout } from "../shared/components/Layout/Layout.tsx";
+import { CodeStorageProvider } from "../features/editor/storage/CodeStorageProvider.tsx";
+import { EditorSettingsProvider } from "../features/editor/settings/EditorSettingsProvider.tsx";
+import { Editor } from "../features/editor/components/Editor/Editor.tsx";
+import { Level } from "../core/game/level.ts";
+import { TasksProvider } from "../features/precourse/context/TasksProvider.tsx";
+import { useTasks } from "../features/precourse/context/TasksContext.tsx";
+import { taskIdOf } from "../features/precourse/day.ts";
+import { EditorEnvironment } from "../features/editor/environment/EditorEnvironment.tsx";
 
 export function TasksPage() {
   return (

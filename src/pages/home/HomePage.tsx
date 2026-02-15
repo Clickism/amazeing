@@ -1,4 +1,4 @@
-import { Layout } from "../../components/Layout/Layout.tsx";
+import { Layout } from "../../shared/components/Layout/Layout.tsx";
 import { TaskCard } from "./components/TaskCard.tsx";
 import styles from "./HomePage.module.css";
 

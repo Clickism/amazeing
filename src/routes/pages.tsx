@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { HomePage } from "../pages/home/HomePage.tsx";
 import { SandboxPage } from "../pages/SandboxPage.tsx";
 import { LevelEditorPage } from "../pages/LevelEditorPage.tsx";
-import type { Translatable } from "../i18n/i18n.ts";
+import type { Translatable } from "../shared/i18n/i18n.ts";
 import { TasksPage } from "../pages/TasksPage.tsx";
 
 export type Page = {

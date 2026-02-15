@@ -1,5 +1,5 @@
 import styles from "./TaskCard.module.css";
-import { type Translatable, useTranslatable } from "../../../i18n/i18n.ts";
+import { type Translatable, useTranslatable } from "../../../shared/i18n/i18n.ts";
 import { motion } from "motion/react";
 
 type TaskCardProps = {
