@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect } from "react";
+import { type PropsWithChildren, useEffect } from "react";
 import {
   type CodeEditorSettings,
   CodeEditorSettingsContext,
@@ -6,7 +6,7 @@ import {
 import {
   usePersistentState,
   usePersistentStorage,
-} from "../../../shared/utils/storage.ts";
+} from "../../../../shared/utils/storage.ts";
 
 const DEFAULT_CODE_EDITOR_SETTINGS: CodeEditorSettings = {
   fontSize: 16,
@@ -14,13 +14,12 @@ const DEFAULT_CODE_EDITOR_SETTINGS: CodeEditorSettings = {
 
 type CodeEditorSettingsProviderProps = {
   namespace: string;
-  children: ReactNode;
 };
 
 export function CodeEditorSettingsProvider({
   namespace,
   children,
-}: CodeEditorSettingsProviderProps) {
+}: PropsWithChildren<CodeEditorSettingsProviderProps>) {
   const storage = usePersistentStorage(namespace);
   const [settings, setSettingsState] = usePersistentState<CodeEditorSettings>(
     storage,

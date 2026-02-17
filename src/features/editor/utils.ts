@@ -54,7 +54,7 @@ export function clamp(value: number, min: number, max: number) {
 export function checkValidName(
   t: (key: string) => string,
   name: string,
-  sourceNames: string[],
+  sourceNames: readonly string[],
   currentName: string,
   maxLength: number = 32,
 ): [boolean, string | null] {
@@ -71,13 +71,15 @@ export function checkValidName(
 }
 
 /**
- * Finds the next name in the list after removing the current name
- * @param currentName
- * @param sourceNames
+ * Finds the next name in the list after removing the current name.
+ *
+ * Should be called before actually removing the current name from the source names.
+ * @param currentName The name to remove and find the next name for.
+ * @param sourceNames The list of source names to find the next name from.
  */
 export function findNextName(
   currentName: string,
-  sourceNames: string[],
+  sourceNames: readonly string[],
 ): string | null {
   const idx = sourceNames.indexOf(currentName);
   const newNames = sourceNames.filter((_, i) => i !== idx);
@@ -92,7 +94,7 @@ export function findNextName(
 
 export function findNextAvailableName(
   nameFn: (num: number) => string,
-  existingNames: string[],
+  existingNames: readonly string[],
   startNum: number = 1,
 ): string {
   let num = startNum;

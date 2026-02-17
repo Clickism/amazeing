@@ -1,6 +1,6 @@
 import { LevelContext } from "./LevelContext.tsx";
 import { type ReactNode, useEffect, useState } from "react";
-import type { Level } from "../../../core/game/level.ts";
+import type { Level } from "../../../../core/game/level.ts";
 
 type LevelProviderProps = {
   level: Level;

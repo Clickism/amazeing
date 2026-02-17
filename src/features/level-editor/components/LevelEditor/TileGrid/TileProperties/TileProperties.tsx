@@ -6,11 +6,11 @@ import {
 } from "../../../../../../core/interpreter/types.ts";
 import { Button } from "../../../../../../shared/components/Button/Button.tsx";
 import { getDirectionIcon } from "../../../../utils.tsx";
-import { useLevelSource } from "../../../../../editor/source/SourceContext.tsx";
 import { useTranslation } from "react-i18next";
+import { useLevelEditor } from "../../../../context/LevelEditorContext.tsx";
 
 export function TileProperties({ position }: { position: Position }) {
-  const { source: level, setSource: setLevel } = useLevelSource();
+  const { level, setLevel } = useLevelEditor();
   const { t } = useTranslation();
   return (
     <ButtonGroup vertical stretch>

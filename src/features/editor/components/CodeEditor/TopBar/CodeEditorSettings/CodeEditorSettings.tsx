@@ -6,7 +6,7 @@ import { FormField } from "../../../../../../shared/components/Form/FormField/Fo
 import { ThemeSelect } from "../../ThemeSelect/ThemeSelect.tsx";
 import { Popover } from "../../../../../../shared/components/floating/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
-import { useCodeEditorSettings } from "../../../../settings/CodeEditorSettingsContext.tsx";
+import { useCodeEditorSettings } from "../../../../context/settings/CodeEditorSettingsContext.tsx";
 
 export function CodeEditorSettings() {
   const { t } = useTranslation();

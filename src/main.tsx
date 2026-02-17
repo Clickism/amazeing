@@ -7,7 +7,7 @@ import "./shared/css/form.css";
 import "./shared/css/codemirror.css";
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/AppRoutes.tsx";
-import { CodeEditorSettingsProvider } from "./features/editor/settings/CodeEditorSettingsProvider.tsx";
+import { CodeEditorSettingsProvider } from "./features/editor/context/settings/CodeEditorSettingsProvider.tsx";
 import { ColorSchemeProvider } from "./shared/theme/ColorSchemeProvider.tsx";
 import { EditorThemeProvider } from "./shared/theme/EditorThemeProvider.tsx";
 import { NavBar } from "./shared/components/NavBar/NavBar.tsx";

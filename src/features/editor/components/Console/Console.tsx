@@ -4,10 +4,10 @@ import type { ConsoleMessage } from "../../../../core/interpreter/console.ts";
 import { useEffect, useRef } from "react";
 import { CornerGroup } from "../../../../shared/components/CornerGroup/CornerGroup.tsx";
 import { useTranslation } from "react-i18next";
-import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.tsx";
+import { useCodeEditorSettings } from "../../context/settings/CodeEditorSettingsContext.tsx";
 import { AnimatePresence, motion } from "motion/react";
-import { useEditorSettings } from "../../settings/EditorSettingsContext.tsx";
-import { useEditorRuntime } from "../../runtime/EditorRuntimeContext.tsx";
+import { useEditorSettings } from "../../context/settings/EditorSettingsContext.tsx";
+import { useInterpreter } from "../../context/interpreter/InterpreterContext.tsx";
 
 export function Console({ messages }: { messages: ConsoleMessage[] }) {
   const { t } = useTranslation();
@@ -17,7 +17,7 @@ export function Console({ messages }: { messages: ConsoleMessage[] }) {
   const {
     settings: { isInstant },
   } = useEditorSettings();
-  const { isRunning } = useEditorRuntime();
+  const { isRunning } = useInterpreter();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

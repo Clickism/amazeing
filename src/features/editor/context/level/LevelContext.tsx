@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { Level } from "../../../core/game/level.ts";
+import type { Level } from "../../../../core/game/level.ts";
 
 type LevelContext = {
   level: Level;

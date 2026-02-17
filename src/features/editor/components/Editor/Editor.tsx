@@ -2,36 +2,43 @@ import { Console } from "../Console/Console.tsx";
 import { Viewport } from "../Viewport/Viewport.tsx";
 import styles from "./Editor.module.css";
 import { ButtonGroup } from "../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
-import { useEditorRuntime } from "../../runtime/EditorRuntimeContext.tsx";
+import { useInterpreter } from "../../context/interpreter/InterpreterContext.tsx";
 import { getTransitionSpeed } from "../../utils.ts";
-import { useEditorSettings } from "../../settings/EditorSettingsContext.tsx";
+import { useEditorSettings } from "../../context/settings/EditorSettingsContext.tsx";
 import { ExecutionControls } from "./ExecutionControls/ExecutionControls.tsx";
 import { currentLineHighlighter } from "../../../../core/amazeing/currentLineHighlighter.ts";
 import { FileCodeEditor } from "../FileCodeEditor/FileCodeEditor.tsx";
-import { FileSourceProvider } from "../../source/FileSourceProvider.tsx";
 import { PanelContainer } from "../../../../shared/components/PanelContainer/PanelContainer.tsx";
 import { Panel } from "../../../../shared/components/Panel/Panel.tsx";
 import { TaskCodeEditor } from "../TaskCodeEditor/TaskCodeEditor.tsx";
+import { useCodeModel } from "../../context/code/CodeModelContext.tsx";
+import { isMultiSource } from "../../context/source/source.ts";
+import type { FileStorage } from "../../context/storage/fileStorage.ts";
+import type { LevelData } from "../../../../core/game/level.ts";
 
 export const MIN_RUN_SPEED = 1;
 export const MAX_RUN_SPEED = 100;
 export const DEFAULT_RUN_SPEED = 5;
 
-export type EditorType = "task" | "file";
-
 export type EditorProps = {
-  type: EditorType;
+  /**
+   * Whether to allow moving the owl manually, and show the controls for it.
+   */
   owlControls?: boolean;
-  allowChangingLevel?: boolean;
+  /**
+   * Allows changing the level in the viewport, and uses the
+   * provided level storage to save and load levels.
+   *
+   * If not provided, the level is fixed and cannot be changed by the user.
+   *
+   * @see ViewportProps.levelStorage
+   */
+  levelStorage?: FileStorage<LevelData>;
 };
 
-export function Editor({
-  type,
-  allowChangingLevel = false,
-  owlControls = false,
-}: EditorProps) {
-  const { output, isRunning, level, owlData, code, setCode, currentLine } =
-    useEditorRuntime();
+export function Editor({ levelStorage, owlControls = false }: EditorProps) {
+  const { output, isRunning, level, owlData, currentLine } = useInterpreter();
+  const { source } = useCodeModel();
   const { settings } = useEditorSettings();
   const transitionDuration = getTransitionSpeed(
     isRunning,
@@ -39,18 +46,18 @@ export function Editor({
   );
   return (
     <div className={styles.editorContainer}>
-      <PanelContainer orientation="horizontal" minSize={0.3} minPixels={[owlControls ? 500 : 450, 400]}>
+      <PanelContainer
+        orientation="horizontal"
+        minSize={0.3}
+        minPixels={[owlControls ? 500 : 450, 400]}
+      >
         <PanelContainer
           orientation="vertical"
           initialSizes={[0.6, 0.4]}
           minSize={0.2}
         >
           <Panel paddingless>
-            <Viewport
-              level={level}
-              owl={owlData}
-              levelSelector={allowChangingLevel}
-            />
+            <Viewport level={level} owl={owlData} levelStorage={levelStorage} />
           </Panel>
           <div className={styles.consolePanel}>
             <ButtonGroup center>
@@ -61,17 +68,13 @@ export function Editor({
             </Panel>
           </div>
         </PanelContainer>
-        {type === "file" ? (
-          <FileSourceProvider code={code} setCode={setCode}>
-            <FileCodeEditor
-              setCode={setCode}
-              editorExtensions={[currentLineHighlighter(() => currentLine)]}
-              transitionDuration={transitionDuration}
-            />
-          </FileSourceProvider>
+        {isMultiSource(source) ? (
+          <FileCodeEditor
+            editorExtensions={[currentLineHighlighter(() => currentLine)]}
+            transitionDuration={transitionDuration}
+          />
         ) : (
           <TaskCodeEditor
-            setCode={setCode}
             editorExtensions={[currentLineHighlighter(() => currentLine)]}
             transitionDuration={transitionDuration}
           />

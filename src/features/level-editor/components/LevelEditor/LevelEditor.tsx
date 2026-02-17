@@ -8,10 +8,10 @@ import { ToolPanel } from "./ToolPanel/ToolPanel.tsx";
 import { LevelList } from "./LevelList/LevelList.tsx";
 import { Panel } from "../../../../shared/components/Panel/Panel.tsx";
 import { PanelContainer } from "../../../../shared/components/PanelContainer/PanelContainer.tsx";
-import { useLevelSource } from "../../../editor/source/SourceContext.tsx";
+import { useLevelEditor } from "../../context/LevelEditorContext.tsx";
 
 export function LevelEditor() {
-  const { source: level } = useLevelSource();
+  const { level } = useLevelEditor();
   const [visualize, setVisualize] = useState(false);
 
   return (

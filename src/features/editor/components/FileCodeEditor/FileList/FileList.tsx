@@ -1,17 +1,21 @@
-import { useFileSource } from "../../../source/SourceContext.tsx";
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "../../../../../shared/components/List/List.tsx";
+import { type MultiSource } from "../../../context/source/source.ts";
 
-export function FileList() {
+type FileListProps<T> = {
+  source: MultiSource<T>;
+};
+
+export function FileList<T>({ source }: FileListProps<T>) {
   const { t } = useTranslation();
   const {
+    activeSource: { name: activeName },
     sourceNames,
-    name: activeName,
     switchSource,
     newSource,
-  } = useFileSource();
+  } = source;
   const fileContainerRef = useRef<HTMLDivElement>(null);
   return (
     <List

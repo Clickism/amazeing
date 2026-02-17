@@ -3,13 +3,13 @@ import { FormField } from "../../../../../../shared/components/Form/FormField/Fo
 import { resizeLevel } from "../../../../../../core/game/level.ts";
 import { MAZE_THEMES, type MazeTheme } from "../../../../../../core/game/maze.ts";
 import { useTranslation } from "react-i18next";
-import { useLevelSource } from "../../../../../editor/source/SourceContext.tsx";
+import { useLevelEditor } from "../../../../context/LevelEditorContext.tsx";
 
 const MAX_MAZE_SIZE = 50;
 
 export function MazeProperties() {
   const { t } = useTranslation();
-  const { source: level, setSource: setLevel } = useLevelSource();
+  const { level, setLevel } = useLevelEditor();
   return (
     <>
       <FormGroup horizontal stretch>

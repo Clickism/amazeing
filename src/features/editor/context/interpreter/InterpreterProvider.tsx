@@ -1,35 +1,53 @@
-import type { Level } from "../../../core/game/level.ts";
+import type { Level } from "../../../../core/game/level.ts";
 import {
-  type ReactNode,
+  type PropsWithChildren,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { LevelOwl, type OwlData } from "../../../core/game/owl.ts";
+import { LevelOwl, type OwlData } from "../../../../core/game/owl.ts";
 import {
   type ConsoleMessage,
   InterpreterConsole,
-} from "../../../core/interpreter/console.ts";
-import { EditorRuntimeContext } from "./EditorRuntimeContext.tsx";
-import { Interpreter, LazyInterpreter } from "../../../core/interpreter/interpreter.ts";
-import { useEditorSettings } from "../settings/EditorSettingsContext.tsx";
+} from "../../../../core/interpreter/console.ts";
+import { InterpreterContext } from "./InterpreterContext.tsx";
+import {
+  Interpreter,
+  LazyInterpreter,
+} from "../../../../core/interpreter/interpreter.ts";
+import {
+  type EditorSettings,
+  useEditorSettings,
+} from "../settings/EditorSettingsContext.tsx";
+import { useCodeModel } from "../code/CodeModelContext.tsx";
 
 const INSTANT_BATCH_SIZE = 500;
 
-type EditorRuntimeProviderProps = {
+type InterpreterProviderProps = PropsWithChildren<{
+  code: string;
   level: Level;
-  children: ReactNode;
-};
+  settings: EditorSettings;
+}>;
 
-export function EditorRuntimeProvider({
+/**
+ * Provides the interpreter context for the editor.
+ *
+ * Manages the interpreter state, including the current output, current line, and running state.
+ * Also manages the game state, including the owl data.
+ *
+ * @param code The code to interpret.
+ * @param level The level to run the code on.
+ * @param settings The editor settings, used to control the run speed and mode.
+ * @param children The child components that will have access to the interpreter context.
+ */
+export function InterpreterProvider({
+  code,
   level,
+  settings,
   children,
-}: EditorRuntimeProviderProps) {
-  const { settings } = useEditorSettings();
-
+}: InterpreterProviderProps) {
   // Interpreter
-  const [code, setCode] = useState("");
   const [output, setOutput] = useState<ConsoleMessage[]>([]);
   const [currentLine, setCurrentLine] = useState<number | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -148,15 +166,13 @@ export function EditorRuntimeProvider({
   }, [isRunning, run, settings.instructionsPerSecond]);
 
   return (
-    <EditorRuntimeContext.Provider
+    <InterpreterContext.Provider
       value={{
         run,
         stop,
         canStep,
         step,
         level,
-        code,
-        setCode,
         owlData,
         setOwlData,
         output,
@@ -166,6 +182,31 @@ export function EditorRuntimeProvider({
       }}
     >
       {children}
-    </EditorRuntimeContext.Provider>
+    </InterpreterContext.Provider>
   );
 }
+
+type InterpreterWrapperProps = {
+  level: Level;
+};
+
+/**
+ * Wrapper to use interpreter context with {@link CodeModelContext} and {@link EditorSettingsContext}.
+ * @param level
+ * @param children
+ * @constructor
+ */
+function InterpreterWrapper({
+  level,
+  children,
+}: PropsWithChildren<InterpreterWrapperProps>) {
+  const { code } = useCodeModel();
+  const { settings } = useEditorSettings();
+  return (
+    <InterpreterProvider code={code} level={level} settings={settings}>
+      {children}
+    </InterpreterProvider>
+  );
+}
+
+InterpreterProvider.Wrapper = InterpreterWrapper;

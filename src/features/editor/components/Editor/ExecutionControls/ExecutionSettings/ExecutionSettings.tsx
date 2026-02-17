@@ -4,7 +4,7 @@ import { FormField } from "../../../../../../shared/components/Form/FormField/Fo
 import { MAX_RUN_SPEED, MIN_RUN_SPEED } from "../../Editor.tsx";
 import { Popover } from "../../../../../../shared/components/floating/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
-import { useEditorSettings } from "../../../../settings/EditorSettingsContext.tsx";
+import { useEditorSettings } from "../../../../context/settings/EditorSettingsContext.tsx";
 import { useState } from "react";
 
 export function ExecutionSettings() {

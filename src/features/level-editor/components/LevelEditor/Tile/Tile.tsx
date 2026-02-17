@@ -9,15 +9,15 @@ import {
   type Position,
 } from "../../../../../core/interpreter/types.ts";
 import { getDirectionIcon } from "../../../utils.tsx";
-import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
 import { FaFlag } from "react-icons/fa6";
+import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
 
 type TileProps = {
   position: Position;
 } & ButtonProps;
 
 export function Tile({ position, ...props }: TileProps) {
-  const { source: level } = useLevelSource();
+  const { level } = useLevelEditor();
   const isStart = isPositionEqual(level.owlStart.position, position);
   const isFinish = isPositionEqual(level.finishPosition, position);
   return (

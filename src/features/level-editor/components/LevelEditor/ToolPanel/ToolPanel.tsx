@@ -4,12 +4,12 @@ import { useTranslation } from "react-i18next";
 import { GENERAL_TOOLS } from "../../../tools.tsx";
 import { tryTranslate } from "../../../../../shared/i18n/i18n.ts";
 import { CornerGroup } from "../../../../../shared/components/CornerGroup/CornerGroup.tsx";
-import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
 import styles from "./ToolPanel.module.css";
-import { FileControls } from "../../../../editor/components/FileCodeEditor/FileControls/FileControls.tsx";
+import { MultiSourceControls } from "../../../../editor/components/MultiSourceControls/MultiSourceControls.tsx";
 import { PillSwitch } from "../../../../../shared/components/PillSwitch/PillSwitch.tsx";
 import { TaskExport } from "./TaskExport/TaskExport.tsx";
 import { MazeProperties } from "./MazeProperties/MazeProperties.tsx";
+import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
 
 type ToolPanelProps = {
   visualize: boolean;
@@ -18,19 +18,15 @@ type ToolPanelProps = {
 
 export function ToolPanel({ visualize, setVisualize }: ToolPanelProps) {
   const { t } = useTranslation();
-  const sourceApi = useLevelSource();
-  const {
-    name: currentLevelName,
-    source: level,
-    setSource: setLevel,
-  } = sourceApi;
+  const { level, setLevel, source } = useLevelEditor();
+  const currentLevelName = source.activeSource.name;
   return (
     <>
       <CornerGroup position="top-left" className={styles.cornerGroup}>
         <Button variant="highlighted" className={styles.title}>
           {currentLevelName}
         </Button>
-        <FileControls sourceApi={sourceApi} />
+        <MultiSourceControls source={source} />
       </CornerGroup>
 
       <div className={styles.separator} />

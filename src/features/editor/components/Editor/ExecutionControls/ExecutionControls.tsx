@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useEditorRuntime } from "../../../runtime/EditorRuntimeContext.tsx";
+import { useInterpreter } from "../../../context/interpreter/InterpreterContext.tsx";
 import { ButtonGroup } from "../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import {
@@ -30,7 +30,7 @@ export function ExecutionControls({
     reset,
     isRunning,
     canStep: canEditorStep,
-  } = useEditorRuntime();
+  } = useInterpreter();
   const canStep = canEditorStep();
   return (
     <ButtonGroup>

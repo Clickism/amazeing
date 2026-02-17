@@ -5,7 +5,7 @@ import ReactCodeMirror, { tooltips } from "@uiw/react-codemirror";
 import { amazeing } from "../../../../core/amazeing/amazeing.ts";
 import { EditorView } from "@codemirror/view";
 import { amazeingAutocomplete } from "../../../../core/amazeing/autocomplete/autocomplete.ts";
-import { useCodeEditorSettings } from "../../settings/CodeEditorSettingsContext.tsx";
+import { useCodeEditorSettings } from "../../context/settings/CodeEditorSettingsContext.tsx";
 import { useEditorTheme } from "../../../../shared/theme/EditorThemeContext.tsx";
 import type { Extension } from "@codemirror/state";
 import { TopBar, type TopBarProps } from "./TopBar/TopBar.tsx";

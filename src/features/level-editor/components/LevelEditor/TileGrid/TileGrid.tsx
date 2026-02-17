@@ -4,13 +4,13 @@ import { Tile } from "../Tile/Tile.tsx";
 import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
 import { Popover } from "../../../../../shared/components/floating/Popover/Popover.tsx";
-import { useLevelSource } from "../../../../editor/source/SourceContext.tsx";
 import { TileProperties } from "./TileProperties/TileProperties.tsx";
 import { useTranslation } from "react-i18next";
+import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
 
 export function TileGrid() {
   const { t } = useTranslation();
-  const { source: level, setSource: setLevel } = useLevelSource();
+  const { level, setLevel } = useLevelEditor();
   const maze = level.maze;
   const rows = Array.from({ length: maze.height });
   const columns = Array.from({ length: maze.width });

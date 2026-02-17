@@ -1,44 +1,46 @@
-import { Button } from "../../../../../shared/components/Button/Button.tsx";
-import { ButtonGroup } from "../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
+import { Button } from "../../../../shared/components/Button/Button.tsx";
+import { ButtonGroup } from "../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
-import { Popover } from "../../../../../shared/components/floating/Popover/Popover.tsx";
-import { FormField } from "../../../../../shared/components/Form/FormField/FormField.tsx";
-import { FormGroup } from "../../../../../shared/components/Form/FormGroup/FormGroup.tsx";
+import { Popover } from "../../../../shared/components/floating/Popover/Popover.tsx";
+import { FormField } from "../../../../shared/components/Form/FormField/FormField.tsx";
+import { FormGroup } from "../../../../shared/components/Form/FormGroup/FormGroup.tsx";
 import { useEffect, useState } from "react";
-import { type SourceAPI } from "../../../source/SourceContext.tsx";
-import { checkValidName } from "../../../utils.ts";
+import { checkValidName } from "../../utils.ts";
+import { type MultiSource } from "../../context/source/source.ts";
 
-type FileControlsProps<T> = {
-  sourceApi: SourceAPI<T>;
+type MultiSourceControlsProps<T> = {
+  source: MultiSource<T>;
 };
 
-export function FileControls<T>({ sourceApi }: FileControlsProps<T>) {
-  const { t } = useTranslation();
-  const {
-    name: activeFile,
+export function MultiSourceControls<T>({
+  source: {
+    sourceNames,
+    activeSource: { name: activeSource },
     renameSource,
     deleteSource,
-    sourceNames,
-  } = sourceApi;
-  const [newFileName, setNewFileName] = useState(activeFile);
+  },
+}: MultiSourceControlsProps<T>) {
+  const { t } = useTranslation();
+  const [newSourceName, setNewSourceName] = useState(activeSource);
+
   const [isValid, invalidMessage] = checkValidName(
     t,
-    newFileName,
-    sourceNames ?? [],
-    activeFile,
+    newSourceName,
+    sourceNames,
+    activeSource,
   );
-  const canRename = newFileName !== activeFile && isValid;
+  const canRename = newSourceName !== activeSource && isValid;
 
   useEffect(() => {
-    setNewFileName(activeFile);
-  }, [activeFile]);
+    setNewSourceName(activeSource);
+  }, [activeSource]);
 
   return (
     <ButtonGroup>
       <Popover
         title={t("fileList.rename.action")}
-        onClose={() => setNewFileName(activeFile)}
+        onClose={() => setNewSourceName(activeSource)}
         trigger={
           <Button variant="outlined" shape="icon">
             <BiPencil />
@@ -49,15 +51,15 @@ export function FileControls<T>({ sourceApi }: FileControlsProps<T>) {
           <FormField label={t("fileList.rename.fileName")}>
             <input
               type="text"
-              value={newFileName}
-              onChange={(e) => setNewFileName(e.target.value)}
+              value={newSourceName}
+              onChange={(e) => setNewSourceName(e.target.value)}
             />
           </FormField>
           <Button
             variant="primary"
             disabled={!canRename}
             onClick={() => {
-              renameSource(newFileName);
+              renameSource(newSourceName);
             }}
           >
             <BiPencil />
@@ -82,7 +84,7 @@ export function FileControls<T>({ sourceApi }: FileControlsProps<T>) {
           </div>
           <Button variant="danger" onClick={() => deleteSource()}>
             <BiTrash />
-            {t("fileList.delete.action", { file: activeFile })}
+            {t("fileList.delete.action", { file: activeSource })}
           </Button>
         </ButtonGroup>
       </Popover>

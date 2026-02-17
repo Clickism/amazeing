@@ -1,11 +1,10 @@
-import type { ConsoleMessage } from "../../../core/interpreter/console.ts";
-import { type OwlData } from "../../../core/game/owl.ts";
+import type { ConsoleMessage } from "../../../../core/interpreter/console.ts";
+import { type OwlData } from "../../../../core/game/owl.ts";
 import { createContext, useContext } from "react";
-import type { Level } from "../../../core/game/level.ts";
+import type { Level } from "../../../../core/game/level.ts";
 
-export type EditorRuntimeAPI = {
+export type InterpreterAPI = {
   // Game controls
-
   run: () => void;
   stop: () => void;
   canStep: () => boolean;
@@ -13,28 +12,22 @@ export type EditorRuntimeAPI = {
   reset: () => void;
 
   // Game data
-
   owlData: OwlData;
   setOwlData: (owlData: OwlData) => void;
   level: Level;
 
   // Editor
-
-  code: string;
-  setCode: (code: string) => void;
-
   output: ConsoleMessage[];
-
   currentLine: number | null;
   isRunning: boolean;
 };
 
-export const EditorRuntimeContext = createContext<EditorRuntimeAPI | null>(
+export const InterpreterContext = createContext<InterpreterAPI | null>(
   null,
 );
 
-export function useEditorRuntime() {
-  const ctx = useContext(EditorRuntimeContext);
+export function useInterpreter() {
+  const ctx = useContext(InterpreterContext);
   if (!ctx)
     throw new Error(
       "useEditorRuntime must be used within EditorRuntimeProvider",

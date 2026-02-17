@@ -13,13 +13,14 @@ import {
 import type { Position } from "../../../../core/interpreter/types.ts";
 import { CornerGroup } from "../../../../shared/components/CornerGroup/CornerGroup.tsx";
 import type { OwlData } from "../../../../core/game/owl.ts";
-import type { Level } from "../../../../core/game/level.ts";
+import type { Level, LevelData } from "../../../../core/game/level.ts";
 import { LevelSelector } from "./LevelSelector/LevelSelector.tsx";
 import { Button } from "../../../../shared/components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Tooltip } from "../../../../shared/components/floating/Tooltip/Tooltip.tsx";
 import { TbLock, TbLockOpen2 } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
+import type { FileStorage } from "../../context/storage/fileStorage.ts";
 
 const ZOOM_SPEED = 0.0015;
 const DEFAULT_ZOOM = 4;
@@ -29,7 +30,13 @@ const MAX_ZOOM = 8;
 export type ViewportProps = {
   owl: OwlData;
   level: Level;
-  levelSelector?: boolean;
+  /**
+   * Allows changing the level in the viewport, and uses the
+   * provided level storage to save and load levels.
+   *
+   * If not provided, the level is fixed and cannot be changed by the user.
+   */
+  levelStorage?: FileStorage<LevelData>;
   lockCamera?: boolean;
   lockCameraControls?: boolean;
 };
@@ -37,7 +44,7 @@ export type ViewportProps = {
 export function Viewport({
   owl,
   level,
-  levelSelector = false,
+  levelStorage,
   lockCamera = true,
   lockCameraControls = true,
 }: ViewportProps) {
@@ -158,7 +165,7 @@ export function Viewport({
               </Button>
             </Tooltip>
           )}
-          {levelSelector && <LevelSelector />}
+          {levelStorage && <LevelSelector levelStorage={levelStorage} />}
         </ButtonGroup>
       </CornerGroup>
 
