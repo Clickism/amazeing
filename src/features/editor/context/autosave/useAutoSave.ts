@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 
-const DEFAULT_INTERVAL = 5000; // 5 seconds
+const DEFAULT_DELAY = 1000; // 1000ms
 
 export type AutoSave = {
   /**
@@ -9,9 +9,10 @@ export type AutoSave = {
   flush: () => void;
 };
 
-export function useAutoSave(
+export function useAutoSave<T>(
+  data: T,
   onSave: () => void,
-  interval = DEFAULT_INTERVAL,
+  delay = DEFAULT_DELAY,
 ): AutoSave {
   const onSaveRef = useRef(onSave);
   onSaveRef.current = onSave;
@@ -19,16 +20,17 @@ export function useAutoSave(
   // Stable flush function
   const flush = useCallback(() => {
     onSaveRef.current();
+    console.log("Auto-saved content");
   }, []);
 
-  // Save periodically
+  // Set up debounced auto-saving
   useEffect(() => {
-    const id = setInterval(flush, interval);
+    console.log("Restart debounce timer");
+    const id = setTimeout(flush, delay);
     return () => {
-      clearInterval(id);
-      flush();
+      clearTimeout(id);
     };
-  }, [flush, interval]);
+  }, [flush, delay, data]);
 
   // Save before unload
   useEffect(() => {

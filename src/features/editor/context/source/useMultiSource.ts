@@ -45,7 +45,7 @@ export function useMultiSource<T>({
   );
 
   // Set up auto-save
-  const { flush } = useAutoSave(() => {
+  const { flush } = useAutoSave(data, () => {
     if (activeName === null) return;
     fileStorage.saveFile(activeName, data);
   });

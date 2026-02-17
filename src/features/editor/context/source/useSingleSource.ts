@@ -30,8 +30,10 @@ export function useSingleSource<T>({
     return stored ?? defaultData;
   });
 
-  const { flush } = useAutoSave(() => {
-    storage.save(key, data);
+  const keyRef = useRef(key);
+
+  const { flush } = useAutoSave(data, () => {
+    storage.save(keyRef.current, data);
   });
 
   // Handle key changes by flushing current data and loading new data
@@ -39,6 +41,7 @@ export function useSingleSource<T>({
   useEffect(() => {
     if (prevKeyRef.current === key) return;
     flush(); // Save old data before switching
+    keyRef.current = key; // Update the key ref to save new data to the correct key
     const stored = storage.load<T>(key) ?? defaultData;
     setData(stored);
     prevKeyRef.current = key;
