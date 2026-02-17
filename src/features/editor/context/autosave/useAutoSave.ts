@@ -20,12 +20,10 @@ export function useAutoSave<T>(
   // Stable flush function
   const flush = useCallback(() => {
     onSaveRef.current();
-    console.log("Auto-saved content");
   }, []);
 
   // Set up debounced auto-saving
   useEffect(() => {
-    console.log("Restart debounce timer");
     const id = setTimeout(flush, delay);
     return () => {
       clearTimeout(id);
