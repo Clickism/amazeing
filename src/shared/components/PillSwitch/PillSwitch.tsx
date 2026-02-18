@@ -11,14 +11,14 @@ export type PillSwitchProps = {
   options: PillSwitchOption[];
   selectedOptionId: string;
   onSelect: (optionId: string) => void;
-  layoutId?: string;
+  layoutId: string;
 };
 
 export function PillSwitch({
   options,
   selectedOptionId,
   onSelect,
-  layoutId = "pill-switch-indicator",
+  layoutId,
 }: PillSwitchProps) {
   return (
     <div className={styles.container}>

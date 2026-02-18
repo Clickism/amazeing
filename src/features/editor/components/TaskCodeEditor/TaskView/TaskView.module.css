@@ -1,5 +1,5 @@
 .currentTaskContainer {
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 1rem 1rem 1rem;
   min-width: 250px;
   background-color: var(--clr-surface-a10);
   border-radius: 1rem;
@@ -31,4 +31,53 @@
   width: 100%;
   height: 1px;
   background-color: var(--clr-surface-a20);
+}
+
+/*Day progress*/
+.dayProgressContainer {
+  width: 100%;
+  gap: .5rem;
+  border-radius: .5rem;
+  background-color: var(--clr-surface-a15);
+  padding: .5rem;
+  margin-top: .5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dayProgressTitle {
+  font-size: 14px;
+  color: var(--text-color-t80);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.verticalSeparator {
+  width: 1px;
+  height: 20px;
+  background-color: var(--clr-surface-a30);
+  align-self: center;
+}
+
+.progressBarContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--clr-surface-a30);
+  overflow: hidden;
+  transition: background-color 0.2s;
+}
+
+.progressBar.completed {
+  background-color: var(--clr-success-a10);
 }

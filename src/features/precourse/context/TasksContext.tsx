@@ -5,6 +5,8 @@ import type { Task } from "../task.ts";
 export type TasksAPI = {
   task: Task;
   setTaskId: (taskId: string) => void;
+  completedTasks: string[];
+  setCompleted(taskId: string, completed: boolean): void;
   days: Day[];
 }
 
