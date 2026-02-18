@@ -55,7 +55,7 @@
   "button.saved": "Gespeichert!",
 
   "levelEditor.title": "Level-Editor",
-  "levelEditor.headers.mode": "",
+  "levelEditor.headers.mode": "Editor-Modus",
   "levelEditor.headers.maze": "Maze",
   "levelEditor.headers.tools": "Tools",
   "levelEditor.headers.actions": "Aktionen",
