@@ -5,69 +5,72 @@ import { useCallback } from "react";
 /**
  * Hook to manage file storage using persistent storage.
  * @param namespace The namespace for the storage.
- * @param storageKey The key to store the file entries under.
+ * @param storagePrefix The key prefix to store the file entries under.
  */
 export function useFileStorage<T>(
   namespace: string,
-  storageKey = "files",
+  storagePrefix = "files",
 ): FileStorage<T> {
   const storage = usePersistentStorage(namespace);
-  const [entries, setEntries] = usePersistentState<Record<string, T>>(
+  const [fileNames, setFileNames] = usePersistentState<string[]>(
     storage,
-    storageKey,
-    {},
+    "fileNames",
+    [],
   );
-  const fileNames = Object.keys(entries);
+
+  const fileKey = useCallback(
+    (name: string) => `${storagePrefix}:${name}`,
+    [storagePrefix],
+  );
 
   const loadFile = useCallback(
     (name: string): T | null => {
-      return entries[name] ?? null;
+      return storage.load(fileKey(name));
     },
-    [entries],
+    [fileKey, storage],
   );
 
   const saveFile = useCallback(
     (name: string, data: T) => {
-      setEntries((prev) => ({
-        ...prev,
-        [name]: data,
-      }));
+      storage.save(fileKey(name), data);
+      if (!fileNames.includes(name)) {
+        setFileNames((prev) => [...prev, name]);
+      }
     },
-    [setEntries],
+    [fileKey, fileNames, setFileNames, storage],
   );
 
   const deleteFile = useCallback(
     (name: string) => {
-      setEntries((prev) => {
-        const newEntries = { ...prev };
-        delete newEntries[name];
-        return newEntries;
-      });
+      storage.remove(fileKey(name));
+      setFileNames((prev) => prev.filter((n) => n !== name));
     },
-    [setEntries],
+    [storage, fileKey, setFileNames],
   );
 
   const renameFile = useCallback(
     (oldName: string, newName: string) => {
-      setEntries((prev) => {
+      setFileNames((prev) => {
         // Prevent overwriting existing file
-        if (prev[newName] !== undefined) return prev;
-        const next = { ...prev };
-        if (oldName in next) {
-          next[newName] = next[oldName];
-          delete next[oldName];
+        if (prev.includes(newName)) return prev;
+        // Prevent renaming non-existent file
+        if (!prev.includes(oldName)) return prev;
+        const newFileNames = prev.map((n) => (n === oldName ? newName : n));
+        // Rename in storage
+        const data = storage.load(fileKey(oldName));
+        if (data !== null) {
+          storage.save(fileKey(newName), data);
+          storage.remove(fileKey(oldName));
         }
-        return next;
+        return newFileNames;
       });
     },
-    [setEntries],
+    [fileKey, setFileNames, storage],
   );
 
   const exists = useCallback(
-    (name: string) => {
-      return name in entries;
-    },
-    [entries],
+    (name: string) => fileNames.includes(name),
+    [fileNames],
   );
 
   const isEmpty = useCallback(() => {
@@ -75,7 +78,7 @@ export function useFileStorage<T>(
   }, [fileNames]);
 
   return {
-    fileNames,
+    fileNames: Array.from(fileNames),
     loadFile,
     saveFile,
     deleteFile,

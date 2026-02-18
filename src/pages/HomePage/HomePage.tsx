@@ -16,6 +16,7 @@ export function HomePage() {
       <div className={styles.taskContainer}>
         {days.map((day, i) => (
           <TaskCard
+            key={day}
             title={{ key: `home.tasks.day${day}.title` }}
             description={{ key: `home.tasks.day${day}.description` }}
             backgroundImageUrl={dayImages[i]}

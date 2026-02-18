@@ -7,6 +7,10 @@ export type AutoSave = {
    * Manually trigger saving the content.
    */
   flush: () => void;
+  /**
+   * Cancels any pending auto-save operations.
+   */
+  cancel: () => void;
 };
 
 /**
@@ -24,16 +28,28 @@ export function useAutoSave<T>(
   const onSaveRef = useRef(onSave);
   onSaveRef.current = onSave;
 
+  const timeoutRef = useRef<number | null>(null);
+
   // Stable flush function
   const flush = useCallback(() => {
     onSaveRef.current();
   }, []);
 
+  // Stable cancel function
+  const cancel = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
+
   // Set up debounced auto-saving
   useEffect(() => {
-    const id = setTimeout(flush, delay);
+    timeoutRef.current = setTimeout(flush, delay);
     return () => {
-      clearTimeout(id);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, [flush, delay, data]);
 
@@ -43,5 +59,5 @@ export function useAutoSave<T>(
     return () => window.removeEventListener("beforeunload", flush);
   }, [flush]);
 
-  return { flush };
+  return { flush, cancel };
 }

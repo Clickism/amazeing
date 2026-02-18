@@ -51,7 +51,7 @@ export function useMultiSource<T>({
   );
 
   // Set up auto-save
-  const { flush } = useAutoSave(data, () => {
+  const { flush, cancel } = useAutoSave(data, () => {
     if (activeName === null) return;
     fileStorage.saveFile(activeName, data);
   });
@@ -59,24 +59,26 @@ export function useMultiSource<T>({
   const switchSource = useCallback(
     (name: string, skipFlush = false) => {
       if (!skipFlush) flush(); // Save before switching
+      cancel(); // Cancel any pending auto-saves
       const content = fileStorage.loadFile(name);
       if (content !== null) {
         setData(content);
         setActiveName(name);
       }
     },
-    [fileStorage, flush, setActiveName],
+    [cancel, fileStorage, flush, setActiveName],
   );
 
   const newSource = useCallback(
     (skipFlush = false) => {
       if (!skipFlush) flush(); // Save before creating new source
+      cancel(); // Cancel any pending auto-saves
       const name = findNextAvailableName(fileNameFormat, fileStorage.fileNames);
       fileStorage.saveFile(name, defaultData);
       setData(defaultData);
       setActiveName(name);
     },
-    [defaultData, fileNameFormat, fileStorage, flush, setActiveName],
+    [cancel, defaultData, fileNameFormat, fileStorage, flush, setActiveName],
   );
 
   const renameSource = useCallback(

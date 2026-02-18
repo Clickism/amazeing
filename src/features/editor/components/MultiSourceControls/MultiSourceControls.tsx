@@ -37,7 +37,7 @@ export function MultiSourceControls<T>({
   }, [activeSource]);
 
   return (
-    <ButtonGroup>
+    <ButtonGroup style={{ flexWrap: "nowrap" }}>
       <Popover
         title={t("fileList.rename.action")}
         onClose={() => setNewSourceName(activeSource)}
