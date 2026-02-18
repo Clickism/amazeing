@@ -1,0 +1,40 @@
+{
+  "title": {
+    "en": "Getting Started",
+    "de": "Erste Schritte"
+  },
+  "description": {
+    "en": "Getting started with AmazeingASM, simple maze algorithms.",
+    "de": "Erste Schritte mit AmazeingASM, einfache Maze-Algorithmen."
+  },
+  "levelData": {
+    "maze": {
+      "theme": "plains",
+      "width": 8,
+      "height": 8,
+      "walls": {
+        "horizontal": [
+          [true, true, true, true, true, true, true, true],
+          [true, false, true, true, true, true, true, true],
+          [true, true, true, false, true, true, true, true],
+          [true, true, true, true, false, true, true, true],
+          [true, true, true, true, true, false, true, true],
+          [true, true, true, true, true, false, true, true],
+          [true, true, true, true, true, true, false, true]
+        ],
+        "vertical": [
+          [false, true, true, true, true, true, true],
+          [false, true, false, true, true, true, true],
+          [true, false, false, true, true, true, true],
+          [true, true, false, false, true, true, true],
+          [true, true, true, true, false, false, true],
+          [true, true, true, true, true, true, true],
+          [true, true, true, true, true, false, true],
+          [true, true, true, true, true, true, false]
+        ]
+      }
+    },
+    "finishPosition": { "x": 7, "y": 7 },
+    "owlStart": { "position": { "x": 0, "y": 0 }, "direction": "south" }
+  }
+}
