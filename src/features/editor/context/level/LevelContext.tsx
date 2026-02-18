@@ -9,9 +9,13 @@ type LevelContext = {
 
 export const LevelContext = createContext<LevelContext | null>(null);
 
+/**
+ * Simple hook to access and update the current level.
+ *
+ * Used for multi-level switching in Sandbox mode.
+ */
 export function useLevel() {
   const ctx = useContext(LevelContext);
-  if (!ctx)
-    throw new Error("useLevel must be used within a LevelProvider");
+  if (!ctx) throw new Error("useLevel must be used within a LevelProvider");
   return ctx;
 }

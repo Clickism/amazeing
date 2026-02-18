@@ -8,14 +8,14 @@ import { taskIdOf } from "../../features/precourse/day.ts";
 import { TaskCodeModelProvider } from "../../features/editor/context/code/TaskCodeModelProvider.tsx";
 import { InterpreterProvider } from "../../features/editor/context/interpreter/InterpreterProvider.tsx";
 
+const namespace = "tasks";
+
 export function TasksPage() {
   return (
     <Layout fullWidth>
-      <EditorSettingsProvider namespace="tasks">
+      <EditorSettingsProvider namespace={namespace}>
         <TasksProvider taskId={taskIdOf(1, 1)}>
-          <TaskCodeModelProvider namespace="tasks">
-            <EditorWrapper />
-          </TaskCodeModelProvider>
+          <EditorWrapper />
         </TasksProvider>
       </EditorSettingsProvider>
     </Layout>
@@ -26,8 +26,10 @@ export function TasksPage() {
 function EditorWrapper() {
   const { task } = useTasks();
   return (
-    <InterpreterProvider.Wrapper level={new Level(task.levelData)}>
-      <Editor />
-    </InterpreterProvider.Wrapper>
+    <TaskCodeModelProvider task={task} namespace={namespace}>
+      <InterpreterProvider.Wrapper level={new Level(task.levelData)}>
+        <Editor />
+      </InterpreterProvider.Wrapper>
+    </TaskCodeModelProvider>
   );
 }

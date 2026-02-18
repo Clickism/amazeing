@@ -9,6 +9,13 @@ export type AutoSave = {
   flush: () => void;
 };
 
+/**
+ * Hook to automatically save data with a delay that resets on each change
+ * to the data, and also before the website is unloaded.
+ * @param data
+ * @param onSave
+ * @param delay
+ */
 export function useAutoSave<T>(
   data: T,
   onSave: () => void,

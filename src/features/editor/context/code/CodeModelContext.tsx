@@ -27,6 +27,9 @@ export const CodeModelContext = createContext<CodeModel | null>(null);
 
 /**
  * Hook to access the code model context.
+ *
+ * @see FileCodeModelProvider
+ * @see TaskCodeModelProvider
  */
 export function useCodeModel() {
   const context = useContext(CodeModelContext);

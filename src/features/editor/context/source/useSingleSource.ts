@@ -4,9 +4,22 @@ import { useAutoSave } from "../autosave/useAutoSave.ts";
 import { useEffect, useRef, useState } from "react";
 
 export type UseSingleSourceProps<T> = {
+  /**
+   * The key to save the source under in persistent storage.
+   * Should be unique, and will be prefixed with "source:" to avoid collisions with other data in storage.
+   */
   key: string;
+  /**
+   * The display name of the source.
+   */
   name: string;
+  /**
+   * The default data to use if there is no stored data for the given key.
+   */
   defaultData: T;
+  /**
+   * Namespace to use for saving the source in persistent storage.
+   */
   namespace: string;
 };
 

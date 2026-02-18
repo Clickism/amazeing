@@ -11,9 +11,6 @@ type FileCodeModelProviderProps = {
 /**
  * Provides a code model that supports multiple files using file storage.
  * The default content and file naming format are localized.
- *
- * @param namespace The namespace for the file storage, used to isolate files for different contexts.
- * @param children The child components that will have access to the code model context.
  */
 export function FileCodeModelProvider({
   namespace,

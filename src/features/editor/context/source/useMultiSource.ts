@@ -9,18 +9,24 @@ import { useAutoSave } from "../autosave/useAutoSave.ts";
 import { findNextAvailableName, findNextName } from "../../utils.ts";
 
 export type UseMultiSourceProps<T> = {
+  /**
+   * The default data to use for new sources, and for sources that fail to load.
+   */
   defaultData: T;
   /**
-   * Namespace to save active source, if not provided,
-   * the FileStorage's namespace will be used.
+   * File storage to use for saving resources.
    */
-  namespace?: string;
   fileStorage: FileStorage<T>;
   /**
    * Function to generate source name based on index, used for creating new sources.
    * @param index The index to generate the name for, starting from 1.
    */
   fileNameFormat: (index: number) => string;
+  /**
+   * Namespace to save active source, if not provided,
+   * the FileStorage's namespace will be used.
+   */
+  namespace?: string;
 };
 
 /**
