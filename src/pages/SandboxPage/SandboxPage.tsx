@@ -7,21 +7,29 @@ import { EditorSettingsProvider } from "../../features/editor/context/settings/E
 import { FileCodeModelProvider } from "../../features/editor/context/code/FileCodeModelProvider.tsx";
 import { LevelProvider } from "../../features/editor/context/level/LevelProvider.tsx";
 import { InterpreterProvider } from "../../features/editor/context/interpreter/InterpreterProvider.tsx";
+import { useLevel } from "../../features/editor/context/level/LevelContext.tsx";
 
 export function SandboxPage() {
-  const levelStorage = useFileStorage<LevelData>("custom");
   const level = new Level(loadTask("sandbox/task").levelData);
   return (
     <Layout fullWidth>
       <EditorSettingsProvider namespace="sandbox">
         <FileCodeModelProvider namespace="sandbox">
           <LevelProvider level={level}>
-            <InterpreterProvider.Wrapper level={level}>
-              <Editor levelStorage={levelStorage} owlControls />
-            </InterpreterProvider.Wrapper>
+            <LevelWrapper />
           </LevelProvider>
         </FileCodeModelProvider>
       </EditorSettingsProvider>
     </Layout>
+  );
+}
+
+function LevelWrapper() {
+  const { level } = useLevel();
+  const levelStorage = useFileStorage<LevelData>("custom");
+  return (
+    <InterpreterProvider.Wrapper level={level}>
+      <Editor levelStorage={levelStorage} owlControls />
+    </InterpreterProvider.Wrapper>
   );
 }

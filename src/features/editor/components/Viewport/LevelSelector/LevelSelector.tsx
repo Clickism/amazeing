@@ -28,8 +28,10 @@ export function LevelSelector({ levelStorage }: LevelSelectorProps) {
         <select
           onChange={(e) => {
             const name = e.target.value;
+            console.log(loadFile(name))
             const selectedLevel = loadFile(name) ?? initialLevel.data;
             if (selectedLevel) {
+              console.log(selectedLevel);
               setLevel(new Level(selectedLevel));
             }
           }}
