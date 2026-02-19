@@ -14,12 +14,12 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
 type SingleElement = {
   id: string;
-  name: string;
+  name: string | ReactNode;
 };
 
 type Group = {
   id: string;
-  name: string;
+  name: string | ReactNode;
   elements: SingleElement[];
 };
 
@@ -39,6 +39,7 @@ type ListProps = {
   nestingLevel?: number;
 } & HTMLAttributes<HTMLDivElement>;
 
+// TODO: Animate groups
 export function List({
   elements,
   openGroupIds = [],
@@ -81,7 +82,7 @@ export function List({
         {elements.map((element) =>
           isGroup(element) ? (
             <GroupElement
-              key={element.name}
+              key={element.id}
               group={element}
               activeElementId={activeElementId}
               onSelectElement={onSelectElement}
