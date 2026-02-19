@@ -100,6 +100,49 @@ export function Viewport({
     };
   }, [camera, dpr, level, owl, sprites]);
 
+  // Following logic
+  useEffect(() => {
+    if (!following || !canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+
+    // Calculate how much is visible on screen in world coordinates
+    const viewWidthWorld = canvas.width / (dpr * camera.zoom);
+    const viewHeightWorld = canvas.height / (dpr * camera.zoom);
+
+    // Calculate the center of the owl in world coordinates
+    const owlWorldX = (owl.position.x + 0.5) * CELL_SIZE;
+    const owlWorldY = (owl.position.y + 0.5) * CELL_SIZE;
+    const margin = CELL_SIZE;
+
+    // The maximum distance the camera center can be from the owl
+    const maxDx = Math.max(0, viewWidthWorld / 2 - margin);
+    const maxDy = Math.max(0, viewHeightWorld / 2 - margin);
+
+    setCamera((prevCamera) => {
+      let newX = prevCamera.position.x;
+      let newY = prevCamera.position.y;
+
+      if (owlWorldX > prevCamera.position.x + maxDx) {
+        newX = owlWorldX - maxDx;
+      } else if (owlWorldX < prevCamera.position.x - maxDx) {
+        newX = owlWorldX + maxDx;
+      }
+
+      if (owlWorldY > prevCamera.position.y + maxDy) {
+        newY = owlWorldY - maxDy;
+      } else if (owlWorldY < prevCamera.position.y - maxDy) {
+        newY = owlWorldY + maxDy;
+      }
+
+      // Only trigger a state update if the camera actually needs to move
+      if (newX !== prevCamera.position.x || newY !== prevCamera.position.y) {
+        return { ...prevCamera, position: { x: newX, y: newY } };
+      }
+      return prevCamera;
+    });
+  }, [owl.position.x, owl.position.y, following, camera.zoom, dpr]);
+
   // Mouse events
   const handleDragStart = (x: number, y: number) => {
     if (following) return;
