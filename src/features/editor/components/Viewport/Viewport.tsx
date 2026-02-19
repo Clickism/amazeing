@@ -27,6 +27,10 @@ const DEFAULT_ZOOM = 4;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 8;
 
+// Follow settings
+const FOLLOW_LERP_FACTOR = 0.1;
+const FOLLOW_MARGIN = CELL_SIZE * 2;
+
 export type ViewportProps = {
   owl: OwlData;
   level: Level;
@@ -103,44 +107,72 @@ export function Viewport({
   // Following logic
   useEffect(() => {
     if (!following || !canvasRef.current) return;
+    let animationFrameId: number;
 
-    const canvas = canvasRef.current;
+    const smoothFollow = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-    // Calculate how much is visible on screen in world coordinates
-    const viewWidthWorld = canvas.width / (dpr * camera.zoom);
-    const viewHeightWorld = canvas.height / (dpr * camera.zoom);
+      // Calculate how much is visible on screen in world coordinates
+      const viewWidthWorld = canvas.width / (dpr * camera.zoom);
+      const viewHeightWorld = canvas.height / (dpr * camera.zoom);
 
-    // Calculate the center of the owl in world coordinates
-    const owlWorldX = (owl.position.x + 0.5) * CELL_SIZE;
-    const owlWorldY = (owl.position.y + 0.5) * CELL_SIZE;
-    const margin = CELL_SIZE;
+      // Calculate the center of the owl in world coordinates
+      const owlWorldX = (owl.position.x + 0.5) * CELL_SIZE;
+      const owlWorldY = (owl.position.y + 0.5) * CELL_SIZE;
 
-    // The maximum distance the camera center can be from the owl
-    const maxDx = Math.max(0, viewWidthWorld / 2 - margin);
-    const maxDy = Math.max(0, viewHeightWorld / 2 - margin);
+      // The maximum distance the camera center can be from the owl
+      const maxDx = Math.max(0, viewWidthWorld / 2 - FOLLOW_MARGIN);
+      const maxDy = Math.max(0, viewHeightWorld / 2 - FOLLOW_MARGIN);
 
-    setCamera((prevCamera) => {
-      let newX = prevCamera.position.x;
-      let newY = prevCamera.position.y;
+      setCamera((prevCamera) => {
+        let newX = prevCamera.position.x;
+        let newY = prevCamera.position.y;
 
-      if (owlWorldX > prevCamera.position.x + maxDx) {
-        newX = owlWorldX - maxDx;
-      } else if (owlWorldX < prevCamera.position.x - maxDx) {
-        newX = owlWorldX + maxDx;
-      }
+        if (owlWorldX > prevCamera.position.x + maxDx) {
+          newX = owlWorldX - maxDx;
+        } else if (owlWorldX < prevCamera.position.x - maxDx) {
+          newX = owlWorldX + maxDx;
+        }
 
-      if (owlWorldY > prevCamera.position.y + maxDy) {
-        newY = owlWorldY - maxDy;
-      } else if (owlWorldY < prevCamera.position.y - maxDy) {
-        newY = owlWorldY + maxDy;
-      }
+        if (owlWorldY > prevCamera.position.y + maxDy) {
+          newY = owlWorldY - maxDy;
+        } else if (owlWorldY < prevCamera.position.y - maxDy) {
+          newY = owlWorldY + maxDy;
+        }
 
-      // Only trigger a state update if the camera actually needs to move
-      if (newX !== prevCamera.position.x || newY !== prevCamera.position.y) {
-        return { ...prevCamera, position: { x: newX, y: newY } };
-      }
-      return prevCamera;
-    });
+        const dx = newX - prevCamera.position.x;
+        const dy = newY - prevCamera.position.y;
+
+        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+          // If we are already at the target, don't trigger a state update
+          if (
+            prevCamera.position.x === newX &&
+            prevCamera.position.y === newY
+          ) {
+            return prevCamera;
+          }
+          return {
+            ...prevCamera,
+            position: { x: newX, y: newY },
+          };
+        }
+
+        // Move a fraction of the distance to the target
+        return {
+          ...prevCamera,
+          position: {
+            x: prevCamera.position.x + dx * FOLLOW_LERP_FACTOR,
+            y: prevCamera.position.y + dy * FOLLOW_LERP_FACTOR,
+          },
+        };
+      });
+      animationFrameId = requestAnimationFrame(smoothFollow);
+    };
+    animationFrameId = requestAnimationFrame(smoothFollow);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
   }, [owl.position.x, owl.position.y, following, camera.zoom, dpr]);
 
   // Mouse events
