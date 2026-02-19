@@ -8,9 +8,10 @@ export type TopBarProps = {
   title?: string;
   left?: ReactNode[];
   right?: ReactNode[];
+  settingsButton?: boolean;
 };
 
-export function TopBar({ title, left, right }: TopBarProps) {
+export function TopBar({ title, left, right, settingsButton }: TopBarProps) {
   return (
     <div className={styles.topBar}>
       {title && (
@@ -25,7 +26,7 @@ export function TopBar({ title, left, right }: TopBarProps) {
       {right?.map((item, i) => (
         <Fragment key={i}>{item}</Fragment>
       ))}
-      <CodeEditorSettings />
+      {settingsButton && <CodeEditorSettings />}
     </div>
   );
 }

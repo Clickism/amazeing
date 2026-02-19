@@ -17,7 +17,11 @@ export type CodeEditorProps = {
   setCode: (code: string) => void;
   editorExtensions?: Extension[];
   topBar?: TopBarProps;
-  transitionDuration: number;
+  transitionDuration?: number;
+  blurEffects?: boolean;
+  settingsButton?: boolean;
+  showTopBar?: boolean;
+  autocomplete?: boolean;
 };
 
 export function CodeEditor({
@@ -26,14 +30,20 @@ export function CodeEditor({
   setCode,
   editorExtensions,
   topBar = {},
-  transitionDuration,
+  transitionDuration = 0,
+  blurEffects = true,
+  settingsButton = true,
+  showTopBar = true,
+  autocomplete = true,
 }: CodeEditorProps) {
   const { theme } = useEditorTheme();
   const { settings } = useCodeEditorSettings();
+
   return (
     <div
       className={clsx(
         styles.container,
+        blurEffects && styles.blurEffects,
         theme.isLight ? "light-theme" : "dark-theme",
       )}
       style={
@@ -42,9 +52,11 @@ export function CodeEditor({
         } as CSSProperties
       }
     >
-      <CornerGroup position="top-right" className={styles.cornerGroup}>
-        <TopBar title={title} {...topBar} />
-      </CornerGroup>
+      {showTopBar && (
+        <CornerGroup position="top-right" className={styles.cornerGroup}>
+          <TopBar title={title} settingsButton={settingsButton} {...topBar} />
+        </CornerGroup>
+      )}
 
       <ReactCodeMirror
         value={code}
@@ -53,7 +65,7 @@ export function CodeEditor({
         theme={theme.extension}
         extensions={[
           amazeing,
-          amazeingAutocomplete,
+          autocomplete ? amazeingAutocomplete : [],
           tooltips({
             position: "fixed",
             parent: document.getElementById("tooltip-root")!,
@@ -62,7 +74,7 @@ export function CodeEditor({
           // Make space for tabs
           EditorView.theme({
             ".cm-scroller": {
-              paddingTop: "3rem",
+              paddingTop: showTopBar ? "3rem" : null,
             },
           }),
           EditorView.lineWrapping,

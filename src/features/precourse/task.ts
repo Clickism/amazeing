@@ -18,6 +18,12 @@ export type TaskData = {
    * The level data for the task.
    */
   levelData: LevelData;
+  /**
+   * Optional starting code for the task.
+   *
+   * Can be used to provide a template or partial solution.
+   */
+  startingCode?: string;
 };
 
 /**
@@ -60,6 +66,7 @@ export function stringifyToTask(level: LevelData): string {
       ...level,
       taskMeta: undefined,
     },
+    startingCode: level.taskMeta?.startingCode,
   };
   return JSON.stringify(task, null, 2);
 }

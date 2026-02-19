@@ -1,4 +1,9 @@
-import { Maze, type MazeData, resizeMaze } from "./maze.ts";
+import {
+  createEmptyMazeData,
+  Maze,
+  type MazeData,
+  resizeMaze,
+} from "./maze.ts";
 import {
   type CardinalDirection,
   inDirection,
@@ -26,6 +31,7 @@ export type LevelData = {
   taskMeta?: {
     title?: PackagedTranslation;
     description?: PackagedTranslation;
+    startingCode?: string;
   };
 };
 
@@ -93,5 +99,33 @@ export function resizeLevel(
     maze: newMazeData,
     owlStart: newOwlStart,
     finishPosition: newFinishPosition,
+  };
+}
+
+/**
+ * Creates an empty level with the specified dimensions and optional name.
+ * @param name Optional name for the level
+ * @param width Width of the level (number of tiles horizontally)
+ * @param height Height of the level (number of tiles vertically)
+ */
+export function emptyLevelData(
+  name?: string,
+  width: number = 5,
+  height: number = 5,
+): LevelData {
+  return {
+    name,
+    maze: createEmptyMazeData(width, height),
+    finishPosition: {
+      x: width - 1,
+      y: height - 1,
+    },
+    owlStart: {
+      direction: "south",
+      position: {
+        x: 0,
+        y: 0,
+      },
+    },
   };
 }

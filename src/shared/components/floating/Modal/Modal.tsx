@@ -95,7 +95,7 @@ export function Modal({
               initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
               animate={{
                 opacity: 1,
-                backdropFilter: isNested ? undefined : "blur(4px)",
+                backdropFilter: "blur(4px)",
               }}
               exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
               transition={{ duration: 0.3 }}

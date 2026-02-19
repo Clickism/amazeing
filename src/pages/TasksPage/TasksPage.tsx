@@ -14,7 +14,7 @@ export function TasksPage() {
   return (
     <Layout fullWidth>
       <EditorSettingsProvider namespace={namespace}>
-        <TasksProvider taskId={taskIdOf(1, 1)}>
+        <TasksProvider taskId={taskIdOf(1, 1)} namespace={namespace}>
           <EditorWrapper />
         </TasksProvider>
       </EditorSettingsProvider>

@@ -1,0 +1,5 @@
+.container {
+  border-radius: .5rem;
+  overflow: hidden;
+  border: 1px solid var(--clr-surface-a20);
+}

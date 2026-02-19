@@ -80,6 +80,8 @@
   "levelEditor.taskExport.taskMeta.description": "Task Description",
   "levelEditor.taskExport.exportJson": "Export Json",
   "levelEditor.taskExport.exportedJson": "Exported Task Json",
+  "levelEditor.taskExport.startingCode": "Starting Code",
+  "levelEditor.taskExport.other": "Other Options",
 
   "levelEditor.taskExport.taskMeta.default.title": "Untitled Task",
   "levelEditor.taskExport.taskMeta.default.description": "No description provided.",
