@@ -38,6 +38,10 @@
   background: rgba(0, 0, 0, 0.4);
 }
 
+.overlayWrapper.nested {
+  background: transparent;
+}
+
 .overlay {
   display: grid;
   place-items: center;

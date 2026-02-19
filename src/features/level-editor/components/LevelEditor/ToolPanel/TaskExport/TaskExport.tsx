@@ -3,7 +3,6 @@ import { Button } from "../../../../../../shared/components/Button/Button.tsx";
 import { BiExport } from "react-icons/bi";
 import { CopyToClipboard } from "../../../CopyToClipboard/CopyToClipboard.tsx";
 import { useTranslation } from "react-i18next";
-import { Popover } from "../../../../../../shared/components/floating/Popover/Popover.tsx";
 import { FormGroup } from "../../../../../../shared/components/Form/FormGroup/FormGroup.tsx";
 import { FormField } from "../../../../../../shared/components/Form/FormField/FormField.tsx";
 import { stringifyToTask } from "../../../../../precourse/task.ts";
@@ -17,11 +16,11 @@ import { useLevelEditor } from "../../../../context/LevelEditorContext.tsx";
 
 export function TaskExport() {
   const { t } = useTranslation();
-  const {level, setLevel } = useLevelEditor();
+  const { level, setLevel } = useLevelEditor();
   const editorStateJson = stringifyToTask(level);
   const [language, setLanguage] = useState<Language>("en");
   return (
-    <Popover
+    <Modal
       title={t("levelEditor.taskExport.taskMeta")}
       noTooltip
       trigger={
@@ -106,6 +105,6 @@ export function TaskExport() {
           <CopyToClipboard content={editorStateJson} />
         </Modal>
       </FormGroup>
-    </Popover>
+    </Modal>
   );
 }

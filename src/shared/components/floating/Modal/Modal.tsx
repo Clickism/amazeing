@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from "react";
+import { createContext, type ReactNode, useContext, useState } from "react";
 import styles from "./Modal.module.css";
 import {
   autoUpdate,
@@ -8,6 +8,7 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useFloatingNodeId,
   useInteractions,
   useRole,
 } from "@floating-ui/react";
@@ -16,6 +17,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Button } from "../../Button/Button.tsx";
 import { IoClose } from "react-icons/io5";
 import { CornerGroup } from "../../CornerGroup/CornerGroup.tsx";
+import clsx from "clsx";
 
 type ModalProps = {
   title?: string | ReactNode;
@@ -25,7 +27,10 @@ type ModalProps = {
   children: ReactNode;
   onOpen?: () => void;
   onClose?: () => void;
+  noTooltip?: boolean;
 };
+
+const ModalDepthContext = createContext(0);
 
 export function Modal({
   title,
@@ -35,8 +40,12 @@ export function Modal({
   onOpen,
   onClose,
   children,
+  noTooltip,
 }: ModalProps) {
   const [isOpen, setIsOpenState] = useState(false);
+
+  const depth = useContext(ModalDepthContext);
+  const isNested = depth > 0;
 
   const setIsOpen = (open: boolean) => {
     setIsOpenState(open);
@@ -47,7 +56,10 @@ export function Modal({
     }
   };
 
+  const nodeId = useFloatingNodeId();
+
   const { refs, context } = useFloating({
+    nodeId,
     open: isOpen,
     onOpenChange: setIsOpen,
     whileElementsMounted: autoUpdate,
@@ -64,9 +76,9 @@ export function Modal({
   ]);
 
   return (
-    <>
+    <ModalDepthContext.Provider value={depth + 1}>
       {/*Tooltip*/}
-      <Tooltip disabled={!tooltip || isOpen} content={tooltip}>
+      <Tooltip disabled={!tooltip || isOpen || noTooltip} content={tooltip}>
         <span
           ref={refs.setReference}
           {...getReferenceProps()}
@@ -81,10 +93,13 @@ export function Modal({
           <FloatingPortal>
             <motion.div
               initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-              animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
+              animate={{
+                opacity: 1,
+                backdropFilter: isNested ? undefined : "blur(4px)",
+              }}
               exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
               transition={{ duration: 0.3 }}
-              className={styles.overlayWrapper}
+              className={clsx(styles.overlayWrapper, isNested && styles.nested)}
             >
               <FloatingOverlay
                 lockScroll
@@ -127,7 +142,11 @@ export function Modal({
                         rotateY: "10deg",
                         rotateZ: "2deg",
                       }}
-                      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                      transition={{
+                        type: "spring",
+                        duration: 0.3,
+                        bounce: 0,
+                      }}
                     >
                       <div className={styles.header}>
                         {title && <div className={styles.title}>{title}</div>}
@@ -152,6 +171,6 @@ export function Modal({
           </FloatingPortal>
         )}
       </AnimatePresence>
-    </>
+    </ModalDepthContext.Provider>
   );
 }
