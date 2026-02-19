@@ -14,7 +14,6 @@ export function TaskView() {
   const completedTasksInDay = day.tasks.filter((t) =>
     completedTasks.includes(t.id),
   ).length;
-  console.log("completedTasksInDay", completedTasksInDay);
   return (
     <>
       <div className={styles.currentTaskContainer}>

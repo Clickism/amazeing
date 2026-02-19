@@ -7,6 +7,7 @@ import { useTasks } from "../../features/precourse/context/TasksContext.tsx";
 import { taskIdOf } from "../../features/precourse/day.ts";
 import { TaskCodeModelProvider } from "../../features/editor/context/code/TaskCodeModelProvider.tsx";
 import { InterpreterProvider } from "../../features/editor/context/interpreter/InterpreterProvider.tsx";
+import { useMemo } from "react";
 
 const namespace = "tasks";
 
@@ -24,10 +25,16 @@ export function TasksPage() {
 
 // Wrapper to access tasks context
 function EditorWrapper() {
-  const { task } = useTasks();
+  const { task, setCompleted } = useTasks();
+  const level = useMemo(() => new Level(task.levelData), [task.levelData]);
   return (
     <TaskCodeModelProvider task={task} namespace={namespace}>
-      <InterpreterProvider.Wrapper level={new Level(task.levelData)}>
+      <InterpreterProvider.Wrapper
+        level={level}
+        onFinish={() => {
+          setCompleted(task.id, true);
+        }}
+      >
         <Editor />
       </InterpreterProvider.Wrapper>
     </TaskCodeModelProvider>

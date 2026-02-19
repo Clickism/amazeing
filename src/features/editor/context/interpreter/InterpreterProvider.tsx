@@ -166,7 +166,11 @@ export function InterpreterProvider({
     // Check finish on owl data change
     const interpreter = interpreterRef.current;
     if (!interpreter) return;
-    interpreter.checkFinish()
+    try {
+      interpreter.checkFinish();
+    } catch {
+      // Ignored
+    }
   }, [owlData]);
 
   // Reset interpreter when code or level changes
@@ -204,22 +208,26 @@ export function InterpreterProvider({
 
 type InterpreterWrapperProps = {
   level: Level;
+  onFinish?: () => void;
 };
 
 /**
  * Wrapper to use interpreter context with {@link CodeModelContext} and {@link EditorSettingsContext}.
- * @param level
- * @param children
- * @constructor
  */
 function InterpreterWrapper({
   level,
+  onFinish,
   children,
 }: PropsWithChildren<InterpreterWrapperProps>) {
   const { code } = useCodeModel();
   const { settings } = useEditorSettings();
   return (
-    <InterpreterProvider code={code} level={level} settings={settings}>
+    <InterpreterProvider
+      code={code}
+      level={level}
+      settings={settings}
+      onFinish={onFinish}
+    >
       {children}
     </InterpreterProvider>
   );
