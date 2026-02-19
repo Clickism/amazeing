@@ -18,7 +18,6 @@ export type CodeEditorProps = {
   editorExtensions?: Extension[];
   topBar?: TopBarProps;
   transitionDuration?: number;
-  blurEffects?: boolean;
   settingsButton?: boolean;
   showTopBar?: boolean;
   autocomplete?: boolean;
@@ -31,7 +30,6 @@ export function CodeEditor({
   editorExtensions,
   topBar = {},
   transitionDuration = 0,
-  blurEffects = true,
   settingsButton = true,
   showTopBar = true,
   autocomplete = true,
@@ -43,7 +41,6 @@ export function CodeEditor({
     <div
       className={clsx(
         styles.container,
-        blurEffects && styles.blurEffects,
         theme.isLight ? "light-theme" : "dark-theme",
       )}
       style={
@@ -88,11 +85,6 @@ export function CodeEditor({
           fontSize: settings.fontSize,
           fontFamily: "JetBrains Mono, monospace",
         }}
-      />
-
-      <CornerGroup
-        position="bottom-left"
-        className={styles.bottomCornerGroup}
       />
     </div>
   );

@@ -19,7 +19,6 @@ export function MiniCodeEditor({
       <CodeEditor
         code={code}
         setCode={setCode}
-        blurEffects={false}
         showTopBar={false}
         {...editorProps}
       />
