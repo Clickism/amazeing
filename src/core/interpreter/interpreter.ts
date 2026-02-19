@@ -99,6 +99,7 @@ export class InterpreterImpl extends Interpreter {
    * completing the level.
    */
   isLocked: boolean = false;
+  isFinished: boolean = false;
   onFinish?: () => void;
 
   constructor(
@@ -208,16 +209,14 @@ export class InterpreterImpl extends Interpreter {
     this.steps++;
     // Check for level completion
     this.checkFinish();
-    if (this.env.level.isOwlAtFinish(this.env.owl.data())) {
-      this.env.console.log({ type: "success", text: "Level completed!" });
-      this.isLocked = true;
-    }
   }
 
   checkFinish() {
+    if (this.isFinished) return true;
     if (this.env.level.isOwlAtFinish(this.env.owl.data())) {
       this.env.console.log({ type: "success", text: "Level completed!" });
       this.isLocked = true;
+      this.isFinished = true;
       this.onFinish?.();
       return true;
     }

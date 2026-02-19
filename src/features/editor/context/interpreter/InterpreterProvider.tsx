@@ -63,6 +63,12 @@ export function InterpreterProvider({
   const owlDataRef = useRef(owlData);
   owlDataRef.current = owlData;
 
+  // Update owl data and keep ref in sync
+  const updateOwl = useCallback((newData: OwlData) => {
+    owlDataRef.current = newData;
+    setOwlData(newData);
+  }, []);
+
   // Refs
   const interpreterRef = useRef<Interpreter | null>(null);
   const runIntervalRef = useRef<number | null>(null);
@@ -89,12 +95,12 @@ export function InterpreterProvider({
     stop();
     try {
       const newOwlData = level.createOwlData();
-      setOwlData(newOwlData);
+      updateOwl(newOwlData);
       setOutput([]);
       const interpreter = LazyInterpreter.fromCode(
         code,
         new InterpreterConsole(appendOutput),
-        new LevelOwl(() => owlDataRef.current, setOwlData, level),
+        new LevelOwl(() => owlDataRef.current, updateOwl, level),
         level,
         onFinishRef.current,
       );
@@ -106,7 +112,7 @@ export function InterpreterProvider({
         setOutput([{ type: "error", text: e.message }]);
       }
     }
-  }, [appendOutput, code, level, stop]);
+  }, [appendOutput, code, level, stop, updateOwl]);
 
   const step = useCallback((steps = 1) => {
     interpreterRef.current?.executeAndPrintError((interpreter) => {
@@ -194,7 +200,7 @@ export function InterpreterProvider({
         step,
         level,
         owlData,
-        setOwlData,
+        setOwlData: updateOwl,
         output,
         currentLine,
         isRunning,
