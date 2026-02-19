@@ -28,6 +28,7 @@ type InterpreterProviderProps = PropsWithChildren<{
   code: string;
   level: Level;
   settings: EditorSettings;
+  onFinish?: () => void;
 }>;
 
 /**
@@ -40,20 +41,27 @@ type InterpreterProviderProps = PropsWithChildren<{
  * @param level The level to run the code on.
  * @param settings The editor settings, used to control the run speed and mode.
  * @param children The child components that will have access to the interpreter context.
+ * @param onFinish Optional callback to call when the level is finished.
  */
 export function InterpreterProvider({
   code,
   level,
   settings,
   children,
+  onFinish,
 }: InterpreterProviderProps) {
   // Interpreter
   const [output, setOutput] = useState<ConsoleMessage[]>([]);
   const [currentLine, setCurrentLine] = useState<number | null>(null);
   const [isRunning, setIsRunning] = useState(false);
 
+  const onFinishRef = useRef(onFinish);
+  onFinishRef.current = onFinish;
+
   // Game
   const [owlData, setOwlData] = useState<OwlData>(() => level.createOwlData());
+  const owlDataRef = useRef(owlData);
+  owlDataRef.current = owlData;
 
   // Refs
   const interpreterRef = useRef<Interpreter | null>(null);
@@ -86,8 +94,9 @@ export function InterpreterProvider({
       const interpreter = LazyInterpreter.fromCode(
         code,
         new InterpreterConsole(appendOutput),
-        new LevelOwl(newOwlData, setOwlData, level),
+        new LevelOwl(() => owlDataRef.current, setOwlData, level),
         level,
+        onFinishRef.current,
       );
       interpreterRef.current = interpreter;
       setCurrentLine(interpreter.getCurrentLine());
@@ -152,6 +161,13 @@ export function InterpreterProvider({
   const canStep = useCallback(() => {
     return interpreterRef?.current?.canStep() ?? true;
   }, []);
+
+  useEffect(() => {
+    // Check finish on owl data change
+    const interpreter = interpreterRef.current;
+    if (!interpreter) return;
+    interpreter.checkFinish()
+  }, [owlData]);
 
   // Reset interpreter when code or level changes
   useEffect(() => {

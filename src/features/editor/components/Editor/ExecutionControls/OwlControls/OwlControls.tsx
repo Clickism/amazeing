@@ -10,8 +10,9 @@ import { RxMove } from "react-icons/rx";
 export function OwlControls() {
   const { t } = useTranslation();
   const { owlData, setOwlData, level } = useInterpreter();
-  const owl = new LevelOwl(owlData, setOwlData, level);
-  const canMove = owl.canMove();
+  const owl = new LevelOwl(() => owlData, setOwlData, level);
+  const canMove = owl.canMove() && !level.isOwlAtFinish(owlData);
+  const canTurn = !level.isOwlAtFinish(owlData);
   return (
     <Popover
       tooltip={t("editor.owlControls.tooltip")}
@@ -22,18 +23,15 @@ export function OwlControls() {
       }
     >
       <ButtonGroup>
-        <Button  onClick={() => owl.turn("left")}>
+        <Button disabled={!canTurn} onClick={() => owl.turn("left")}>
           <IoArrowBack />
           {t("editor.owlControls.left")}
         </Button>
-        <Button
-          disabled={!canMove}
-          onClick={() => owl.move()}
-        >
+        <Button disabled={!canMove} onClick={() => owl.move()}>
           <IoArrowUp />
           {t("editor.owlControls.move")}
         </Button>
-        <Button  onClick={() => owl.turn("right")}>
+        <Button disabled={!canTurn} onClick={() => owl.turn("right")}>
           <IoArrowForward />
           {t("editor.owlControls.right")}
         </Button>

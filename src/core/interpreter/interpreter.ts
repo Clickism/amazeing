@@ -61,6 +61,11 @@ export abstract class Interpreter {
   abstract getConsole(): InterpreterConsole;
 
   /**
+   * Checks if the level is finished and prints a success message if it is.
+   */
+  abstract checkFinish(): boolean;
+
+  /**
    * Executes and catches errors thrown by the given function
    * and prints them to the console.
    *
@@ -94,12 +99,18 @@ export class InterpreterImpl extends Interpreter {
    * completing the level.
    */
   isLocked: boolean = false;
+  onFinish?: () => void;
 
-  constructor(instructions: InstructionData[], env: Environment) {
+  constructor(
+    instructions: InstructionData[],
+    env: Environment,
+    onFinish?: () => void,
+  ) {
     super();
     this.pc = 0;
     this.instructions = instructions;
     this.env = env;
+    this.onFinish = onFinish;
   }
 
   /**
@@ -108,17 +119,20 @@ export class InterpreterImpl extends Interpreter {
    * @param interpreterConsole The console to use for logging.
    * @param owl The owl instance.
    * @param level The level.
+   * @param onFinish Optional callback to call when the level is finished.
    */
   static fromCode(
     code: string,
     interpreterConsole: InterpreterConsole,
     owl: Owl,
     level: Level,
+    onFinish?: () => void,
   ): Interpreter {
     const { instructions, labels } = parse(code);
     return new InterpreterImpl(
       instructions,
       new Environment(labels, interpreterConsole, owl, level),
+      onFinish,
     );
   }
 
@@ -193,10 +207,21 @@ export class InterpreterImpl extends Interpreter {
     }
     this.steps++;
     // Check for level completion
-    if (this.env.level.isOwlAtFinish(this.env.owl.data)) {
+    this.checkFinish();
+    if (this.env.level.isOwlAtFinish(this.env.owl.data())) {
       this.env.console.log({ type: "success", text: "Level completed!" });
       this.isLocked = true;
     }
+  }
+
+  checkFinish() {
+    if (this.env.level.isOwlAtFinish(this.env.owl.data())) {
+      this.env.console.log({ type: "success", text: "Level completed!" });
+      this.isLocked = true;
+      this.onFinish?.();
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -235,18 +260,21 @@ export class LazyInterpreter extends Interpreter {
   level: Level;
   interpreter: Interpreter | null = null;
   hasError: boolean = false;
+  onFinish?: () => void;
 
   private constructor(
     code: string,
     console: InterpreterConsole,
     owl: Owl,
     level: Level,
+    onFinish?: () => void,
   ) {
     super();
     this.code = code;
     this.console = console;
     this.owl = owl;
     this.level = level;
+    this.onFinish = onFinish;
   }
 
   /**
@@ -255,14 +283,16 @@ export class LazyInterpreter extends Interpreter {
    * @param console The console to use for logging.
    * @param owl The owl instance.
    * @param level The level.
+   * @param onFinish Optional callback to call when the level is finished.
    */
   static fromCode(
     code: string,
     console: InterpreterConsole,
     owl: Owl,
     level: Level,
+    onFinish?: () => void,
   ): LazyInterpreter {
-    return new LazyInterpreter(code, console, owl, level);
+    return new LazyInterpreter(code, console, owl, level, onFinish);
   }
 
   init() {
@@ -274,6 +304,7 @@ export class LazyInterpreter extends Interpreter {
         this.console,
         this.owl,
         this.level,
+        this.onFinish,
       );
     } catch (e) {
       this.hasError = true;
@@ -312,5 +343,10 @@ export class LazyInterpreter extends Interpreter {
 
   getConsole(): InterpreterConsole {
     return this.console;
+  }
+
+  checkFinish(): boolean {
+    this.init();
+    return this.interpreter?.checkFinish() ?? false;
   }
 }

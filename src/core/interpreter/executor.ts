@@ -33,9 +33,13 @@ export const EXECUTORS: Executors = {
 
   explore: (env, { dest, direction }) => {
     const owl = env.owl;
-    const normalized = owl.normalizeDirection(direction ?? owl.data.direction);
+    const data = owl.data();
+    const normalized = owl.normalizeDirection(
+      data,
+      direction ?? data.direction,
+    );
     const isWalkable =
-      normalized === "here" ? true : env.level.canOwlMove(owl.data, normalized);
+      normalized === "here" ? true : env.level.canOwlMove(data, normalized);
     env.setOrThrow(dest, booleanToInteger(isWalkable));
   },
 

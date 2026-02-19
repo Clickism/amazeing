@@ -21,10 +21,10 @@ export type OwlData = {
  * Owl class
  */
 export class Owl {
-  data: OwlData;
+  data: () => OwlData;
   setData: (data: OwlData) => void;
 
-  constructor(data: OwlData, setData: (data: OwlData) => void) {
+  constructor(data: () => OwlData, setData: (data: OwlData) => void) {
     this.data = data;
     this.setData = setData;
   }
@@ -34,16 +34,17 @@ export class Owl {
    * @return Whether the move was successful.
    */
   move(): boolean {
-    this.data.position = this.nextPosition();
-    this.setData(this.cloneData());
+    const data = this.cloneData();
+    data.position = this.nextPosition(data);
+    this.setData(data);
     return true;
   }
 
   /**
    * Get the position in front of the owl based on its current direction.
    */
-  nextPosition(): Position {
-    const { position, direction } = this.data;
+  private nextPosition(data: OwlData): Position {
+    const { position, direction } = data;
     return inDirection(position, direction);
   }
 
@@ -52,16 +53,21 @@ export class Owl {
    * @param direction The direction to turn (left or right).
    */
   turn(direction: LeftRight): void {
-    this.data.direction = this.normalizeLeftRight(direction);
-    this.setData(this.cloneData());
+    const data = this.cloneData();
+    data.direction = this.normalizeLeftRight(data, direction);
+    this.setData(data);
   }
 
   /**
    * Normalize a direction relative to the owl's current direction.
+   * @param data The owl data to use for normalization.
    * @param direction The direction to normalize.
    */
-  normalizeDirection(direction: Direction): CardinalDirection | "here" {
-    const owlDirection = this.data.direction;
+  normalizeDirection(
+    data: OwlData,
+    direction: Direction,
+  ): CardinalDirection | "here" {
+    const owlDirection = data.direction;
     switch (direction) {
       case "north":
       case "east":
@@ -70,7 +76,7 @@ export class Owl {
         return direction;
       case "left":
       case "right":
-        return this.normalizeLeftRight(direction);
+        return this.normalizeLeftRight(data, direction);
       case "front":
         return owlDirection;
       case "back":
@@ -80,8 +86,11 @@ export class Owl {
     }
   }
 
-  private normalizeLeftRight(direction: LeftRight): CardinalDirection {
-    let currentIndex = CARDINAL_DIRECTIONS.indexOf(this.data.direction);
+  private normalizeLeftRight(
+    data: OwlData,
+    direction: LeftRight,
+  ): CardinalDirection {
+    let currentIndex = CARDINAL_DIRECTIONS.indexOf(data.direction);
     if (direction === "left") {
       currentIndex = (currentIndex + 3) % 4;
     } else {
@@ -91,9 +100,10 @@ export class Owl {
   }
 
   private cloneData(): OwlData {
+    const data = this.data();
     return {
-      position: { ...this.data.position },
-      direction: this.data.direction,
+      position: { ...data.position },
+      direction: data.direction,
     };
   }
 }
@@ -104,7 +114,11 @@ export class Owl {
 export class LevelOwl extends Owl {
   level: Level;
 
-  constructor(data: OwlData, setData: (data: OwlData) => void, level: Level) {
+  constructor(
+    data: () => OwlData,
+    setData: (data: OwlData) => void,
+    level: Level,
+  ) {
     super(data, setData);
     this.level = level;
   }
@@ -120,6 +134,7 @@ export class LevelOwl extends Owl {
    * Check if the owl can move in its current direction.
    */
   canMove(): boolean {
-    return this.level.canOwlMove(this.data, this.data.direction);
+    const data = this.data();
+    return this.level.canOwlMove(data, data.direction);
   }
 }
