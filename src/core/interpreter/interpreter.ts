@@ -330,7 +330,10 @@ export class LazyInterpreter extends Interpreter {
     if (this.hasError) return false;
     if (this.interpreter === null) {
       // If not initialized, check if there is code to run
-      return this.code.trim().length > 0;
+      const codeLines = this.code
+        .split("\n")
+        .filter((l) => l !== "" && !l.startsWith("#")).length;
+      return codeLines > 0;
     } else {
       return this.interpreter.canStep();
     }
