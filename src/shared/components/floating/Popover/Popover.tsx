@@ -14,6 +14,7 @@ import {
 import styles from "./Popover.module.css";
 import { Tooltip } from "../Tooltip/Tooltip.tsx";
 import { AnimatePresence, motion } from "motion/react";
+import { FloatingContext } from "../FloatingContext/FloatingContext.tsx";
 
 export type PopoverProps = {
   title?: string | ReactNode;
@@ -78,9 +79,9 @@ export function Popover({
       {trigger}
     </span>
   );
-  const tooltipElement = noTooltip ? null : tooltip ?? title;
+  const tooltipElement = noTooltip ? null : (tooltip ?? title);
   return (
-    <>
+    <FloatingContext.Provider value={{ isOpen, setOpen: setIsOpen }}>
       <Tooltip disabled={!tooltipElement || isOpen} content={tooltipElement}>
         {triggerElement}
       </Tooltip>
@@ -133,6 +134,6 @@ export function Popover({
           </FloatingPortal>
         )}
       </AnimatePresence>
-    </>
+    </FloatingContext.Provider>
   );
 }

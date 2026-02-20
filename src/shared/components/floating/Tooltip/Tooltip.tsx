@@ -10,7 +10,8 @@ import {
   useRole,
 } from "@floating-ui/react";
 import styles from "./Tooltip.module.css";
-import { AnimatePresence, motion } from "framer-motion"; // Add these
+import { AnimatePresence, motion } from "framer-motion";
+import { FloatingContext } from "../FloatingContext/FloatingContext.tsx"; // Add these
 
 export type TooltipProps = {
   content: ReactNode;
@@ -58,7 +59,7 @@ export function Tooltip({
   }, [disabled]);
 
   return (
-    <>
+    <FloatingContext.Provider value={{ isOpen, setOpen: setIsOpen }}>
       <span
         ref={refs.setReference}
         {...getReferenceProps()}
@@ -106,6 +107,6 @@ export function Tooltip({
           </FloatingPortal>
         )}
       </AnimatePresence>
-    </>
+    </FloatingContext.Provider>
   );
 }

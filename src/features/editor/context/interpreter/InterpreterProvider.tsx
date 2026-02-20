@@ -16,11 +16,7 @@ import {
   Interpreter,
   LazyInterpreter,
 } from "../../../../core/interpreter/interpreter.ts";
-import {
-  type EditorSettings,
-  useEditorSettings,
-} from "../settings/EditorSettingsContext.tsx";
-import { useCodeModel } from "../code/CodeModelContext.tsx";
+import { type EditorSettings } from "../settings/EditorSettingsContext.tsx";
 
 const INSTANT_BATCH_SIZE = 500;
 
@@ -211,32 +207,3 @@ export function InterpreterProvider({
     </InterpreterContext.Provider>
   );
 }
-
-type InterpreterWrapperProps = {
-  level: Level;
-  onFinish?: () => void;
-};
-
-/**
- * Wrapper to use interpreter context with {@link CodeModelContext} and {@link EditorSettingsContext}.
- */
-function InterpreterWrapper({
-  level,
-  onFinish,
-  children,
-}: PropsWithChildren<InterpreterWrapperProps>) {
-  const { code } = useCodeModel();
-  const { settings } = useEditorSettings();
-  return (
-    <InterpreterProvider
-      code={code}
-      level={level}
-      settings={settings}
-      onFinish={onFinish}
-    >
-      {children}
-    </InterpreterProvider>
-  );
-}
-
-InterpreterProvider.Wrapper = InterpreterWrapper;

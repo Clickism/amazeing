@@ -36,5 +36,6 @@
     },
     "finishPosition": { "x": 7, "y": 7 },
     "owlStart": { "position": { "x": 0, "y": 0 }, "direction": "south" }
-  }
+  },
+  "startingCode": "# Boilerplate\nfunction:\n  var n\n load n 10\n# Continue here"
 }

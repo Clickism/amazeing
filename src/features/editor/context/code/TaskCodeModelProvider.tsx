@@ -29,7 +29,7 @@ export function TaskCodeModelProvider({
     key: task.id,
     name: t(task.title),
     // TODO: Add default code to taskData
-    defaultData: t("codeStorage.newFile.content"),
+    defaultData: task.startingCode ?? t("codeStorage.newFile.content"),
     namespace,
   });
 

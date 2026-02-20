@@ -14,6 +14,10 @@
   "codeEditor.files": "Files",
   "codeEditor.tasks": "Tasks",
 
+  "codeEditor.resetCode": "Reset Code",
+  "codeEditor.resetCode.confirm": "Are you sure you want to reset your code for this task? All code changes will be lost.",
+  "codeEditor.resetCode.confirm.cannotUndo": "This action cannot be undone.",
+
   "fileList.newFile": "New File",
   "fileList.rename": "Rename",
   "fileList.rename.action": "Rename File",
@@ -80,7 +84,7 @@
   "levelEditor.taskExport.taskMeta.description": "Task Description",
   "levelEditor.taskExport.exportJson": "Export Json",
   "levelEditor.taskExport.exportedJson": "Exported Task Json",
-  "levelEditor.taskExport.startingCode": "Starting Code",
+  "levelEditor.taskExport.startingCode": "Starting Code (English Only)",
   "levelEditor.taskExport.other": "Other Options",
 
   "levelEditor.taskExport.taskMeta.default.title": "Untitled Task",

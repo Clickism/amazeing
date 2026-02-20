@@ -5,6 +5,7 @@ import { TaskView } from "./TaskView/TaskView.tsx";
 import { useTasks } from "../../../precourse/context/TasksContext.tsx";
 import { useTranslatable } from "../../../../shared/i18n/i18n.ts";
 import { useCodeModel } from "../../context/code/CodeModelContext.tsx";
+import { CodeReset } from "./CodeReset/CodeReset.tsx";
 
 type TaskCodeEditorProps = {
   editorExtensions?: Extension[];
@@ -26,6 +27,9 @@ export function TaskCodeEditor({
       transitionDuration={transitionDuration}
       editorExtensions={editorExtensions}
       initialOpen
+      topBar={{
+        left: [<CodeReset />],
+      }}
       panel={{
         name: t("codeEditor.tasks"),
         content: <TaskView />,

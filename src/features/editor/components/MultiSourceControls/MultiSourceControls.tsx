@@ -8,20 +8,21 @@ import { FormGroup } from "../../../../shared/components/Form/FormGroup/FormGrou
 import { useEffect, useState } from "react";
 import { checkValidName } from "../../utils.ts";
 import { type MultiSource } from "../../context/source/source.ts";
+import { useFloatingContext } from "../../../../shared/components/floating/FloatingContext/FloatingContext.tsx";
 
 type MultiSourceControlsProps<T> = {
   source: MultiSource<T>;
 };
 
 export function MultiSourceControls<T>({
-  source: {
+  source,
+}: MultiSourceControlsProps<T>) {
+  const { t } = useTranslation();
+  const {
     sourceNames,
     activeSource: { name: activeSource },
     renameSource,
-    deleteSource,
-  },
-}: MultiSourceControlsProps<T>) {
-  const { t } = useTranslation();
+  } = source;
   const [newSourceName, setNewSourceName] = useState(activeSource);
 
   const [isValid, invalidMessage] = checkValidName(
@@ -82,12 +83,27 @@ export function MultiSourceControls<T>({
             <br />
             <strong>{t("fileList.delete.confirm.cannotUndo")}</strong>
           </div>
-          <Button variant="danger" onClick={() => deleteSource()}>
-            <BiTrash />
-            {t("fileList.delete.action", { file: activeSource })}
-          </Button>
+          <DeleteButton source={source} />
         </ButtonGroup>
       </Popover>
     </ButtonGroup>
+  );
+}
+
+function DeleteButton<T>({ source }: { source: MultiSource<T> }) {
+  const { t } = useTranslation();
+  const { activeSource, deleteSource } = source;
+  const { setOpen } = useFloatingContext();
+  return (
+    <Button
+      variant="danger"
+      onClick={() => {
+        deleteSource();
+        setOpen(false);
+      }}
+    >
+      <BiTrash />
+      {t("fileList.delete.action", { file: activeSource.name })}
+    </Button>
   );
 }

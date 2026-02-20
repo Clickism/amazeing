@@ -14,6 +14,10 @@
   "codeEditor.files": "Dateien",
   "codeEditor.tasks": "Aufgaben",
 
+  "codeEditor.resetCode": "Code zurücksetzen",
+  "codeEditor.resetCode.confirm": "Bist du sicher, dass du deinen Code für diese Aufgabe zurücksetzen möchtest? Alle Codeänderungen gehen verloren.",
+  "codeEditor.resetCode.confirm.cannotUndo": "Dies kann nicht rückgängig gemacht werden.",
+
   "fileList.newFile": "Neue Datei",
   "fileList.rename": "Umbenennen",
   "fileList.rename.action": "Datei umbenennen",
@@ -80,6 +84,8 @@
   "levelEditor.taskExport.taskMeta.description": "Aufgabebeschreibung",
   "levelEditor.taskExport.exportJson": "Json exportieren",
   "levelEditor.taskExport.exportedJson": "Exportiertes Aufgabe-Json",
+  "levelEditor.taskExport.startingCode": "Starter-Code (Nur Englisch)",
+  "levelEditor.taskExport.other": "Andere Optionen",
 
   "levelEditor.taskExport.taskMeta.default.title": "Unbenannte Aufgabe",
   "levelEditor.taskExport.taskMeta.default.description": "Keine Beschreibung vorhanden.",
