@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import styles from "./FormField.module.css";
-import { Tooltip } from "../../floating/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../../floating/Tooltip/Tooltip.tsx";
 
 type Props = {
   label: string | ReactNode;

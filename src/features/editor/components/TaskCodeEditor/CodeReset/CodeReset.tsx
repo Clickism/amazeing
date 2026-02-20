@@ -1,11 +1,11 @@
-import { Popover } from "../../../../../shared/components/floating/Popover/Popover.tsx";
+import { Popover } from "../../../../../shared/floating/Popover/Popover.tsx";
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { LuListRestart } from "react-icons/lu";
 import { ButtonGroup } from "../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { useTranslation } from "react-i18next";
 import { useCodeModel } from "../../../context/code/CodeModelContext.tsx";
 import { useTasks } from "../../../../precourse/context/TasksContext.tsx";
-import { useFloatingContext } from "../../../../../shared/components/floating/FloatingContext/FloatingContext.tsx";
+import { useFloatingContext } from "../../../../../shared/floating/FloatingContext/FloatingContext.tsx";
 
 export function CodeReset() {
   const { t } = useTranslation();

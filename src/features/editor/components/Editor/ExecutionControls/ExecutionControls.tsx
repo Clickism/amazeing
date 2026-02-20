@@ -9,7 +9,7 @@ import {
   VscDebugStop,
 } from "react-icons/vsc";
 import { useState } from "react";
-import { Tooltip } from "../../../../../shared/components/floating/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../../../../shared/floating/Tooltip/Tooltip.tsx";
 import { ExecutionSettings } from "./ExecutionSettings/ExecutionSettings.tsx";
 import { OwlControls } from "./OwlControls/OwlControls.tsx";
 

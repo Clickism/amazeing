@@ -17,7 +17,7 @@ import type { Level, LevelData } from "../../../../core/game/level.ts";
 import { LevelSelector } from "./LevelSelector/LevelSelector.tsx";
 import { Button } from "../../../../shared/components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
-import { Tooltip } from "../../../../shared/components/floating/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../../../shared/floating/Tooltip/Tooltip.tsx";
 import { TbLock, TbLockOpen2 } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 import type { FileStorage } from "../../context/storage/fileStorage.ts";

@@ -1,4 +1,4 @@
-import { Modal } from "../../../../../../shared/components/floating/Modal/Modal.tsx";
+import { Modal } from "../../../../../../shared/floating/Modal/Modal.tsx";
 import { Button } from "../../../../../../shared/components/Button/Button.tsx";
 import { BiExport } from "react-icons/bi";
 import { CopyToClipboard } from "../../../CopyToClipboard/CopyToClipboard.tsx";

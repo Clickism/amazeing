@@ -49,7 +49,7 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
       <PanelContainer
         orientation="horizontal"
         minSize={0.3}
-        minPixels={[owlControls ? 500 : 450, 400]}
+        minPixels={[owlControls ? 620 : 570, 400]}
       >
         <PanelContainer
           orientation="vertical"

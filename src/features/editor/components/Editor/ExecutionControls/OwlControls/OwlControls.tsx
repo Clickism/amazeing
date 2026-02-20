@@ -1,4 +1,4 @@
-import { Popover } from "../../../../../../shared/components/floating/Popover/Popover.tsx";
+import { Popover } from "../../../../../../shared/floating/Popover/Popover.tsx";
 import { IoArrowBack, IoArrowForward, IoArrowUp } from "react-icons/io5";
 import { Button } from "../../../../../../shared/components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";

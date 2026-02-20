@@ -2,7 +2,7 @@ import {
   type ColorScheme,
   useColorScheme,
 } from "../../../theme/ColorSchemeContext.tsx";
-import { Tooltip } from "../../floating/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../../floating/Tooltip/Tooltip.tsx";
 import { useTranslation } from "react-i18next";
 import styles from "./ColorSchemeToggle.module.css";
 import { motion } from "motion/react";

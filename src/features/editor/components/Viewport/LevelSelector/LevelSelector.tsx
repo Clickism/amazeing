@@ -1,6 +1,6 @@
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { FaRegMap } from "react-icons/fa";
-import { Popover } from "../../../../../shared/components/floating/Popover/Popover.tsx";
+import { Popover } from "../../../../../shared/floating/Popover/Popover.tsx";
 import { useTranslation } from "react-i18next";
 import { FormField } from "../../../../../shared/components/Form/FormField/FormField.tsx";
 import { Level, type LevelData } from "../../../../../core/game/level.ts";

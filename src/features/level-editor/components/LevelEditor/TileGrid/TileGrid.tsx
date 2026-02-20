@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { Tile } from "../Tile/Tile.tsx";
 import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
-import { Popover } from "../../../../../shared/components/floating/Popover/Popover.tsx";
+import { Popover } from "../../../../../shared/floating/Popover/Popover.tsx";
 import { TileProperties } from "./TileProperties/TileProperties.tsx";
 import { useTranslation } from "react-i18next";
 import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
