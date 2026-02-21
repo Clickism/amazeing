@@ -168,11 +168,9 @@ export function InterpreterProvider({
     // Check finish on owl data change
     const interpreter = interpreterRef.current;
     if (!interpreter) return;
-    try {
+    interpreter.executeAndPrintError((interpreter) => {
       interpreter.checkFinish();
-    } catch {
-      // Ignored
-    }
+    });
   }, [owlData]);
 
   // Reset interpreter when code or level changes

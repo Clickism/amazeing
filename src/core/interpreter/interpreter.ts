@@ -348,7 +348,11 @@ export class LazyInterpreter extends Interpreter {
   }
 
   checkFinish(): boolean {
-    this.init();
-    return this.interpreter?.checkFinish() ?? false;
+    if (this.level.isOwlAtFinish(this.owl.data())) {
+      // Finished, init interpreter and check
+      this.init();
+      return this.interpreter?.checkFinish() ?? true;
+    }
+    return false;
   }
 }
