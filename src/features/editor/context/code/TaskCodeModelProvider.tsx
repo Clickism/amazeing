@@ -28,7 +28,6 @@ export function TaskCodeModelProvider({
   const source = useSingleSource<string>({
     key: task.id,
     name: t(task.title),
-    // TODO: Add default code to taskData
     defaultData: task.startingCode ?? t("codeStorage.newFile.content"),
     namespace,
   });
