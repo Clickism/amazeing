@@ -25,7 +25,12 @@ export function LevelEditor() {
           <ToolPanel visualize={visualize} setVisualize={setVisualize} />
         </Panel>
         <Panel paddingless className={styles.gridWindow}>
-          {visualize ? (
+          <div
+            className={clsx(
+              styles.viewportContainer,
+              !visualize && styles.hidden,
+            )}
+          >
             <Viewport
               owl={{
                 position: level.owlStart.position,
@@ -35,11 +40,12 @@ export function LevelEditor() {
               lockCamera={false}
               lockCameraControls={false}
             />
-          ) : (
-            <div className={clsx(styles.gridContainer)}>
-              <TileGrid />
-            </div>
-          )}
+          </div>
+          <div
+            className={clsx(styles.gridContainer, visualize && styles.hidden)}
+          >
+            <TileGrid />
+          </div>
         </Panel>
         <Panel paddingless>
           <LevelList />

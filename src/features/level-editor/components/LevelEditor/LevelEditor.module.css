@@ -53,3 +53,13 @@
   overflow: auto;
   padding: 1rem;
 }
+
+.hidden {
+  display: none;
+  pointer-events: none;
+}
+
+.viewportContainer {
+  height: 100%;
+  width: 100%;
+}
