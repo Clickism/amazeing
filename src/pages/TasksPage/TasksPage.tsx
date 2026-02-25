@@ -6,16 +6,21 @@ import { TasksProvider } from "../../features/precourse/context/TasksProvider.ts
 import { useTasks } from "../../features/precourse/context/TasksContext.tsx";
 import { taskIdOf } from "../../features/precourse/day.ts";
 import { TaskCodeModelProvider } from "../../features/editor/context/code/TaskCodeModelProvider.tsx";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { InterpreterWrapper } from "../../features/editor/context/interpreter/InterpreterWrapper.tsx";
+import { useSearchParams } from "react-router-dom";
 
 const namespace = "tasks";
 
+const idKey = "id";
+
 export function TasksPage() {
+  const [searchParams] = useSearchParams();
+  const taskId = searchParams.get(idKey) ?? taskIdOf(1, 1);
   return (
     <Layout fullWidth>
       <EditorSettingsProvider namespace={namespace}>
-        <TasksProvider taskId={taskIdOf(1, 1)} namespace={namespace}>
+        <TasksProvider taskId={taskId} namespace={namespace}>
           <EditorWrapper />
         </TasksProvider>
       </EditorSettingsProvider>
@@ -27,6 +32,13 @@ export function TasksPage() {
 function EditorWrapper() {
   const { task, setCompleted } = useTasks();
   const level = useMemo(() => new Level(task.levelData), [task.levelData]);
+  const [, setSearchParams] = useSearchParams();
+
+  // Update URL when task changes
+  useEffect(() => {
+    setSearchParams({ [idKey]: task.id });
+  }, [setSearchParams, task.id]);
+
   return (
     <TaskCodeModelProvider task={task} namespace={namespace}>
       <InterpreterWrapper
