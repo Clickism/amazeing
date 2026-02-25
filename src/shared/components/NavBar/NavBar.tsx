@@ -5,6 +5,7 @@ import { useTranslatable } from "../../i18n/i18n.ts";
 import { LanguageToggle } from "./LanguageToggle/LanguageToggle.tsx";
 import { ColorSchemeToggle } from "./ThemeToggle/ColorSchemeToggle.tsx";
 import { Logo } from "./Logo/Logo.tsx";
+import { About } from "./About/About.tsx";
 
 export function NavBar() {
   const { t } = useTranslatable();
@@ -22,6 +23,7 @@ export function NavBar() {
         </div>
         {/*Right side links*/}
         <div className={styles.right}>
+          <About />
           <LanguageToggle />
           <ColorSchemeToggle />
         </div>

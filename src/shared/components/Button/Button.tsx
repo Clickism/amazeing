@@ -13,7 +13,8 @@ export type ButtonVariant =
   | "background"
   | "transparent"
   | "outlined"
-  | "highlighted";
+  | "highlighted"
+  | "linky";
 
 export type ButtonBorder = "default" | "active";
 

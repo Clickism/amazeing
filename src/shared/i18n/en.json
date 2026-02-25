@@ -107,5 +107,11 @@
   "home.tasks.day3.description": "Pathfinding algorithms, marks and advanced data structures.",
 
   "day.day": "Day {{num}}",
-  "day.task": "Task {{num}}"
+  "day.task": "Task {{num}}",
+
+  "about.tooltip": "About Amazeing",
+  "about.developedBy": "Developed by",
+  "about.helpOf": "With the support of",
+  "about.tutors": "Current and partly former Programming 2 tutors",
+  "about.sourceCode": "Source Code"
 }

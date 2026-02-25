@@ -14,7 +14,7 @@
   background-color: var(--clr-surface-a0);
 
   border-bottom: 1px solid var(--clr-surface-a10);
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.7);
 }
 
 .container {

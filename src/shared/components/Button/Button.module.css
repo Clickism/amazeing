@@ -115,6 +115,16 @@
   box-shadow: inset 0 -2px 0 var(--clr-primary-a0) !important;
 }
 
+.variant-linky {
+  --background-color: transparent;
+  --background-hover: transparent;
+  border: none;
+}
+
+.variant-linky:hover {
+  color: var(--clr-primary-a10);
+}
+
 /* Shapes */
 .shape-default {
   height: var(--height);
