@@ -70,7 +70,7 @@
 .variant-primary {
   --background-color: var(--clr-primary-a0);
   --background-hover: var(--clr-primary-a10);
-  color: var(--clr-dark-a0);
+  color: var(--clr-light-a0);
 }
 
 .variant-secondary {

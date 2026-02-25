@@ -113,5 +113,15 @@
   "about.developedBy": "Entwickelt von",
   "about.helpOf": "Mit Unterstützung von",
   "about.tutors": "Aktuellen und teilweise ehemaligen Programmierung 2 Tutoren",
-  "about.sourceCode": "Quellcode"
+  "about.sourceCode": "Quellcode",
+
+  "home.tasks": "Aufgaben",
+  "home.tasks.button": "Mit den Aufgaben beginnen",
+  "home.tasks.description": "Verwende unsere eigene Assembly-Sprache, um Maze-Programmieraufgaben zu lösen und dabei Konzepte der Assembly zu lernen.",
+  "home.sandbox": "Sandbox",
+  "home.sandbox.button": "Zur Sandbox",
+  "home.sandbox.description": "Experimentiere mit unserem eigenen Assembly-Sprache und teste deinen Code auf deinen eigenen Levels.",
+  "home.levelEditor": "Level-Editor",
+  "home.levelEditor.button": "Zum Level-Editor",
+  "home.levelEditor.description": "Erstelle deine eigenen Maze-Levels und spiele sie in der Sandbox oder exportiere sie."
 }

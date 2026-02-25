@@ -11,6 +11,7 @@ type TasksProviderProps = {
   namespace: string;
 };
 
+// TODO: Keep last task in persistent state
 export function TasksProvider({
   taskId: initialTaskId,
   namespace,

@@ -99,13 +99,6 @@
   "levelSelector.title": "Select Level",
   "levelSelector.level": "Current Level",
 
-  "home.tasks.day1.title": "Day 1: Getting Started",
-  "home.tasks.day1.description": "Getting started with AmazeingASM, simple maze algorithms.",
-  "home.tasks.day2.title": "Day 2: Diving Deeper",
-  "home.tasks.day2.description": "More advanced maze algorithms and introduction data structures.",
-  "home.tasks.day3.title": "Day 3: Mastering Mazes",
-  "home.tasks.day3.description": "Pathfinding algorithms, marks and advanced data structures.",
-
   "day.day": "Day {{num}}",
   "day.task": "Task {{num}}",
 
@@ -113,5 +106,15 @@
   "about.developedBy": "Developed by",
   "about.helpOf": "With the support of",
   "about.tutors": "Current and partly former Programming 2 tutors",
-  "about.sourceCode": "Source Code"
+  "about.sourceCode": "Source Code",
+
+  "home.tasks": "Tasks",
+  "home.tasks.button": "Start with Tasks",
+  "home.tasks.description": "Use a custom assembly language to solve maze-related programming tasks and learn assembly concepts along the way.",
+  "home.sandbox": "Sandbox",
+  "home.sandbox.button": "Go to Sandbox",
+  "home.sandbox.description": "Experiment freely with the custom assembly language and test your code on custom levels.",
+  "home.levelEditor": "Level Editor",
+  "home.levelEditor.button": "Go to Level Editor",
+  "home.levelEditor.description": "Create your own custom maze levels and play them in the sandbox or export them."
 }
