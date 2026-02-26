@@ -158,6 +158,24 @@ export const EXECUTORS: Executors = {
       });
     }
   },
+
+  mark: (env, { direction }) => {
+    env.mark(direction);
+  },
+
+  unmark: (env, { direction }) => {
+    env.unmark(direction);
+  },
+
+  getmark: (env, { src }) => {
+    const mark = env.getMark();
+    env.setOrThrow(src, mark);
+  },
+
+  getdir: (env, { src }) => {
+    const dir = env.owl.data().direction;
+    env.setOrThrow(src, dir);
+  },
 };
 
 /**

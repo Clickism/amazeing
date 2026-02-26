@@ -123,6 +123,8 @@ function parseInstruction(line: string): Instruction {
     // One var instructions
     case "print":
     case "debug":
+    case "getdir":
+    case "getmark":
       assertArgsLength(type, args, 1);
       return { type, src: parseAddress(args[0]) };
     // Two var instructions
@@ -195,6 +197,17 @@ function parseInstruction(line: string): Instruction {
         dest: parseAddress(args[0]),
         value: parseValue(args[1]),
       };
+    // Mark
+    // TODO: Add docs for marks
+    case "mark":
+    case "unmark": {
+      assertArgsLength(type, args, 0, 1);
+      let direction = undefined;
+      if (args.length > 0) {
+        direction = parseDirection(args[0]);
+      }
+      return { type, direction };
+    }
     default:
       throw new Error(`Unknown instruction: "${type}"`);
   }

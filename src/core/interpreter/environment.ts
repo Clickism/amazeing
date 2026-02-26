@@ -5,6 +5,7 @@ import {
   type Address,
   type Array,
   type ArrayAccess,
+  type Direction,
   type Integer,
   isArrayAccess,
   type Value,
@@ -37,6 +38,7 @@ export class Environment {
   console: InterpreterConsole;
   owl: Owl;
   level: Level;
+  marks: number[][];
   private global: VariableMap;
   private readonly stack: StackFrame[];
   private args: VariableMap;
@@ -57,6 +59,9 @@ export class Environment {
     this.args = args;
     this.owl = owl;
     this.level = level;
+    this.marks = Array.from({ length: level.maze.height() }, () =>
+      Array(level.maze.width()).fill(0),
+    );
   }
 
   /**
@@ -338,5 +343,60 @@ export class Environment {
       }
     }
     array[index] = value;
+  }
+
+  mark(direction?: Direction) {
+    this.markInternal(direction, true);
+  }
+
+  unmark(direction?: Direction) {
+    this.markInternal(direction, false);
+  }
+
+  private markInternal(direction: Direction | undefined, mark: boolean) {
+    const owlData = this.owl.data();
+    const normalized =
+      direction !== undefined
+        ? this.owl.normalizeDirection(owlData, direction)
+        : "here";
+    const pos = owlData.position;
+    let mask;
+    switch (normalized) {
+      case "west":
+        mask = 1;
+        break;
+      case "south":
+        mask = 1 << 1;
+        break;
+      case "east":
+        mask = 1 << 2;
+        break;
+      case "north":
+        mask = 1 << 3;
+        break;
+      case "here":
+        mask = 15;
+        break;
+    }
+    const currentMark = this.getMarkAt(pos) || 0;
+    if (mark) {
+      this.setMarkAt(pos, currentMark | mask);
+    } else {
+      this.setMarkAt(pos, currentMark & ~mask);
+    }
+  }
+
+  getMark() {
+    const owlData = this.owl.data();
+    const pos = owlData.position;
+    return this.getMarkAt(pos) || 0;
+  }
+
+  private getMarkAt(position: { x: number; y: number }) {
+    return this.marks[position.y][position.x];
+  }
+
+  private setMarkAt(position: { x: number; y: number }, value: number) {
+    this.marks[position.y][position.x] = value;
   }
 }
