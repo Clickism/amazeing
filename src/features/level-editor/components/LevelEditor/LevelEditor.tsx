@@ -10,6 +10,7 @@ import { Panel } from "../../../../shared/components/Panel/Panel.tsx";
 import { PanelContainer } from "../../../../shared/components/PanelContainer/PanelContainer.tsx";
 import { useLevelEditor } from "../../context/LevelEditorContext.tsx";
 
+// TODO: Add import task
 export function LevelEditor() {
   const { level } = useLevelEditor();
   const [visualize, setVisualize] = useState(false);
