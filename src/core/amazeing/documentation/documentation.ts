@@ -98,10 +98,9 @@ const INSTRUCTION_DOCUMENTATION_LOOKUP: {
     usage: "jump <target: label>",
     description: `Jumps to the label "target" unconditionally.`,
   },
-  // TODO: Maybe explain call and ret differently.
   call: {
     usage: "call <target: label>",
-    description: `Jumps to the label "target" unconditionally and creates a new stack frame.`,
+    description: `Jumps to the label "target" unconditionally and pushes a new stack frame.`,
   },
   ret: {
     usage: "ret",

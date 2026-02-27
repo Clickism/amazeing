@@ -30,7 +30,6 @@ export type ThreeVarGenericInstruction<T> = {
   src2: Address | Value;
 };
 
-// TODO: Also maybe new instruction "printm" that takes different printing modes, ascii or sth?? or just "printascii"
 export type Instruction =
   | NoVarInstruction<"move">
   | { type: "turn"; direction: LeftRight }

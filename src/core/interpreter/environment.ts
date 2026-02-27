@@ -5,9 +5,9 @@ import {
   type Address,
   type Array,
   type ArrayAccess,
-  type Direction,
+  type Direction, hasSameType,
   type Integer,
-  isArrayAccess,
+  isArrayAccess, typeOfValue,
   type Value,
   type Variable,
 } from "./types.ts";
@@ -335,10 +335,10 @@ export class Environment {
     // Check type
     if (array.length > 0) {
       const elem = array[0];
-      if (elem !== null && elem !== undefined && typeof elem !== typeof value) {
-        // TODO: Better message
-        throw new Error(
-          `Cannot add value of type "${typeof value}" to array "${arrayName}" of type "${typeof array[0]}"`,
+      if (elem !== null && elem !== undefined && !hasSameType(elem, value)) {
+        throw new ErrorWithTip(
+          `Cannot add value of type "${typeOfValue(value)}" to array "${arrayName}" that has elements of type "${typeOfValue(elem)}"`,
+          `An array's type is decided by the first element that is added to it. Make sure to only add values of the same type to an array.`
         );
       }
     }

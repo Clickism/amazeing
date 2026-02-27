@@ -1,3 +1,5 @@
+import type { VariableValue } from "./environment.ts";
+
 export type Value = Integer | Direction;
 
 export type Position = { x: number; y: number };
@@ -88,4 +90,30 @@ export function isInteger(value: unknown): value is Integer {
 
 export function isValue(value: unknown): value is Value {
   return isInteger(value) || isDirection(value as Value);
+}
+
+export function typeOfValue(value: VariableValue): string {
+  if (isInteger(value)) {
+    return "integer";
+  } else {
+    return "direction";
+  }
+}
+
+export function typeOfVariableValue(value: VariableValue): string {
+  if (isValue(value)) {
+    return typeOfValue(value);
+  }
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return "array[unknown]";
+    }
+    const elementType = typeOfVariableValue(value[0]);
+    return `array[${elementType}]`;
+  }
+  throw new Error(`Unknown variable value type: ${value}`);
+}
+
+export function hasSameType(a: Value, b: Value): boolean {
+  return typeOfValue(a) === typeOfValue(b);
 }

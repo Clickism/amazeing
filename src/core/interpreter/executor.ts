@@ -6,7 +6,12 @@ import type {
 import { Environment } from "./environment.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { PcTarget } from "./interpreter.ts";
-import { booleanToInteger, isValue, type Value } from "./types.ts";
+import {
+  booleanToInteger,
+  isValue,
+  typeOfVariableValue,
+  type Value,
+} from "./types.ts";
 
 export type Executor<T extends Instruction["type"]> = (
   env: Environment,
@@ -158,12 +163,11 @@ export const EXECUTORS: Executors = {
   debug: (env, { src }) => {
     const value = env.getOrNull(src);
     if (value === null) {
-      env.console.log({ type: "log", text: `DEBUG: ${src} = NO VALUE` });
+      env.console.log({ type: "system", text: `[DEBUG] ${src}: no value` });
     } else {
-      // TODO: Add type information
       env.console.log({
-        type: "log",
-        text: `DEBUG: ${src} = ${value}, type = ${typeof value}`,
+        type: "system",
+        text: `[DEBUG] ${src}: type = ${typeOfVariableValue(value)}, value = ${value.toString()}`,
       });
     }
   },

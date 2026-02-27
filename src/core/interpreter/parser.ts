@@ -198,7 +198,6 @@ function parseInstruction(line: string): Instruction {
         value: parseValue(args[1]),
       };
     // Mark
-    // TODO: Add docs for marks
     case "mark":
     case "unmark": {
       assertArgsLength(type, args, 0, 1);
