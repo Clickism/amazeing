@@ -109,7 +109,16 @@ function parseLabel(line: string): LabelDefinition {
  * Parses an instruction
  */
 function parseInstruction(line: string): Instruction {
-  const parts = line.split(/\s+/);
+  let parts = line.split(/\s+/);
+  // Handle character literals with spaces, e.g. ' '
+  if (parts.length > 2) {
+    if (parts[parts.length - 1] === "'" && parts[parts.length - 2] === "'") {
+      parts = [
+        ...parts.slice(0, parts.length - 2),
+        parts.slice(parts.length - 2).join(" "),
+      ];
+    }
+  }
   const type = parts[0];
   const args = parts.slice(1);
   // Parse based on instruction type
@@ -122,7 +131,6 @@ function parseInstruction(line: string): Instruction {
       return { type };
     // One var instructions
     case "print":
-    case "printascii":
     case "debug":
     case "getdir":
     case "getmark":
@@ -209,6 +217,14 @@ function parseInstruction(line: string): Instruction {
       }
       return { type, direction };
     }
+    case "printascii": {
+      assertArgsLength(type, args, 0, 1);
+      let src = undefined;
+      if (args.length > 0) {
+        src = parseAddress(args[0]);
+      }
+      return { type, src };
+    }
     default:
       throw new Error(`Unknown instruction: "${type}"`);
   }
@@ -284,12 +300,37 @@ function parseValue(arg: string): Value {
   if (isDirection(arg)) {
     return arg;
   }
+  // Character literal
+  if (/^'.*'$/.test(arg)) {
+    if (arg.length !== 3) {
+      if (arg.startsWith("'\\")) {
+        throw new ErrorWithTip(
+          `Invalid character literal: ${arg}.`,
+          `Escape sequences are not supported, use raw integer values if needed.`,
+        );
+      }
+      throw new ErrorWithTip(
+        `Invalid character literal: ${arg}`,
+        `Character literals must be a single character enclosed in single quotes, e.g. 'a'`,
+      );
+    }
+    const code = arg.charCodeAt(1);
+    if (isNaN(code) || code < 0 || code > 255) {
+      throw new ErrorWithTip(
+        `Invalid character literal: "${arg}"`,
+        `Is this really an ASCII character?`,
+      );
+    }
+    return code;
+  }
   // Number
   const value = Number(arg);
   if (!isNaN(value)) {
     return value;
   }
-  throw new Error(`Invalid value: "${arg}", must be a number or direction.`);
+  throw new Error(
+    `Invalid value: "${arg}", must be a number, direction or character literal.`,
+  );
 }
 
 /**

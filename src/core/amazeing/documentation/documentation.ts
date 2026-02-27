@@ -70,8 +70,8 @@ const INSTRUCTION_DOCUMENTATION_LOOKUP: {
     description: `Outputs the value stored in the address "src" to the console.`,
   },
   printascii: {
-    usage: "printascii <src: address>",
-    description: `Outputs the value stored in the address "src" as an ASCII character to the console.`,
+    usage: "printascii <src: address>?",
+    description: `Outputs the value stored in the address "src" as an ASCII character to the console. If no "src" is given, moves to a new line instead.`,
   },
   debug: {
     usage: "debug <src: address>",

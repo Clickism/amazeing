@@ -9,7 +9,7 @@ import {
 import { LevelOwl, type OwlData } from "../../../../core/game/owl.ts";
 import {
   type ConsoleMessage,
-  InterpreterConsole,
+  InterpreterConsoleImpl,
 } from "../../../../core/interpreter/console.ts";
 import { InterpreterContext } from "./InterpreterContext.tsx";
 import {
@@ -70,9 +70,22 @@ export function InterpreterProvider({
   const runIntervalRef = useRef<number | null>(null);
   const runAnimationFrameRef = useRef<number | null>(null);
 
-  const appendOutput = useCallback((message: ConsoleMessage) => {
-    setOutput((prev) => [...prev, message]);
-  }, []);
+  const appendOutput = useCallback(
+    (message: ConsoleMessage, append: boolean) => {
+      setOutput((prev) => {
+        if (append && prev.length > 0) {
+          const lastMessage = prev[prev.length - 1];
+          const newMessage: ConsoleMessage = {
+            type: lastMessage.type,
+            text: lastMessage.text + message.text,
+          };
+          return [...prev.slice(0, -1), newMessage];
+        }
+        return [...prev, message];
+      });
+    },
+    [],
+  );
 
   const stop = useCallback(() => {
     if (runIntervalRef.current !== null) {
@@ -95,7 +108,7 @@ export function InterpreterProvider({
       setOutput([]);
       const interpreter = LazyInterpreter.fromCode(
         code,
-        new InterpreterConsole(appendOutput),
+        new InterpreterConsoleImpl(appendOutput),
         new LevelOwl(() => owlDataRef.current, updateOwl, level),
         level,
         onFinishRef.current,

@@ -147,8 +147,12 @@ export const EXECUTORS: Executors = {
   },
 
   printascii: (env, { src }) => {
+    if (src === undefined) {
+      env.console.append({ type: "log", text: "\n" });
+      return;
+    }
     const value = env.getIntegerOrThrow(src);
-    env.console.log({ type: "log", text: String.fromCharCode(value) });
+    env.console.append({ type: "log", text: String.fromCharCode(value) });
   },
 
   debug: (env, { src }) => {

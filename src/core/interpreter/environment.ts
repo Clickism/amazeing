@@ -1,5 +1,5 @@
 import type { LabelDefinition } from "./instruction.ts";
-import { InterpreterConsole } from "./console.ts";
+import { type InterpreterConsole } from "./console.ts";
 import { Owl } from "../game/owl.ts";
 import {
   type Address,
