@@ -69,6 +69,7 @@ export type Instruction =
   | { type: "branchz"; cond: string; target: string }
   // Other instructions
   | OneVarInstruction<"print">
+  | OneVarInstruction<"printascii">
   | OneVarInstruction<"debug">
   // Advanced owl instructions
   | { type: "mark"; direction?: Direction }
@@ -114,6 +115,7 @@ export const ALL_INSTRUCTIONS = [
   "branch",
   "branchz",
   "print",
+  "printascii",
   "debug",
   "mark",
   "unmark",

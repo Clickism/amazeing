@@ -122,6 +122,7 @@ function parseInstruction(line: string): Instruction {
       return { type };
     // One var instructions
     case "print":
+    case "printascii":
     case "debug":
     case "getdir":
     case "getmark":

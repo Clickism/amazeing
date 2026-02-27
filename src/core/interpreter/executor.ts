@@ -146,6 +146,11 @@ export const EXECUTORS: Executors = {
     env.console.log({ type: "log", text: value.toString() });
   },
 
+  printascii: (env, { src }) => {
+    const value = env.getIntegerOrThrow(src);
+    env.console.log({ type: "log", text: String.fromCharCode(value) });
+  },
+
   debug: (env, { src }) => {
     const value = env.getOrNull(src);
     if (value === null) {

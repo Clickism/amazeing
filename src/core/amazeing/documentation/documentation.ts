@@ -18,28 +18,6 @@ export type SingleDocumentation = {
 
 export type Documentation = SingleDocumentation | SingleDocumentation[];
 
-const arithmeticActions = {
-  add: "Adds",
-  sub: "Subtracts",
-  mul: "Multiplies",
-  div: "Divides",
-  and: "Bitwise ANDs",
-  or: "Bitwise ORs",
-  xor: "Bitwise XORs",
-  sll: "Shifts left (logical)",
-  srl: "Shifts right (logical)",
-  sra: "Shifts right (arithmetic)",
-};
-
-const comparisonRelations = {
-  lt: "less than",
-  gt: "greater than",
-  lte: "less than or equal to",
-  gte: "greater than or equal to",
-  eq: "equal to",
-  neq: "not equal to",
-};
-
 /**
  * Gets the documentation for the given instruction type.
  * @param instruction
@@ -53,7 +31,7 @@ export function getInstructionDocumentation(
 }
 
 const INSTRUCTION_DOCUMENTATION_LOOKUP: {
-  [K in Instruction["type"]]?: Documentation;
+  [K in Instruction["type"]]: Documentation;
 } = {
   move: {
     usage: "move",
@@ -91,6 +69,10 @@ const INSTRUCTION_DOCUMENTATION_LOOKUP: {
     usage: "print <src: address>",
     description: `Outputs the value stored in the address "src" to the console.`,
   },
+  printascii: {
+    usage: "printascii <src: address>",
+    description: `Outputs the value stored in the address "src" as an ASCII character to the console.`,
+  },
   debug: {
     usage: "debug <src: address>",
     description: `Outputs a detailed representation and type of the value stored in the address "src" to the console.`,
@@ -125,20 +107,40 @@ const INSTRUCTION_DOCUMENTATION_LOOKUP: {
     usage: "ret",
     description: `Returns to the line after the last executed "call" instruction and to the previous stack frame.`,
   },
-  // Arithmetic
-  ...Object.fromEntries(
-    Object.entries(arithmeticActions).map(([instr, action]) => [
-      instr,
-      arithmetic(instr, action),
-    ]),
-  ),
-  // Comparison
-  ...Object.fromEntries(
-    Object.entries(comparisonRelations).map(([instr, relation]) => [
-      instr,
-      comparison(instr, relation),
-    ]),
-  ),
+  mark: {
+    usage: "mark <direction: direction>?",
+    description: `Marks the "direction" at the tile the owl is currently in or all directions if no "direction" is given.`,
+  },
+  unmark: {
+    usage: "unmark <direction: direction>?",
+    description: `Unmarks the "direction" at the tile the owl is currently in or all directions if no "direction" is given.`,
+  },
+  getmark: {
+    usage: "getmark <dest: address>",
+    description: `Stores the mark representation of the current tile of the owl into "dest".`,
+  },
+  getdir: {
+    usage: "getdir <dest: address>",
+    description: `Gets the current direction of the owl and puts it into "dest".`,
+  },
+
+  // Arithmetic and comparison
+  add: arithmetic("add", "Adds"),
+  sub: arithmetic("sub", "Subtracts"),
+  mul: arithmetic("mul", "Multiplies"),
+  div: arithmetic("div", "Divides"),
+  and: arithmetic("and", "Bitwise ANDs"),
+  or: arithmetic("or", "Bitwise ORs"),
+  xor: arithmetic("xor", "Bitwise XORs"),
+  sll: arithmetic("sll", "Shifts left (logical)"),
+  srl: arithmetic("srl", "Shifts right (logical)"),
+  sra: arithmetic("sra", "Shifts right (arithmetic)"),
+  lt: comparison("lt", "less than"),
+  lte: comparison("lte", "less than or equal to"),
+  gt: comparison("gt", "greater than"),
+  gte: comparison("gte", "greater than or equal to"),
+  eq: comparison("eq", "equal to"),
+  neq: comparison("neq", "not equal to"),
 };
 
 function arithmetic(instruction: string, action: string): Documentation {
