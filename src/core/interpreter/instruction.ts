@@ -65,8 +65,8 @@ export type Instruction =
   | { type: "call"; target: string }
   | NoVarInstruction<"ret">
   | NoVarInstruction<"exit">
-  | { type: "branch"; cond: string; target: string }
-  | { type: "branchz"; cond: string; target: string }
+  | { type: "branch"; cond: Address; target: string }
+  | { type: "branchz"; cond: Address; target: string }
   // Other instructions
   | OneVarInstruction<"print">
   | { type: "printascii"; src?: Address }

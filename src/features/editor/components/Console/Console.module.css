@@ -48,3 +48,7 @@
   color: var(--clr-success-a10);
   font-weight: bold;
 }
+
+.message-system {
+  color: darkgray;
+}

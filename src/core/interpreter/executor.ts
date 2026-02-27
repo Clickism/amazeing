@@ -121,13 +121,13 @@ export const EXECUTORS: Executors = {
   },
 
   exit: (env) => {
-    env.console.log({ type: "log", text: "Program exited." });
+    env.console.log({ type: "system", text: "Program exited." });
     return { type: "jump", target: -1 };
   },
 
   branch: (env, { cond, target }) => {
     const pc = env.getLabelOrThrow(target).pc;
-    const condValue = env.getOrThrow(cond);
+    const condValue = env.getIntegerOrThrow(cond);
     if (condValue !== 0) {
       return { type: "jump", target: pc };
     }
@@ -135,7 +135,7 @@ export const EXECUTORS: Executors = {
 
   branchz: (env, { cond, target }) => {
     const pc = env.getLabelOrThrow(target).pc;
-    const condValue = env.getOrThrow(cond);
+    const condValue = env.getIntegerOrThrow(cond);
     if (condValue === 0) {
       return { type: "jump", target: pc };
     }

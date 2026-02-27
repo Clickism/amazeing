@@ -109,16 +109,7 @@ function parseLabel(line: string): LabelDefinition {
  * Parses an instruction
  */
 function parseInstruction(line: string): Instruction {
-  let parts = line.split(/\s+/);
-  // Handle character literals with spaces, e.g. ' '
-  if (parts.length > 2) {
-    if (parts[parts.length - 1] === "'" && parts[parts.length - 2] === "'") {
-      parts = [
-        ...parts.slice(0, parts.length - 2),
-        parts.slice(parts.length - 2).join(" "),
-      ];
-    }
-  }
+  const parts = fixPartsCharacterLiteral(line.split(/\s+/), line);
   const type = parts[0];
   const args = parts.slice(1);
   // Parse based on instruction type
@@ -187,7 +178,7 @@ function parseInstruction(line: string): Instruction {
       assertArgsLength(type, args, 2);
       return {
         type,
-        cond: parseIdentifier(args[0]), // TODO: Address?
+        cond: parseAddress(args[0]),
         target: parseIdentifier(args[1]),
       };
     // Other instructions
@@ -301,27 +292,8 @@ function parseValue(arg: string): Value {
     return arg;
   }
   // Character literal
-  if (/^'.*'$/.test(arg)) {
-    if (arg.length !== 3) {
-      if (arg.startsWith("'\\")) {
-        throw new ErrorWithTip(
-          `Invalid character literal: ${arg}.`,
-          `Escape sequences are not supported, use raw integer values if needed.`,
-        );
-      }
-      throw new ErrorWithTip(
-        `Invalid character literal: ${arg}`,
-        `Character literals must be a single character enclosed in single quotes, e.g. 'a'`,
-      );
-    }
-    const code = arg.charCodeAt(1);
-    if (isNaN(code) || code < 0 || code > 255) {
-      throw new ErrorWithTip(
-        `Invalid character literal: "${arg}"`,
-        `Is this really an ASCII character?`,
-      );
-    }
-    return code;
+  if (isCharacterLiteral(arg)) {
+    return parseCharacterLiteral(arg);
   }
   // Number
   const value = Number(arg);
@@ -348,4 +320,52 @@ function assertArgsLength(
         `argument(s) for "${instructionType}", but got ${args.length} instead`,
     );
   }
+}
+
+function isCharacterLiteral(arg: string): boolean {
+  return /^'.*'$/.test(arg);
+}
+
+function parseCharacterLiteral(arg: string): number {
+  if (arg.length !== 3) {
+    if (arg.startsWith("'\\")) {
+      throw new ErrorWithTip(
+        `Invalid character literal: ${arg}.`,
+        `Escape sequences are not supported, use raw integer values if needed.`,
+      );
+    }
+    throw new ErrorWithTip(
+      `Invalid character literal: ${arg}`,
+      `Character literals must be a single character enclosed in single quotes, e.g. 'a'`,
+    );
+  }
+  const code = arg.charCodeAt(1);
+  if (isNaN(code) || code < 0 || code > 255) {
+    throw new ErrorWithTip(
+      `Invalid character literal: "${arg}"`,
+      `Is this really an ASCII character?`,
+    );
+  }
+  return code;
+}
+
+/**
+ * Fixes the parts of a line if it contains a character literal with spaces, e.g. ' '.
+ * Very sketchy but better than a full lexer.
+ */
+function fixPartsCharacterLiteral(parts: string[], line: string): string[] {
+  if (parts.length <= 2) return parts;
+  if (parts[parts.length - 1] === "'" && parts[parts.length - 2] === "'") {
+    if (!/.*'.'/.test(line)) {
+      throw new ErrorWithTip(
+        `Invalid character literal in line: "${line}"`,
+        `Character literals must be a single character enclosed in single quotes, e.g. 'a'`,
+      );
+    }
+    return [
+      ...parts.slice(0, parts.length - 2),
+      parts.slice(parts.length - 2).join(" "),
+    ];
+  }
+  return parts;
 }

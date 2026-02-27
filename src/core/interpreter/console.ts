@@ -2,7 +2,7 @@
  * Message logged to the console.
  */
 export type ConsoleMessage = {
-  type: "log" | "error" | "warn" | "info" | "success";
+  type: "log" | "error" | "warn" | "info" | "success" | "system";
   text: string;
 };
 
