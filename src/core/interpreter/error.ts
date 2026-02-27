@@ -9,7 +9,6 @@ export class ErrorWithTip extends Error {
     this.tip = tip;
   }
 }
-// TODO: Maybe specify parsing vs runtime rrors?
 
 /**
  * Error class for attaching line numbers to errors.
