@@ -9,18 +9,20 @@ import { LevelList } from "../LevelList/LevelList.tsx";
 import { Panel } from "../../../../shared/components/Panel/Panel.tsx";
 import { PanelContainer } from "../../../../shared/components/PanelContainer/PanelContainer.tsx";
 import { useLevelEditor } from "../../context/LevelEditorContext.tsx";
+import { useCalculateLayout } from "../../../../shared/utils/useCalculateLayout.tsx";
 
 // TODO: Add import task
 export function LevelEditor() {
   const { level } = useLevelEditor();
   const [visualize, setVisualize] = useState(false);
-
+  const { isMobile } = useCalculateLayout();
   return (
     <div className={styles.levelEditor}>
       <PanelContainer
         initialSizes={[0.1, 0.8, 0.1]}
         minSize={0.1}
-        minPixels={[300, 400, 210]}
+        minPixels={!isMobile ? [300, 400, 210] : [650, 400, 400]}
+        orientation={!isMobile ? "horizontal" : "vertical"}
       >
         <Panel className="fancy-headers">
           <ToolPanel visualize={visualize} setVisualize={setVisualize} />

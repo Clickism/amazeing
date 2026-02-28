@@ -39,9 +39,12 @@ export function CodeEditorWithPanel({
             topBar={{
               left: topBar?.left,
               right: [
-                <Button onClick={() => setPanelOpen((prev) => !prev)}>
+                <Button
+                  shape={isMobile ? "icon" : "default"}
+                  onClick={() => setPanelOpen((prev) => !prev)}
+                >
                   {panel.icon(panelOpen)}
-                  {panel.name}
+                  {isMobile ? undefined : panel.name}
                 </Button>,
                 ...(topBar?.right ?? []),
               ],

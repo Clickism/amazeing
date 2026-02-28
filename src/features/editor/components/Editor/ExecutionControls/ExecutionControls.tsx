@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Tooltip } from "../../../../../shared/floating/Tooltip/Tooltip.tsx";
 import { ExecutionSettings } from "./ExecutionSettings/ExecutionSettings.tsx";
 import { OwlControls } from "./OwlControls/OwlControls.tsx";
+import { useCalculateLayout } from "../../../../../shared/utils/useCalculateLayout.tsx";
 
 type ExecutionControlsProps = {
   owlControls?: boolean;
@@ -32,12 +33,17 @@ export function ExecutionControls({
     canStep: canEditorStep,
   } = useInterpreter();
   const canStep = canEditorStep();
+  const { isMobile } = useCalculateLayout();
   return (
     <ButtonGroup>
       {/* Run Controls */}
       {isRunning ? (
-        <Button variant="danger" onClick={stop}>
-          <VscDebugStop /> {t("editor.stop")}
+        <Button
+          shape={isMobile ? "icon" : "default"}
+          variant="danger"
+          onClick={stop}
+        >
+          <VscDebugStop /> {isMobile ? "" : t("editor.stop")}
         </Button>
       ) : (
         <Button
@@ -45,7 +51,9 @@ export function ExecutionControls({
           disabled={!canStep}
           onClick={run}
         >
-          <VscDebugContinue /> {t("editor.run")}
+          <VscDebugContinue />{" "}
+          {t("editor.run").slice(0, isMobile ? 4 : undefined) +
+            (isMobile ? "." : "")}
         </Button>
       )}
       <ExecutionSettings />
@@ -54,11 +62,12 @@ export function ExecutionControls({
 
       {/* Step Controls */}
       <Button
+        shape={isMobile ? "icon" : "default"}
         variant={canStep && !isRunning ? "secondary" : "disabled"}
         disabled={!canStep || isRunning}
         onClick={() => step(steps)}
       >
-        <VscDebugStepOver /> {t("editor.step")}
+        <VscDebugStepOver /> {isMobile ? "" : t("editor.step")}
       </Button>
       <Tooltip content={t("editor.step.tooltip")}>
         <input
@@ -75,8 +84,8 @@ export function ExecutionControls({
       <ButtonGroup.Separator />
 
       {/* Reset Controls */}
-      <Button onClick={reset}>
-        <VscDebugRestart /> {t("editor.reset")}
+      <Button shape={isMobile ? "icon" : "default"} onClick={reset}>
+        <VscDebugRestart /> {isMobile ? "" : t("editor.reset")}
       </Button>
 
       {owlControls && (
