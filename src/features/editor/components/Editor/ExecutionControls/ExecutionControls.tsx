@@ -39,7 +39,6 @@ export function ExecutionControls({
       {/* Run Controls */}
       {isRunning ? (
         <Button
-          shape={isMobile ? "icon" : "default"}
           variant="danger"
           onClick={stop}
         >
@@ -52,8 +51,7 @@ export function ExecutionControls({
           onClick={run}
         >
           <VscDebugContinue />{" "}
-          {t("editor.run").slice(0, isMobile ? 4 : undefined) +
-            (isMobile ? "." : "")}
+          {isMobile ? "" : t("editor.run")}
         </Button>
       )}
       <ExecutionSettings />
@@ -76,7 +74,7 @@ export function ExecutionControls({
           value={steps}
           onChange={(e) => setSteps(Number(e.target.value))}
           style={{
-            width: "3rem",
+            width: isMobile ? "1rem" : "3rem",
           }}
         />
       </Tooltip>
