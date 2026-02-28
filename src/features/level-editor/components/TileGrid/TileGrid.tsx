@@ -15,13 +15,17 @@ export function TileGrid() {
   const rows = Array.from({ length: maze.height });
   const columns = Array.from({ length: maze.width });
   // When "dragging" a wall, we set all walls to the state we change the first wall into.
-  const [startingWallState, setStartingWallState] = useState<boolean | null>(null);
+  const [startingWallState, setStartingWallState] = useState<boolean | null>(
+    null,
+  );
 
   const onWallInteraction = (
+    evt: React.PointerEvent<HTMLButtonElement>,
     position: { x: number; y: number },
     horizontal: boolean,
-    isStart: boolean = false
+    isStart: boolean = false,
   ) => {
+    evt.currentTarget.releasePointerCapture(evt.pointerId);
     const walls = level.maze.walls;
     const currentWall = horizontal
       ? walls.horizontal[position.y][position.x]
@@ -55,7 +59,11 @@ export function TileGrid() {
   };
 
   return (
-    <div className={styles.grid} onPointerUp={onWallInteractionEnd} onPointerLeave={onWallInteractionEnd}>
+    <div
+      className={styles.grid}
+      onPointerUp={onWallInteractionEnd}
+      onPointerLeave={onWallInteractionEnd}
+    >
       {rows.map((_, row) => (
         <Fragment key={row}>
           <div className={styles.gridRow}>
@@ -73,8 +81,10 @@ export function TileGrid() {
                 {col < maze.width - 1 && (
                   <Wall
                     wall={maze.walls.vertical[row][col]}
-                    onPointerEnter={() => onWallInteraction({ x: col, y: row }, false)}
-                    onPointerDown={() => onWallInteraction({ x: col, y: row }, false, true)}
+                    onPointerEnter={(evt) =>
+                      onWallInteraction(evt, { x: col, y: row }, false)}
+                    onPointerDown={(evt) =>
+                      onWallInteraction(evt, { x: col, y: row }, false, true)}
                   />
                 )}
               </Fragment>
@@ -89,8 +99,10 @@ export function TileGrid() {
                   key={col}
                   wall={maze.walls.horizontal[row][col]}
                   horizontal
-                  onPointerEnter={() => onWallInteraction({ x: col, y: row }, true)}
-                  onPointerDown={() => onWallInteraction({ x: col, y: row }, true, true)}
+                  onPointerEnter={(evt) =>
+                    onWallInteraction(evt, { x: col, y: row }, true)}
+                  onPointerDown={(evt) =>
+                    onWallInteraction(evt, { x: col, y: row }, true, true)}
                 />
               ))}
             </div>
