@@ -74,7 +74,9 @@ export function ExecutionControls({
           value={steps}
           onChange={(e) => setSteps(Number(e.target.value))}
           style={{
-            width: isMobile ? "1rem" : "3rem",
+            width: isMobile ? "2.25rem" : "4rem",
+            paddingLeft: isMobile ? ".5rem" : undefined,
+            minWidth: 0,
           }}
         />
       </Tooltip>
