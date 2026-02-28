@@ -1,7 +1,7 @@
-import { Button } from "../../../../../shared/components/Button/Button.tsx";
-import { List } from "../../../../../shared/components/List/List.tsx";
+import { Button } from "../../../../shared/components/Button/Button.tsx";
+import { List } from "../../../../shared/components/List/List.tsx";
 import { useTranslation } from "react-i18next";
-import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
+import { useLevelEditor } from "../../context/LevelEditorContext.tsx";
 
 export function LevelList() {
   const {

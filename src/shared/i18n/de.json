@@ -77,6 +77,7 @@
   "levelEditor.tools.clearAllWalls": "Alle Wände leeren",
 
   "levelEditor.actions.exportTask": "Aufgabe exportieren",
+  "levelEditor.actions.importTask": "Aufgabe importieren",
   "levelEditor.actions.reset": "Zurücksetzen",
 
   "levelEditor.taskExport.taskMeta": "Aufgabe-Metadaten",
@@ -89,6 +90,11 @@
 
   "levelEditor.taskExport.taskMeta.default.title": "Unbenannte Aufgabe",
   "levelEditor.taskExport.taskMeta.default.description": "Keine Beschreibung vorhanden.",
+
+  "levelEditor.taskImport.json": "Aufgabe-Json",
+  "levelEditor.taskImport.import.header": "Importieren",
+  "levelEditor.taskImport.import.warning": "Dies überschreibt alle Daten des aktuell geöffneten Levels. Erstelle ein neues leeres Level, wenn du das aktuelle behalten möchtest.",
+  "levelEditor.taskImport.import": "Aus Json importieren",
 
   "levelList.newLevel": "Neues Level",
 

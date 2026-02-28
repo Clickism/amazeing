@@ -2,18 +2,17 @@ import { type LevelData } from "../../core/game/level.ts";
 import {
   type PackagedTranslation,
   SUPPORTED_LANGUAGES,
-  type Translatable,
 } from "../../shared/i18n/i18n.ts";
 
 export type TaskData = {
   /**
    * The title (meaningful name) of the task. (i.E: "Getting Started")
    */
-  title: Translatable;
+  title: PackagedTranslation;
   /**
    * The description of the task.
    */
-  description: Translatable;
+  description: PackagedTranslation;
   /**
    * The level data for the task.
    */
@@ -68,7 +67,13 @@ export function stringifyToTask(level: LevelData): string {
     },
     startingCode: level.taskMeta?.startingCode,
   };
-  return JSON.stringify(task, null, 2);
+  // Hacky but makes json more readable, WILL break if we have any other boolean
+  // values in the data but we don't for now
+  let json = JSON.stringify(task, null, 2);
+  json = json.replace(/\b(true|false)\b,\n\s*/g, "$1, ");
+  json = json.replace(/\b(true|false)\b\n\s*/g, "$1");
+  json = json.replace(/\[\n\s*(true|false)/g, "[$1");
+  return json;
 }
 
 function reorderLanguageKeys(

@@ -77,6 +77,7 @@
   "levelEditor.tools.clearAllWalls": "Clear All Walls",
 
   "levelEditor.actions.exportTask": "Export Task",
+  "levelEditor.actions.importTask": "Import Task",
   "levelEditor.actions.reset": "Reset",
 
   "levelEditor.taskExport.taskMeta": "Task Metadata",
@@ -89,6 +90,11 @@
 
   "levelEditor.taskExport.taskMeta.default.title": "Untitled Task",
   "levelEditor.taskExport.taskMeta.default.description": "No description provided.",
+
+  "levelEditor.taskImport.json": "Task Json",
+  "levelEditor.taskImport.import.header": "Import",
+  "levelEditor.taskImport.import.warning": "This will override all data of the currently open level. Create a new empty level if you want to keep the current one.",
+  "levelEditor.taskImport.import": "Import From Json",
 
   "levelList.newLevel": "New Level",
 

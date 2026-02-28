@@ -1,9 +1,9 @@
-import { FormGroup } from "../../../../../../shared/components/Form/FormGroup/FormGroup.tsx";
-import { FormField } from "../../../../../../shared/components/Form/FormField/FormField.tsx";
-import { resizeLevel } from "../../../../../../core/game/level.ts";
-import { MAZE_THEMES, type MazeTheme } from "../../../../../../core/game/maze.ts";
+import { FormGroup } from "../../../../../shared/components/Form/FormGroup/FormGroup.tsx";
+import { FormField } from "../../../../../shared/components/Form/FormField/FormField.tsx";
+import { resizeLevel } from "../../../../../core/game/level.ts";
+import { MAZE_THEMES, type MazeTheme } from "../../../../../core/game/maze.ts";
 import { useTranslation } from "react-i18next";
-import { useLevelEditor } from "../../../../context/LevelEditorContext.tsx";
+import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
 
 const MAX_MAZE_SIZE = 50;
 

@@ -1,15 +1,16 @@
-import { ButtonGroup } from "../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
-import { Button } from "../../../../../shared/components/Button/Button.tsx";
+import { ButtonGroup } from "../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
+import { Button } from "../../../../shared/components/Button/Button.tsx";
 import { useTranslation } from "react-i18next";
-import { GENERAL_TOOLS } from "../../../tools.tsx";
-import { tryTranslate } from "../../../../../shared/i18n/i18n.ts";
-import { CornerGroup } from "../../../../../shared/components/CornerGroup/CornerGroup.tsx";
+import { GENERAL_TOOLS } from "../../tools.tsx";
+import { tryTranslate } from "../../../../shared/i18n/i18n.ts";
+import { CornerGroup } from "../../../../shared/components/CornerGroup/CornerGroup.tsx";
 import styles from "./ToolPanel.module.css";
-import { MultiSourceControls } from "../../../../editor/components/MultiSourceControls/MultiSourceControls.tsx";
-import { PillSwitch } from "../../../../../shared/components/PillSwitch/PillSwitch.tsx";
+import { MultiSourceControls } from "../../../editor/components/MultiSourceControls/MultiSourceControls.tsx";
+import { PillSwitch } from "../../../../shared/components/PillSwitch/PillSwitch.tsx";
 import { TaskExport } from "./TaskExport/TaskExport.tsx";
 import { MazeProperties } from "./MazeProperties/MazeProperties.tsx";
-import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
+import { useLevelEditor } from "../../context/LevelEditorContext.tsx";
+import { TaskImport } from "./TaskImport/TaskImport.tsx";
 
 type ToolPanelProps = {
   visualize: boolean;
@@ -61,6 +62,7 @@ export function ToolPanel({ visualize, setVisualize }: ToolPanelProps) {
 
       <ButtonGroup vertical stretch>
         <TaskExport />
+        <TaskImport />
         {/*<Button*/}
         {/*  variant="danger"*/}
         {/*  onClick={() => {*/}

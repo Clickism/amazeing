@@ -1,13 +1,13 @@
-import { ButtonGroup } from "../../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
+import { ButtonGroup } from "../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import {
   CARDINAL_DIRECTIONS,
   isPositionEqual,
   type Position,
-} from "../../../../../../core/interpreter/types.ts";
-import { Button } from "../../../../../../shared/components/Button/Button.tsx";
-import { getDirectionIcon } from "../../../../utils.tsx";
+} from "../../../../../core/interpreter/types.ts";
+import { Button } from "../../../../../shared/components/Button/Button.tsx";
+import { getDirectionIcon } from "../../../utils.tsx";
 import { useTranslation } from "react-i18next";
-import { useLevelEditor } from "../../../../context/LevelEditorContext.tsx";
+import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
 
 export function TileProperties({ position }: { position: Position }) {
   const { level, setLevel } = useLevelEditor();

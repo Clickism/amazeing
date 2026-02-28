@@ -14,27 +14,36 @@
       "height": 8,
       "walls": {
         "horizontal": [
-          [true, true, true, true, true, true, true, true],
-          [true, false, true, true, true, true, true, true],
-          [true, true, true, false, true, true, true, true],
-          [true, true, true, true, false, true, true, true],
-          [true, true, true, true, true, false, true, true],
-          [true, true, true, true, true, false, true, true],
-          [true, true, true, true, true, true, false, true]
+          [false, true, false, true, true, true, true, false],
+          [true, false, false, true, false, false, false, false],
+          [false, false, true, false, true, false, false, false],
+          [true, false, true, true, false, true, false, false],
+          [false, true, false, false, true, true, false, false],
+          [true, false, false, true, false, false, true, false],
+          [false, true, false, true, true, true, false, true]
         ],
         "vertical": [
-          [false, true, true, true, true, true, true],
-          [false, true, false, true, true, true, true],
-          [true, false, false, true, true, true, true],
-          [true, true, false, false, true, true, true],
-          [true, true, true, true, false, false, true],
-          [true, true, true, true, true, true, true],
-          [true, true, true, true, true, false, true],
-          [true, true, true, true, true, true, false]
+          [false, false, true, false, false, false, false],
+          [false, true, false, true, false, false, true],
+          [true, true, false, true, true, true, true],
+          [false, true, false, false, true, true, false],
+          [false, true, false, true, false, false, true],
+          [false, true, true, false, false, true, true],
+          [false, true, true, false, true, false, true],
+          [false, false, false, false, false, true, false]
         ]
       }
     },
-    "finishPosition": { "x": 7, "y": 7 },
-    "owlStart": { "position": { "x": 0, "y": 0 }, "direction": "south" }
+    "finishPosition": {
+      "x": 7,
+      "y": 7
+    },
+    "owlStart": {
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "direction": "south"
+    }
   }
 }

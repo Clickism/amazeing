@@ -1,19 +1,19 @@
-import { Modal } from "../../../../../../shared/floating/Modal/Modal.tsx";
-import { Button } from "../../../../../../shared/components/Button/Button.tsx";
+import { Modal } from "../../../../../shared/floating/Modal/Modal.tsx";
+import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { BiExport } from "react-icons/bi";
-import { CopyToClipboard } from "../../../CopyToClipboard/CopyToClipboard.tsx";
+import { CopyToClipboard } from "../../CopyToClipboard/CopyToClipboard.tsx";
 import { useTranslation } from "react-i18next";
-import { FormGroup } from "../../../../../../shared/components/Form/FormGroup/FormGroup.tsx";
-import { FormField } from "../../../../../../shared/components/Form/FormField/FormField.tsx";
-import { stringifyToTask } from "../../../../../precourse/task.ts";
+import { FormGroup } from "../../../../../shared/components/Form/FormGroup/FormGroup.tsx";
+import { FormField } from "../../../../../shared/components/Form/FormField/FormField.tsx";
+import { stringifyToTask } from "../../../../precourse/task.ts";
 import { useState } from "react";
 import {
   type Language,
   SUPPORTED_LANGUAGES,
-} from "../../../../../../shared/i18n/i18n.ts";
-import { PillSwitch } from "../../../../../../shared/components/PillSwitch/PillSwitch.tsx";
-import { useLevelEditor } from "../../../../context/LevelEditorContext.tsx";
-import { MiniCodeEditor } from "../../../../../editor/components/CodeEditor/MiniCodeEditor/MiniCodeEditor.tsx";
+} from "../../../../../shared/i18n/i18n.ts";
+import { PillSwitch } from "../../../../../shared/components/PillSwitch/PillSwitch.tsx";
+import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
+import { MiniCodeEditor } from "../../../../editor/components/CodeEditor/MiniCodeEditor/MiniCodeEditor.tsx";
 
 export function TaskExport() {
   const { t } = useTranslation();
