@@ -18,21 +18,18 @@ export function TileGrid() {
   const [startingWallState, setStartingWallState] = useState<boolean | null>(null);
 
   const onWallInteraction = (
-    evt: React.MouseEvent<HTMLButtonElement>,
     position: { x: number; y: number },
     horizontal: boolean,
-    isMouseDown: boolean = false
+    isStart: boolean = false
   ) => {
-    // Button 1 is the left mouse button
-    if ((evt.buttons & 1) === 0) {
-      return;
-    }
     const walls = level.maze.walls;
     const currentWall = horizontal
       ? walls.horizontal[position.y][position.x]
       : walls.vertical[position.y][position.x];
-    if (startingWallState === null || isMouseDown) {
+    if (isStart) {
       setStartingWallState(!currentWall);
+    } else if (startingWallState === null) {
+      return;
     }
     const newWall = startingWallState! ?? !currentWall;
     if (horizontal) {
@@ -76,9 +73,9 @@ export function TileGrid() {
                 {col < maze.width - 1 && (
                   <Wall
                     wall={maze.walls.vertical[row][col]}
-                    onMouseEnter={(evt) => onWallInteraction(evt, { x: col, y: row }, false)}
-                    onMouseDown={(evt) => onWallInteraction(evt, { x: col, y: row }, false, true)}
-                    onMouseUp={onWallInteractionEnd}
+                    onPointerEnter={() => onWallInteraction({ x: col, y: row }, false)}
+                    onPointerDown={() => onWallInteraction({ x: col, y: row }, false, true)}
+                    onPointerUp={onWallInteractionEnd}
                   />
                 )}
               </Fragment>
@@ -93,9 +90,9 @@ export function TileGrid() {
                   key={col}
                   wall={maze.walls.horizontal[row][col]}
                   horizontal
-                  onMouseEnter={(evt) => onWallInteraction(evt, { x: col, y: row }, true)}
-                  onMouseDown={(evt) => onWallInteraction(evt, { x: col, y: row }, true, true)}
-                  onMouseUp={onWallInteractionEnd}
+                  onPointerEnter={() => onWallInteraction({ x: col, y: row }, true)}
+                  onPointerDown={() => onWallInteraction({ x: col, y: row }, true, true)}
+                  onPointerUp={onWallInteractionEnd}
                 />
               ))}
             </div>
