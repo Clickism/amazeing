@@ -103,6 +103,13 @@
   box-shadow: var(--surface-shadow-light);
 }
 
+@media(max-width: 768px) {
+  .cm-completionInfo {
+    top: 110% !important;
+    left: -3% !important;
+  }
+}
+
 .documentation .quoted {
   font-weight: 600;
   font-size: 14px;
