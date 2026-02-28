@@ -8,10 +8,12 @@ import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { getDirectionIcon } from "../../../utils.tsx";
 import { useTranslation } from "react-i18next";
 import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
+import { useFloatingContext } from "../../../../../shared/floating/FloatingContext/FloatingContext.tsx";
 
 export function TileProperties({ position }: { position: Position }) {
   const { level, setLevel } = useLevelEditor();
   const { t } = useTranslation();
+  const { setOpen } = useFloatingContext();
   return (
     <ButtonGroup vertical stretch>
       <h6 className="fancy-headers">
@@ -30,6 +32,7 @@ export function TileProperties({ position }: { position: Position }) {
                   direction,
                 },
               });
+              setOpen(false);
             }}
           >
             {getDirectionIcon(direction, { size: 22 })}
@@ -46,6 +49,7 @@ export function TileProperties({ position }: { position: Position }) {
             ...level,
             finishPosition: position,
           });
+          setOpen(false);
         }}
       >
         {t("levelEditor.tools.tileOptions.finish")}
