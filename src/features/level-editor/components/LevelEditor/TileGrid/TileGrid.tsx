@@ -1,5 +1,5 @@
 import styles from "./TileGrid.module.css";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Tile } from "../Tile/Tile.tsx";
 import { Wall } from "../Wall/Wall.tsx";
 import clsx from "clsx";
@@ -14,16 +14,27 @@ export function TileGrid() {
   const maze = level.maze;
   const rows = Array.from({ length: maze.height });
   const columns = Array.from({ length: maze.width });
+  // When "dragging" a wall, we set all walls to the state we change the first wall into.
+  const [startingWallState, setStartingWallState] = useState<boolean | null>(null);
 
-  const onWallClick = (
+  const onWallInteraction = (
+    evt: React.MouseEvent<HTMLButtonElement>,
     position: { x: number; y: number },
     horizontal: boolean,
+    isMouseDown: boolean = false
   ) => {
+    // Button 1 is the left mouse button
+    if ((evt.buttons & 1) === 0) {
+      return;
+    }
     const walls = level.maze.walls;
     const currentWall = horizontal
       ? walls.horizontal[position.y][position.x]
       : walls.vertical[position.y][position.x];
-    const newWall = !currentWall;
+    if (startingWallState === null || isMouseDown) {
+      setStartingWallState(!currentWall);
+    }
+    const newWall = startingWallState! ?? !currentWall;
     if (horizontal) {
       walls.horizontal[position.y][position.x] = newWall;
     } else {
@@ -40,6 +51,10 @@ export function TileGrid() {
         },
       },
     });
+  };
+
+  const onWallInteractionEnd = () => {
+    setStartingWallState(null);
   };
 
   return (
@@ -61,7 +76,9 @@ export function TileGrid() {
                 {col < maze.width - 1 && (
                   <Wall
                     wall={maze.walls.vertical[row][col]}
-                    onClick={() => onWallClick({ x: col, y: row }, false)}
+                    onMouseEnter={(evt) => onWallInteraction(evt, { x: col, y: row }, false)}
+                    onMouseDown={(evt) => onWallInteraction(evt, { x: col, y: row }, false, true)}
+                    onMouseUp={onWallInteractionEnd}
                   />
                 )}
               </Fragment>
@@ -76,7 +93,9 @@ export function TileGrid() {
                   key={col}
                   wall={maze.walls.horizontal[row][col]}
                   horizontal
-                  onClick={() => onWallClick({ x: col, y: row }, true)}
+                  onMouseEnter={(evt) => onWallInteraction(evt, { x: col, y: row }, true)}
+                  onMouseDown={(evt) => onWallInteraction(evt, { x: col, y: row }, true, true)}
+                  onMouseUp={onWallInteractionEnd}
                 />
               ))}
             </div>
