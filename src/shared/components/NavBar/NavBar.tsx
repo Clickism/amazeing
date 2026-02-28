@@ -36,6 +36,7 @@ export function NavBar() {
               <RxHamburgerMenu size={24} />
             </Button>
           )}
+          {!isDesktop && <Logo />}
         </div>
         {/*Right side links*/}
         <div className={styles.right}>
