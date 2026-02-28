@@ -7,9 +7,15 @@
 
 .container.mobile {
   flex-direction: column;
+  display: block;
 }
 
 .editorContainer {
   width: 100%;
   height: 100%;
+}
+
+.mobile > .editorContainer {
+  min-height: 500px;
+  margin-bottom: 1rem;
 }

@@ -11,7 +11,7 @@
 }
 
 .editorContainer.mobile {
-  overflow: auto;
+  overflow: visible;
 }
 
 .consolePanel {

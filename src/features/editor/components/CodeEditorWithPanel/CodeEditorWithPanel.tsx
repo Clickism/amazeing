@@ -52,9 +52,9 @@ export function CodeEditorWithPanel({
       <AnimatePresence mode="popLayout">
         {panelOpen && (
           <motion.div
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 300, opacity: 0 }}
+            initial={isMobile ? undefined : { x: 300, opacity: 0 }}
+            animate={isMobile ? undefined : { x: 0, opacity: 1 }}
+            exit={isMobile ? undefined : { x: 300, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             <Panel paddingless>{panel.content}</Panel>
