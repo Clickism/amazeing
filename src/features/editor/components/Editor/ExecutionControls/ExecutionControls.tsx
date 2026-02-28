@@ -75,7 +75,7 @@ export function ExecutionControls({
           onChange={(e) => setSteps(Number(e.target.value))}
           style={{
             width: isMobile ? "2.25rem" : "4rem",
-            paddingLeft: isMobile ? ".5rem" : undefined,
+            paddingLeft: isMobile ? ".75rem" : undefined,
             minWidth: 0,
           }}
         />
