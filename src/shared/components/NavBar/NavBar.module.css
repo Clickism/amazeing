@@ -37,13 +37,19 @@
   display: flex;
 }
 
-.indicator {
-  /*position: absolute;*/
-  /*bottom: 0;*/
-  /*height: 2px;*/
-  /*background-color: var(--clr-primary-a0);*/
-  /*transition:*/
-  /*    transform .2s ease,*/
-  /*    width .2s ease;*/
-  /*will-change: transform, width;*/
+.mobileMenu {
+  box-sizing: content-box;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: .5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  border-top: 1px solid var(--clr-primary-a0);
+  border-bottom: 1px solid var(--clr-surface-a20);
+  background-color: var(--clr-surface-a0);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.7);
 }

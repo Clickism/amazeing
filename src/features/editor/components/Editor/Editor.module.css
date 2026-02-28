@@ -10,6 +10,10 @@
   padding: 1rem;
 }
 
+.editorContainer.mobile {
+  overflow: auto;
+}
+
 .consolePanel {
   display: flex;
   flex-direction: column;

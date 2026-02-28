@@ -4,6 +4,8 @@ import { CodeEditor, type CodeEditorProps } from "../CodeEditor/CodeEditor.tsx";
 import { Button } from "../../../../shared/components/Button/Button.tsx";
 import styles from "./CodeEditorWithPanel.module.css";
 import { type ReactNode, useState } from "react";
+import { useCalculateLayout } from "../../../../shared/utils/useCalculateLayout.tsx";
+import clsx from "clsx";
 
 type PanelProps = {
   name: string;
@@ -23,8 +25,9 @@ export function CodeEditorWithPanel({
   ...props
 }: CodeEditorWithPanelProps) {
   const [panelOpen, setPanelOpen] = useState(initialOpen);
+  const { isMobile } = useCalculateLayout();
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, isMobile && styles.mobile)}>
       <motion.div
         layout
         transition={{ type: "spring", stiffness: 300, damping: 30 }}

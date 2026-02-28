@@ -4,8 +4,9 @@ import { resizeLevel } from "../../../../../core/game/level.ts";
 import { MAZE_THEMES, type MazeTheme } from "../../../../../core/game/maze.ts";
 import { useTranslation } from "react-i18next";
 import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
+import { clamp } from "../../../../editor/utils.ts";
 
-const MAX_MAZE_SIZE = 50;
+const MAX_MAZE_SIZE = 25;
 
 export function MazeProperties() {
   const { t } = useTranslation();
@@ -20,7 +21,8 @@ export function MazeProperties() {
             min={2}
             max={MAX_MAZE_SIZE}
             onChange={(e) => {
-              const width = Number(e.target.value);
+              let width = Number(e.target.value);
+              width = clamp(width, 2, MAX_MAZE_SIZE);
               setLevel(resizeLevel(level, width, level.maze.height));
             }}
           />
@@ -32,7 +34,8 @@ export function MazeProperties() {
             min={2}
             max={MAX_MAZE_SIZE}
             onChange={(e) => {
-              const height = Number(e.target.value);
+              let height = Number(e.target.value);
+              height = clamp(height, 2, MAX_MAZE_SIZE);
               setLevel(resizeLevel(level, level.maze.width, height));
             }}
           />

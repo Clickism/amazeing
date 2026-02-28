@@ -63,15 +63,6 @@ export function ToolPanel({ visualize, setVisualize }: ToolPanelProps) {
       <ButtonGroup vertical stretch>
         <TaskExport />
         <TaskImport />
-        {/*<Button*/}
-        {/*  variant="danger"*/}
-        {/*  onClick={() => {*/}
-        {/*    setLevel(emptyLevelData());*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  <VscDebugRestart />*/}
-        {/*  {t("levelEditor.actions.reset")}*/}
-        {/*</Button>*/}
       </ButtonGroup>
     </>
   );

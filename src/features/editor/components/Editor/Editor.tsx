@@ -15,6 +15,8 @@ import { useCodeModel } from "../../context/code/CodeModelContext.tsx";
 import { isMultiSource } from "../../context/source/source.ts";
 import type { FileStorage } from "../../context/storage/fileStorage.ts";
 import type { LevelData } from "../../../../core/game/level.ts";
+import { useCalculateLayout } from "../../../../shared/utils/useCalculateLayout.tsx";
+import clsx from "clsx";
 
 export const MIN_RUN_SPEED = 1;
 export const MAX_RUN_SPEED = 100;
@@ -44,10 +46,11 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
     isRunning,
     settings.instructionsPerSecond,
   );
+  const { isMobile } = useCalculateLayout();
   return (
-    <div className={styles.editorContainer}>
+    <div className={clsx(styles.editorContainer, isMobile && styles.mobile)}>
       <PanelContainer
-        orientation="horizontal"
+        orientation={!isMobile ? "horizontal" : "vertical"}
         minSize={0.3}
         minPixels={[owlControls ? 620 : 570, 400]}
       >

@@ -8,6 +8,7 @@ import React, {
 import clsx from "clsx";
 import styles from "./PanelContainer.module.css";
 import { clamp } from "../../../features/editor/utils.ts";
+import { useCalculateLayout } from "../../utils/useCalculateLayout.tsx";
 
 type PanelContainerProps = {
   children: ReactNode[];
@@ -111,6 +112,8 @@ export function PanelContainer({
     };
   }, [draggingIndex, handleMouseMove, handleMouseUp, isHorizontal]);
 
+  const { isMobile } = useCalculateLayout();
+
   return (
     <div
       ref={containerRef}
@@ -131,7 +134,12 @@ export function PanelContainer({
             {child}
           </div>
           {i < panelCount - 1 && (
-            <div className={styles.resizerContainer}>
+            <div
+              className={clsx(
+                styles.resizerContainer,
+                isMobile && styles.mobile,
+              )}
+            >
               <div
                 className={clsx(
                   styles.resizer,

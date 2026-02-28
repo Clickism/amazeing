@@ -4,6 +4,10 @@
   height: 100%;
 }
 
+.resizerContainer.mobile {
+  pointer-events: none;
+}
+
 .resizer {
   display: block;
   opacity: 0;

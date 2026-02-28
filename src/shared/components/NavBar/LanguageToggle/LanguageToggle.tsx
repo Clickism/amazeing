@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { IoLanguageOutline } from "react-icons/io5";
 import { AnimatePresence, motion } from "motion/react";
 import styles from "./LanguageToggle.module.css";
+import { useCalculateLayout } from "../../../utils/useCalculateLayout.tsx";
 
 export function LanguageToggle() {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ export function LanguageToggle() {
   const [lang, setLang] = useState<Language>(
     (localStorage.getItem("i18nextLng") as Language) || FALLBACK_LANGUAGE,
   );
+  const { isTouchDeviceOrMobile } = useCalculateLayout();
 
   useEffect(() => {
     changeLanguage(lang).then();
@@ -41,13 +43,13 @@ export function LanguageToggle() {
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={key}
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -10, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={isTouchDeviceOrMobile ? undefined : { y: 10, opacity: 0 }}
+            animate={isTouchDeviceOrMobile ? undefined : { y: 0, opacity: 1 }}
+            exit={isTouchDeviceOrMobile ? undefined : { y: -10, opacity: 0 }}
+            transition={isTouchDeviceOrMobile ? undefined : { duration: 0.2 }}
             className={styles.content}
           >
-            {isHovered ? (
+            {isHovered || isTouchDeviceOrMobile ? (
               <span className={styles.langText}>{lang.toUpperCase()}</span>
             ) : (
               <IoLanguageOutline size={20} />

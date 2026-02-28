@@ -12,7 +12,8 @@
 }
 
 .logo {
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   image-rendering: pixelated;
   user-select: none;
   -webkit-user-select: none;
@@ -33,7 +34,8 @@
   flex-direction: column;
 
   gap: .5rem;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   border: 1px solid var(--clr-surface-a10);
 }
 
@@ -57,7 +59,8 @@
 
 .separator {
   height: 1px;
-  width: 400px;
+  width: calc(100% - 4rem);
+  max-width: calc(500px - 4rem);
   background-color: var(--clr-surface-a20);
 }
 

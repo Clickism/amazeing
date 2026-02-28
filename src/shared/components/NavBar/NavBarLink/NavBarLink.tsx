@@ -3,6 +3,7 @@ import { Link, type LinkProps, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import styles from "./NavBarLink.module.css";
 import { motion } from "motion/react";
+import { useCalculateLayout } from "../../../utils/useCalculateLayout.tsx";
 
 type NavBarLinkProps = {
   to: string;
@@ -22,6 +23,7 @@ export function NavBarLink({
   const isCurrent = regex
     ? regex.test(location.pathname)
     : location.pathname === to;
+  const { isDesktop } = useCalculateLayout();
   const showIndicator = isCurrent && !dontMatch;
   return (
     <Link
@@ -30,7 +32,7 @@ export function NavBarLink({
       {...props}
     >
       {children}
-      {showIndicator && (
+      {showIndicator && isDesktop && (
         <motion.div
           layoutId="navbar-indicator"
           className={styles.indicator}
