@@ -99,13 +99,6 @@
   "levelSelector.title": "Level auswählen",
   "levelSelector.level": "Aktives Level",
 
-  "home.tasks.day1.title": "1. Tag: Erste Schritte",
-  "home.tasks.day1.description": "Getting started with AmazeingASM, simple maze algorithms.",
-  "home.tasks.day2.title": "2. Tag: Tiefer eintauchen",
-  "home.tasks.day2.description": "More advanced maze algorithms and introduction data structures.",
-  "home.tasks.day3.title": "3. Tag: Mazes beherrschen",
-  "home.tasks.day3.description": "Pathfinding algorithms, marks and advanced data structures.",
-
   "day.day": "Tag {{num}}",
   "day.task": "Aufgabe {{num}}",
 
