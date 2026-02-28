@@ -55,7 +55,7 @@ export function TileGrid() {
   };
 
   return (
-    <div className={styles.grid}>
+    <div className={styles.grid} onPointerUp={onWallInteractionEnd} onPointerLeave={onWallInteractionEnd}>
       {rows.map((_, row) => (
         <Fragment key={row}>
           <div className={styles.gridRow}>
@@ -75,7 +75,6 @@ export function TileGrid() {
                     wall={maze.walls.vertical[row][col]}
                     onPointerEnter={() => onWallInteraction({ x: col, y: row }, false)}
                     onPointerDown={() => onWallInteraction({ x: col, y: row }, false, true)}
-                    onPointerUp={onWallInteractionEnd}
                   />
                 )}
               </Fragment>
@@ -92,7 +91,6 @@ export function TileGrid() {
                   horizontal
                   onPointerEnter={() => onWallInteraction({ x: col, y: row }, true)}
                   onPointerDown={() => onWallInteraction({ x: col, y: row }, true, true)}
-                  onPointerUp={onWallInteractionEnd}
                 />
               ))}
             </div>
