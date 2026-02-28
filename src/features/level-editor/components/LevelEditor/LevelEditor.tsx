@@ -11,7 +11,6 @@ import { PanelContainer } from "../../../../shared/components/PanelContainer/Pan
 import { useLevelEditor } from "../../context/LevelEditorContext.tsx";
 import { useCalculateLayout } from "../../../../shared/utils/useCalculateLayout.tsx";
 
-// TODO: Add import task
 export function LevelEditor() {
   const { level } = useLevelEditor();
   const [visualize, setVisualize] = useState(false);
