@@ -247,7 +247,7 @@ function parseLeftRight(arg: string): LeftRight {
   if (arg === "left" || arg === "right") {
     return arg;
   }
-  throw new Error(`Invalid direction: "${arg}"`);
+  throw new Error(`Invalid direction: "${arg}", must be "left" or "right"`);
 }
 
 function parseDirection(arg: string): Direction {
