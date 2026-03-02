@@ -17,6 +17,11 @@ import {
   LazyInterpreter,
 } from "../../../../core/interpreter/interpreter.ts";
 import { type EditorSettings } from "../settings/EditorSettingsContext.tsx";
+import {
+  emptyMarks,
+  type MarkData,
+  Marks,
+} from "../../../../core/game/marks.ts";
 
 const INSTANT_BATCH_SIZE = 500;
 
@@ -65,6 +70,19 @@ export function InterpreterProvider({
     setOwlData(newData);
   }, []);
 
+  // Marks
+  const [markData, setMarkData] = useState<MarkData>(
+    emptyMarks(level.data.maze.width, level.data.maze.height),
+  );
+  const markDataRef = useRef(markData);
+  markDataRef.current = markData;
+
+  // Update marks and keep ref in sync
+  const updateMarks = useCallback((newMarks: MarkData) => {
+    markDataRef.current = newMarks;
+    setMarkData(newMarks);
+  }, []);
+
   // Refs
   const interpreterRef = useRef<Interpreter | null>(null);
   const runIntervalRef = useRef<number | null>(null);
@@ -111,6 +129,7 @@ export function InterpreterProvider({
         new InterpreterConsoleImpl(appendOutput),
         new LevelOwl(() => owlDataRef.current, updateOwl, level),
         level,
+        new Marks(() => markDataRef.current, updateMarks),
         onFinishRef.current,
       );
       interpreterRef.current = interpreter;
@@ -208,6 +227,8 @@ export function InterpreterProvider({
         level,
         owlData,
         setOwlData: updateOwl,
+        markData,
+        setMarkData: updateMarks,
         output,
         currentLine,
         isRunning,

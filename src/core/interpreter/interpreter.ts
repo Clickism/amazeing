@@ -6,6 +6,7 @@ import { type InterpreterConsole } from "./console.ts";
 import { EXECUTORS } from "./executor.ts";
 import { Owl } from "../game/owl.ts";
 import type { Level } from "../game/level.ts";
+import type { Marks } from "../game/marks.ts";
 
 const MAX_STEPS = 10000;
 
@@ -120,6 +121,7 @@ export class InterpreterImpl extends Interpreter {
    * @param interpreterConsole The console to use for logging.
    * @param owl The owl instance.
    * @param level The level.
+   * @param marks The marks instance.
    * @param onFinish Optional callback to call when the level is finished.
    */
   static fromCode(
@@ -127,12 +129,13 @@ export class InterpreterImpl extends Interpreter {
     interpreterConsole: InterpreterConsole,
     owl: Owl,
     level: Level,
+    marks: Marks,
     onFinish?: () => void,
   ): Interpreter {
     const { instructions, labels } = parse(code);
     return new InterpreterImpl(
       instructions,
-      new Environment(labels, interpreterConsole, owl, level),
+      new Environment(labels, interpreterConsole, owl, level, marks),
       onFinish,
     );
   }
@@ -257,6 +260,7 @@ export class LazyInterpreter extends Interpreter {
   console: InterpreterConsole;
   owl: Owl;
   level: Level;
+  marks: Marks;
   interpreter: Interpreter | null = null;
   hasError: boolean = false;
   onFinish?: () => void;
@@ -266,6 +270,7 @@ export class LazyInterpreter extends Interpreter {
     console: InterpreterConsole,
     owl: Owl,
     level: Level,
+    marks: Marks,
     onFinish?: () => void,
   ) {
     super();
@@ -273,6 +278,7 @@ export class LazyInterpreter extends Interpreter {
     this.console = console;
     this.owl = owl;
     this.level = level;
+    this.marks = marks;
     this.onFinish = onFinish;
   }
 
@@ -282,6 +288,7 @@ export class LazyInterpreter extends Interpreter {
    * @param console The console to use for logging.
    * @param owl The owl instance.
    * @param level The level.
+   * @param marks The marks instance.
    * @param onFinish Optional callback to call when the level is finished.
    */
   static fromCode(
@@ -289,9 +296,10 @@ export class LazyInterpreter extends Interpreter {
     console: InterpreterConsole,
     owl: Owl,
     level: Level,
+    marks: Marks,
     onFinish?: () => void,
   ): LazyInterpreter {
-    return new LazyInterpreter(code, console, owl, level, onFinish);
+    return new LazyInterpreter(code, console, owl, level, marks, onFinish);
   }
 
   init() {
@@ -303,6 +311,7 @@ export class LazyInterpreter extends Interpreter {
         this.console,
         this.owl,
         this.level,
+        this.marks,
         this.onFinish,
       );
     } catch (e) {

@@ -2,6 +2,7 @@ import type { ConsoleMessage } from "../../../../core/interpreter/console.ts";
 import { type OwlData } from "../../../../core/game/owl.ts";
 import { createContext, useContext } from "react";
 import type { Level } from "../../../../core/game/level.ts";
+import type { MarkData } from "../../../../core/game/marks.ts";
 
 export type InterpreterAPI = {
   // Game controls
@@ -15,6 +16,8 @@ export type InterpreterAPI = {
   owlData: OwlData;
   setOwlData: (owlData: OwlData) => void;
   level: Level;
+  markData: MarkData;
+  setMarkData: (markData: MarkData) => void;
 
   // Editor
   output: ConsoleMessage[];

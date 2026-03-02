@@ -173,15 +173,22 @@ export const EXECUTORS: Executors = {
   },
 
   mark: (env, { direction }) => {
-    env.mark(direction);
+    const owlData = env.owl.data();
+    const pos = owlData.position;
+    const normalized = env.owl.normalizeDirection(owlData, direction ?? "here");
+    env.marks.mark(pos, normalized);
   },
 
   unmark: (env, { direction }) => {
-    env.unmark(direction);
+    const owlData = env.owl.data();
+    const pos = owlData.position;
+    const normalized = env.owl.normalizeDirection(owlData, direction ?? "here");
+    env.marks.unmark(pos, normalized);
   },
 
   getmark: (env, { src }) => {
-    const mark = env.getMark();
+    const pos = env.owl.data().position;
+    const mark = env.marks.getMarkAt(pos);
     env.setOrThrow(src, mark);
   },
 

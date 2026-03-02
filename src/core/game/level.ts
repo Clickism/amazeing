@@ -12,6 +12,7 @@ import {
 import { type OwlData } from "./owl.ts";
 import type { PackagedTranslation } from "../../shared/i18n/i18n.ts";
 
+// TODO: Add limitations on instructions!
 export type LevelData = {
   /**
    * The unique name of the level (within the level storage)

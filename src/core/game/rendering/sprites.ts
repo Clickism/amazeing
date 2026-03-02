@@ -16,6 +16,7 @@ import owlEast from "../../../assets/sprites/game/owl/east.png";
 import owlWest from "../../../assets/sprites/game/owl/west.png";
 
 import finish from "../../../assets/sprites/game/finish.png";
+import markRight from "../../../assets/sprites/game/mark_right.png";
 
 export type SpriteMap = {
   tilesets: Record<MazeTheme, HTMLImageElement>;
@@ -28,6 +29,7 @@ export type SpriteMap = {
   water: HTMLImageElement;
   owl: Record<CardinalDirection, HTMLImageElement>;
   finish: HTMLImageElement;
+  markRight: HTMLImageElement;
 };
 
 export async function loadSprites(): Promise<SpriteMap> {
@@ -68,5 +70,6 @@ export async function loadSprites(): Promise<SpriteMap> {
       west: await load(owlWest),
     },
     finish: await load(finish),
+    markRight: await load(markRight),
   };
 }

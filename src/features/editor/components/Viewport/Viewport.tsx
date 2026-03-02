@@ -21,6 +21,7 @@ import { Tooltip } from "../../../../shared/floating/Tooltip/Tooltip.tsx";
 import { TbLock, TbLockOpen2 } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 import type { FileStorage } from "../../context/storage/fileStorage.ts";
+import type { MarkData } from "../../../../core/game/marks.ts";
 
 const ZOOM_SPEED = 0.0015;
 const DEFAULT_ZOOM = 4;
@@ -34,6 +35,7 @@ const FOLLOW_MARGIN = CELL_SIZE * 2;
 export type ViewportProps = {
   owl: OwlData;
   level: Level;
+  marks?: MarkData;
   /**
    * Allows changing the level in the viewport, and uses the
    * provided level storage to save and load levels.
@@ -48,6 +50,7 @@ export type ViewportProps = {
 export function Viewport({
   owl,
   level,
+  marks,
   levelStorage,
   lockCamera = true,
   lockCameraControls = true,
@@ -87,7 +90,14 @@ export function Viewport({
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
 
-      const renderer = new Renderer(canvas, level, owl, sprites, camera);
+      const renderer = new Renderer(
+        canvas,
+        level,
+        owl,
+        sprites,
+        camera,
+        marks ?? { marks: [] },
+      );
       renderer.render();
     };
 
@@ -102,7 +112,7 @@ export function Viewport({
     return () => {
       resizeObserver.disconnect();
     };
-  }, [camera, dpr, level, owl, sprites]);
+  }, [camera, dpr, level, marks, owl, sprites]);
 
   // Following logic
   useEffect(() => {

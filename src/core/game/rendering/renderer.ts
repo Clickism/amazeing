@@ -1,8 +1,9 @@
 import type { OwlData } from "../owl.ts";
-import type { Position } from "../../interpreter/types.ts";
+import type { CardinalDirection, Position } from "../../interpreter/types.ts";
 import type { SpriteMap } from "./sprites.ts";
 import type { Level } from "../level.ts";
 import { clamp } from "../../../features/editor/utils.ts";
+import type { MarkData } from "../marks.ts";
 
 export const OWL_SIZE = 32;
 export const CELL_SIZE = 32;
@@ -20,6 +21,7 @@ export class Renderer {
   sprites: SpriteMap;
   dpr: number = window.devicePixelRatio || 1;
   camera: Camera;
+  marks: MarkData;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -27,6 +29,7 @@ export class Renderer {
     owl: OwlData,
     sprites: SpriteMap,
     camera: Camera,
+    marks: MarkData,
   ) {
     this.canvas = canvas;
     const ctx = canvas.getContext("2d");
@@ -36,6 +39,7 @@ export class Renderer {
     this.owl = owl;
     this.sprites = sprites;
     this.camera = camera;
+    this.marks = marks;
   }
 
   render() {
@@ -56,7 +60,8 @@ export class Renderer {
     this.drawTiles();
     this.drawWalls();
     this.drawFinish(this.level.data.finishPosition);
-    this.drawOwl(); // Now uses visualOwlPos
+    this.drawMarks();
+    this.drawOwl();
     ctx.restore();
   }
 
@@ -149,6 +154,57 @@ export class Renderer {
   drawFinish(position: Position) {
     const img = this.sprites.finish;
     this.drawImageAt(img, position);
+  }
+
+  drawMarks() {
+    const marks = this.marks.marks;
+    for (let y = 0; y < marks.length; y++) {
+      for (let x = 0; x < marks[y].length; x++) {
+        const mark = marks[y][x];
+        if (mark & 1) {
+          // West
+          this.drawMarkInDirection({ x, y }, "west");
+        }
+        if (mark & (1 << 1)) {
+          // South
+          this.drawMarkInDirection({ x, y }, "south");
+        }
+        if (mark & (1 << 2)) {
+          // East
+          this.drawMarkInDirection({ x, y }, "east");
+        }
+        if (mark & (1 << 3)) {
+          // North
+          this.drawMarkInDirection({ x, y }, "north");
+        }
+      }
+    }
+  }
+
+  drawMarkInDirection(position: Position, direction: CardinalDirection) {
+    const img = this.sprites.markRight;
+    const rotationMap: Record<CardinalDirection, number> = {
+      east: 0,
+      south: Math.PI / 2,
+      west: Math.PI,
+      north: -Math.PI / 2,
+    };
+    const angle = rotationMap[direction];
+    // Compute the center of the cell in world coordinates
+    const cx = position.x * CELL_SIZE + CELL_SIZE / 2;
+    const cy = position.y * CELL_SIZE + CELL_SIZE / 2;
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle);
+    ctx.drawImage(
+      img,
+      -img.width / 2,
+      -img.height / 2,
+      img.width,
+      img.height,
+    );
+    ctx.restore();
   }
 
   private hasFakeTileAt(position: Position): boolean {

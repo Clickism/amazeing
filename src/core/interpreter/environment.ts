@@ -5,14 +5,16 @@ import {
   type Address,
   type Array,
   type ArrayAccess,
-  type Direction, hasSameType,
+  hasSameType,
   type Integer,
-  isArrayAccess, typeOfValue,
+  isArrayAccess,
+  typeOfValue,
   type Value,
   type Variable,
 } from "./types.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { Level } from "../game/level.ts";
+import type { Marks } from "../game/marks.ts";
 
 export type VariableValue = Value | Array | null;
 export type VariableValueNotNull = Value | Array;
@@ -38,7 +40,7 @@ export class Environment {
   console: InterpreterConsole;
   owl: Owl;
   level: Level;
-  marks: number[][];
+  marks: Marks;
   private global: VariableMap;
   private readonly stack: StackFrame[];
   private args: VariableMap;
@@ -48,6 +50,7 @@ export class Environment {
     interpreterConsole: InterpreterConsole,
     owl: Owl,
     level: Level,
+    marks: Marks,
     global: VariableMap = new Map(),
     stack: StackFrame[] = [],
     args: VariableMap = new Map(),
@@ -59,9 +62,7 @@ export class Environment {
     this.args = args;
     this.owl = owl;
     this.level = level;
-    this.marks = Array.from({ length: level.maze.height() }, () =>
-      Array(level.maze.width()).fill(0),
-    );
+    this.marks = marks;
   }
 
   /**
@@ -338,65 +339,10 @@ export class Environment {
       if (elem !== null && elem !== undefined && !hasSameType(elem, value)) {
         throw new ErrorWithTip(
           `Cannot add value of type "${typeOfValue(value)}" to array "${arrayName}" that has elements of type "${typeOfValue(elem)}"`,
-          `An array's type is decided by the first element that is added to it. Make sure to only add values of the same type to an array.`
+          `An array's type is decided by the first element that is added to it. Make sure to only add values of the same type to an array.`,
         );
       }
     }
     array[index] = value;
-  }
-
-  mark(direction?: Direction) {
-    this.markInternal(direction, true);
-  }
-
-  unmark(direction?: Direction) {
-    this.markInternal(direction, false);
-  }
-
-  private markInternal(direction: Direction | undefined, mark: boolean) {
-    const owlData = this.owl.data();
-    const normalized =
-      direction !== undefined
-        ? this.owl.normalizeDirection(owlData, direction)
-        : "here";
-    const pos = owlData.position;
-    let mask;
-    switch (normalized) {
-      case "west":
-        mask = 1;
-        break;
-      case "south":
-        mask = 1 << 1;
-        break;
-      case "east":
-        mask = 1 << 2;
-        break;
-      case "north":
-        mask = 1 << 3;
-        break;
-      case "here":
-        mask = 15;
-        break;
-    }
-    const currentMark = this.getMarkAt(pos) || 0;
-    if (mark) {
-      this.setMarkAt(pos, currentMark | mask);
-    } else {
-      this.setMarkAt(pos, currentMark & ~mask);
-    }
-  }
-
-  getMark() {
-    const owlData = this.owl.data();
-    const pos = owlData.position;
-    return this.getMarkAt(pos) || 0;
-  }
-
-  private getMarkAt(position: { x: number; y: number }) {
-    return this.marks[position.y][position.x];
-  }
-
-  private setMarkAt(position: { x: number; y: number }, value: number) {
-    this.marks[position.y][position.x] = value;
   }
 }

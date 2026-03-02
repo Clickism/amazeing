@@ -39,7 +39,8 @@ export type EditorProps = {
 };
 
 export function Editor({ levelStorage, owlControls = false }: EditorProps) {
-  const { output, isRunning, level, owlData, currentLine } = useInterpreter();
+  const { output, isRunning, level, owlData, currentLine, markData } =
+    useInterpreter();
   const { source } = useCodeModel();
   const { settings } = useEditorSettings();
   const transitionDuration = getTransitionSpeed(
@@ -60,7 +61,12 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
           minSize={0.2}
         >
           <Panel paddingless>
-            <Viewport level={level} owl={owlData} levelStorage={levelStorage} />
+            <Viewport
+              level={level}
+              owl={owlData}
+              levelStorage={levelStorage}
+              marks={markData}
+            />
           </Panel>
           <div className={styles.consolePanel}>
             <ButtonGroup center>
