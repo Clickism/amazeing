@@ -1,11 +1,11 @@
 {
   "title": {
-    "en": "Getting Started",
-    "de": "Erste Schritte"
+    "en": "Spirals",
+    "de": "Spirals"
   },
   "description": {
-    "en": "Getting started with AmazeingASM, simple maze algorithms.",
-    "de": "Erste Schritte mit AmazeingASM, einfache Maze-Algorithmen."
+    "en": "In this exercise, you will write a program that solves a maze in spiral form.\n1. Write a function that, given a number n of steps, makes the owl walk n steps forward.\n2. Modify your function by adding a second argument r. Your function should now make the owl turn r steps to the right before walking n steps forward.\n3. Use this function to solve the maze in spiral form. The spiral has only right turns and you start on the outside, having to walk inwards. Hint: Use recursion, and the function written in 2.",
+    "de": "In this exercise, you will write a program that solves a maze in spiral form.\n1. Write a function that, given a number n of steps, makes the owl walk n steps forward.\n2. Modify your function by adding a second argument r. Your function should now make the owl turn r steps to the right before walking n steps forward.\n3. Use this function to solve the maze in spiral form. The spiral has only right turns and you start on the outside, having to walk inwards. Hint: Use recursion, and the function written in 2."
   },
   "levelData": {
     "maze": {
@@ -14,27 +14,163 @@
       "height": 8,
       "walls": {
         "horizontal": [
-          [true, true, true, true, true, true, true, true],
-          [true, false, true, true, true, true, true, true],
-          [true, true, true, false, true, true, true, true],
-          [true, true, true, true, false, true, true, true],
-          [true, true, true, true, true, false, true, true],
-          [true, true, true, true, true, false, true, true],
-          [true, true, true, true, true, true, false, true]
+          [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
         ],
         "vertical": [
-          [false, true, true, true, true, true, true],
-          [false, true, false, true, true, true, true],
-          [true, false, false, true, true, true, true],
-          [true, true, false, false, true, true, true],
-          [true, true, true, true, false, false, true],
-          [true, true, true, true, true, true, true],
-          [true, true, true, true, true, false, true],
-          [true, true, true, true, true, true, false]
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          [
+            false,
+            true,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          [
+            false,
+            true,
+            true,
+            false,
+            true,
+            true,
+            true
+          ],
+          [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true
+          ],
+          [
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
         ]
       }
     },
-    "finishPosition": { "x": 7, "y": 7 },
-    "owlStart": { "position": { "x": 0, "y": 0 }, "direction": "south" }
+    "finishPosition": {
+      "x": 4,
+      "y": 4
+    },
+    "owlStart": {
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "direction": "north"
+    }
   }
 }
