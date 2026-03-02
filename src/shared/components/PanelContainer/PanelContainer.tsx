@@ -16,6 +16,7 @@ type PanelContainerProps = {
   initialSizes?: number[];
   minSize?: number;
   minPixels?: number[];
+  panelCount?: number;
 };
 
 export function PanelContainer({
@@ -24,8 +25,9 @@ export function PanelContainer({
   initialSizes,
   minSize = 0.1,
   minPixels,
+  panelCount: inputPanelCount,
 }: PanelContainerProps) {
-  const panelCount = children.length;
+  const panelCount = inputPanelCount ?? children.length;
   const [sizes, setSizes] = useState<number[]>(
     initialSizes && initialSizes.length === panelCount
       ? initialSizes
@@ -110,6 +112,13 @@ export function PanelContainer({
       document.body.style.userSelect = "";
     };
   }, [draggingIndex, handleMouseMove, handleMouseUp, isHorizontal]);
+
+  useEffect(() => {
+    setSizes((prev) => {
+      if (prev.length === panelCount) return prev;
+      return Array(panelCount).fill(1 / panelCount);
+    });
+  }, [panelCount]);
 
   const { isMobile } = useCalculateLayout();
 
