@@ -67,6 +67,11 @@ export abstract class Interpreter {
   abstract checkFinish(): boolean;
 
   /**
+   * Returns the parsed instructions.
+   */
+  abstract getInstructions(): InstructionData[];
+
+  /**
    * Executes and catches errors thrown by the given function
    * and prints them to the console.
    *
@@ -178,6 +183,10 @@ export class InterpreterImpl extends Interpreter {
 
   getConsole(): InterpreterConsole {
     return this.env.console;
+  }
+
+  getInstructions(): InstructionData[] {
+    return this.instructions;
   }
 
   private executeStep() {
@@ -363,5 +372,10 @@ export class LazyInterpreter extends Interpreter {
       return this.interpreter?.checkFinish() ?? true;
     }
     return false;
+  }
+
+  getInstructions(): InstructionData[] {
+    this.init();
+    return this.interpreter?.getInstructions() ?? [];
   }
 }

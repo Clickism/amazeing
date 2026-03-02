@@ -22,6 +22,8 @@ import {
   type MarkData,
   Marks,
 } from "../../../../core/game/marks.ts";
+import type { Constraint, EvaluatedConstraint } from "../../../../core/game/constraints.ts";
+import { validateConstraints } from "../../../../core/interpreter/constraints.ts";
 
 const INSTANT_BATCH_SIZE = 500;
 
@@ -29,7 +31,8 @@ type InterpreterProviderProps = PropsWithChildren<{
   code: string;
   level: Level;
   settings: EditorSettings;
-  onFinish?: () => void;
+  constraints?: Constraint[];
+  onFinish?: (evaluatedConstraints: EvaluatedConstraint[]) => void;
 }>;
 
 /**
@@ -41,13 +44,15 @@ type InterpreterProviderProps = PropsWithChildren<{
  * @param code The code to interpret.
  * @param level The level to run the code on.
  * @param settings The editor settings, used to control the run speed and mode.
+ * @param constraints Optional constraints for the task that determine full vs partial completion.
  * @param children The child components that will have access to the interpreter context.
- * @param onFinish Optional callback to call when the level is finished.
+ * @param onFinish Optional callback to call when the level is finished, with boolean indicating if constraints were met.
  */
 export function InterpreterProvider({
   code,
   level,
   settings,
+  constraints,
   children,
   onFinish,
 }: InterpreterProviderProps) {
@@ -58,6 +63,21 @@ export function InterpreterProvider({
 
   const onFinishRef = useRef(onFinish);
   onFinishRef.current = onFinish;
+
+  const wrappedOnFinish = useCallback(() => {
+    if (!onFinishRef.current) return;
+
+    const interpreter = interpreterRef.current;
+    if (!interpreter) return;
+
+    if (constraints && constraints.length > 0) {
+      const instructions = interpreter.getInstructions();
+      const constraintsMet = validateConstraints(constraints, instructions);
+      onFinishRef.current(constraintsMet);
+    } else {
+      onFinishRef.current([]);
+    }
+  }, [constraints]);
 
   // Game
   const [owlData, setOwlData] = useState<OwlData>(() => level.createOwlData());
@@ -130,7 +150,7 @@ export function InterpreterProvider({
         new LevelOwl(() => owlDataRef.current, updateOwl, level),
         level,
         new Marks(() => markDataRef.current, updateMarks),
-        onFinishRef.current,
+        wrappedOnFinish,
       );
       interpreterRef.current = interpreter;
       setCurrentLine(interpreter.getCurrentLine());
@@ -140,7 +160,7 @@ export function InterpreterProvider({
         setOutput([{ type: "error", text: e.message }]);
       }
     }
-  }, [appendOutput, code, level, stop, updateOwl]);
+  }, [appendOutput, code, level, stop, updateOwl, updateMarks, wrappedOnFinish]);
 
   const step = useCallback((steps = 1) => {
     interpreterRef.current?.executeAndPrintError((interpreter) => {

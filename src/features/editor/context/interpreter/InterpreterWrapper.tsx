@@ -3,10 +3,12 @@ import type { PropsWithChildren } from "react";
 import { useCodeModel } from "../code/CodeModelContext.tsx";
 import { useEditorSettings } from "../settings/EditorSettingsContext.tsx";
 import { InterpreterProvider } from "./InterpreterProvider.tsx";
+import type { Constraint, EvaluatedConstraint } from "../../../../core/game/constraints.ts";
 
 type InterpreterWrapperProps = {
   level: Level;
-  onFinish?: () => void;
+  constraints?: Constraint[];
+  onFinish?: (evaluatedConstraints: EvaluatedConstraint[]) => void;
 };
 
 /**
@@ -14,6 +16,7 @@ type InterpreterWrapperProps = {
  */
 export function InterpreterWrapper({
   level,
+  constraints,
   onFinish,
   children,
 }: PropsWithChildren<InterpreterWrapperProps>) {
@@ -24,6 +27,7 @@ export function InterpreterWrapper({
       code={code}
       level={level}
       settings={settings}
+      constraints={constraints}
       onFinish={onFinish}
     >
       {children}

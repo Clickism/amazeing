@@ -1,3 +1,4 @@
+import type { Constraint } from "../../core/game/constraints.ts";
 import { type LevelData } from "../../core/game/level.ts";
 import {
   type PackagedTranslation,
@@ -23,6 +24,12 @@ export type TaskData = {
    * Can be used to provide a template or partial solution.
    */
   startingCode?: string;
+  /**
+   * Optional constraints for the task.
+   * 
+   * Constraints are used to add additional requirements to the task, such as a maximum instruction count.
+   */
+  constraints?: Constraint[];
 };
 
 /**

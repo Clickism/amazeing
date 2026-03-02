@@ -64,6 +64,7 @@ function ImportButton({ json }: { json: string }) {
           title: parsed.title,
           description: parsed.description,
           startingCode: parsed.startingCode,
+          constraints: parsed.constraints,
         },
         ...parsed.levelData,
       };

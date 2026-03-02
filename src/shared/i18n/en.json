@@ -122,5 +122,12 @@
   "home.sandbox.description": "Experiment freely with the custom assembly language and test your code on custom levels.",
   "home.levelEditor": "Level Editor",
   "home.levelEditor.button": "Go to Level Editor",
-  "home.levelEditor.description": "Create your own custom maze levels and play them in the sandbox or export them."
+  "home.levelEditor.description": "Create your own custom maze levels and play them in the sandbox or export them.",
+  
+  "taskView.constraints.title": "Constraints",
+  "taskView.constraints.explanation": "Your solution must satisfy the following constraints to be considered fully correct:",
+  
+  "constraints.max-instructions": "Not more than {{count}} instructions",
+  "constraints.max-instruction-count": "Not more than {{count}} use(s) of the {{ instruction }} instruction",
+  "constraints.allowed-instructions": "Only the following instructions are allowed: {{ allowed }}"
 }

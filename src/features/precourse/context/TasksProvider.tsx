@@ -5,6 +5,7 @@ import {
   usePersistentState,
   usePersistentStorage,
 } from "../../../shared/utils/storage.ts";
+import type { EvaluatedConstraint } from "../../../core/game/constraints.ts";
 
 type TasksProviderProps = {
   taskId?: string;
@@ -32,18 +33,48 @@ export function TasksProvider({
     "completedTasks",
     [],
   );
+  const [partiallyCompletedTasks, setPartiallyCompletedTasks] =
+    usePersistentState<Record<string, EvaluatedConstraint[]>>(
+      storage,
+      "partiallyCompletedTasks",
+      {},
+    );
+
+  const setPartiallyCompleted = useCallback(
+    (taskId: string, constraints: EvaluatedConstraint[] | false) => {
+      setPartiallyCompletedTasks((prev) => {
+        if (Array.isArray(constraints)) {
+          if (completedTasks.includes(taskId)) {
+            return prev;
+          }
+          return { ...prev, [taskId]: constraints };
+        } else {
+          delete prev[taskId];
+          return prev;
+        }
+      });
+    },
+    [completedTasks, setPartiallyCompletedTasks],
+  );
 
   const setCompleted = useCallback(
     (taskId: string, completed: boolean) => {
+      if (completed) {
+        setPartiallyCompleted(taskId, false);
+      }
       setCompletedTasks((prev) => {
         if (completed) {
+          // Don't add duplicates
+          if (prev.includes(taskId)) {
+            return prev;
+          }
           return [...prev, taskId];
         } else {
           return prev.filter((id) => id !== taskId);
         }
       });
     },
-    [setCompletedTasks],
+    [setCompletedTasks, setPartiallyCompleted],
   );
 
   return (
@@ -53,6 +84,8 @@ export function TasksProvider({
         setTaskId,
         completedTasks,
         setCompleted,
+        partiallyCompletedTasks,
+        setPartiallyCompleted,
         days,
       }}
     >

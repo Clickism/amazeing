@@ -30,7 +30,7 @@ export function TasksPage() {
 
 // Wrapper to access tasks context
 function EditorWrapper() {
-  const { task, setCompleted } = useTasks();
+  const { task, completedTasks, setCompleted, setPartiallyCompleted } = useTasks();
   const level = useMemo(() => new Level(task.levelData), [task.levelData]);
   const [, setSearchParams] = useSearchParams();
 
@@ -43,8 +43,13 @@ function EditorWrapper() {
     <TaskCodeModelProvider task={task} namespace={namespace}>
       <InterpreterWrapper
         level={level}
-        onFinish={() => {
-          setCompleted(task.id, true);
+        constraints={task.constraints}
+        onFinish={(constraintsMet) => {
+          if (constraintsMet.every((c) => c.met)) {
+            setCompleted(task.id, true);
+          } else if (!completedTasks.includes(task.id)) {
+            setPartiallyCompleted(task.id, constraintsMet);
+          }
         }}
       >
         <Editor />
