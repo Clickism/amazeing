@@ -107,5 +107,5 @@
       "direction": "north"
     }
   },
-  "startingCode": "arr_set 0 left\narr_set 1 right\narr_set 2 left\narr_set 3 left\narr_set 4 right\narr_set 5 right\narr_set 6 right\narr_set 7 left\narr_set 8 right\narr_set 9 left\narr_set 10 right\narr_set 11 left\narr_set 12 left\narr_set 13 left\narr_set 14 right\n\nvar int length\nset length 15"
+  "startingCode": "var dirs[]\nload dirs[0] left\nload dirs[1] right\nload dirs[2] left\nload dirs[3] left\nload dirs[4] right\nload dirs[5] right\nload dirs[6] right\nload dirs[7] left\nload dirs[8] right\nload dirs[9] left\nload dirs[10] right\nload dirs[11] left\nload dirs[12] left\nload dirs[13] left\nload dirs[14] right\n\n"
 }
