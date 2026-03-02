@@ -13,7 +13,6 @@ type TasksProviderProps = {
 
 // TODO: Keep last task in persistent state
 // TODO: Add popup after completing a task
-// TODO: Add mark visualization
 export function TasksProvider({
   taskId: initialTaskId,
   namespace,
