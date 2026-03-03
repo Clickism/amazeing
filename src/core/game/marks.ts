@@ -53,7 +53,7 @@ export class Marks {
   }
 
   getMarkAt(position: Position) {
-    return this.data().marks[position.y][position.x];
+    return this.data().marks?.[position.y]?.[position.x];
   }
 
   setMarkAt(position: Position, value: number) {
