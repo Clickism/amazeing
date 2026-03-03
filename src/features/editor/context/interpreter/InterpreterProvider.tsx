@@ -124,6 +124,7 @@ export function InterpreterProvider({
       const newOwlData = level.createOwlData();
       updateOwl(newOwlData);
       setOutput([]);
+      setMarkData(emptyMarks(level.data.maze.width, level.data.maze.height));
       const interpreter = LazyInterpreter.fromCode(
         code,
         new InterpreterConsoleImpl(appendOutput),
