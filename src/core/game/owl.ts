@@ -15,6 +15,8 @@ import type { Level } from "./level.ts";
 export type OwlData = {
   position: Position;
   direction: CardinalDirection;
+  // Using a Set is easier here, even if strings are harder to work with.
+  positionHistory: Set<string>;
 };
 
 /**
@@ -36,6 +38,7 @@ export class Owl {
   move(): boolean {
     const data = this.cloneData();
     data.position = this.nextPosition(data);
+    data.positionHistory.add(`${data.position.x}:${data.position.y}`);
     this.setData(data);
     return true;
   }
@@ -104,6 +107,7 @@ export class Owl {
     return {
       position: { ...data.position },
       direction: data.direction,
+      positionHistory: new Set(data.positionHistory),
     };
   }
 }

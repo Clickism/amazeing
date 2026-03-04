@@ -72,7 +72,7 @@
   "levelEditor.tools.mazeTheme": "Thema",
   "levelEditor.tools.tileOptions": "Tile-Eigenschaften",
   "levelEditor.tools.tileOptions.start": "Start platzieren",
-  "levelEditor.tools.tileOptions.finish": "Ziel platzieren",
+  "levelEditor.tools.tileOptions.finish": "Ziel umschalten",
   "levelEditor.tools.fillAllWalls": "Alle Wände füllen",
   "levelEditor.tools.clearAllWalls": "Alle Wände leeren",
 

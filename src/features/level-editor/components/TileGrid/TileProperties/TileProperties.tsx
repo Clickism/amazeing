@@ -23,7 +23,7 @@ export function TileProperties({ position }: { position: Position }) {
         {CARDINAL_DIRECTIONS.map((direction) => (
           <Button
             key={direction}
-            disabled={isPositionEqual(level.finishPosition, position)}
+            disabled={level.finishPosition && isPositionEqual(level.finishPosition, position)}
             onClick={() => {
               setLevel({
                 ...level,
@@ -47,7 +47,7 @@ export function TileProperties({ position }: { position: Position }) {
         onClick={() => {
           setLevel({
             ...level,
-            finishPosition: position,
+            finishPosition: (level.finishPosition && isPositionEqual(level.finishPosition, position)) ? undefined : position,
           });
           setOpen(false);
         }}

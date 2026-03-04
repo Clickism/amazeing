@@ -1,4 +1,4 @@
-import { type CardinalDirection, type Position } from "../interpreter/types.ts";
+import { inDirection, type CardinalDirection, type Position } from "../interpreter/types.ts";
 
 export type MazeData = {
   theme: MazeTheme;
@@ -137,6 +137,38 @@ export class Maze {
       return false;
     }
     return row[x];
+  }
+  
+  /**
+   * Gets all reachable tiles from a starting position, considering walls and maze boundaries.
+   * 
+   * @param start Where to start the search from
+   * @returns An array of all positions that can be reached from the starting position without passing through walls or leaving the maze boundaries.
+   */
+  getReachableTiles(start: Position): Position[] {
+    const visited = new Set<string>();
+    const reachableTiles: Position[] = [];
+    const queue: Position[] = [start];
+  
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      const key = `${current.x},${current.y}`;
+      if (visited.has(key)) {
+        continue;
+      }
+      visited.add(key);
+      reachableTiles.push(current);
+  
+      for (const direction of ["north", "east", "south", "west"] as CardinalDirection[]) {
+        if (!this.wallAt(current, direction)) {
+          const next = inDirection(current, direction);
+          if (this.hasTileAt(next)) {
+            queue.push(next);
+          }
+        }
+      }
+    }
+    return reachableTiles;
   }
 }
 

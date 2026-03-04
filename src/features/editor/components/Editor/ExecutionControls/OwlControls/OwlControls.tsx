@@ -11,8 +11,8 @@ export function OwlControls() {
   const { t } = useTranslation();
   const { owlData, setOwlData, level } = useInterpreter();
   const owl = new LevelOwl(() => owlData, setOwlData, level);
-  const canMove = owl.canMove() && !level.isOwlAtFinish(owlData);
-  const canTurn = !level.isOwlAtFinish(owlData);
+  const canMove = owl.canMove() && !level.isFinished(owlData);
+  const canTurn = !level.isFinished(owlData);
   return (
     <Popover
       tooltip={t("editor.owlControls.tooltip")}

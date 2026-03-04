@@ -216,12 +216,16 @@ export class InterpreterImpl extends Interpreter {
 
   checkFinish() {
     if (this.isFinished) return true;
-    if (this.env.level.isOwlAtFinish(this.env.owl.data())) {
+    if (this.env.level.isFinished(this.env.owl.data())) {
       this.env.console.log({ type: "success", text: "Level completed!" });
       this.isLocked = true;
       this.isFinished = true;
       this.onFinish?.();
       return true;
+    } else if (!this.canStep()) {
+      this.env.console.log({ type: "system", text: "No more instructions left to execute." });
+      this.isLocked = true;
+      this.isFinished = false;
     }
     return false;
   }
@@ -357,7 +361,7 @@ export class LazyInterpreter extends Interpreter {
   }
 
   checkFinish(): boolean {
-    if (this.level.isOwlAtFinish(this.owl.data())) {
+    if (this.level.isFinished(this.owl.data())) {
       // Finished, init interpreter and check
       this.init();
       return this.interpreter?.checkFinish() ?? true;

@@ -72,7 +72,7 @@
   "levelEditor.tools.mazeTheme": "Theme",
   "levelEditor.tools.tileOptions": "Tile Properties",
   "levelEditor.tools.tileOptions.start": "Place Start",
-  "levelEditor.tools.tileOptions.finish": "Place Finish",
+  "levelEditor.tools.tileOptions.finish": "Toggle Finish",
   "levelEditor.tools.fillAllWalls": "Fill All Walls",
   "levelEditor.tools.clearAllWalls": "Clear All Walls",
 

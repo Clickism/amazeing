@@ -59,7 +59,8 @@ export class Renderer {
     this.drawWaterTiles();
     this.drawTiles();
     this.drawWalls();
-    this.drawFinish(this.level.data.finishPosition);
+    if (this.level.data.finishPosition)
+      this.drawFinish(this.level.data.finishPosition);
     this.drawMarks();
     this.drawOwl();
     ctx.restore();
