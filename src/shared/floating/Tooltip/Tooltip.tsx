@@ -3,6 +3,7 @@ import {
   autoUpdate,
   FloatingPortal,
   offset,
+  type Placement,
   shift,
   useFloating,
   useHover,
@@ -19,6 +20,8 @@ export type TooltipProps = {
   delay?: number;
   disabled?: boolean;
   referenceProps?: Record<string, unknown>;
+  maxWidth?: number | string;
+  placement?: Placement;
 };
 
 export function Tooltip({
@@ -27,6 +30,8 @@ export function Tooltip({
   children,
   disabled = false,
   delay = 150,
+  maxWidth = 320,
+  placement,
 }: TooltipProps) {
   const [isOpen, setIsOpenState] = useState(false);
 
@@ -39,6 +44,7 @@ export function Tooltip({
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
+    placement,
     middleware: [offset(8), shift({ padding: 4 })],
     whileElementsMounted: autoUpdate,
   });
@@ -74,7 +80,7 @@ export function Tooltip({
           <FloatingPortal>
             <div
               ref={refs.setFloating}
-              style={{ ...floatingStyles, zIndex: 10000 }}
+              style={{ ...floatingStyles, zIndex: 10000, maxWidth }}
               {...getFloatingProps()}
               className={styles.container}
             >

@@ -125,9 +125,9 @@
   "home.levelEditor.description": "Create your own custom maze levels and play them in the sandbox or export them.",
 
   "constraintsView.title": "Constraints",
-  "constraintsView.explanation": "Your solution must satisfy the following constraints to be considered fully correct:",
+  "constraintsView.tooltip": "Your solution must satisfy these constraints to be considered fully correct",
 
-  "constraints.max-instructions": "Not more than {{count}} instructions",
-  "constraints.max-instruction-count": "Not more than {{count}} use(s) of the {{ instruction }} instruction",
-  "constraints.allowed-instructions": "Only the following instructions are allowed: {{ allowed }}"
+  "constraints.max-instructions": "At most {{count}} instructions",
+  "constraints.max-instruction-count": "At most {{count}} \"{{ instruction }}\" instruction",
+  "constraints.allowed-instructions": "Allowed instructions: {{ allowed }}"
 }

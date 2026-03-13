@@ -1,12 +1,23 @@
 import { extractQuotedText } from "../../utils/utils.ts";
+import type { HTMLAttributes } from "react";
 
-export function QuotedText({ text }: { text: string }) {
+export type QuotedTextProps = {
+  text: string;
+  decorator?: (text: string) => HTMLAttributes<HTMLSpanElement>;
+};
+
+const defaultDecorator = () => ({ className: "quoted-code" });
+
+export function QuotedText({
+  text,
+  decorator = defaultDecorator,
+}: QuotedTextProps) {
   const parts = extractQuotedText(text);
   return (
     <>
       {parts.map((part, i) =>
         part.quoted ? (
-          <span key={i} className="quoted-code">
+          <span key={i} {...decorator(part.text)}>
             {part.text}
           </span>
         ) : (

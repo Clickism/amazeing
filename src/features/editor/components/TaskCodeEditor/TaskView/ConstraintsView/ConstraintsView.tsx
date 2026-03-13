@@ -4,6 +4,7 @@ import { useTranslatable } from "../../../../../../shared/i18n/i18n.ts";
 import { useTasks } from "../../../../../precourse/context/TasksContext.tsx";
 import styles from "./ConstraintsView.module.css";
 import { Collapsable } from "../../../../../../shared/components/Collapsable/Collapsable.tsx";
+import { QuotedText } from "../../../../../../shared/components/QuotedText/QuotedText.tsx";
 
 type ConstraintsViewProps = {
   constraints: EvaluatedConstraint[];
@@ -17,6 +18,7 @@ export function ConstraintsView({ constraints }: ConstraintsViewProps) {
   return (
     <>
       <Collapsable
+        tooltip={t("constraintsView.tooltip")}
         title={
           t("constraintsView.title") +
           ` (${metConstraintsCount}/${constraints.length})`
@@ -29,12 +31,9 @@ export function ConstraintsView({ constraints }: ConstraintsViewProps) {
           )
         }
       >
-        <div className={styles.explanation}>
-          {t("constraintsView.explanation")}
-        </div>
-        <ul className={styles.list}>
+        <div className={styles.list}>
           {constraints?.map((constraint, i) => (
-            <li
+            <div
               key={i}
               className={clsx(
                 styles.constraint,
@@ -44,16 +43,20 @@ export function ConstraintsView({ constraints }: ConstraintsViewProps) {
                 constraint.met === false && styles.unmet,
               )}
             >
-              {t(`constraints.${constraint.type}`, {
-                ...constraint,
-                allowed:
-                  constraint.type === "allowed-instructions"
-                    ? constraint.allowed.join(", ")
-                    : undefined,
-              })}
-            </li>
+              <QuotedText
+                text={t(`constraints.${constraint.type}`, {
+                  ...constraint,
+                  allowed:
+                    constraint.type === "allowed-instructions"
+                      ? constraint.allowed
+                        .map((i) => `"${i}"`)
+                        .join(", ")
+                      : undefined,
+                })}
+              />
+            </div>
           ))}
-        </ul>
+        </div>
       </Collapsable>
     </>
   );
