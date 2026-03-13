@@ -1,11 +1,11 @@
 {
   "title": {
-    "en": "Stack",
-    "de": "Stack"
+    "en": "Bonus: Brute Force",
+    "de": "Bonus: Brute Force"
   },
   "description": {
-    "en": "This task is about the stack.\n\nYour task is to implement a stack supporting the operations StackPush, StackPop, StackEmpty and StackPeek.\nThen, you should test your implementation of the stack.\nThe comment in the given code conatins a list of directions that will lead your owl to the goal.\nYour task is to push each direction onto the stack and then pop the directions one by one to get your owl to the goal using your stack implementation.",
-    "de": "In dieser Aufgabe geht es um den Stack.\n\nDeine Aufgabe ist es, einen Stack zu implementieren, der die Operationen StackPush, StackPop, StackEmpty und StackPeek unterstützt.\nDann solltest du deine Implementierung des Stacks testen.\nDer Kommentar im gegebenen Code enthält eine Liste von Richtungen, die deine Eule zum Ziel führen werden.\nDeine Aufgabe ist es, jede Richtung auf den Stack zu pushen und dann die Richtungen nacheinander zu poppen, um deine Eule mit deiner Stack-Implementierung zum Ziel zu bringen."
+    "en": "Problems can be solved theoretically by trying all possibilities. This procedure is called brute force.\nThe aim of this task is to solve the maze with a special strategy, which is successful in many mazes: Before each\nstep, check the markings on the current square. If all directions are marked, stop. Otherwise, turn the owl in a direction that is not yet marked, mark it and take one step forward.",
+    "de": "Problems can be solved theoretically by trying all possibilities. This procedure is called brute force.\nThe aim of this task is to solve the maze with a special strategy, which is successful in many mazes: Before each\nstep, check the markings on the current square. If all directions are marked, stop. Otherwise, turn the owl in a direction that is not yet marked, mark it and take one step forward."
   },
   "levelData": {
     "maze": {
@@ -15,27 +15,17 @@
       "walls": {
         "horizontal": [
           [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          [
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
+            true,
+            true,
             false,
             true,
             false,
-            false
+            true
           ],
           [
-            false,
+            true,
             true,
             true,
             false,
@@ -46,6 +36,16 @@
           ],
           [
             false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            true,
             false,
             true,
             false,
@@ -55,10 +55,10 @@
             false
           ],
           [
+            true,
             false,
             false,
-            true,
-            true,
+            false,
             true,
             false,
             false,
@@ -67,19 +67,19 @@
           [
             false,
             true,
-            true,
-            true,
+            false,
+            false,
             true,
             true,
             false,
-            false
+            true
           ],
           [
             false,
             false,
             false,
             false,
-            false,
+            true,
             false,
             false,
             false
@@ -99,6 +99,42 @@
             false,
             false,
             false,
+            true,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
             false,
             false,
             true,
@@ -107,44 +143,8 @@
           [
             false,
             false,
-            false,
-            false,
-            true,
-            false,
-            true
-          ],
-          [
-            true,
-            false,
-            true,
-            false,
             true,
             true,
-            false
-          ],
-          [
-            true,
-            true,
-            false,
-            false,
-            true,
-            true,
-            false
-          ],
-          [
-            true,
-            false,
-            false,
-            false,
-            false,
-            true,
-            false
-          ],
-          [
-            false,
-            false,
-            false,
-            false,
             false,
             false,
             false
@@ -152,9 +152,9 @@
           [
             false,
             false,
+            true,
             false,
-            false,
-            false,
+            true,
             false,
             false
           ]
@@ -162,16 +162,15 @@
       }
     },
     "finishPosition": {
-      "x": 6,
-      "y": 0
+      "x": 7,
+      "y": 5
     },
     "owlStart": {
       "position": {
-        "x": 2,
-        "y": 3
+        "x": 0,
+        "y": 1
       },
       "direction": "north"
     }
-  },
-  "startingCode": "# Directions to the goal:\n# left, left, front, left, front, front, front, left, front, front, right, left, front\n\n"
+  }
 }
