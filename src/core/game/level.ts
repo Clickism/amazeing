@@ -13,7 +13,6 @@ import { type OwlData } from "./owl.ts";
 import type { PackagedTranslation } from "../../shared/i18n/i18n.ts";
 import type { Constraint } from "./constraints.ts";
 
-// TODO: Add limitations on instructions! Or not, wasn't there on last years version, maybe verbal is enough
 export type LevelData = {
   /**
    * The unique name of the level (within the level storage)
