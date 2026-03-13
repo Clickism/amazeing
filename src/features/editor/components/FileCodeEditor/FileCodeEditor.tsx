@@ -35,6 +35,8 @@ export function FileCodeEditor({
         name: t("codeEditor.files"),
         content: <FileList source={source} />,
         icon: (open) => (open ? <FaRegFolderOpen /> : <FaRegFolderClosed />),
+        minPixels: [200, 250],
+        initialSizes: [0.7, 0.3],
       }}
     />
   );

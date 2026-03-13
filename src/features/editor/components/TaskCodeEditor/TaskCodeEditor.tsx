@@ -34,6 +34,8 @@ export function TaskCodeEditor({
         name: t("codeEditor.tasks"),
         content: <TaskView />,
         icon: () => <GrTask />,
+        minPixels: [200, 300],
+        initialSizes: [0.7, 0.3],
       }}
     />
   );
