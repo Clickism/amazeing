@@ -33,10 +33,6 @@
       direction: 'north',
     },
   },
-  startingCode: 'turn right \
-      start: \
-      move \
-      jump start',
   constraints: [
     {
       type: 'max-instruction-count',

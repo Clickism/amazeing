@@ -12,15 +12,24 @@ const taskModules = import.meta.glob("./tasks/**/*.json5", {
   import: "default",
 });
 
+const taskStartingCodes = import.meta.glob("./tasks/**/*.code", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+});
+
 export function loadDays(): Day[] {
   const daysMap: Record<string, Task[]> = {};
 
   for (const path in taskModules) {
     // Only consider days tasks
     if (!path.startsWith("./tasks/days/")) continue;
-    const raw = taskModules[path] as string;
-    const taskData = loadTaskFromString(raw);
     const { dayId, taskKey } = extractDayAndTask(path);
+
+    const codePath = getCodePath(path);
+    const startingCode = taskStartingCodes[codePath] as string | undefined;
+    const raw = taskModules[path] as string;
+    const taskData = loadTaskFromString(raw, startingCode);
 
     const taskNumber = parseInt(taskKey.replace("task", ""), 10);
 
@@ -52,8 +61,10 @@ export function loadTask(pathToTask: string): TaskData {
   if (!(fullPath in taskModules)) {
     throw new Error(`Task not found at path: ${fullPath}`);
   }
+  const codePath = getCodePath(fullPath);
+  const startingCode = taskModules[codePath] as string | undefined;
   const raw = taskModules[fullPath] as string;
-  return loadTaskFromString(raw);
+  return loadTaskFromString(raw, startingCode);
 }
 
 function extractDayAndTask(path: string): { dayId: string; taskKey: string } {
@@ -83,4 +94,8 @@ export function translateDayId(t: Translator, dayId: string) {
     return t("day.day", { num: dayNumber });
   }
   return t(`day.days.${dayId}`);
+}
+
+function getCodePath(taskPath: string) {
+  return taskPath.replace(/\.json5?$/, ".code");
 }

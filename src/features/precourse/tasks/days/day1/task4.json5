@@ -1,13 +1,19 @@
 {
   title: {
-    en: 'Sub-Routines',
-    de: 'Sub-Routines',
+    en: 'Subroutines',
+    de: 'Subroutines',
   },
   description: {
-    en: 'In this labyrinth, the goal can be reached by going straight ahead to the next wall, then turning to the right and \
-      repeating these two steps until the goal is reached. First, write a program in which the owl walks straight ahead until it reaches the next wall. Then use a label straightToWall so you can jump to the code you just wrote. Solve the maze with the help of the subprogram which is now referenced by the label straightToWall.',
-    de: 'In this labyrinth, the goal can be reached by going straight ahead to the next wall, then turning to the right and \
-      repeating these two steps until the goal is reached. First, write a program in which the owl walks straight ahead until it reaches the next wall. Then use a label straightToWall so you can jump to the code you just wrote. Solve the maze with the help of the subprogram which is now referenced by the label straightToWall.',
+    en: 'This maze can be solved by going straight ahead to the next wall, then turning to the right and \
+      repeating these two steps until the goal is reached. \
+      <hint hidden="true">First, write a program in which the owl walks straight ahead until it reaches the next wall. \
+      Then use a label "straight_to_wall" so you can jump to the code you just wrote.<br/> \
+      Solve the maze with the help of the subprogram which is now referenced by the label "straight_to_wall".</hint>',
+    de: 'In diesem Labyrinth kann das Ziel erreicht werden, indem man geradeaus bis zur nächsten Wand geht, \
+      dann nach rechts dreht und diese beiden Schritte wiederholt, bis das Ziel erreicht ist. \
+      <hint hidden="true">Schreibe zuerst ein Programm, in dem die Eule geradeaus läuft, bis sie die nächste Wand erreicht. \
+      Verwende dann ein Label "straight_to_wall", damit du zu dem Code springen kannst, den du gerade geschrieben hast.<br/> \
+      Löse das Labyrinth mit Hilfe des Subprogramms, auf das jetzt mit dem Label "straight_to_wall" verwiesen wird.</hint>',
   },
   levelData: {
     maze: {

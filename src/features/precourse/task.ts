@@ -82,7 +82,6 @@ export function stringifyToTask(level: LevelData): string {
       },
       taskMeta: undefined,
     },
-    startingCode: level.taskMeta?.startingCode,
   };
   let json = JSON5.stringify(task, null, 2);
   // Indent new lines
@@ -102,7 +101,7 @@ function reorderLanguageKeys(
   return orderedTranslation;
 }
 
-type UnparsedTaskData = Omit<TaskData, "levelData"> & {
+type UnparsedTaskData = Omit<Omit<TaskData, "levelData">, "startingCode"> & {
   levelData: Omit<LevelData, "maze"> & {
     maze: Omit<MazeData, "walls"> & {
       walls: {
@@ -116,17 +115,15 @@ type UnparsedTaskData = Omit<TaskData, "levelData"> & {
 /**
  * Loads a task from a JSON5 string.
  * @param json json to parse
+ * @param startingCode starting code of the task
  */
-export function loadTaskFromString(json: string): TaskData {
-  const parsed = JSON5.parse(json) as UnparsedTaskData | TaskData;
+export function loadTaskFromString(
+  json: string,
+  startingCode: string | undefined,
+): TaskData {
+  const parsed = JSON5.parse(json) as UnparsedTaskData;
   const horizontalWalls = parsed.levelData.maze.walls.horizontal;
-  if (typeof horizontalWalls !== "string") {
-    return parsed as TaskData;
-  }
   const verticalWalls = parsed.levelData.maze.walls.vertical;
-  if (typeof verticalWalls !== "string") {
-    return parsed as TaskData;
-  }
   return {
     ...parsed,
     levelData: {
@@ -139,6 +136,7 @@ export function loadTaskFromString(json: string): TaskData {
         },
       },
     },
+    startingCode,
   };
 }
 

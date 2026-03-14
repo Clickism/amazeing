@@ -1,0 +1,17 @@
+var dirs[]
+load dirs[0] left
+load dirs[1] left
+load dirs[2] front
+load dirs[3] left
+load dirs[4] front
+load dirs[5] front
+load dirs[6] front
+load dirs[7] left
+load dirs[8] front
+load dirs[9] front
+load dirs[10] right
+load dirs[11] left
+load dirs[12] front
+
+var length
+load length 13
