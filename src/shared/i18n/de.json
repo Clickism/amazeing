@@ -124,5 +124,12 @@
   "home.sandbox.description": "Experimentiere mit unserem eigenen Assembly-Sprache und teste deinen Code auf deinen eigenen Levels.",
   "home.levelEditor": "Level-Editor",
   "home.levelEditor.button": "Zum Level-Editor",
-  "home.levelEditor.description": "Erstelle deine eigenen Maze-Levels und spiele sie in der Sandbox oder exportiere sie."
+  "home.levelEditor.description": "Erstelle deine eigenen Maze-Levels und spiele sie in der Sandbox oder exportiere sie.",
+
+  "constraintsView.title": "Einschränkungen",
+  "constraintsView.tooltip": "Deine Lösung muss die folgenden Einschränkungen erfüllen, um als gelöst zu gelten.",
+
+  "constraints.max-instructions": "Höchstens {{count}} Befehle",
+  "constraints.max-instruction-count": "Höchstens {{count}} \"{{ instruction }}\" Befehl(e)",
+  "constraints.allowed-instructions": "Erlaubte Befehle: {{ allowed }}"
 }

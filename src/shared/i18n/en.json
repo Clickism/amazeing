@@ -129,7 +129,7 @@
   "constraintsView.title": "Constraints",
   "constraintsView.tooltip": "Your solution must satisfy these constraints to be considered fully correct",
 
-  "constraints.max-instructions": "At most {{count}} instructions",
-  "constraints.max-instruction-count": "At most {{count}} \"{{ instruction }}\" instruction",
+  "constraints.max-instructions": "At most {{count}} instructions(s)",
+  "constraints.max-instruction-count": "At most {{count}} \"{{ instruction }}\" instruction(s)",
   "constraints.allowed-instructions": "Allowed instructions: {{ allowed }}"
 }
