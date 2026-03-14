@@ -29,22 +29,20 @@
       direction: 'north',
     },
   },
-  startingCode: 'var dirs[]
-      load dirs[0] left
-      load dirs[1] right
-      load dirs[2] left
-      load dirs[3] left
-      load dirs[4] right
-      load dirs[5] right
-      load dirs[6] right
-      load dirs[7] left
-      load dirs[8] right
-      load dirs[9] left
-      load dirs[10] right
-      load dirs[11] left
-      load dirs[12] left
-      load dirs[13] left
-      load dirs[14] right
-      
-      ',
+  startingCode: 'var dirs[]\n\
+load dirs[0] left\n\
+load dirs[1] right\n\
+load dirs[2] left\n\
+load dirs[3] left\n\
+load dirs[4] right\n\
+load dirs[5] right\n\
+load dirs[6] right\n\
+load dirs[7] left\n\
+load dirs[8] right\n\
+load dirs[9] left\n\
+load dirs[10] right\n\
+load dirs[11] left\n\
+load dirs[12] left\n\
+load dirs[13] left\n\
+load dirs[14] right\n\n',
 }

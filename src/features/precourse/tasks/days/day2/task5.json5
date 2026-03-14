@@ -39,8 +39,6 @@
       direction: 'north',
     },
   },
-  startingCode: '# Directions to the goal:
-      # left, left, front, left, front, front, front, left, front, front, right, left, front
-      
-      ',
+  startingCode: '# Directions to the goal:\n\
+# left, left, front, left, front, front, front, left, front, front, right, left, front\n\n',
 }

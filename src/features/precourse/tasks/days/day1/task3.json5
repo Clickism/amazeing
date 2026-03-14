@@ -29,8 +29,8 @@
       direction: 'north',
     },
   },
-  startingCode: 'turn right
-      start:
-      move
-      jump start',
+  startingCode: 'turn right\n\
+start:\n\
+move\n\
+jump start\n\n',
 }
