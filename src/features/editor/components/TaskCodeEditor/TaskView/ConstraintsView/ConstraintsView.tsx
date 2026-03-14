@@ -5,6 +5,7 @@ import styles from "./ConstraintsView.module.css";
 import { Collapsable } from "../../../../../../shared/components/Collapsable/Collapsable.tsx";
 import { QuotedText } from "../../../../../../shared/components/QuotedText/QuotedText.tsx";
 import { FaCheck, FaXmark } from "react-icons/fa6";
+import { IconText } from "../../../../../../shared/components/IconText/IconText.tsx";
 
 type ConstraintsViewProps = {
   open?: boolean;
@@ -39,16 +40,14 @@ export function ConstraintsView({
       >
         <div className={styles.list}>
           {constraints?.map((constraint, i) => (
-            <div
+            <IconText
               key={i}
+              icon={constraint.met ? <FaCheck /> : <FaXmark size={18} />}
               className={clsx(
                 styles.constraint,
                 constraint.met ? styles.met : styles.unmet,
               )}
             >
-              <div className={styles.icon}>
-                {constraint.met ? <FaCheck /> : <FaXmark size={18} />}
-              </div>
               <div>
                 <QuotedText
                   text={t(`constraints.${constraint.type}`, {
@@ -60,7 +59,7 @@ export function ConstraintsView({
                   })}
                 />
               </div>
-            </div>
+            </IconText>
           ))}
         </div>
       </Collapsable>

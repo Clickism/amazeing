@@ -1,0 +1,17 @@
+:root {
+  --icon-size: 14px;
+}
+
+.container {
+  display: flex;
+  gap: 8px;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: var(--icon-size);
+}
+
+.icon svg {
+  flex-shrink: 0;
+}
