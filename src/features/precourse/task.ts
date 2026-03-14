@@ -5,6 +5,7 @@ import {
   SUPPORTED_LANGUAGES,
 } from "../../shared/i18n/i18n.ts";
 import JSON5 from "json5";
+import type { MazeData } from "../../core/game/maze.ts";
 
 export type TaskData = {
   /**
@@ -56,7 +57,11 @@ export type Task = {
  * @param level The LevelData object to convert.
  */
 export function stringifyToTask(level: LevelData): string {
-  const task: TaskData = {
+  const walls = {
+    horizontal: encode2DBooleanArray(level.maze.walls.horizontal),
+    vertical: encode2DBooleanArray(level.maze.walls.vertical),
+  };
+  const task: UnparsedTaskData = {
     title: reorderLanguageKeys(
       level.taskMeta?.title ?? {
         en: "Untitled Task",
@@ -71,6 +76,10 @@ export function stringifyToTask(level: LevelData): string {
     ),
     levelData: {
       ...level,
+      maze: {
+        ...level.maze,
+        walls,
+      },
       taskMeta: undefined,
     },
     startingCode: level.taskMeta?.startingCode,
@@ -94,4 +103,52 @@ function reorderLanguageKeys(
     }
   });
   return orderedTranslation;
+}
+
+type UnparsedTaskData = Omit<TaskData, "levelData"> & {
+  levelData: Omit<LevelData, "maze"> & {
+    maze: Omit<MazeData, "walls"> & {
+      walls: {
+        horizontal: string;
+        vertical: string;
+      };
+    };
+  };
+};
+
+export function loadTaskFromString(json: string): TaskData {
+  const parsed = JSON5.parse(json) as UnparsedTaskData | TaskData;
+  const horizontalWalls = parsed.levelData.maze.walls.horizontal;
+  if (typeof horizontalWalls !== "string") {
+    return parsed as TaskData;
+  }
+  const verticalWalls = parsed.levelData.maze.walls.vertical;
+  if (typeof verticalWalls !== "string") {
+    return parsed as TaskData;
+  }
+  return {
+    ...parsed,
+    levelData: {
+      ...parsed.levelData,
+      maze: {
+        ...parsed.levelData.maze,
+        walls: {
+          horizontal: decode2DBooleanArray(horizontalWalls),
+          vertical: decode2DBooleanArray(verticalWalls),
+        },
+      },
+    },
+  };
+}
+
+function encode2DBooleanArray(array: boolean[][]): string {
+  return array
+    .map((row) => row.map((value) => (value ? "1" : "0")).join(""))
+    .join("-");
+}
+
+function decode2DBooleanArray(array: string) {
+  return array
+    .split("-")
+    .map((row) => row.split("").map((char) => char === "1"));
 }

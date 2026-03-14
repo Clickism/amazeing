@@ -1,6 +1,5 @@
-import type { Task, TaskData } from "./task.ts";
+import { loadTaskFromString, type Task, type TaskData } from "./task.ts";
 import type { Translator } from "../../shared/i18n/i18n.ts";
-import JSON5 from "json5";
 
 export type Day = {
   id: string;
@@ -20,7 +19,7 @@ export function loadDays(): Day[] {
     // Only consider days tasks
     if (!path.startsWith("./tasks/days/")) continue;
     const raw = taskModules[path] as string;
-    const taskData = JSON5.parse(raw) as TaskData;
+    const taskData = loadTaskFromString(raw);
     const { dayId, taskKey } = extractDayAndTask(path);
 
     const taskNumber = parseInt(taskKey.replace("task", ""), 10);
@@ -58,7 +57,7 @@ export function loadTask(pathToTask: string): TaskData {
     throw new Error(`Task not found at path: ${fullPath}`);
   }
   const raw = taskModules[fullPath] as string;
-  return JSON5.parse(raw) as TaskData;
+  return loadTaskFromString(raw);
 }
 
 function extractDayAndTask(path: string): { dayId: string; taskKey: string } {
