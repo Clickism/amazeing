@@ -90,7 +90,7 @@ export function Modal({
     <FloatingContext.Provider value={{ isOpen, setOpen: setIsOpen }}>
       <ModalDepthContext.Provider value={depth + 1}>
         {/*Tooltip*/}
-        <Tooltip disabled={!tooltip || isOpen || noTooltip} content={tooltip}>
+        {trigger && <Tooltip disabled={!tooltip || isOpen || noTooltip} content={tooltip}>
           <span
             ref={refs.setReference}
             {...getReferenceProps()}
@@ -98,7 +98,7 @@ export function Modal({
           >
             {trigger}
           </span>
-        </Tooltip>
+        </Tooltip>}
 
         <AnimatePresence>
           {isOpen && (
@@ -167,7 +167,11 @@ export function Modal({
                         }}
                       >
                         <div className={styles.header}>
-                          {title && <div className={styles.title}>{title}</div>}
+                          {title && (
+                            <h5 className={clsx("fancy-headers", styles.title)}>
+                              {title}
+                            </h5>
+                          )}
                           {closeButton && (
                             <CornerGroup>
                               <Button

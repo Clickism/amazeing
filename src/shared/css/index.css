@@ -81,14 +81,15 @@ h5 {
   font-size: 1rem;
   margin-top: .9em;
   font-weight: 500;
-  color: var(--clr-surface-a60);
+  /*color: var(--clr-surface-a60);*/
+  color: var(--text-color-t70);
 }
 
 h6 {
   font-size: 0.9rem;
   margin-top: .8em;
   font-weight: 500;
-  color: var(--clr-surface-a50);
+  color: var(--text-color-t60);
 }
 
 [data-floating-ui-portal] .fancy-headers h3,
