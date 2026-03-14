@@ -8,7 +8,7 @@ import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { getDirectionIcon } from "../../../utils.tsx";
 import { useTranslation } from "react-i18next";
 import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
-import { useFloatingContext } from "../../../../../shared/floating/FloatingContext/FloatingContext.tsx";
+import { useFloatingContext } from "../../../../../shared/floating/context/FloatingContext.tsx";
 
 export function TileProperties({ position }: { position: Position }) {
   const { level, setLevel } = useLevelEditor();

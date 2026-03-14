@@ -131,5 +131,21 @@
 
   "constraints.max-instructions": "Höchstens {{count}} Befehle",
   "constraints.max-instruction-count": "Höchstens {{count}} \"{{ instruction }}\" Befehl(e)",
-  "constraints.allowed-instructions": "Erlaubte Befehle: {{ allowed }}"
+  "constraints.allowed-instructions": "Erlaubte Befehle: {{ allowed }}",
+
+  "taskCompleted.title": "Aufgabe abgeschlossen!",
+  "taskCompleted.description": "Glückwunsch zum Abschließen dieser Aufgabe. Deine Lösung ist korrekt.",
+  "taskCompleted.descriptionConstraints": "Glückwunsch zum Abschließen dieser Aufgabe. Deine Lösung ist korrekt und erfüllt alle notwendigen Einschränkungen:",
+  "taskCompleted.continue": "Wie geht es jetzt weiter?",
+  "taskCompleted.continue.task": "Du kannst nun zur nächsten Aufgabe wechseln oder auf der aktuellen Aufgabe bleiben, um dir deine Lösung genauer anzusehen.",
+  "taskCompleted.continue.day": "Du hast die letzte Aufgabe dieses Tages abgeschlossen. Du kannst nun zum nächsten Tag wechseln oder auf der aktuellen Aufgabe bleiben, um dir deine Lösung genauer anzusehen.",
+  "taskCompleted.continue.noMoreTasks": "Du hast die letzte Aufgabe abgeschlossen. Du kannst jetzt auf der aktuellen Aufgabe bleiben, um dir deine Lösung genauer anzusehen, oder zu früheren Aufgaben zurückgehen.",
+  "taskCompleted.nextTask": "Nächste Aufgabe",
+  "taskCompleted.nextDay": "Weiter zu {{day}}",
+  "taskCompleted.stayOnTask": "Hier bleiben",
+
+  "unmetConstraints.title": "Einschränkungen nicht erfüllt",
+  "unmetConstraints.description": "Du hast die Aufgabe gelöst, aber deine Lösung erfüllt nicht die folgenden Einschränkungen:",
+  "unmetConstraints.continue": "Was jetzt tun?",
+  "unmetConstraints.checkSolution": "Zurückgehen und Lösung überprüfen"
 }

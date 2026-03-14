@@ -14,7 +14,8 @@ import {
 import styles from "./Popover.module.css";
 import { Tooltip } from "../Tooltip/Tooltip.tsx";
 import { AnimatePresence, motion } from "motion/react";
-import { FloatingContext } from "../FloatingContext/FloatingContext.tsx";
+import { FloatingContext } from "../../context/FloatingContext.tsx";
+import clsx from "clsx";
 
 export type PopoverProps = {
   title?: string | ReactNode;
@@ -127,7 +128,11 @@ export function Popover({
                 }}
                 transition={{ type: "spring", duration: 0.3, bounce: 0 }}
               >
-                {title && <div className={styles.title}>{title}</div>}
+                {title && (
+                  <h5 className={clsx("fancy-headers", styles.title)}>
+                    {title}
+                  </h5>
+                )}
                 <div className={styles.content}>{children}</div>
               </motion.div>
             </div>

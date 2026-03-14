@@ -97,3 +97,9 @@
   z-index: -1;
   pointer-events: none;
 }
+
+.icon {
+  transform-origin: center;
+  width: 16px;
+  height: 18px;
+}

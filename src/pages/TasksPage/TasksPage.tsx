@@ -9,6 +9,9 @@ import { TaskCodeModelProvider } from "../../features/editor/context/code/TaskCo
 import { useEffect, useMemo } from "react";
 import { InterpreterWrapper } from "../../features/editor/context/interpreter/InterpreterWrapper.tsx";
 import { useSearchParams } from "react-router-dom";
+import { ModalProvider } from "../../shared/floating/context/ModalProvider.tsx";
+import { useModalContext } from "../../shared/floating/context/ModalContext.tsx";
+import { UnmetConstraints } from "../../features/precourse/components/UnmetConstraints/UnmetConstraints.tsx";
 
 const namespace = "tasks";
 
@@ -19,11 +22,13 @@ export function TasksPage() {
   const taskId = searchParams.get(idKey) ?? taskIdOf(1, 1);
   return (
     <Layout fullWidth>
-      <EditorSettingsProvider namespace={namespace}>
-        <TasksProvider taskId={taskId} namespace={namespace}>
-          <EditorWrapper />
-        </TasksProvider>
-      </EditorSettingsProvider>
+      <ModalProvider>
+        <EditorSettingsProvider namespace={namespace}>
+          <TasksProvider taskId={taskId} namespace={namespace}>
+            <EditorWrapper />
+          </TasksProvider>
+        </EditorSettingsProvider>
+      </ModalProvider>
     </Layout>
   );
 }
@@ -33,6 +38,7 @@ function EditorWrapper() {
   const { task, completedTasks, setCompleted } = useTasks();
   const level = useMemo(() => new Level(task.levelData), [task.levelData]);
   const [, setSearchParams] = useSearchParams();
+  const modal = useModalContext();
 
   // Update URL when task changes
   useEffect(() => {
@@ -44,11 +50,15 @@ function EditorWrapper() {
       <InterpreterWrapper
         level={level}
         constraints={task.constraints}
-        onFinish={(constraintsMet) => {
-          if (constraintsMet.every((c) => c.met)) {
+        onFinish={(constraints) => {
+          if (constraints.every((c) => c.met)) {
             setCompleted(task.id, true);
           } else if (!completedTasks.includes(task.id)) {
             // TODO: Add warning popup
+            modal.setContent(
+              <UnmetConstraints modal={modal} constraints={constraints} />,
+            );
+            modal.setOpen(true);
           }
         }}
       >

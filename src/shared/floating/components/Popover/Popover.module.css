@@ -1,9 +1,5 @@
 .title {
-  padding-left: .5rem;
-  border-left: 3px solid var(--clr-surface-a50);
-  border-radius: 2px;
-  margin-bottom: .5rem;
-  opacity: 80%;
+  margin: 0 0 .5rem;
 }
 
 .trigger {

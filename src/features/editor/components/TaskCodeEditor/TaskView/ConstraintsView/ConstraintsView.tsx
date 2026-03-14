@@ -1,25 +1,30 @@
 import clsx from "clsx";
 import type { EvaluatedConstraint } from "../../../../../../core/game/constraints.ts";
 import { useTranslatable } from "../../../../../../shared/i18n/i18n.ts";
-import { useTasks } from "../../../../../precourse/context/TasksContext.tsx";
 import styles from "./ConstraintsView.module.css";
 import { Collapsable } from "../../../../../../shared/components/Collapsable/Collapsable.tsx";
 import { QuotedText } from "../../../../../../shared/components/QuotedText/QuotedText.tsx";
 import { FaCheck, FaXmark } from "react-icons/fa6";
 
 type ConstraintsViewProps = {
+  open?: boolean;
+  showTooltip?: boolean;
   constraints: EvaluatedConstraint[];
 };
 
-export function ConstraintsView({ constraints }: ConstraintsViewProps) {
+export function ConstraintsView({
+  open = false,
+  showTooltip = true,
+  constraints,
+}: ConstraintsViewProps) {
   const { t } = useTranslatable();
-  const { task, completedTasks } = useTasks();
   const allConstraintsMet = constraints.every((c) => c.met);
   const metConstraintsCount = constraints.filter((c) => c.met).length;
   return (
     <>
       <Collapsable
-        tooltip={t("constraintsView.tooltip")}
+        initialOpen={open}
+        tooltip={showTooltip ? t("constraintsView.tooltip") : undefined}
         title={(open) => (
           <div className={clsx(!open && styles.closed)}>
             {t("constraintsView.title")}
@@ -38,10 +43,7 @@ export function ConstraintsView({ constraints }: ConstraintsViewProps) {
               key={i}
               className={clsx(
                 styles.constraint,
-                (constraint.met || completedTasks.includes(task.id)) &&
-                  styles.met,
-                // This could also be undefined if the constraint hasn't been evaluated yet
-                !constraint.met && styles.unmet,
+                constraint.met ? styles.met : styles.unmet,
               )}
             >
               <div className={styles.icon}>

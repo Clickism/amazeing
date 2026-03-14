@@ -10,7 +10,7 @@ import {
 } from "react";
 import { CornerGroup } from "../CornerGroup/CornerGroup.tsx";
 import { ButtonGroup } from "../Button/ButtonGroup/ButtonGroup.tsx";
-import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 
 type SingleElement = {
   id: string;
@@ -148,7 +148,14 @@ function GroupElement({
         onClick={toggleGroup}
       >
         <div className={styles.elementName}>
-          {isOpen ? <IoIosArrowDown /> : <IoIosArrowForward />}
+          <motion.div
+            className={styles.icon}
+            initial={false}
+            animate={{ rotate: isOpen ? 0 : -90 }}
+            transition={{ type: "spring", stiffness: 500, damping: 50 }}
+          >
+            <IoIosArrowDown />
+          </motion.div>
           {group.name}
         </div>
       </div>

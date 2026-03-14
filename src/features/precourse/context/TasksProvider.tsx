@@ -5,6 +5,9 @@ import {
   usePersistentState,
   usePersistentStorage,
 } from "../../../shared/utils/storage.ts";
+import { useModalContext } from "../../../shared/floating/context/ModalContext.tsx";
+import { TaskCompleted } from "../components/TaskCompleted/TaskCompleted.tsx";
+import { useTranslation } from "react-i18next";
 
 type TasksProviderProps = {
   taskId?: string;
@@ -32,6 +35,8 @@ export function TasksProvider({
     "completedTasks",
     [],
   );
+  const modal = useModalContext();
+  const { t } = useTranslation();
 
   const setCompleted = useCallback(
     (taskId: string, completed: boolean) => {
@@ -46,8 +51,21 @@ export function TasksProvider({
           return prev.filter((id) => id !== taskId);
         }
       });
+      // Popup
+      if (completed) {
+        modal.setProps({ title: t("taskCompleted.title"), maxWidth: 600 });
+        modal.setContent(
+          <TaskCompleted
+            task={task}
+            days={days}
+            setTaskId={setTaskId}
+            modal={modal}
+          />,
+        );
+        modal.setOpen(true);
+      }
     },
-    [setCompletedTasks],
+    [days, modal, setCompletedTasks, t, task],
   );
 
   return (
