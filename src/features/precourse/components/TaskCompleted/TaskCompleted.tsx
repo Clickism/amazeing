@@ -6,6 +6,7 @@ import type { Task } from "../../task.ts";
 import type { Day } from "../../day.ts";
 import type { ModalContext } from "../../../../shared/floating/context/ModalContext.tsx";
 import { ConstraintsView } from "../../../editor/components/TaskCodeEditor/TaskView/ConstraintsView/ConstraintsView.tsx";
+import { TbArrowBackUp } from "react-icons/tb";
 
 type TaskCompletedProps = {
   task: Task;
@@ -67,6 +68,7 @@ export function TaskCompleted({
             modal.setOpen(false);
           }}
         >
+          <TbArrowBackUp size={20} />
           {t("taskCompleted.stayOnTask", { task: task.taskNumber })}
         </Button>
         {nextTask && (
