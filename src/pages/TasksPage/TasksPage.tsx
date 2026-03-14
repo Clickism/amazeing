@@ -9,6 +9,7 @@ import { TaskCodeModelProvider } from "../../features/editor/context/code/TaskCo
 import { useEffect, useMemo } from "react";
 import { InterpreterWrapper } from "../../features/editor/context/interpreter/InterpreterWrapper.tsx";
 import { useSearchParams } from "react-router-dom";
+import { ModalProvider } from "../../shared/floating/context/ModalProvider.tsx";
 
 const namespace = "tasks";
 
@@ -19,11 +20,13 @@ export function TasksPage() {
   const taskId = searchParams.get(idKey) ?? taskIdOf(1, 1);
   return (
     <Layout fullWidth>
-      <EditorSettingsProvider namespace={namespace}>
-        <TasksProvider taskId={taskId} namespace={namespace}>
-          <EditorWrapper />
-        </TasksProvider>
-      </EditorSettingsProvider>
+      <ModalProvider>
+        <EditorSettingsProvider namespace={namespace}>
+          <TasksProvider taskId={taskId} namespace={namespace}>
+            <EditorWrapper />
+          </TasksProvider>
+        </EditorSettingsProvider>
+      </ModalProvider>
     </Layout>
   );
 }

@@ -20,15 +20,18 @@ import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
 import clsx from "clsx";
 import { FloatingContext } from "../../context/FloatingContext.tsx";
 
-type ModalProps = {
+export type ModalProps = {
   title?: string | ReactNode;
   tooltip?: string | ReactNode;
   closeButton?: boolean;
-  trigger: ReactNode;
+  trigger: ReactNode | null;
   children: ReactNode;
   onOpen?: () => void;
   onClose?: () => void;
   noTooltip?: boolean;
+  isOpen?: boolean;
+  setIsOpen?: (open: boolean) => void;
+  maxWidth?: string | number;
 };
 
 const ModalDepthContext = createContext(0);
@@ -42,8 +45,15 @@ export function Modal({
   onClose,
   children,
   noTooltip,
+  isOpen: isOpenExternal,
+  setIsOpen: setIsOpenExternal,
+  maxWidth,
 }: ModalProps) {
-  const [isOpen, setIsOpenState] = useState(false);
+  const [isOpenStateInternal, setIsOpenStateInternal] = useState(
+    isOpenExternal ?? false,
+  );
+  const isOpen = isOpenExternal ?? isOpenStateInternal;
+  const setIsOpenState = setIsOpenExternal ?? setIsOpenStateInternal;
 
   const depth = useContext(ModalDepthContext);
   const isNested = depth > 0;
@@ -119,6 +129,9 @@ export function Modal({
                     >
                       <motion.div
                         className={styles.body}
+                        style={{
+                          maxWidth,
+                        }}
                         initial={{
                           opacity: 0,
                           scale: 0.9,
