@@ -18,4 +18,4 @@ export type Constraint =
   | MaxInstructionsConstraint
   | AllowedInstructionsConstraint
   | MaxInstructionCountConstraint;
-export type EvaluatedConstraint = Constraint & { met?: boolean };
+export type EvaluatedConstraint = Constraint & { met: boolean };

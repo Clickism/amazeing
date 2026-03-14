@@ -5,6 +5,7 @@ import { useTasks } from "../../../../../precourse/context/TasksContext.tsx";
 import styles from "./ConstraintsView.module.css";
 import { Collapsable } from "../../../../../../shared/components/Collapsable/Collapsable.tsx";
 import { QuotedText } from "../../../../../../shared/components/QuotedText/QuotedText.tsx";
+import { FaCheck, FaXmark } from "react-icons/fa6";
 
 type ConstraintsViewProps = {
   constraints: EvaluatedConstraint[];
@@ -19,17 +20,17 @@ export function ConstraintsView({ constraints }: ConstraintsViewProps) {
     <>
       <Collapsable
         tooltip={t("constraintsView.tooltip")}
-        title={
-          t("constraintsView.title") +
-          ` (${metConstraintsCount}/${constraints.length})`
-        }
-        titleClassName={(open) =>
-          clsx(
-            styles.title,
-            !open && styles.titleClosed,
-            allConstraintsMet ? styles.titleMet : styles.titleUnmet,
-          )
-        }
+        title={(open) => (
+          <div className={clsx(!open && styles.closed)}>
+            {t("constraintsView.title")}
+            <span
+              className={clsx(
+                styles.counter,
+                allConstraintsMet ? styles.counterMet : styles.counterUnmet,
+              )}
+            >{` (${metConstraintsCount}/${constraints.length})`}</span>
+          </div>
+        )}
       >
         <div className={styles.list}>
           {constraints?.map((constraint, i) => (
@@ -40,20 +41,23 @@ export function ConstraintsView({ constraints }: ConstraintsViewProps) {
                 (constraint.met || completedTasks.includes(task.id)) &&
                   styles.met,
                 // This could also be undefined if the constraint hasn't been evaluated yet
-                constraint.met === false && styles.unmet,
+                !constraint.met && styles.unmet,
               )}
             >
-              <QuotedText
-                text={t(`constraints.${constraint.type}`, {
-                  ...constraint,
-                  allowed:
-                    constraint.type === "allowed-instructions"
-                      ? constraint.allowed
-                        .map((i) => `"${i}"`)
-                        .join(", ")
-                      : undefined,
-                })}
-              />
+              <div className={styles.icon}>
+                {constraint.met ? <FaCheck /> : <FaXmark size={18} />}
+              </div>
+              <div>
+                <QuotedText
+                  text={t(`constraints.${constraint.type}`, {
+                    ...constraint,
+                    allowed:
+                      constraint.type === "allowed-instructions"
+                        ? constraint.allowed.map((i) => `"${i}"`).join(", ")
+                        : undefined,
+                  })}
+                />
+              </div>
             </div>
           ))}
         </div>

@@ -250,7 +250,10 @@ export function InterpreterProvider({
   useEffect(() => {
     reset();
     // Evaluate constraints
-    if (!constraints) return;
+    if (!constraints || constraints.length === 0) {
+      setEvaluatedConstraints(undefined);
+      return;
+    }
     const evaluated = validateConstraints(constraints, code);
     setEvaluatedConstraints(evaluated);
   }, [code, constraints, level, reset]);
