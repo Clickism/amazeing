@@ -1,0 +1,32 @@
+{
+  title: {
+    en: 'Pledge',
+    de: 'Pledge',
+  },
+  description: {
+    en: 'Fix the problems with the Right-Hand Rule by implementing the Pledge algorithm. Please have a look at the sheets for the pseudo code!',
+    de: 'Behebe die Probleme mit der Rechte-Hand-Regel, indem du den Pledge-Algorithmus implementierst. Bitte schau dir die Blätter für den Pseudo-Code an!',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 10,
+      height: 10,
+      walls: {
+        horizontal: '1111111100-1110111000-0000000000-0000111000-0001111100-0000000000-0000000000-0000000000-0000000000',
+        vertical: '000000000-000000010-001100110-001100110-001000010-000000000-000000000-000000000-000000000-000000000',
+      },
+    },
+    finishPosition: {
+      x: 0,
+      y: 1,
+    },
+    owlStart: {
+      position: {
+        x: 3,
+        y: 2,
+      },
+      direction: 'north',
+    },
+  },
+}

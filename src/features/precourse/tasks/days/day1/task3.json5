@@ -1,0 +1,36 @@
+{
+  title: {
+    en: 'Exploring Walls',
+    de: 'Exploring Walls',
+  },
+  description: {
+    en: 'In this labyrinth, too, the path is straight ahead at first. As soon as the owl has hit a wall, only one step to the right is missing. Extend the solution of the previous task! The commands explore and branch can be helpful here.',
+    de: 'In this labyrinth, too, the path is straight ahead at first. As soon as the owl has hit a wall, only one step to the right is missing. Extend the solution of the previous task! The commands explore and branch can be helpful here.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 8,
+      height: 4,
+      walls: {
+        horizontal: '01111110-01111100-00000010',
+        vertical: '0000000-1000001-0000011-0000000',
+      },
+    },
+    finishPosition: {
+      x: 6,
+      y: 2,
+    },
+    owlStart: {
+      position: {
+        x: 1,
+        y: 1,
+      },
+      direction: 'north',
+    },
+  },
+  startingCode: 'turn right \
+      start: \
+      move \
+      jump start',
+}

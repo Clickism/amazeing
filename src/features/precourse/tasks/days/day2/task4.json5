@@ -1,0 +1,61 @@
+{
+  title: {
+    en: 'Lists',
+    de: 'Listen',
+  },
+  description: {
+    en: 'This task is about lists (arrays). \
+      In the given code, a sequence of directions is written to an array. \
+      This sequence will guide your owl to the goal. \
+      Your task is now to write a program that reads the directions one-by-one and then takes a step in that direction. \
+       \
+      For help, the length of the array has been written to the variable length.',
+    de: 'In dieser Aufgabe geht es um Listen (Arrays). \
+      Im gegebenen Code wird eine Sequenz von Richtungen in einen Array geschrieben. \
+      Diese Sequenz wird deine Eule zum Ziel führen. \
+      Deine Aufgabe ist es nun, ein Programm zu schreiben, das die Richtungen nacheinander liest und dann einen Schritt in diese Richtung macht. \
+       \
+      Als Hilfe wurde die Länge des Arrays in die Variable length geschrieben.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 8,
+      height: 8,
+      walls: {
+        horizontal: '00000000-00000100-01100010-00100000-00111000-01111100-00000000',
+        vertical: '0000011-0000011-0000101-1010110-1100110-1000010-0000000-0000000',
+      },
+    },
+    finishPosition: {
+      x: 6,
+      y: 0,
+    },
+    owlStart: {
+      position: {
+        x: 2,
+        y: 3,
+      },
+      direction: 'north',
+    },
+  },
+  startingCode: 'var dirs[] \
+      load dirs[0] left \
+      load dirs[1] left \
+      load dirs[2] front \
+      load dirs[3] left \
+      load dirs[4] front \
+      load dirs[5] front \
+      load dirs[6] front \
+      load dirs[7] left \
+      load dirs[8] front \
+      load dirs[9] front \
+      load dirs[10] right \
+      load dirs[11] left \
+      load dirs[12] front \
+       \
+      var length \
+      load length 13 \
+       \
+      ',
+}

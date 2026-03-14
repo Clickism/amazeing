@@ -1,0 +1,34 @@
+{
+  title: {
+    en: 'Depth-First-Search',
+    de: 'Depth-First-Search',
+  },
+  description: {
+    en: 'In this exercise, we want to implement the depth-first search algorithm. \
+      Take a look at sheet 3 for further information.',
+    de: 'In this exercise, we want to implement the depth-first search algorithm. \
+      Take a look at sheet 3 for further information.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 6,
+      height: 7,
+      walls: {
+        horizontal: '000110-011100-000010-000011-010100-110000',
+        vertical: '01000-10101-11101-11100-01100-00111-00101',
+      },
+    },
+    finishPosition: {
+      x: 2,
+      y: 2,
+    },
+    owlStart: {
+      position: {
+        x: 5,
+        y: 6,
+      },
+      direction: 'north',
+    },
+  },
+}

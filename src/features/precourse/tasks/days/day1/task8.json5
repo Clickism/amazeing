@@ -1,0 +1,36 @@
+{
+  title: {
+    en: 'Bonus: Brute Force',
+    de: 'Bonus: Brute Force',
+  },
+  description: {
+    en: 'Problems can be solved theoretically by trying all possibilities. This procedure is called brute force. \
+      The aim of this task is to solve the maze with a special strategy, which is successful in many mazes: Before each \
+      step, check the markings on the current square. If all directions are marked, stop. Otherwise, turn the owl in a direction that is not yet marked, mark it and take one step forward.',
+    de: 'Problems can be solved theoretically by trying all possibilities. This procedure is called brute force. \
+      The aim of this task is to solve the maze with a special strategy, which is successful in many mazes: Before each \
+      step, check the markings on the current square. If all directions are marked, stop. Otherwise, turn the owl in a direction that is not yet marked, mark it and take one step forward.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 8,
+      height: 8,
+      walls: {
+        horizontal: '11110101-11100010-01100000-10100000-10001000-01001101-00001000',
+        vertical: '0000011-0001100-0011111-1001111-0111111-1110011-0011000-0010100',
+      },
+    },
+    finishPosition: {
+      x: 7,
+      y: 5,
+    },
+    owlStart: {
+      position: {
+        x: 0,
+        y: 1,
+      },
+      direction: 'north',
+    },
+  },
+}

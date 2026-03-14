@@ -1,0 +1,32 @@
+{
+  title: {
+    en: 'In Circles',
+    de: 'In Circles',
+  },
+  description: {
+    en: 'The strategy from the previous task leads to the owl running in circles in this maze. Change the solution from the previous task so that the current field is marked before each right turn. As soon as a marked field is reached for the second time, the right turn is to be replaced by a left turn.',
+    de: 'The strategy from the previous task leads to the owl running in circles in this maze. Change the solution from the previous task so that the current field is marked before each right turn. As soon as a marked field is reached for the second time, the right turn is to be replaced by a left turn.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 6,
+      height: 9,
+      walls: {
+        horizontal: '011110-000000-011111-111010-000010-111011-101000-001000',
+        vertical: '00000-10001-10001-00000-00111-00100-00010-11110-10010',
+      },
+    },
+    finishPosition: {
+      x: 5,
+      y: 2,
+    },
+    owlStart: {
+      position: {
+        x: 0,
+        y: 6,
+      },
+      direction: 'north',
+    },
+  },
+}

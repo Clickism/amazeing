@@ -1,0 +1,46 @@
+{
+  title: {
+    en: 'Stack',
+    de: 'Stack',
+  },
+  description: {
+    en: 'This task is about the stack. \
+       \
+      Your task is to implement a stack supporting the operations StackPush, StackPop, StackEmpty and StackPeek. \
+      Then, you should test your implementation of the stack. \
+      The comment in the given code conatins a list of directions that will lead your owl to the goal. \
+      Your task is to push each direction onto the stack and then pop the directions one by one to get your owl to the goal using your stack implementation.',
+    de: 'In dieser Aufgabe geht es um den Stack. \
+       \
+      Deine Aufgabe ist es, einen Stack zu implementieren, der die Operationen StackPush, StackPop, StackEmpty und StackPeek unterstützt. \
+      Dann solltest du deine Implementierung des Stacks testen. \
+      Der Kommentar im gegebenen Code enthält eine Liste von Richtungen, die deine Eule zum Ziel führen werden. \
+      Deine Aufgabe ist es, jede Richtung auf den Stack zu pushen und dann die Richtungen nacheinander zu poppen, um deine Eule mit deiner Stack-Implementierung zum Ziel zu bringen.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 8,
+      height: 8,
+      walls: {
+        horizontal: '00000000-00000100-01100010-00100000-00111000-01111100-00000000',
+        vertical: '0000011-0000011-0000101-1010110-1100110-1000010-0000000-0000000',
+      },
+    },
+    finishPosition: {
+      x: 6,
+      y: 0,
+    },
+    owlStart: {
+      position: {
+        x: 2,
+        y: 3,
+      },
+      direction: 'north',
+    },
+  },
+  startingCode: '# Directions to the goal: \
+      # left, left, front, left, front, front, front, left, front, front, right, left, front \
+       \
+      ',
+}

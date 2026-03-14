@@ -1,0 +1,52 @@
+{
+  title: {
+    en: 'Guess what',
+    de: 'Guess what',
+  },
+  description: {
+    en: 'The task now is to find your way out of the maze with the given subprogram "guess"! Whenever you can no longer walk straight, jump to the label "guess". After execution, "guess" writes 0 or 1 in the variable result and jumps back to the label "done". If you get the number 0 you have to turn left. If the result is 1, you have to turn right to get to the destination. The functionality of "guess" is not relevant here.',
+    de: 'The task now is to find your way out of the maze with the given subprogram "guess"! Whenever you can no longer walk straight, jump to the label "guess". After execution, "guess" writes 0 or 1 in the variable result and jumps back to the label "done". If you get the number 0 you have to turn left. If the result is 1, you have to turn right to get to the destination. The functionality of "guess" is not relevant here.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 9,
+      height: 9,
+      walls: {
+        horizontal: '000000010-011011011-111000100-111010000-010110000-000110100-011011101-001010101',
+        vertical: '01101100-11110111-00011000-00111111-00000111-11101111-11000001-11111110-00001000',
+      },
+    },
+    finishPosition: {
+      x: 8,
+      y: 8,
+    },
+    owlStart: {
+      position: {
+        x: 1,
+        y: 1,
+      },
+      direction: 'north',
+    },
+  },
+  startingCode: "var t \
+      var result \
+      # Insert your Code around the 'return' marker \
+      return: \
+      # Given guess subroutine, guesses a turn for you to take \
+      # 0 -> left, 1 -> right \
+      guess: \
+          var zero \
+          load zero 0 \
+          var direction d \
+          getdir d \
+          var b \
+          eq b d east \
+          branch b e \
+          load result 0 \
+          jump return \
+      e: \
+          load result 1 \
+          jump return \
+      ",
+}

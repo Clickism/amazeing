@@ -1,0 +1,54 @@
+{
+  title: {
+    en: 'Straight Ahead',
+    de: 'Straight Ahead',
+  },
+  description: {
+    en: 'This maze is very simple, you only have to go straight ahead. Solve the maze with only one move command! The jump command can be helpful for this. \
+      (If you bump into a wall you cannot go on and you have to restart the Task)',
+    de: 'This maze is very simple, you only have to go straight ahead. Solve the maze with only one move command! The jump command can be helpful for this. \
+      (If you bump into a wall you cannot go on and you have to restart the Task)',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 8,
+      height: 4,
+      walls: {
+        horizontal: '01111110-01111110-00000000',
+        vertical: '0000000-1000001-0000000-0000000',
+      },
+    },
+    finishPosition: {
+      x: 6,
+      y: 1,
+    },
+    owlStart: {
+      position: {
+        x: 1,
+        y: 1,
+      },
+      direction: 'north',
+    },
+  },
+  constraints: [
+    {
+      type: 'max-instruction-count',
+      instruction: 'move',
+      count: 1,
+    },
+    {
+      type: 'max-instruction-count',
+      instruction: 'jump',
+      count: 1,
+    },
+    {
+      type: 'allowed-instructions',
+      allowed: [
+        'move',
+        'jump',
+        'turn',
+      ],
+    },
+  ],
+}

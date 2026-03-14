@@ -1,0 +1,43 @@
+{
+  title: {
+    en: 'Walking',
+    de: 'Walking',
+  },
+  description: {
+    en: 'Get the owl to the target! The allowed commands are move, turn left and turn right. \
+      (If you bump into a wall you cannot go on and you have to restart the Task)',
+    de: 'Get the owl to the target! The allowed commands are move, turn left and turn right. \
+      (If you bump into a wall you cannot go on and you have to restart the Task)',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 4,
+      height: 4,
+      walls: {
+        horizontal: '1100-0000-0110',
+        vertical: '001-011-101-000',
+      },
+    },
+    finishPosition: {
+      x: 3,
+      y: 3,
+    },
+    owlStart: {
+      position: {
+        x: 1,
+        y: 0,
+      },
+      direction: 'north',
+    },
+  },
+  constraints: [
+    {
+      type: 'allowed-instructions',
+      allowed: [
+        'move',
+        'turn',
+      ],
+    },
+  ],
+}

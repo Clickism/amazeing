@@ -1,0 +1,50 @@
+{
+  title: {
+    en: 'Binary Trees',
+    de: 'Binary Trees',
+  },
+  description: {
+    en: "Use No Hau's clues to solve this tree-like labyrinth!",
+    de: 'Benutze No Haus Hinweise, um dieses baumartige Labyrinth zu lösen!',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 7,
+      height: 5,
+      walls: {
+        horizontal: '0100010-0000000-1011101-1010101',
+        vertical: '111111-001100-111111-100001-001100',
+      },
+    },
+    finishPosition: {
+      x: 2,
+      y: 2,
+    },
+    owlStart: {
+      position: {
+        x: 3,
+        y: 4,
+      },
+      direction: 'north',
+    },
+  },
+  startingCode: 'var dirs[] \
+      load dirs[0] left \
+      load dirs[1] right \
+      load dirs[2] left \
+      load dirs[3] left \
+      load dirs[4] right \
+      load dirs[5] right \
+      load dirs[6] right \
+      load dirs[7] left \
+      load dirs[8] right \
+      load dirs[9] left \
+      load dirs[10] right \
+      load dirs[11] left \
+      load dirs[12] left \
+      load dirs[13] left \
+      load dirs[14] right \
+       \
+      ',
+}

@@ -1,0 +1,28 @@
+{
+  title: {
+    en: 'Dead End Filling',
+    de: 'Dead End Filling',
+  },
+  description: {
+    en: 'Implement the algorithm described on the exercise sheet',
+    de: 'Implement the algorithm described on the exercise sheet',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 7,
+      height: 7,
+      walls: {
+        horizontal: '0011010-1011110-0001010-0001001-0010100-1010100',
+        vertical: '010001-100000-111101-110110-001011-110100-001001',
+      },
+    },
+    owlStart: {
+      position: {
+        x: 1,
+        y: 0,
+      },
+      direction: 'north',
+    },
+  },
+}

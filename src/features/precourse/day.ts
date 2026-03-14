@@ -6,7 +6,7 @@ export type Day = {
   tasks: Task[];
 };
 
-const taskModules = import.meta.glob("./tasks/**/*.json", {
+const taskModules = import.meta.glob("./tasks/**/*.json5", {
   eager: true,
   query: "?raw",
   import: "default",
@@ -48,11 +48,7 @@ export function loadDays(): Day[] {
  * @param pathToTask relative path to the task JSON file (e.g., "sandbox/task1") without the ".json" extension.
  */
 export function loadTask(pathToTask: string): TaskData {
-  let fullPath = `./tasks/${pathToTask}.json5`;
-  if (!(fullPath in taskModules)) {
-    // Try old json
-    fullPath = `./tasks/${pathToTask}.json`;
-  }
+  const fullPath = `./tasks/${pathToTask}.json5`;
   if (!(fullPath in taskModules)) {
     throw new Error(`Task not found at path: ${fullPath}`);
   }
@@ -62,7 +58,7 @@ export function loadTask(pathToTask: string): TaskData {
 
 function extractDayAndTask(path: string): { dayId: string; taskKey: string } {
   const parts = path.split("/");
-  // Extract "dayX" from the path "./tasks/dayX/taskY.json"
+  // Extract "dayX" from the path "./tasks/dayX/taskY.json5"
   const dayId = parts[parts.length - 2];
   // Extract "taskY" and remove ".json"
   const taskKey = parts[parts.length - 1].replace(/\.json5?/, "");
