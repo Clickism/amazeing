@@ -12,7 +12,6 @@ export function TaskSelector() {
     setTaskId,
     days,
     completedTasks,
-    partiallyCompletedTasks,
   } = useTasks();
   return (
     <List
@@ -25,7 +24,6 @@ export function TaskSelector() {
             <div
               className={clsx(
                 completedTasks.includes(task.id) && styles.completed,
-                partiallyCompletedTasks[task.id] && styles.partial,
               )}
             >
               {t("day.task", { num: task.taskNumber })}

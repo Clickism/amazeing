@@ -30,8 +30,7 @@ export function TasksPage() {
 
 // Wrapper to access tasks context
 function EditorWrapper() {
-  const { task, completedTasks, setCompleted, setPartiallyCompleted } =
-    useTasks();
+  const { task, completedTasks, setCompleted } = useTasks();
   const level = useMemo(() => new Level(task.levelData), [task.levelData]);
   const [, setSearchParams] = useSearchParams();
 
@@ -49,7 +48,7 @@ function EditorWrapper() {
           if (constraintsMet.every((c) => c.met)) {
             setCompleted(task.id, true);
           } else if (!completedTasks.includes(task.id)) {
-            setPartiallyCompleted(task.id, constraintsMet);
+            // TODO: Add warning popup
           }
         }}
       >

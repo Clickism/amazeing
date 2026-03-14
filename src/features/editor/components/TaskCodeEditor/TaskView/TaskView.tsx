@@ -10,17 +10,14 @@ import { QuotedText } from "../../../../../shared/components/QuotedText/QuotedTe
 
 export function TaskView() {
   const { t } = useTranslatable();
-  const { task, days, completedTasks, partiallyCompletedTasks } = useTasks();
+  const { task, days, completedTasks } = useTasks();
+  const { constraints } = useInterpreter();
   const dayTitle = translateDayId(t, task.dayId);
   const taskNumber = t("day.task", { num: task.taskNumber });
   const day = days.find((d) => d.id === task.dayId)!;
   const completedTasksInDay = day.tasks.filter((t) =>
     completedTasks.includes(t.id),
   ).length;
-  const partiallyCompletedTasksInDay = day.tasks.filter(
-    (t) => partiallyCompletedTasks[t.id] !== undefined,
-  ).length;
-  const { constraints } = useInterpreter();
   return (
     <>
       <div className={styles.currentTaskContainer}>
@@ -50,9 +47,6 @@ export function TaskView() {
                 className={clsx(
                   styles.progressBar,
                   i < completedTasksInDay && styles.completed,
-                  i >= completedTasksInDay &&
-                    i < completedTasksInDay + partiallyCompletedTasksInDay &&
-                    styles.partial,
                 )}
               />
             ))}

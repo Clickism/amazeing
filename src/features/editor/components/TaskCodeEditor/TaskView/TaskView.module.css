@@ -84,6 +84,3 @@
   background-color: var(--clr-success-a10);
 }
 
-.progressBar.partial {
-  background-color: var(--clr-warning-a10);
-}
