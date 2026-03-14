@@ -3,7 +3,7 @@ import { Button } from "../../../../shared/components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { FaArrowRight } from "react-icons/fa6";
 import type { Task } from "../../task.ts";
-import type { Day } from "../../day.ts";
+import { type Day, translateDayId } from "../../day.ts";
 import type { ModalContext } from "../../../../shared/floating/context/ModalContext.tsx";
 import { ConstraintsView } from "../../../editor/components/TaskCodeEditor/TaskView/ConstraintsView/ConstraintsView.tsx";
 import { TbArrowBackUp } from "react-icons/tb";
@@ -41,9 +41,11 @@ export function TaskCompleted({
   return (
     <>
       <div className="fancy-headers">
-        {task.constraints
-          ? t("taskCompleted.descriptionConstraints")
-          : t("taskCompleted.description")}
+        <div style={{ color: "var(--text-color-t90)" }}>
+          {task.constraints
+            ? t("taskCompleted.descriptionConstraints")
+            : t("taskCompleted.description")}
+        </div>
         {task.constraints && (
           <div style={{ marginTop: ".5rem" }}>
             <ConstraintsView
@@ -54,7 +56,7 @@ export function TaskCompleted({
           </div>
         )}
         <h5>{t("taskCompleted.continue")}</h5>
-        <div>
+        <div style={{ color: "var(--text-color-t90)" }}>
           {nextTask
             ? t("taskCompleted.continue.task")
             : nextDay
@@ -80,6 +82,20 @@ export function TaskCompleted({
             }}
           >
             {t("taskCompleted.nextTask")}
+            <FaArrowRight />
+          </Button>
+        )}
+        {!nextTask && nextDay && (
+          <Button
+            variant="primary"
+            onClick={() => {
+              if (nextDay.tasks.length === 0) return;
+              const next = nextDay.tasks[0];
+              setTaskId(next.id);
+              modal.setOpen(false);
+            }}
+          >
+            {t("taskCompleted.nextDay", { day: translateDayId(t, nextDay.id) })}
             <FaArrowRight />
           </Button>
         )}

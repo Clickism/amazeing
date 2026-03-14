@@ -134,12 +134,13 @@
   "constraints.allowed-instructions": "Allowed instructions: {{ allowed }}",
 
   "taskCompleted.title": "Task Completed!",
-  "taskCompleted.description": "Congratulations on completing the task! Your solution is correct!",
-  "taskCompleted.descriptionConstraints": "Congratulations on completing the task! Your solution is correct and it meets all the necessary constraints:",
+  "taskCompleted.description": "Congratulations on completing this task. Your solution is correct.",
+  "taskCompleted.descriptionConstraints": "Congratulations on completing this task. Your solution is correct and it meets all the necessary constraints:",
   "taskCompleted.continue": "Where to go from here?",
   "taskCompleted.continue.task": "You can now move on to the next task or stay on the current task to take a closer look at your solution.",
   "taskCompleted.continue.day": "You have completed the last exercise for this day. You can now move on to the next day or stay on the current task to take a close look at your solution.",
   "taskCompleted.continue.noMoreTasks": "You have completed the last task. You can now stay on the current task to take a close look at your solution, or go back to earlier tasks.",
   "taskCompleted.nextTask": "Next Task",
-  "taskCompleted.stayOnTask": "Stay on Task {{task}}"
+  "taskCompleted.nextDay": "Continue to {{day}}",
+  "taskCompleted.stayOnTask": "Stay here"
 }
