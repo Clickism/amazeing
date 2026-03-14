@@ -84,7 +84,10 @@ export function stringifyToTask(level: LevelData): string {
     },
     startingCode: level.taskMeta?.startingCode,
   };
-  return JSON5.stringify(task, null, 2);
+  let json = JSON5.stringify(task, null, 2);
+  // Indent new lines
+  json = json.replace(/\\n/g, " \\\n      ");
+  return json;
 }
 
 function reorderLanguageKeys(
