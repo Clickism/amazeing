@@ -1,4 +1,4 @@
-import { Popover } from "../../../floating/Popover/Popover.tsx";
+import { Popover } from "../../../floating/components/Popover/Popover.tsx";
 import { Button } from "../../Button/Button.tsx";
 import { useTranslation } from "react-i18next";
 import { FaExternalLinkAlt } from "react-icons/fa";

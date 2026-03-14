@@ -14,7 +14,7 @@ import {
 import styles from "./Popover.module.css";
 import { Tooltip } from "../Tooltip/Tooltip.tsx";
 import { AnimatePresence, motion } from "motion/react";
-import { FloatingContext } from "../FloatingContext/FloatingContext.tsx";
+import { FloatingContext } from "../../context/FloatingContext.tsx";
 
 export type PopoverProps = {
   title?: string | ReactNode;

@@ -12,7 +12,7 @@ import {
 } from "@floating-ui/react";
 import styles from "./Tooltip.module.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { FloatingContext } from "../FloatingContext/FloatingContext.tsx"; // Add these
+import { FloatingContext } from "../../context/FloatingContext.tsx"; // Add these
 
 export type TooltipProps = {
   content: ReactNode;

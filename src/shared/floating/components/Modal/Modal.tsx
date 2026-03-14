@@ -14,11 +14,11 @@ import {
 } from "@floating-ui/react";
 import { Tooltip } from "../Tooltip/Tooltip.tsx";
 import { AnimatePresence, motion } from "motion/react";
-import { Button } from "../../components/Button/Button.tsx";
+import { Button } from "../../../components/Button/Button.tsx";
 import { IoClose } from "react-icons/io5";
-import { CornerGroup } from "../../components/CornerGroup/CornerGroup.tsx";
+import { CornerGroup } from "../../../components/CornerGroup/CornerGroup.tsx";
 import clsx from "clsx";
-import { FloatingContext } from "../FloatingContext/FloatingContext.tsx";
+import { FloatingContext } from "../../context/FloatingContext.tsx";
 
 type ModalProps = {
   title?: string | ReactNode;

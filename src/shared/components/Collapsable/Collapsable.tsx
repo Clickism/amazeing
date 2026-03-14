@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import styles from "./Collapsable.module.css";
 import { IoIosArrowDown } from "react-icons/io";
 import clsx from "clsx";
-import { Tooltip } from "../../floating/Tooltip/Tooltip.tsx";
+import { Tooltip } from "../../floating/components/Tooltip/Tooltip.tsx";
 
 export type CollapsableProps = {
   title: string | ReactNode | ((open: boolean) => string | ReactNode);

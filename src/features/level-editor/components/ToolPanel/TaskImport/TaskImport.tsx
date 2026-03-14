@@ -1,14 +1,14 @@
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { useTranslation } from "react-i18next";
 import { BiImport } from "react-icons/bi";
-import { Modal } from "../../../../../shared/floating/Modal/Modal.tsx";
+import { Modal } from "../../../../../shared/floating/components/Modal/Modal.tsx";
 import { FormGroup } from "../../../../../shared/components/Form/FormGroup/FormGroup.tsx";
 import { useState } from "react";
 import { IoIosWarning } from "react-icons/io";
 import { useLevelEditor } from "../../../context/LevelEditorContext.tsx";
 import type { TaskData } from "../../../../precourse/task.ts";
 import type { LevelData } from "../../../../../core/game/level.ts";
-import { useFloatingContext } from "../../../../../shared/floating/FloatingContext/FloatingContext.tsx";
+import { useFloatingContext } from "../../../../../shared/floating/context/FloatingContext.tsx";
 
 export function TaskImport() {
   const { t } = useTranslation();
