@@ -74,7 +74,7 @@ function parseInstructionTypes(code: string): InstructionType[] {
   return code
     .split("\n")
     .map((line) => line.trim())
-    .filter((line) => line !== "" && !line.startsWith("#"))
+    .filter((line) => line !== "" && !line.startsWith("#") && !line.endsWith(":"))
     .map((line) => line.split(/\s/)[0] as InstructionType)
     // Ignore unknown instructions (i.E: mid-typing)
     .filter((type) => ALL_INSTRUCTIONS_SET.has(type));
