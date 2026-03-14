@@ -84,13 +84,7 @@ export function stringifyToTask(level: LevelData): string {
     },
     startingCode: level.taskMeta?.startingCode,
   };
-  // Hacky but makes json more readable, WILL break if we have any other boolean
-  // values in the data but we don't for now
-  let json = JSON5.stringify(task, null, 2);
-  json = json.replace(/\b(true|false)\b,\n\s*/g, "$1, ");
-  json = json.replace(/\b(true|false)\b\n\s*/g, "$1");
-  json = json.replace(/\[\n\s*(true|false)/g, "[$1");
-  return json;
+  return JSON5.stringify(task, null, 2);
 }
 
 function reorderLanguageKeys(
