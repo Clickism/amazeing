@@ -1,18 +1,19 @@
 {
-  extraInfo: 'Bonus',
   title: {
-    en: 'Bonus: Brute Force',
-    de: 'Bonus: Brute Force',
+    en: 'Brute Force (Bonus)',
+    de: 'Brute-Force (Bonus)',
   },
   description: {
     en: 'Solve the maze using a brute force strategy:<br/>\
       At each step, check the markings on the current square. \
       If all directions are marked, stop. \
-      Otherwise, turn the owl toward an unmarked direction, mark it, and move forward.',
+      Otherwise, turn the owl toward an unmarked direction, mark it, and move forward.\
+      <warn>You need to use "marks" for this task, which will be covered in day 3.</warn>',
     de: 'Löse das Labyrinth mit einer Brute-Force-Strategie:<br/>\
       Überprüfe bei jedem Schritt die Markierungen auf dem aktuellen Feld. \
       Wenn alle Richtungen markiert sind, stoppe. \
-      Andernfalls drehe die Eule in eine unmarkierte Richtung, markiere sie und gehe vorwärts.',
+      Andernfalls drehe die Eule in eine unmarkierte Richtung, markiere sie und gehe vorwärts.\
+      <warn>Du musst für diese Aufgabe "Marks" benutzen, die erst am Tag 3 erzählt werden.</warn>',
   },
   levelData: {
     maze: {

@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from "react";
 import { QuotedText } from "../../../../../../shared/components/QuotedText/QuotedText.tsx";
 import styles from "./TaskDescription.module.css";
-import { IoIosBulb } from "react-icons/io";
+import { IoIosBulb, IoIosWarning } from "react-icons/io";
 import clsx from "clsx";
 import { IconText } from "../../../../../../shared/components/IconText/IconText.tsx";
 import {
@@ -48,7 +48,7 @@ function renderNode(node: ChildNode, key: number, t: Translator): ReactNode {
   }
 }
 
-type Tag = "hint" | "remark" | "br" | "ol" | "li";
+type Tag = "hint" | "remark" | "warn" | "br" | "ol" | "li";
 type TagRenderer = (
   children: ReactNode[],
   el: Element,
@@ -90,7 +90,22 @@ const renderers: Partial<Record<Tag, TagRenderer>> = {
       <IconText
         icon={<IoInformationCircleOutline size={16} />}
         top="3px"
-        className={clsx(styles["tag-hint"])}
+        className={clsx(styles["tag-remark"])}
+      >
+        <div>{children}</div>
+      </IconText>
+    ),
+  ),
+  warn: collapsable(
+    (t) => ({
+      title: t("taskDescription.warn"),
+      color: "var(--clr-warning-a10)"
+    }),
+    (children) => (
+      <IconText
+        icon={<IoIosWarning size={16} />}
+        top="3px"
+        className={clsx(styles["tag-warn"])}
       >
         <div>{children}</div>
       </IconText>
