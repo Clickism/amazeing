@@ -1,7 +1,7 @@
 {
   title: {
     en: 'Guess what',
-    de: 'Guess what',
+    de: 'Rate mal',
   },
   description: {
     en: 'This maze can be solved as follows: <br/> \

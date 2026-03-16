@@ -1,11 +1,17 @@
 {
   title: {
     en: 'Choosing by Counting',
-    de: 'Choosing by Counting',
+    de: 'Zählen und Entscheiden',
   },
   description: {
-    en: 'Create and update a counter that counts the number of left turns against the number of right turns. Whenever you can turn left and right, choose the direction that (according to the counter) has been chosen less often. Otherwise, go straight or turn in the only free direction. If there is a tie, go right first. (The map for this task does not contain any dead ends).',
-    de: 'Create and update a counter that counts the number of left turns against the number of right turns. Whenever you can turn left and right, choose the direction that (according to the counter) has been chosen less often. Otherwise, go straight or turn in the only free direction. If there is a tie, go right first. (The map for this task does not contain any dead ends).',
+    en: 'Create a counter that counts the number of left turns against right turns. \
+      If both left and right are free, choose the direction that has been chosen less often. \
+      Otherwise, go straight or turn in the only free direction. If there is a tie, go right first.\
+      <remark hidden="true">The map for this task does not contain any dead ends.</remark>',
+    de: 'Erstelle einen Zähler, der die Anzahl der Links- gegen Rechtsdrehungen zählt. \
+      Wenn sowohl links als auch rechts frei sind, wähle die Richtung, die seltener gewählt wurde. \
+      Ansonsten gehe geradeaus oder drehe dich in die einzige freie Richtung. Bei einem Unentschieden gehe zuerst nach rechts.\
+      <remark hidden="true">Die Karte für diese Aufgabe enthält keine Dead-Ends.</remark>',
   },
   levelData: {
     maze: {
