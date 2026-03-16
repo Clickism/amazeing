@@ -33,6 +33,13 @@
   gap: 4px;
   padding: .5rem calc((var(--nesting-level) + 1) * 1rem);
   /*padding: .5rem 1rem;*/
+  min-width: 0;
+}
+
+.elementName > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .element:hover {
