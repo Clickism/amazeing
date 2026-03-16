@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { ConstraintsView } from "./ConstraintsView/ConstraintsView.tsx";
 import { useInterpreter } from "../../../context/interpreter/InterpreterContext.tsx";
 import { TaskDescription } from "./TaskDescription/TaskDescription.tsx";
+import { motion } from "motion/react";
 
 export function TaskView() {
   const { t } = useTranslatable();
@@ -19,8 +20,12 @@ export function TaskView() {
     completedTasks.includes(t.id),
   ).length;
   return (
-    <>
-      <div className={styles.currentTaskContainer}>
+    <motion.div className={styles.container} layout>
+      <motion.div
+        className={styles.currentTaskContainer}
+        layout
+        transition={{ type: "spring", stiffness: 500, damping: 50 }}
+      >
         <div className={styles.dayTask}>
           {dayTitle}: {taskNumber}
         </div>
@@ -52,8 +57,14 @@ export function TaskView() {
             ))}
           </div>
         </div>
-      </div>
-      <TaskSelector />
-    </>
+      </motion.div>
+      <motion.div
+        className={styles.taskSelectorContainer}
+        layout
+        transition={{ type: "spring", stiffness: 500, damping: 50 }}
+      >
+        <TaskSelector />
+      </motion.div>
+    </motion.div>
   );
 }

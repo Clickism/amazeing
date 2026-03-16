@@ -1,3 +1,10 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  overflow: hidden;
+}
+
 .currentTaskContainer {
   padding: 1.5rem 1rem 1rem 1rem;
   min-width: 250px;
@@ -9,6 +16,10 @@
   display: flex;
   flex-direction: column;
   gap: .4rem;
+}
+
+.taskSelectorContainer {
+  overflow: auto;
 }
 
 .dayTask {
