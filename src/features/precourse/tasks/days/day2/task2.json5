@@ -4,12 +4,14 @@
     de: 'Pledge',
   },
   description: {
-    en: 'Fix the problems with the Right-Hand Rule by implementing the Pledge algorithm. Please have a look at the sheets for the pseudo code!',
-    de: 'Behebe die Probleme mit der Rechte-Hand-Regel, indem du den Pledge-Algorithmus implementierst. Bitte schau dir die Blätter für den Pseudo-Code an!',
+    en: 'Fix the problems of the "Right-Hand Rule" by implementing the "Pledge Algorithm". \
+    <remark>Have a look at the exercise sheet for detailed instructions!</remark>',
+    de: 'Behebe die Probleme der "Rechte-Hand-Regel", indem du den "Pledge Algorithmus" implementierst. \
+    <remark>Schau dir das Übungsblatt für detaillierte Anweisungen an!</remark>',
   },
   levelData: {
     maze: {
-      theme: 'plains',
+      theme: 'drylands',
       width: 10,
       height: 10,
       walls: {
