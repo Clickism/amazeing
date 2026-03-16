@@ -48,7 +48,7 @@ function renderNode(node: ChildNode, key: number, t: Translator): ReactNode {
   }
 }
 
-type Tag = "hint" | "remark" | "br";
+type Tag = "hint" | "remark" | "br" | "ol" | "li";
 type TagRenderer = (
   children: ReactNode[],
   el: Element,
@@ -97,6 +97,8 @@ const renderers: Partial<Record<Tag, TagRenderer>> = {
     ),
   ),
   br: () => <br />,
+  ol: (children) => <ol className={styles["tag-ol"]}>{children}</ol>,
+  li: (children) => <li className={styles["tag-li"]}>{children}</li>,
 };
 
 function rendererOf(tag: Tag): TagRenderer {

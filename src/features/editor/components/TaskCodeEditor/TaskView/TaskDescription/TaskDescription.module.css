@@ -3,3 +3,21 @@
   color: var(--text-color-t50);
   margin-top: 4px;
 }
+
+.tag-ol {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: ol;
+}
+
+.tag-ol > .tag-li::before {
+  counter-increment: ol;
+  content: counter(ol) ".";
+  margin-right: .5em;
+  color: Var(--text-color-t50);
+}
+
+.tag-li {
+  margin-top: 2px;
+}
