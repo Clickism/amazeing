@@ -156,7 +156,11 @@ function GroupElement({
           >
             <IoIosArrowDown />
           </motion.div>
-          {group.name}
+          {typeof group.name === "string" ? (
+            <span>{group.name}</span>
+          ) : (
+            group.name
+          )}
         </div>
       </div>
 
@@ -211,7 +215,9 @@ function SingleElement({
           }}
         />
       )}
-      <div className={styles.elementName}>{name}</div>
+      <div className={styles.elementName}>
+        {typeof name === "string" ? <span>{name}</span> : name}
+      </div>
     </div>
   );
 }

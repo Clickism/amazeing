@@ -25,6 +25,7 @@
   user-select: none;
   -webkit-user-select: none;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .elementName {

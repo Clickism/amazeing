@@ -18,6 +18,7 @@ import type { LevelData } from "../../../../core/game/level.ts";
 import { useCalculateLayout } from "../../../../shared/utils/useCalculateLayout.tsx";
 import clsx from "clsx";
 import { useState } from "react";
+import { fileEditorMinWidths, taskEditorMinWidths } from "../../widths.ts";
 
 export const MIN_RUN_SPEED = 1;
 export const MAX_RUN_SPEED = 100;
@@ -39,6 +40,8 @@ export type EditorProps = {
   levelStorage?: FileStorage<LevelData>;
 };
 
+const SEPARATOR_WIDTH = 8;
+
 export function Editor({ levelStorage, owlControls = false }: EditorProps) {
   const { output, isRunning, level, owlData, currentLine, markData } =
     useInterpreter();
@@ -51,12 +54,18 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
   const { isMobile } = useCalculateLayout();
   // Open by default if not multi-source (sandbox)
   const [codePanelOpen, setCodePanelOpen] = useState(!isMultiSource(source));
+  const minWidths = isMultiSource(source)
+    ? fileEditorMinWidths
+    : taskEditorMinWidths;
+  const codeEditorWidth = codePanelOpen
+    ? minWidths.codePanel + minWidths.sidePanel + SEPARATOR_WIDTH
+    : minWidths.codePanel;
+  const viewportWidth = owlControls ? 620 : 570;
   return (
     <div className={clsx(styles.editorContainer, isMobile && styles.mobile)}>
       <PanelContainer
         orientation={!isMobile ? "horizontal" : "vertical"}
-        minSize={0.3}
-        minPixels={[owlControls ? 620 : 570, codePanelOpen ? 650 : 400]}
+        minPixels={[viewportWidth, codeEditorWidth]}
       >
         <PanelContainer
           orientation="vertical"

@@ -22,6 +22,11 @@ export type CodeEditorWithPanelProps = CodeEditorProps & {
   onPanelChange?: (open: boolean) => void;
 };
 
+export type PanelMinWidths = {
+  codePanel: number;
+  sidePanel: number;
+};
+
 export function CodeEditorWithPanel({
   initialOpen = false,
   panel,
@@ -53,12 +58,11 @@ export function CodeEditorWithPanel({
                 right: [
                   <Button
                     shape={isMobile ? "icon" : "default"}
-                    onClick={() =>
-                      setPanelOpen((prev) => {
-                        onPanelChange?.(!prev);
-                        return !prev;
-                      })
-                    }
+                    onClick={() => {
+                      const next = !panelOpen;
+                      setPanelOpen(next);
+                      onPanelChange?.(next);
+                    }}
                   >
                     {panel.icon(panelOpen)}
                     {isMobile ? undefined : panel.name}

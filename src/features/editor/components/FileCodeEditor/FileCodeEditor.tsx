@@ -8,6 +8,7 @@ import {
 } from "../CodeEditorWithPanel/CodeEditorWithPanel.tsx";
 import { useCodeModel } from "../../context/code/CodeModelContext.tsx";
 import { isMultiSource } from "../../context/source/source.ts";
+import { fileEditorMinWidths } from "../../widths.ts";
 
 type FileEditorProps = Partial<CodeEditorWithPanelProps> & {
   transitionDuration: number;
@@ -31,7 +32,10 @@ export function FileCodeEditor({ ...props }: FileEditorProps) {
         name: t("codeEditor.files"),
         content: <FileList source={source} />,
         icon: (open) => (open ? <FaRegFolderOpen /> : <FaRegFolderClosed />),
-        minPixels: [200, 250],
+        minPixels: [
+          fileEditorMinWidths.codePanel,
+          fileEditorMinWidths.sidePanel,
+        ],
         initialSizes: [0.7, 0.3],
       }}
       {...props}
