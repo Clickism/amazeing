@@ -8,6 +8,7 @@ import { useTasks } from "../../../precourse/context/TasksContext.tsx";
 import { useTranslatable } from "../../../../shared/i18n/i18n.ts";
 import { useCodeModel } from "../../context/code/CodeModelContext.tsx";
 import { CodeReset } from "./CodeReset/CodeReset.tsx";
+import { taskEditorMinWidths } from "../../widths.ts";
 
 type TaskCodeEditorProps = Partial<CodeEditorWithPanelProps> & {
   transitionDuration: number;
@@ -33,7 +34,10 @@ export function TaskCodeEditor({
         name: t("codeEditor.tasks"),
         content: <TaskView />,
         icon: () => <GrTask />,
-        minPixels: [300, 300],
+        minPixels: [
+          taskEditorMinWidths.codePanel,
+          taskEditorMinWidths.sidePanel,
+        ],
         initialSizes: [0.6, 0.4],
       }}
       onPanelChange={onPanelChange}

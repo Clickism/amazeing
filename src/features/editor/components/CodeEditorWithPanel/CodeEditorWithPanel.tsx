@@ -22,6 +22,11 @@ export type CodeEditorWithPanelProps = CodeEditorProps & {
   onPanelChange?: (open: boolean) => void;
 };
 
+export type PanelMinWidths = {
+  codePanel: number;
+  sidePanel: number;
+}
+
 export function CodeEditorWithPanel({
   initialOpen = false,
   panel,
