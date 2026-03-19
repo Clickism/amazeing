@@ -5,10 +5,8 @@ import {
   type Address,
   type Array,
   type ArrayAccess,
-  hasSameType,
   type Integer,
   isArrayAccess,
-  typeOfValue,
   type Value,
   type Variable,
 } from "./types.ts";
@@ -341,15 +339,15 @@ export class Environment {
     const array = this.getArray(arrayName);
     const index = this.getValidArrayIndex(address, true);
     // Check type
-    if (array.length > 0) {
-      const elem = array[0];
-      if (elem !== null && elem !== undefined && !hasSameType(elem, value)) {
-        throw new ErrorWithTip(
-          `Cannot add value of type "${typeOfValue(value)}" to array "${arrayName}" that has elements of type "${typeOfValue(elem)}"`,
-          `An array's type is decided by the first element that is added to it. Make sure to only add values of the same type to an array.`,
-        );
-      }
-    }
+    // if (array.length > 0) {
+    //   const elem = array[0];
+    //   if (elem !== null && elem !== undefined && !hasSameType(elem, value)) {
+    //     throw new ErrorWithTip(
+    //       `Cannot add value of type "${typeOfValue(value)}" to array "${arrayName}" that has elements of type "${typeOfValue(elem)}"`,
+    //       `An array's type is decided by the first element that is added to it. Make sure to only add values of the same type to an array.`,
+    //     );
+    //   }
+    // }
     array[index] = value;
   }
 }

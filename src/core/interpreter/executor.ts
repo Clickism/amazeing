@@ -3,7 +3,7 @@ import type {
   ThreeVarGenericInstruction,
   ThreeVarInstruction,
 } from "./instruction.ts";
-import { Environment } from "./environment.ts";
+import { Environment, type VariableValue } from "./environment.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { PcTarget } from "./interpreter.ts";
 import {
@@ -57,7 +57,10 @@ export const EXECUTORS: Executors = {
   },
 
   copy: (env, { dest, src }) => {
-    const value = env.getOrThrow(src);
+    let value = env.getOrThrow(src);
+    if (Array.isArray(value)) {
+      value = [...(value as null[])];
+    }
     env.setOrThrow(dest, value);
   },
 
@@ -167,7 +170,7 @@ export const EXECUTORS: Executors = {
     } else {
       env.console.log({
         type: "system",
-        text: `[DEBUG] ${src}: type = ${typeOfVariableValue(value)}, value = ${value.toString()}`,
+        text: `[DEBUG] ${src}: type = ${typeOfVariableValue(value)}, value = ${formatValue(value)}`,
       });
     }
   },
@@ -252,4 +255,15 @@ function genericLogicalExecutor(
   return genericArithmeticExecutor(env, instruction, (a, b) =>
     booleanToInteger(cond(a, b)),
   );
+}
+
+/**
+ * Formats a value
+ * @param value variable value
+ */
+function formatValue(value: VariableValue): string {
+  if (!Array.isArray(value)) {
+    return value?.toString() ?? "?";
+  }
+  return "[" + value.map(formatValue) + "]";
 }

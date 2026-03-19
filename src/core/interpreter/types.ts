@@ -108,8 +108,10 @@ export function typeOfVariableValue(value: VariableValue): string {
     if (value.length === 0) {
       return "array[unknown]";
     }
-    const elementType = typeOfVariableValue(value[0]);
-    return `array[${elementType}]`;
+    // Print all types
+    const types = value.filter((v) => v !== null).map(typeOfVariableValue);
+    const type = [ ...new Set(types) ].join("|");
+    return `array[${type}]`;
   }
   throw new Error(`Unknown variable value type: ${value}`);
 }
