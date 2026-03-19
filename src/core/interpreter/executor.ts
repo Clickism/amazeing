@@ -7,7 +7,9 @@ import { Environment, type VariableValue } from "./environment.ts";
 import { ErrorWithTip } from "./error.ts";
 import type { PcTarget } from "./interpreter.ts";
 import {
+  type Address,
   booleanToInteger,
+  isArrayAccess,
   isValue,
   typeOfVariableValue,
   type Value,
@@ -57,9 +59,9 @@ export const EXECUTORS: Executors = {
   },
 
   copy: (env, { dest, src }) => {
-    let value = env.getOrThrow(src);
-    if (Array.isArray(value)) {
-      value = [...(value as null[])];
+    const value = env.getOrThrow(src);
+    if (Array.isArray(value) && isSameVariable(dest, src)) {
+      throw new Error(`Cannot copy an array inside itself!`);
     }
     env.setOrThrow(dest, value);
   },
@@ -266,4 +268,15 @@ function formatValue(value: VariableValue): string {
     return value?.toString() ?? "?";
   }
   return "[" + value.map(formatValue) + "]";
+}
+
+function isSameVariable(address1: Address, address2: Address) {
+  return getVariableName(address1) === getVariableName(address2);
+}
+
+function getVariableName(address: Address): string {
+  if (isArrayAccess(address)) {
+    return address.array;
+  }
+  return address;
 }
