@@ -17,6 +17,7 @@ import type { Marks } from "../game/marks.ts";
 export type VariableValue = Value | Array | null;
 export type VariableValueNotNull = Value | Array;
 export type VariableMap = Map<string, VariableValue>;
+export type LabelMap = Map<string, LabelDefinition>;
 
 export type StackFrame = {
   returnAddress: number | undefined;
@@ -34,7 +35,7 @@ function isArg(address: Address) {
  * Environment for the interpreter.
  */
 export class Environment {
-  labels: Map<string, LabelDefinition>;
+  labels: LabelMap;
   console: InterpreterConsole;
   owl: Owl;
   level: Level;
@@ -44,7 +45,7 @@ export class Environment {
   private args: VariableMap;
 
   constructor(
-    labels: Map<string, LabelDefinition>,
+    labels: LabelMap,
     interpreterConsole: InterpreterConsole,
     owl: Owl,
     level: Level,

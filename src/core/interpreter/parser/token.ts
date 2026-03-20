@@ -13,3 +13,5 @@ export type Token =
   | Tok<"lbracket">
   | Tok<"rbracket">
   | Tok<"newline">;
+
+export type TokenType = Token["type"];
