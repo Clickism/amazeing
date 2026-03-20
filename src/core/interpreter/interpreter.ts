@@ -1,5 +1,4 @@
 import type { InstructionData } from "./instruction.ts";
-import { parse } from "./parser.ts";
 import { ErrorWithTip, LocatableError } from "./error.ts";
 import { Environment } from "./environment.ts";
 import { type InterpreterConsole } from "./console.ts";
@@ -7,6 +6,8 @@ import { EXECUTORS } from "./executor.ts";
 import { Owl } from "../game/owl.ts";
 import type { Level } from "../game/level.ts";
 import type { Marks } from "../game/marks.ts";
+import { Lexer } from "./parser/lexer.ts";
+import { Parser } from "./parser/parser.ts";
 
 const MAX_STEPS = 10000;
 
@@ -137,7 +138,8 @@ export class InterpreterImpl extends Interpreter {
     marks: Marks,
     onFinish?: () => void,
   ): Interpreter {
-    const { instructions, labels } = parse(code);
+    const tokens = new Lexer(code).tokenize();
+    const { instructions, labels } = new Parser(tokens).parse();
     return new InterpreterImpl(
       instructions,
       new Environment(labels, interpreterConsole, owl, level, marks),
