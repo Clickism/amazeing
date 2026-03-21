@@ -1,5 +1,7 @@
 import { loadTaskFromString, type Task, type TaskData } from "./task.ts";
 import type { Translator } from "../../shared/i18n/i18n.ts";
+import daysDefinitionString from "./tasks/days.json5?raw";
+import JSON5 from "json5";
 
 export type Day = {
   id: string;
@@ -21,29 +23,31 @@ const taskStartingCodes = import.meta.glob("./tasks/**/*.code", {
 export function loadDays(): Day[] {
   const daysMap: Record<string, Task[]> = {};
 
-  for (const path in taskModules) {
-    // Only consider days tasks
-    if (!path.startsWith("./tasks/days/")) continue;
-    const { dayId, taskKey } = extractDayAndTask(path);
+  // Map from day to task paths
+  const daysDefinition: Record<string, string[]> =
+    JSON5.parse(daysDefinitionString);
+  for (const dayId in daysDefinition) {
+    const taskPaths = daysDefinition[dayId];
+    for (let i = 0; i < taskPaths.length; i++) {
+      const taskPath = taskPaths[i];
+      if (taskPath === null || taskPath === undefined || taskPath === "") {
+        continue; // Skip empty tasks
+      }
+      const taskData = loadTask(taskPath);
+      const taskNumber = i + 1;
 
-    const codePath = getCodePath(path);
-    const startingCode = taskStartingCodes[codePath] as string | undefined;
-    const raw = taskModules[path] as string;
-    const taskData = loadTaskFromString(raw, startingCode);
+      const task: Task = {
+        ...taskData,
+        id: taskIdOf(dayId, taskNumber),
+        dayId,
+        taskNumber,
+      };
 
-    const taskNumber = parseInt(taskKey.replace("task", ""), 10);
-
-    const task: Task = {
-      ...taskData,
-      id: taskIdOf(dayId, taskNumber),
-      dayId: dayId,
-      taskNumber,
-    };
-
-    if (!daysMap[dayId]) {
-      daysMap[dayId] = [];
+      if (!daysMap[dayId]) {
+        daysMap[dayId] = [];
+      }
+      daysMap[dayId].push(task);
     }
-    daysMap[dayId].push(task);
   }
 
   return Object.entries(daysMap).map(([key, tasks]) => ({
@@ -62,18 +66,9 @@ export function loadTask(pathToTask: string): TaskData {
     throw new Error(`Task not found at path: ${fullPath}`);
   }
   const codePath = getCodePath(fullPath);
-  const startingCode = taskModules[codePath] as string | undefined;
+  const startingCode = taskStartingCodes[codePath] as string | undefined;
   const raw = taskModules[fullPath] as string;
   return loadTaskFromString(raw, startingCode);
-}
-
-function extractDayAndTask(path: string): { dayId: string; taskKey: string } {
-  const parts = path.split("/");
-  // Extract "dayX" from the path "./tasks/dayX/taskY.json5"
-  const dayId = parts[parts.length - 2];
-  // Extract "taskY" and remove ".json"
-  const taskKey = parts[parts.length - 1].replace(/\.json5?/, "");
-  return { dayId, taskKey };
 }
 
 /**

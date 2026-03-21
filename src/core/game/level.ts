@@ -24,6 +24,11 @@ export type LevelData = {
     direction: CardinalDirection;
   };
   finishPosition?: Position;
+  /**
+   * Whether the viewport/game is required to solve a given task,
+   * if set to false, the viewport will be blurred out
+   */
+  requiredForTask?: boolean;
 
   /**
    * Task metadata for the level, used for saving task metadata

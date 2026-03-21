@@ -1,0 +1,32 @@
+{
+  title: {
+    en: 'Strings',
+    de: 'Strings',
+  },
+  description: {
+    en: 'Use "Treeana"\'s clues to solve this tree-like labyrinth! <refertosheet/>',
+    de: 'Benutze "Treeana"s Hinweise, um dieses baumartige Labyrinth zu lösen! <refertosheet/>',
+  },
+  levelData: {
+    maze: {
+      theme: 'drylands',
+      width: 7,
+      height: 5,
+      walls: {
+        horizontal: '0100010-0000000-1011101-1010101',
+        vertical: '111111-001100-111111-100001-001100',
+      },
+    },
+    finishPosition: {
+      x: 2,
+      y: 2,
+    },
+    owlStart: {
+      position: {
+        x: 3,
+        y: 4,
+      },
+      direction: 'north',
+    },
+  },
+}

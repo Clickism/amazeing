@@ -32,6 +32,11 @@ export type TaskData = {
    * Constraints are used to add additional requirements to the task, such as a maximum instruction count.
    */
   constraints?: Constraint[];
+  /**
+   * Whether the solution can be verified by the user themselves.
+   * If set to true, the user can click a button to mark their solution as correct.
+   */
+  selfChecked?: boolean;
 };
 
 /**

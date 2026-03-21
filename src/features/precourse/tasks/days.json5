@@ -1,0 +1,29 @@
+{
+  day1: [
+    "day1/walking",
+    "day1/straight_ahead",
+    "day1/exploring_walls",
+    "day1/subroutines",
+    "day1/guess_what",
+    "day1/choosing_by_counting",
+    "day1/right_hand_rule",
+    "day1/bonus_brute_force",
+  ],
+  day2: [
+    null,
+    "day2/pledge",
+    "day2/spirals",
+    "day2/arrays",
+    "day2/stack",
+    "day2/binary_trees",
+  ],
+  day3: [
+    null,
+    "day3/roundabout",
+    "day3/dead_end_filling",
+    null,
+    null,
+    "day3/depth_first_search",
+    "day3/bonus_queue",
+  ]
+}

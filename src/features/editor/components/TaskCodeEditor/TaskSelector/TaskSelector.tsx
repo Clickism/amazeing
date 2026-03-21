@@ -21,8 +21,9 @@ export function TaskSelector() {
                 completedTasks.includes(task.id) && styles.completed,
               )}
             >
-              {t("day.task", { num: task.taskNumber }) +
-                `: ${t(task.title)}`}
+              {task.taskNumber
+                ? t("day.task", { num: task.taskNumber }) + `: ${t(task.title)}`
+                : t("day.task", { num: null }).trim() + `: ${t(task.title)}`}
             </div>
           ),
         })),
