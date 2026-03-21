@@ -9,6 +9,7 @@ const ESCAPES: Record<string, string> = {
   t: "\t",
   "'": "'",
   "\\": "\\",
+  "0": "\0",
 };
 
 /**
