@@ -5,6 +5,7 @@ import {
   type Address,
   type Array,
   type ArrayAccess,
+  getVariableOf,
   type Integer,
   isArrayAccess,
   type Value,
@@ -135,7 +136,9 @@ export class Environment {
   getIntegerOrThrow(address: Address): Integer {
     const value = this.getOrThrow(address);
     if (typeof value !== "number") {
-      throw new Error(`Variable "${address}" does not contain an integer.`);
+      throw new Error(
+        `Variable "${getVariableOf(address)}" does not contain an integer.`,
+      );
     }
     return value;
   }
@@ -143,7 +146,9 @@ export class Environment {
   getValueOrThrow(address: Address): Value {
     const value = this.getOrThrow(address);
     if (Array.isArray(value)) {
-      throw new Error(`Variable "${address}" is an array, not a value.`);
+      throw new Error(
+        `Variable "${getVariableOf(address)}" is an array, not a value.`,
+      );
     }
     return value;
   }

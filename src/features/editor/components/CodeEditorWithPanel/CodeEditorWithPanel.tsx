@@ -25,6 +25,7 @@ export type CodeEditorWithPanelProps = CodeEditorProps & {
 export type PanelMinWidths = {
   codePanel: number;
   sidePanel: number;
+  mobile?: Omit<PanelMinWidths, "mobile">;
 };
 
 export function CodeEditorWithPanel({
@@ -39,6 +40,8 @@ export function CodeEditorWithPanel({
   return (
     <div className={clsx(styles.container, isMobile && styles.mobile)}>
       <PanelContainer
+        // Remount on mobile change to keep panel state in sync
+        key={`${isMobile}`}
         orientation={!isMobile ? "horizontal" : "vertical"}
         panelCount={panelOpen ? 2 : 1}
         initialSizes={panel.initialSizes}

@@ -54,9 +54,13 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
   const { isMobile } = useCalculateLayout();
   // Open by default if not multi-source (sandbox)
   const [codePanelOpen, setCodePanelOpen] = useState(!isMultiSource(source));
-  const minWidths = isMultiSource(source)
+  let minWidths = isMultiSource(source)
     ? fileEditorMinWidths
     : taskEditorMinWidths;
+  if (minWidths.mobile && isMobile) {
+    // Use mobile widths
+    minWidths = minWidths.mobile;
+  }
   const codeEditorWidth = codePanelOpen
     ? minWidths.codePanel + minWidths.sidePanel + SEPARATOR_WIDTH
     : minWidths.codePanel;
@@ -96,6 +100,7 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
             onPanelChange={(open) => {
               setCodePanelOpen(open);
             }}
+            minWidths={minWidths}
           />
         ) : (
           <TaskCodeEditor
@@ -104,6 +109,7 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
             onPanelChange={(open) => {
               setCodePanelOpen(open);
             }}
+            minWidths={minWidths}
           />
         )}
       </PanelContainer>

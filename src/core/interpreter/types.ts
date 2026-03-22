@@ -124,3 +124,10 @@ export function typeOfVariableValue(value: VariableValue): string {
 export function hasSameType(a: Value, b: Value): boolean {
   return typeOfValue(a) === typeOfValue(b);
 }
+
+export function getVariableOf(address: Address): Variable {
+  if (isArrayAccess(address)) {
+    return address.array;
+  }
+  return address;
+}

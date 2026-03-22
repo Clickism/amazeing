@@ -10,6 +10,13 @@
   padding: 1rem;
 }
 
+@media (max-width: 768px) {
+  .editorContainer {
+    height: 100%;
+    padding-bottom: 4rem;
+  }
+}
+
 .editorContainer.mobile {
   overflow: visible;
 }

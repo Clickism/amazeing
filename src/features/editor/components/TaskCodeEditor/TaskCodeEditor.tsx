@@ -1,6 +1,7 @@
 import {
   CodeEditorWithPanel,
   type CodeEditorWithPanelProps,
+  type PanelMinWidths,
 } from "../CodeEditorWithPanel/CodeEditorWithPanel.tsx";
 import { GrTask } from "react-icons/gr";
 import { TaskView } from "./TaskView/TaskView.tsx";
@@ -8,14 +9,15 @@ import { useTasks } from "../../../precourse/context/TasksContext.tsx";
 import { useTranslatable } from "../../../../shared/i18n/i18n.ts";
 import { useCodeModel } from "../../context/code/CodeModelContext.tsx";
 import { CodeReset } from "./CodeReset/CodeReset.tsx";
-import { taskEditorMinWidths } from "../../widths.ts";
 
 type TaskCodeEditorProps = Partial<CodeEditorWithPanelProps> & {
   transitionDuration: number;
+  minWidths: PanelMinWidths;
 };
 
 export function TaskCodeEditor({
   onPanelChange,
+  minWidths,
   ...props
 }: TaskCodeEditorProps) {
   const { t } = useTranslatable();
@@ -34,10 +36,7 @@ export function TaskCodeEditor({
         name: t("codeEditor.tasks"),
         content: <TaskView />,
         icon: () => <GrTask />,
-        minPixels: [
-          taskEditorMinWidths.codePanel,
-          taskEditorMinWidths.sidePanel,
-        ],
+        minPixels: [minWidths.codePanel, minWidths.sidePanel],
         initialSizes: [0.6, 0.4],
       }}
       onPanelChange={onPanelChange}

@@ -161,7 +161,7 @@ export const EXECUTORS: Executors = {
 
   print: (env, { src }) => {
     const value = env.getOrThrow(src);
-    env.console.log({ type: "log", text: value.toString() });
+    env.console.log({ type: "log", text: formatValue(value) });
   },
 
   printascii: (env, { src }) => {

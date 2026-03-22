@@ -21,6 +21,12 @@ body, html, #root {
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  body, html, #root {
+    overflow: auto;
+  }
+}
+
 *,
 *::before,
 *::after {

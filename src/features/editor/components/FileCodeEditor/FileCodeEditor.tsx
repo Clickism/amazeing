@@ -5,21 +5,23 @@ import { FileList } from "./FileList/FileList.tsx";
 import {
   CodeEditorWithPanel,
   type CodeEditorWithPanelProps,
+  type PanelMinWidths,
 } from "../CodeEditorWithPanel/CodeEditorWithPanel.tsx";
 import { useCodeModel } from "../../context/code/CodeModelContext.tsx";
 import { isMultiSource } from "../../context/source/source.ts";
-import { fileEditorMinWidths } from "../../widths.ts";
 
 type FileEditorProps = Partial<CodeEditorWithPanelProps> & {
   transitionDuration: number;
+  minWidths: PanelMinWidths;
 };
 
-export function FileCodeEditor({ ...props }: FileEditorProps) {
+export function FileCodeEditor({ minWidths, ...props }: FileEditorProps) {
   const { t } = useTranslation();
   const { code, setCode, source } = useCodeModel();
   if (!isMultiSource(source)) {
     throw new Error("FileCodeEditor can only be used with a multi-source.");
   }
+
   return (
     <CodeEditorWithPanel
       title={source.activeSource.name}
@@ -32,10 +34,7 @@ export function FileCodeEditor({ ...props }: FileEditorProps) {
         name: t("codeEditor.files"),
         content: <FileList source={source} />,
         icon: (open) => (open ? <FaRegFolderOpen /> : <FaRegFolderClosed />),
-        minPixels: [
-          fileEditorMinWidths.codePanel,
-          fileEditorMinWidths.sidePanel,
-        ],
+        minPixels: [minWidths.codePanel, minWidths.sidePanel],
         initialSizes: [0.7, 0.3],
       }}
       {...props}
