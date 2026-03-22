@@ -1,0 +1,3 @@
+# Flip a coin and put the result into "result"
+var result
+copy result $flip
