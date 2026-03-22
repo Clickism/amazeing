@@ -165,13 +165,13 @@ export function loadTaskFromString(
 }
 
 // We Encode walls as strings to declutter json
-function encode2DBooleanArray(array: boolean[][]): string {
+export function encode2DBooleanArray(array: boolean[][]): string {
   return array
     .map((row) => row.map((value) => (value ? "1" : "0")).join(""))
     .join("-");
 }
 
-function decode2DBooleanArray(array: string) {
+export function decode2DBooleanArray(array: string) {
   return array
     .split("-")
     .map((row) => row.split("").map((char) => char === "1"));
