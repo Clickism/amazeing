@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  tags:
+    - npm-build
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    when: on_success
+    access: none
+    expire_in: 1 day
+    paths:
+      - dist/
+
+deploy-prog2vk:
+  stage: deploy
+  tags:
+    - prog2vk.cs.uni-saarland.de
+  script:
+    - cp -r "${CI_PROJECT_DIR}/dist/." "/var/www/amazeing/"
+  dependencies:
+    - build
+  when: manual
