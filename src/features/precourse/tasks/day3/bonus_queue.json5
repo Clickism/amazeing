@@ -36,5 +36,7 @@
       },
       direction: 'north',
     },
+    requiredForTask: false,
   },
+  selfChecked: true,
 }
