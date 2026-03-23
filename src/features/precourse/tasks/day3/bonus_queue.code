@@ -1,0 +1,37 @@
+# Test your code here
+exit
+
+
+# queue_init
+# Initializes the queue.
+# Return: The queue
+queue_init:
+  # Implement
+  ret
+
+# queue_push
+# Pushes an element into the queue.
+# Argument 0: The queue
+# Argument 1: Element to be pushed into the queue
+# Return: -
+queue_push:
+  # Implement
+  ret
+
+# QueuePop
+# Pops an element from the queue.
+# Argument 0: The queue
+# Return: The first element of the queue
+queue_pop:
+  # Implement
+  ret
+
+# queue_empty
+# Checks if the queue is empty.
+# Argument 0: The queue
+# Return: 1 if the queue is empty, 0 otherwise
+queue_empty:
+  # Implement
+  ret
+
+# Copy your stack implementation here
