@@ -87,10 +87,14 @@ export function InterpreterProvider({
   }, [code, reset]);
 
   // Remove invalid breakpoints
+  const { setBreakpoints } = breakpoints;
   useEffect(() => {
     const lines = code.split("\n").length;
-    breakpoints.setBreakpoints((prev) => prev.filter((line) => line <= lines));
-  }, [breakpoints, code]);
+    setBreakpoints((prev) => {
+      const next = prev.filter((line) => line < lines);
+      return next.length === prev.length ? prev : next;
+    });
+  }, [setBreakpoints, code]);
 
   const executionValue = useMemo<ExecutionContextType>(
     () => ({
