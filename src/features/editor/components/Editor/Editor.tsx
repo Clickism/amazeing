@@ -78,8 +78,10 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
     currentLineHighlighter(() => currentLine),
     lineNumbersClickable((line) => {
       setBreakpoints((prev) => {
-        prev[line] = !prev[line] ? 1 : 0;
-        return [...prev];
+        if (!prev.includes(line)) {
+          return [...prev, line];
+        }
+        return prev.filter((l) => l !== line);
       });
     }),
     breakpointDisplay(breakpoints),
