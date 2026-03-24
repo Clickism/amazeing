@@ -8,6 +8,9 @@
  */
 function splitCodeAndLabels(line: string): string[] {
     const result: string[] = [];
+    if (line.trim() === "") {
+        return [""];
+    }
     let currentLine = "";
     let i = 0;
     while (i < line.length) {
@@ -32,7 +35,9 @@ function splitCodeAndLabels(line: string): string[] {
         }
     }
 
-    result.push(currentLine.trim());
+    if (currentLine.trim() !== "") {
+        result.push(currentLine.trim());
+    }
 
     return result;
 }
