@@ -29,7 +29,7 @@ function LevelWrapper() {
   const levelStorage = useFileStorage<LevelData>("custom");
   return (
     <InterpreterWrapper level={level}>
-      <Editor levelStorage={levelStorage} owlControls />
+      <Editor levelStorage={levelStorage} />
     </InterpreterWrapper>
   );
 }

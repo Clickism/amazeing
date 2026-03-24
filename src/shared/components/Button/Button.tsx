@@ -10,6 +10,7 @@ export type ButtonVariant =
   | "disabled"
   | "success"
   | "danger"
+  | "warning"
   | "background"
   | "transparent"
   | "outlined"

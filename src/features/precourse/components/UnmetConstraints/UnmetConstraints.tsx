@@ -6,6 +6,7 @@ import { ConstraintsView } from "../../../editor/components/TaskCodeEditor/TaskV
 import { Button } from "../../../../shared/components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { TbArrowBackUp } from "react-icons/tb";
+import { useEffect } from "react";
 
 type UnmetConstraintsProps = {
   modal: ModalContext;
@@ -18,15 +19,17 @@ export function UnmetConstraints({
 }: UnmetConstraintsProps) {
   const { t } = useTranslation();
   // Set up modal props
-  modal.setProps({
-    title: (
-      <div className="flex-text" style={{ color: "var(--clr-danger-a10)" }}>
-        <BiSolidError />
-        {t("unmetConstraints.title")}
-      </div>
-    ),
-    maxWidth: 500,
-  });
+  useEffect(() => {
+    modal.setProps({
+      title: (
+        <div className="flex-text" style={{ color: "var(--clr-danger-a10)" }}>
+          <BiSolidError />
+          {t("unmetConstraints.title")}
+        </div>
+      ),
+      maxWidth: 500,
+    });
+  }, []);
   return (
     <>
       <div className="fancy-headers">

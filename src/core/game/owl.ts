@@ -23,12 +23,10 @@ export type OwlData = {
  * Owl class
  */
 export class Owl {
-  data: () => OwlData;
-  setData: (data: OwlData) => void;
+  data: OwlData;
 
-  constructor(data: () => OwlData, setData: (data: OwlData) => void) {
+  constructor(data: OwlData) {
     this.data = data;
-    this.setData = setData;
   }
 
   /**
@@ -36,10 +34,9 @@ export class Owl {
    * @return Whether the move was successful.
    */
   move(): boolean {
-    const data = this.cloneData();
+    const data = this.data;
     data.position = this.nextPosition(data);
     data.positionHistory.add(`${data.position.x}:${data.position.y}`);
-    this.setData(data);
     return true;
   }
 
@@ -48,9 +45,8 @@ export class Owl {
    * @param direction The direction to turn (left or right).
    */
   turn(direction: LeftRight): void {
-    const data = this.cloneData();
+    const data = this.data;
     data.direction = this.normalizeLeftRight(data, direction);
-    this.setData(data);
   }
 
   /**
@@ -101,15 +97,6 @@ export class Owl {
     }
     return CARDINAL_DIRECTIONS[currentIndex];
   }
-
-  private cloneData(): OwlData {
-    const data = this.data();
-    return {
-      position: { ...data.position },
-      direction: data.direction,
-      positionHistory: new Set(data.positionHistory),
-    };
-  }
 }
 
 /**
@@ -118,12 +105,8 @@ export class Owl {
 export class LevelOwl extends Owl {
   level: Level;
 
-  constructor(
-    data: () => OwlData,
-    setData: (data: OwlData) => void,
-    level: Level,
-  ) {
-    super(data, setData);
+  constructor(data: OwlData, level: Level) {
+    super(data);
     this.level = level;
   }
 
@@ -138,7 +121,7 @@ export class LevelOwl extends Owl {
    * Check if the owl can move in its current direction.
    */
   canMove(): boolean {
-    const data = this.data();
+    const data = this.data;
     return this.level.canOwlMove(data, data.direction);
   }
 }

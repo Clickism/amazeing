@@ -15,7 +15,7 @@ export const amazeing = StreamLanguage.define({
     if (stream.match(/#.*/)) return "comment";
     if (stream.match(/\b\w+:/)) return "variableName.function";
     // Match word
-    if (stream.match(/^\w+/)) {
+    if (stream.match(/^\$?\w+/)) {
       const word = stream.current();
       if (state.isDefinition) {
         state.isDefinition = false;
@@ -26,6 +26,7 @@ export const amazeing = StreamLanguage.define({
         return "keyword";
       }
       if (/^arg\d+$/.test(word)) return "string";
+      if (/^\$\w+$/.test(word)) return "string";
       if (/^\d+$/.test(word)) return "number";
       if (constantPattern.test(word)) return "number";
       return null;

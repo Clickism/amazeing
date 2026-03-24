@@ -1,0 +1,41 @@
+{
+  title: {
+    en: 'Hello, World!',
+    de: 'Hello, World!',
+  },
+  description: {
+    en: 'Implement the function "print_string" that can print null-terminated strings to the console!<br/>\
+     Test your solution after implementing it. \
+     <hint hidden="true">The "printascii" instruction might be helpful for this</hint>\
+     <refertosheet/>',
+    de: 'Implementiere die Funktion "print_string", die nullterminierte Strings auf der Konsole ausgeben kann!<br/>\
+     Teste deine Lösung nach der Implementierung. \
+     <hint hidden="true">Der Befehl "printascii" kann dir dabei helfen</hint>\
+     <refertosheet/>',
+  },
+  // Random map from previous task
+  levelData: {
+    maze: {
+      theme: 'drylands',
+      width: 7,
+      height: 5,
+      walls: {
+        horizontal: '0100010-0000000-1011101-1010101',
+        vertical: '111111-001100-111111-100001-001100',
+      },
+    },
+    finishPosition: {
+      x: 2,
+      y: 2,
+    },
+    owlStart: {
+      position: {
+        x: 3,
+        y: 4,
+      },
+      direction: 'north',
+    },
+    requiredForTask: false
+  },
+  selfChecked: true
+}

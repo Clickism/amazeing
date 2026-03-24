@@ -7,6 +7,7 @@ import { type Day, translateDayId } from "../../day.ts";
 import type { ModalContext } from "../../../../shared/floating/context/ModalContext.tsx";
 import { ConstraintsView } from "../../../editor/components/TaskCodeEditor/TaskView/ConstraintsView/ConstraintsView.tsx";
 import { TbArrowBackUp } from "react-icons/tb";
+import { useEffect } from "react";
 
 type TaskCompletedProps = {
   task: Task;
@@ -23,15 +24,17 @@ export function TaskCompleted({
 }: TaskCompletedProps) {
   const { t } = useTranslation();
   // Set up modal props
-  modal.setProps({
-    title: (
-      <div className="flex-text" style={{ color: "var(--clr-warning-a10)" }}>
-        <FaTrophy />
-        {t("taskCompleted.title")}
-      </div>
-    ),
-    maxWidth: 500,
-  });
+  useEffect(() => {
+    modal.setProps({
+      title: (
+        <div className="flex-text" style={{ color: "var(--clr-warning-a10)" }}>
+          <FaTrophy />
+          {t("taskCompleted.title")}
+        </div>
+      ),
+      maxWidth: 500,
+    });
+  }, []);
   // Find next task
   const currentDayIdx = days.findIndex((d) => d.id === task.dayId);
   const currentDay = days[currentDayIdx];

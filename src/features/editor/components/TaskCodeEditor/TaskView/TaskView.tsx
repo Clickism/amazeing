@@ -5,16 +5,16 @@ import { useTasks } from "../../../../precourse/context/TasksContext.tsx";
 import { TaskSelector } from "../TaskSelector/TaskSelector.tsx";
 import clsx from "clsx";
 import { ConstraintsView } from "./ConstraintsView/ConstraintsView.tsx";
-import { useInterpreter } from "../../../context/interpreter/InterpreterContext.tsx";
 import { TaskDescription } from "./TaskDescription/TaskDescription.tsx";
 import { motion } from "motion/react";
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import { MdDoneAll } from "react-icons/md";
+import { useConstraints } from "../../../context/interpreter/contexts/ConstraintsContext.tsx";
 
 export function TaskView() {
   const { t } = useTranslatable();
   const { task, days, completedTasks, setCompleted } = useTasks();
-  const { constraints } = useInterpreter();
+  const { constraints } = useConstraints();
   const dayTitle = translateDayId(t, task.dayId);
   const taskNumber = t("day.task", { num: task.taskNumber });
   const day = days.find((d) => d.id === task.dayId)!;

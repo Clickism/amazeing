@@ -4,9 +4,9 @@
     de: 'String der Hoffnung',
   },
   description: {
-    en: 'Implement the functions "string_length", "string_concat" and "string_equals"!<br/>\
+    en: 'Implement the functions "string_length", "string_equals" and "string_concat"!<br/>\
      Test your solution after implementing them. <refertosheet/>',
-    de: 'Implementiere die Funktionen "string_length", "string_concat" und "string_equals"!<br/>\
+    de: 'Implementiere die Funktionen "string_length", "string_equals" und "string_concat"!<br/>\
      Teste deine Lösung nach der Implementierung. <refertosheet/>',
   },
   // Random map from previous task

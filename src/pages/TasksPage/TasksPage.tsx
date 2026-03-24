@@ -50,7 +50,7 @@ function EditorWrapper() {
         level={level}
         constraints={task.constraints}
         onFinish={(constraints) => {
-          if (task.levelData.requiredForTask ?? true) {
+          if (task.levelData.requiredForTask ?? false) {
             // Ignore
             return;
           }

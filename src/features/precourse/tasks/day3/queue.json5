@@ -1,7 +1,7 @@
 {
   title: {
-    en: 'Queue (Bonus)',
-    de: 'Queue (Bonus)',
+    en: 'Queue',
+    de: 'Queue',
   },
   description: {
     en: 'In this task we will implement a queue using stacks. \

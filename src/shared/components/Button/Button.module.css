@@ -91,6 +91,12 @@
   color: var(--clr-light-a0);
 }
 
+.variant-warning {
+  --background-color: var(--clr-warning-a10);
+  --background-hover: var(--clr-warning-a20);
+  color: var(--clr-dark-a0);
+}
+
 .variant-background {
   --background-color: var(--clr-surface-a10);
   --background-hover: var(--clr-surface-a20);

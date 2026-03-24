@@ -4,27 +4,31 @@
     "day1/straight_ahead",
     "day1/exploring_walls",
     "day1/subroutines",
-    "day1/guess_what",
+    "day1/flip_a_coin",
     "day1/choosing_by_counting",
     "day1/right_hand_rule",
-    "day1/bonus_brute_force",
+    "day1/bonus/brute_force",
   ],
   day2: [
     null,
+    "day2/hello_world",
     "day2/pledge",
     "day2/spirals",
     "day2/arrays",
+    "day2/string_of_hope",
     "day2/stack",
     "day2/binary_trees",
-    "day2/string_of_hope"
   ],
   day3: [
     null,
     "day3/roundabout",
+    null,
+    null,
+    null,
     "day3/dead_end_filling",
+    "day3/queue", // Add where?
     null,
     null,
-    "day3/depth_first_search",
-    "day3/bonus_queue",
+    "day3/bonus/depth_first_search",
   ]
 }

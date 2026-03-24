@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useInterpreter } from "../../../context/interpreter/InterpreterContext.tsx";
 import { ButtonGroup } from "../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import {
@@ -11,16 +10,11 @@ import {
 import { useState } from "react";
 import { Tooltip } from "../../../../../shared/floating/components/Tooltip/Tooltip.tsx";
 import { ExecutionSettings } from "./ExecutionSettings/ExecutionSettings.tsx";
-import { OwlControls } from "./OwlControls/OwlControls.tsx";
 import { useCalculateLayout } from "../../../../../shared/utils/useCalculateLayout.tsx";
+import { useExecution } from "../../../context/interpreter/contexts/ExecutionContext.tsx";
+import { useBreakpoints } from "../../../context/interpreter/contexts/BreakpointsContext.tsx";
 
-type ExecutionControlsProps = {
-  owlControls?: boolean;
-};
-
-export function ExecutionControls({
-  owlControls = false,
-}: ExecutionControlsProps) {
+export function ExecutionControls() {
   const [steps, setSteps] = useState(1);
 
   const { t } = useTranslation();
@@ -30,16 +24,27 @@ export function ExecutionControls({
     step,
     reset,
     isRunning,
+    currentLine,
     canStep: canEditorStep,
-  } = useInterpreter();
+  } = useExecution();
+  const { isBreakpoint } = useBreakpoints();
   const canStep = canEditorStep();
   const { isMobile } = useCalculateLayout();
+  const atBreakpoint = isBreakpoint(currentLine ?? -1);
   return (
     <ButtonGroup>
       {/* Run Controls */}
       {isRunning ? (
         <Button variant="danger" onClick={stop}>
           <VscDebugStop /> {isMobile ? "" : t("editor.stop")}
+        </Button>
+      ) : atBreakpoint ? (
+        <Button
+          variant={canStep ? "warning" : "disabled"}
+          disabled={!canStep}
+          onClick={run}
+        >
+          <VscDebugContinue /> {isMobile ? "" : t("editor.continue")}
         </Button>
       ) : (
         <Button
@@ -84,12 +89,12 @@ export function ExecutionControls({
         <VscDebugRestart /> {isMobile ? "" : t("editor.reset")}
       </Button>
 
-      {owlControls && (
-        <>
-          <ButtonGroup.Separator />
-          <OwlControls />
-        </>
-      )}
+      {/*{owlControls && (*/}
+      {/*  <>*/}
+      {/*    <ButtonGroup.Separator />*/}
+      {/*    <OwlControls />*/}
+      {/*  </>*/}
+      {/*)}*/}
     </ButtonGroup>
   );
 }

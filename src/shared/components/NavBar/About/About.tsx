@@ -35,6 +35,10 @@ export function About() {
         >
           GitHub <FaExternalLinkAlt size={12} />
         </a>
+        &nbsp;
+        <span style={{ color: "var(--text-color-t80)" }}>
+          ({__COMMIT_HASH__})
+        </span>
       </div>
     </Popover>
   );

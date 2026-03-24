@@ -32,7 +32,7 @@ export function Collapsable({
             className={clsx(styles.title, isOpen && styles.open)}
             style={{ color }}
           >
-            <div>
+            <div className={styles.iconContainer}>
               <motion.div
                 className={styles.icon}
                 initial={false}

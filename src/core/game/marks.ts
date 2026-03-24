@@ -5,12 +5,10 @@ export type MarkData = {
 };
 
 export class Marks {
-  data: () => MarkData;
-  setData: (data: MarkData) => void;
+  data: MarkData;
 
-  constructor(data: () => MarkData, setData: (data: MarkData) => void) {
+  constructor(data: MarkData) {
     this.data = data;
-    this.setData = setData;
   }
 
   mark(position: Position, direction: CardinalDirection | "here") {
@@ -22,14 +20,14 @@ export class Marks {
   }
 
   getMarkAt(position: Position) {
-    return this.data().marks?.[position.y]?.[position.x];
+    return this.data.marks?.[position.y]?.[position.x];
   }
 
   setMarkAt(position: Position, value: number) {
-    const marks = this.data().marks;
+    const marks = this.data.marks;
     const newMarks = marks.map((row) => row.map((mark) => mark));
     newMarks[position.y][position.x] = value;
-    this.setData({ marks: newMarks });
+    this.data = { marks: newMarks };
   }
 
   private markInternal(

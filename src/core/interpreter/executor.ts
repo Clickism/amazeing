@@ -41,7 +41,7 @@ export const EXECUTORS: Executors = {
 
   explore: (env, { dest, direction }) => {
     const owl = env.owl;
-    const data = owl.data();
+    const data = owl.data;
     const normalized = owl.normalizeDirection(
       data,
       direction ?? data.direction,
@@ -166,7 +166,7 @@ export const EXECUTORS: Executors = {
 
   printascii: (env, { src }) => {
     const value = typeof src === "number" ? src : env.getIntegerOrThrow(src);
-    env.console.append({ type: "log", text: String.fromCharCode(value) });
+    env.console.log({ type: "log", text: String.fromCharCode(value) }); // TODO: Update
   },
 
   debug: (env, { src }) => {
@@ -182,27 +182,27 @@ export const EXECUTORS: Executors = {
   },
 
   mark: (env, { direction }) => {
-    const owlData = env.owl.data();
+    const owlData = env.owl.data;
     const pos = owlData.position;
     const normalized = env.owl.normalizeDirection(owlData, direction ?? "here");
     env.marks.mark(pos, normalized);
   },
 
   unmark: (env, { direction }) => {
-    const owlData = env.owl.data();
+    const owlData = env.owl.data;
     const pos = owlData.position;
     const normalized = env.owl.normalizeDirection(owlData, direction ?? "here");
     env.marks.unmark(pos, normalized);
   },
 
   getmark: (env, { src }) => {
-    const pos = env.owl.data().position;
+    const pos = env.owl.data.position;
     const mark = env.marks.getMarkAt(pos);
     env.setOrThrow(src, mark);
   },
 
   getdir: (env, { src }) => {
-    const dir = env.owl.data().direction;
+    const dir = env.owl.data.direction;
     env.setOrThrow(src, dir);
   },
 };

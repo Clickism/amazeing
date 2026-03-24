@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import { useCodeEditorSettings } from "../../context/settings/CodeEditorSettingsContext.tsx";
 import { AnimatePresence, motion } from "motion/react";
 import { useEditorSettings } from "../../context/settings/EditorSettingsContext.tsx";
-import { useInterpreter } from "../../context/interpreter/InterpreterContext.tsx";
+import { useExecution } from "../../context/interpreter/contexts/ExecutionContext.tsx";
 
-export function Console({ messages }: { messages: ConsoleMessage[] }) {
+export function Console({ messages }: { messages: readonly ConsoleMessage[] }) {
   const { t } = useTranslation();
   const {
     settings: { fontSize },
@@ -17,7 +17,7 @@ export function Console({ messages }: { messages: ConsoleMessage[] }) {
   const {
     settings: { isInstant },
   } = useEditorSettings();
-  const { isRunning } = useInterpreter();
+  const { isRunning } = useExecution();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -1,0 +1,39 @@
+{
+  title: {
+    en: 'Flip a coin',
+    de: 'Münzwurf',
+  },
+  description: {
+    en: 'This maze can be solved as follows: <br/> \
+     Walk straight until you hit a wall, then copy from the predefined variable "$flip". \
+     "$flip" will randomly have the value 0 or 1 each time it is accessed. \
+     If the result is 0, turn left. If the result is 1, turn right. Repeat until goal is reached.',
+    de: 'Dieses Labyrinth kann wie folgt gelöst werden: <br/> \
+     Gehe geradeaus, bis du auf eine Wand triffst, und kopiere dann aus der vordefinierten Variable "$flip". \
+     "$flip" hat jedes Mal, wenn darauf zugegriffen wird, zufällig den Wert 0 oder 1. \
+     Wenn der Rückwert 0 ist, drehe dich nach links. Wenn der Rückwert 1 ist, drehe dich nach rechts. \
+     Wiederhole dies, bis das Ziel erreicht ist.',
+  },
+  levelData: {
+    maze: {
+      theme: 'plains',
+      width: 9,
+      height: 9,
+      walls: {
+        horizontal: '000000010-011011011-111000100-111010000-010110000-000110100-011011101-001010101',
+        vertical: '01101100-11110111-00011000-00111111-00000111-11101111-11000001-11111110-00001000',
+      },
+    },
+    finishPosition: {
+      x: 8,
+      y: 8,
+    },
+    owlStart: {
+      position: {
+        x: 1,
+        y: 1,
+      },
+      direction: 'north',
+    },
+  },
+}

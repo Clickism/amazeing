@@ -1,34 +1,30 @@
 import type { Level } from "../../../../core/game/level.ts";
-import {
-  type PropsWithChildren,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { LevelOwl, type OwlData } from "../../../../core/game/owl.ts";
-import {
-  type ConsoleMessage,
-  InterpreterConsoleImpl,
-} from "../../../../core/interpreter/console.ts";
-import { InterpreterContext } from "./InterpreterContext.tsx";
-import {
-  Interpreter,
-  LazyInterpreter,
-} from "../../../../core/interpreter/interpreter.ts";
+import { type PropsWithChildren, useCallback, useEffect, useMemo } from "react";
 import { type EditorSettings } from "../settings/EditorSettingsContext.tsx";
-import {
-  emptyMarks,
-  type MarkData,
-  Marks,
-} from "../../../../core/game/marks.ts";
 import type {
   Constraint,
   EvaluatedConstraint,
 } from "../../../../core/game/constraints.ts";
-import { validateConstraints } from "../../../../core/interpreter/constraints.ts";
-
-const INSTANT_BATCH_SIZE = 500;
+import { useConstraintsHandler } from "./hooks/useConstraintsHandler.ts";
+import { useEngine } from "./hooks/useEngine.ts";
+import { useRunner } from "./hooks/useRunner.ts";
+import {
+  ExecutionContext,
+  type ExecutionContextType,
+} from "./contexts/ExecutionContext.tsx";
+import {
+  ConstraintsContext,
+  type ConstraintsContextType,
+} from "./contexts/ConstraintsContext.tsx";
+import {
+  OutputContext,
+  type OutputContextType,
+} from "./contexts/OutputContext.tsx";
+import { GameContext, type GameContextType } from "./contexts/GameContext.tsx";
+import {
+  BreakpointsContext,
+  type BreakpointsContextType,
+} from "./contexts/BreakpointsContext.tsx";
 
 type InterpreterProviderProps = PropsWithChildren<{
   code: string;
@@ -59,232 +55,100 @@ export function InterpreterProvider({
   children,
   onFinish,
 }: InterpreterProviderProps) {
-  // Interpreter
-  const [output, setOutput] = useState<ConsoleMessage[]>([]);
-  const [currentLine, setCurrentLine] = useState<number | null>(null);
-  const [isRunning, setIsRunning] = useState(false);
-  const [evaluatedConstraints, setEvaluatedConstraints] = useState<
-    EvaluatedConstraint[] | undefined
-  >(undefined);
-
-  const onFinishRef = useRef(onFinish);
-  onFinishRef.current = onFinish;
-
-  const wrappedOnFinish = useCallback(() => {
-    if (!onFinishRef.current) return;
-
-    const interpreter = interpreterRef.current;
-    if (!interpreter) return;
-
-    if (constraints && constraints.length > 0) {
-      const constraintsMet = validateConstraints(constraints, code);
-      onFinishRef.current(constraintsMet);
-    } else {
-      onFinishRef.current([]);
-    }
-  }, [code, constraints]);
-
-  // Game
-  const [owlData, setOwlData] = useState<OwlData>(() => level.createOwlData());
-  const owlDataRef = useRef(owlData);
-  owlDataRef.current = owlData;
-
-  // Update owl data and keep ref in sync
-  const updateOwl = useCallback((newData: OwlData) => {
-    owlDataRef.current = newData;
-    setOwlData(newData);
-  }, []);
-
-  // Marks
-  const [markData, setMarkData] = useState<MarkData>(
-    emptyMarks(level.data.maze.width, level.data.maze.height),
+  const evaluatedConstraints = useConstraintsHandler(code, constraints ?? []);
+  const onFinishWithConstraints = useCallback(() => {
+    onFinish?.(evaluatedConstraints ?? []);
+  }, [evaluatedConstraints, onFinish]);
+  const {
+    interpreterRef,
+    setSnapshot,
+    step,
+    canStep,
+    reset: resetInterpreter,
+    snapshot,
+    init,
+  } = useEngine(code, level, onFinishWithConstraints);
+  const { run, stop, isRunning, breakpoints } = useRunner(
+    interpreterRef,
+    setSnapshot,
+    init,
+    settings.isInstant,
+    settings.instructionsPerSecond,
   );
-  const markDataRef = useRef(markData);
-  markDataRef.current = markData;
-
-  // Update marks and keep ref in sync
-  const updateMarks = useCallback((newMarks: MarkData) => {
-    markDataRef.current = newMarks;
-    setMarkData(newMarks);
-  }, []);
-
-  // Update marks when level changes to reset them
-  useEffect(() => {
-    const newMarks = emptyMarks(level.data.maze.width, level.data.maze.height);
-    markDataRef.current = newMarks;
-    setMarkData(newMarks);
-  }, [level]);
-
-  // Refs
-  const interpreterRef = useRef<Interpreter | null>(null);
-  const runIntervalRef = useRef<number | null>(null);
-  const runAnimationFrameRef = useRef<number | null>(null);
-
-  const appendOutput = useCallback(
-    (message: ConsoleMessage, append: boolean) => {
-      setOutput((prev) => {
-        if (append && prev.length > 0) {
-          const lastMessage = prev[prev.length - 1];
-          const newMessage: ConsoleMessage = {
-            type: lastMessage.type,
-            text: lastMessage.text + message.text,
-          };
-          return [...prev.slice(0, -1), newMessage];
-        }
-        return [...prev, message];
-      });
-    },
-    [],
-  );
-
-  const stop = useCallback(() => {
-    if (runIntervalRef.current !== null) {
-      clearInterval(runIntervalRef.current);
-      runIntervalRef.current = null;
-    }
-    if (runAnimationFrameRef.current !== null) {
-      cancelAnimationFrame(runAnimationFrameRef.current);
-      runAnimationFrameRef.current = null;
-    }
-    setIsRunning(false);
-    setCurrentLine(interpreterRef.current?.getCurrentLine() ?? null);
-  }, []);
 
   const reset = useCallback(() => {
     stop();
-    try {
-      const newOwlData = level.createOwlData();
-      updateOwl(newOwlData);
-      setOutput([]);
-      setMarkData(emptyMarks(level.data.maze.width, level.data.maze.height));
-      const interpreter = LazyInterpreter.fromCode(
-        code,
-        new InterpreterConsoleImpl(appendOutput),
-        new LevelOwl(() => owlDataRef.current, updateOwl, level),
-        level,
-        new Marks(() => markDataRef.current, updateMarks),
-        wrappedOnFinish,
-      );
-      interpreterRef.current = interpreter;
-      setCurrentLine(interpreter.getCurrentLine());
-    } catch (e) {
-      if (e instanceof Error) {
-        // Clear previous output for parsing error
-        setOutput([{ type: "error", text: e.message }]);
-      }
-    }
-  }, [
-    appendOutput,
-    code,
-    level,
-    stop,
-    updateOwl,
-    updateMarks,
-    wrappedOnFinish,
-  ]);
+    resetInterpreter();
+  }, [resetInterpreter, stop]);
 
-  const step = useCallback((steps = 1) => {
-    interpreterRef.current?.executeAndPrintError((interpreter) => {
-      interpreter.stepMultiple(steps);
-      setCurrentLine(interpreter.getCurrentLine());
-    });
-  }, []);
-
-  const run = useCallback(() => {
-    stop();
-    setIsRunning(true);
-    // Instant
-    if (settings.isInstant) {
-      // Run in chunks to avoid UI freezing
-      const runChunk = () => {
-        interpreterRef.current?.executeAndPrintError((interpreter) => {
-          let count = 0;
-          while (interpreter.canStep() && count++ < INSTANT_BATCH_SIZE) {
-            interpreter.step();
-          }
-        });
-        const interpreter = interpreterRef.current;
-        if (interpreter) {
-          setCurrentLine(interpreter.getCurrentLine());
-          if (interpreter.canStep()) {
-            runAnimationFrameRef.current = requestAnimationFrame(runChunk);
-          } else {
-            stop();
-          }
-        } else {
-          stop();
-        }
-      };
-      runChunk();
-      return;
-    }
-    // Run with interval
-    runIntervalRef.current = setInterval(() => {
-      const interpreter = interpreterRef.current;
-      if (!interpreter) return;
-      if (interpreter.canStep()) {
-        interpreter.executeAndPrintError((interpreter) => {
-          interpreter.step();
-          setCurrentLine(interpreter.getCurrentLine());
-        });
-      } else {
-        stop();
-      }
-    }, 1000 / settings.instructionsPerSecond);
-  }, [settings.instructionsPerSecond, settings.isInstant, stop]);
-
-  const canStep = useCallback(() => {
-    return interpreterRef?.current?.canStep() ?? true;
-  }, []);
-
-  useEffect(() => {
-    // Check finish on owl data change
-    const interpreter = interpreterRef.current;
-    if (!interpreter) return;
-    interpreter.executeAndPrintError((interpreter) => {
-      interpreter.checkFinish();
-    });
-  }, [owlData]);
-
-  // Reset interpreter when code or level changes
+  // Reset when code changes
   useEffect(() => {
     reset();
-    // Evaluate constraints
-    if (!constraints || constraints.length === 0) {
-      setEvaluatedConstraints(undefined);
-      return;
-    }
-    const evaluated = validateConstraints(constraints, code);
-    setEvaluatedConstraints(evaluated);
-  }, [code, constraints, level, reset]);
+  }, [code, reset]);
 
-  // Restart running if run speed changes
+  // Remove invalid breakpoints
+  const { setBreakpoints } = breakpoints;
   useEffect(() => {
-    if (isRunning) {
-      run();
-    }
-  }, [isRunning, run, settings.instructionsPerSecond]);
+    const lines = code.split("\n").length;
+    setBreakpoints((prev) => {
+      const next = prev.filter((line) => line < lines);
+      return next.length === prev.length ? prev : next;
+    });
+  }, [setBreakpoints, code]);
 
+  const executionValue = useMemo<ExecutionContextType>(
+    () => ({
+      run,
+      stop,
+      canStep,
+      step,
+      reset,
+      isRunning,
+      currentLine: snapshot.line,
+    }),
+    [canStep, isRunning, reset, run, snapshot.line, step, stop],
+  );
+
+  const gameValue = useMemo<GameContextType>(
+    () => ({
+      level,
+      owl: snapshot.owl,
+      marks: snapshot.marks,
+    }),
+    [level, snapshot.owl, snapshot.marks],
+  );
+
+  const outputValue = useMemo<OutputContextType>(
+    () => ({
+      output: snapshot.output,
+    }),
+    [snapshot.output],
+  );
+
+  const constraintsValue = useMemo<ConstraintsContextType>(
+    () => ({
+      constraints: evaluatedConstraints,
+    }),
+    [evaluatedConstraints],
+  );
+
+  const breakpointsValue = useMemo<BreakpointsContextType>(
+    () => ({
+      ...breakpoints,
+    }),
+    [breakpoints],
+  );
   return (
-    <InterpreterContext.Provider
-      value={{
-        run,
-        stop,
-        canStep,
-        step,
-        level,
-        owlData,
-        setOwlData: updateOwl,
-        markData,
-        setMarkData: updateMarks,
-        output,
-        currentLine,
-        isRunning,
-        reset,
-        constraints: evaluatedConstraints,
-      }}
-    >
-      {children}
-    </InterpreterContext.Provider>
+    <ExecutionContext.Provider value={executionValue}>
+      <GameContext.Provider value={gameValue}>
+        <OutputContext.Provider value={outputValue}>
+          <ConstraintsContext.Provider value={constraintsValue}>
+            <BreakpointsContext.Provider value={breakpointsValue}>
+              {children}
+            </BreakpointsContext.Provider>
+          </ConstraintsContext.Provider>
+        </OutputContext.Provider>
+      </GameContext.Provider>
+    </ExecutionContext.Provider>
   );
 }

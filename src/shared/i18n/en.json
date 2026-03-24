@@ -47,6 +47,7 @@
   "viewport.notRequired": "The maze is not required to solve this task",
 
   "editor.run": "Run",
+  "editor.continue": "Continue",
   "editor.stop": "Stop",
   "editor.step": "Step",
   "editor.step.tooltip": "How many steps to execute per click",
