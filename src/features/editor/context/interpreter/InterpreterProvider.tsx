@@ -3,6 +3,7 @@ import {
   type PropsWithChildren,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -11,7 +12,10 @@ import {
   type ConsoleMessage,
   InterpreterConsoleImpl,
 } from "../../../../core/interpreter/console.ts";
-import { InterpreterContext } from "./InterpreterContext.tsx";
+import {
+  ExecutionContext,
+  type ExecutionContextType,
+} from "./ExecutionContext.tsx";
 import {
   Interpreter,
   LazyInterpreter,
@@ -27,6 +31,12 @@ import type {
   EvaluatedConstraint,
 } from "../../../../core/game/constraints.ts";
 import { validateConstraints } from "../../../../core/interpreter/constraints.ts";
+import { GameContext, type GameContextType } from "./GameContext.tsx";
+import { OutputContext, type OutputContextType } from "./OutputContext.tsx";
+import {
+  ConstraintsContext,
+  type ConstraintsContextType,
+} from "./ConstraintsContext.tsx";
 
 const INSTANT_BATCH_SIZE = 500;
 
@@ -91,6 +101,14 @@ export function InterpreterProvider({
 
   // Update owl data and keep ref in sync
   const updateOwl = useCallback((newData: OwlData) => {
+    const prev = owlDataRef.current;
+    if (
+      prev.position.x === newData.position.x &&
+      prev.position.y === newData.position.y &&
+      prev.direction === newData.direction
+    ) {
+      return; // Same data, skip
+    }
     owlDataRef.current = newData;
     setOwlData(newData);
   }, []);
@@ -99,21 +117,47 @@ export function InterpreterProvider({
   const [markData, setMarkData] = useState<MarkData>(
     emptyMarks(level.data.maze.width, level.data.maze.height),
   );
+
   const markDataRef = useRef(markData);
   markDataRef.current = markData;
 
   // Update marks and keep ref in sync
-  const updateMarks = useCallback((newMarks: MarkData) => {
-    markDataRef.current = newMarks;
-    setMarkData(newMarks);
+  const updateMarks = useCallback((newMarkData: MarkData) => {
+    const prev = markDataRef.current;
+    const prevMarks = prev.marks;
+    const nextMarks = newMarkData.marks;
+
+    if (prevMarks === nextMarks) return;
+    // Compare lengths
+    if (prevMarks.length === nextMarks.length) {
+      let same = true;
+      for (let i = 0; i < prevMarks.length; i++) {
+        const prevRow = prevMarks[i];
+        const nextRow = nextMarks[i];
+        if (prevRow.length !== nextRow.length) {
+          same = false;
+          break;
+        }
+        for (let j = 0; j < prevRow.length; j++) {
+          if (prevRow[j] !== nextRow[j]) {
+            same = false;
+            break;
+          }
+        }
+        if (!same) break;
+      }
+      if (same) return; // Same data, skip
+    }
+
+    markDataRef.current = newMarkData;
+    setMarkData(newMarkData);
   }, []);
 
   // Update marks when level changes to reset them
   useEffect(() => {
     const newMarks = emptyMarks(level.data.maze.width, level.data.maze.height);
-    markDataRef.current = newMarks;
-    setMarkData(newMarks);
-  }, [level]);
+    updateMarks(newMarks);
+  }, [level, updateMarks]);
 
   // Refs
   const interpreterRef = useRef<Interpreter | null>(null);
@@ -155,8 +199,10 @@ export function InterpreterProvider({
     try {
       const newOwlData = level.createOwlData();
       updateOwl(newOwlData);
-      setOutput([]);
-      setMarkData(emptyMarks(level.data.maze.width, level.data.maze.height));
+      if (output.length > 0) {
+        setOutput([]);
+      }
+      updateMarks(emptyMarks(level.data.maze.width, level.data.maze.height));
       const interpreter = LazyInterpreter.fromCode(
         code,
         new InterpreterConsoleImpl(appendOutput),
@@ -174,12 +220,13 @@ export function InterpreterProvider({
       }
     }
   }, [
-    appendOutput,
-    code,
-    level,
     stop,
+    level,
     updateOwl,
+    output.length,
     updateMarks,
+    code,
+    appendOutput,
     wrappedOnFinish,
   ]);
 
@@ -255,7 +302,19 @@ export function InterpreterProvider({
       return;
     }
     const evaluated = validateConstraints(constraints, code);
-    setEvaluatedConstraints(evaluated);
+    setEvaluatedConstraints((prev) => {
+      // Dont update if same
+      if (
+        prev &&
+        evaluated.length === prev.length &&
+        evaluated.every(
+          (c, i) => c.met === prev[i].met && c.type === prev[i].type,
+        )
+      ) {
+        return prev;
+      }
+      return evaluated;
+    });
   }, [code, constraints, level, reset]);
 
   // Restart running if run speed changes
@@ -265,26 +324,53 @@ export function InterpreterProvider({
     }
   }, [isRunning, run, settings.instructionsPerSecond]);
 
+  const executionValue = useMemo<ExecutionContextType>(
+    () => ({
+      run,
+      stop,
+      canStep,
+      step,
+      reset,
+      isRunning,
+      currentLine,
+    }),
+    [canStep, currentLine, isRunning, reset, run, step, stop],
+  );
+
+  const gameValue = useMemo<GameContextType>(
+    () => ({
+      level,
+      owlData,
+      setOwlData: updateOwl,
+      markData,
+      setMarkData: updateMarks,
+    }),
+    [level, markData, owlData, updateMarks, updateOwl],
+  );
+
+  const outputValue = useMemo<OutputContextType>(
+    () => ({
+      output,
+    }),
+    [output],
+  );
+
+  const constraintsValue = useMemo<ConstraintsContextType>(
+    () => ({
+      constraints: evaluatedConstraints,
+    }),
+    [evaluatedConstraints],
+  );
+
   return (
-    <InterpreterContext.Provider
-      value={{
-        run,
-        stop,
-        canStep,
-        step,
-        level,
-        owlData,
-        setOwlData: updateOwl,
-        markData,
-        setMarkData: updateMarks,
-        output,
-        currentLine,
-        isRunning,
-        reset,
-        constraints: evaluatedConstraints,
-      }}
-    >
-      {children}
-    </InterpreterContext.Provider>
+    <ExecutionContext.Provider value={executionValue}>
+      <GameContext.Provider value={gameValue}>
+        <OutputContext.Provider value={outputValue}>
+          <ConstraintsContext.Provider value={constraintsValue}>
+            {children}
+          </ConstraintsContext.Provider>
+        </OutputContext.Provider>
+      </GameContext.Provider>
+    </ExecutionContext.Provider>
   );
 }

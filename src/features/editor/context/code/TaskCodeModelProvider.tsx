@@ -1,8 +1,9 @@
-import type { PropsWithChildren } from "react";
+import { type PropsWithChildren, useMemo } from "react";
 import { CodeModelContext } from "./CodeModelContext.tsx";
 import { useTranslatable } from "../../../../shared/i18n/i18n.ts";
 import { useSingleSource } from "../source/useSingleSource.ts";
 import type { Task } from "../../../precourse/task.ts";
+import { SourceTypeContext } from "./SourceTypeContext.tsx";
 
 type TaskCodeModelProviderProps = {
   /**
@@ -32,6 +33,13 @@ export function TaskCodeModelProvider({
     namespace,
   });
 
+  const sourceType = useMemo(
+    () => ({
+      isMultiSource: false,
+    }),
+    [],
+  );
+
   return (
     <CodeModelContext.Provider
       value={{
@@ -40,7 +48,9 @@ export function TaskCodeModelProvider({
         source,
       }}
     >
-      {children}
+      <SourceTypeContext.Provider value={sourceType}>
+        {children}
+      </SourceTypeContext.Provider>
     </CodeModelContext.Provider>
   );
 }

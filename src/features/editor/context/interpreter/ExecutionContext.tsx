@@ -1,0 +1,25 @@
+import { createContext, useContext } from "react";
+
+export type ExecutionContextType = {
+  // Interpreter controls
+  run: () => void;
+  stop: () => void;
+  canStep: () => boolean;
+  step: (steps?: number) => void;
+  reset: () => void;
+  isRunning: boolean;
+  currentLine: number | null;
+};
+
+export const ExecutionContext = createContext<ExecutionContextType | null>(
+  null,
+);
+
+export function useExecution() {
+  const ctx = useContext(ExecutionContext);
+  if (!ctx)
+    throw new Error(
+      "useExecution must be used within ExecutionContext.Provider",
+    );
+  return ctx;
+}

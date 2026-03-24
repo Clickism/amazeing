@@ -1,8 +1,9 @@
 import { CodeModelContext } from "./CodeModelContext.tsx";
-import type { PropsWithChildren } from "react";
+import { type PropsWithChildren, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFileStorage } from "../storage/useFileStorage.ts";
 import { useMultiSource } from "../source/useMultiSource.ts";
+import { SourceTypeContext } from "./SourceTypeContext.tsx";
 
 type FileCodeModelProviderProps = {
   namespace: string;
@@ -25,6 +26,13 @@ export function FileCodeModelProvider({
     fileNameFormat: (num) => t("codeStorage.newFile.name", { num }),
   });
 
+  const sourceType = useMemo(
+    () => ({
+      isMultiSource: true,
+    }),
+    [],
+  );
+
   return (
     <CodeModelContext.Provider
       value={{
@@ -33,7 +41,9 @@ export function FileCodeModelProvider({
         source,
       }}
     >
-      {children}
+      <SourceTypeContext.Provider value={sourceType}>
+        {children}
+      </SourceTypeContext.Provider>
     </CodeModelContext.Provider>
   );
 }

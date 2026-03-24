@@ -3,13 +3,13 @@ import { IoArrowBack, IoArrowForward, IoArrowUp } from "react-icons/io5";
 import { Button } from "../../../../../../shared/components/Button/Button.tsx";
 import { ButtonGroup } from "../../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { useTranslation } from "react-i18next";
-import { useInterpreter } from "../../../../context/interpreter/InterpreterContext.tsx";
 import { LevelOwl } from "../../../../../../core/game/owl.ts";
 import { RxMove } from "react-icons/rx";
+import { useGame } from "../../../../context/interpreter/GameContext.tsx";
 
 export function OwlControls() {
   const { t } = useTranslation();
-  const { owlData, setOwlData, level } = useInterpreter();
+  const { owlData, setOwlData, level } = useGame();
   const owl = new LevelOwl(() => owlData, setOwlData, level);
   const canMove = owl.canMove() && !level.isFinished(owlData);
   const canTurn = !level.isFinished(owlData);

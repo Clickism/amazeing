@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useInterpreter } from "../../../context/interpreter/InterpreterContext.tsx";
+import { useExecution } from "../../../context/interpreter/ExecutionContext.tsx";
 import { ButtonGroup } from "../../../../../shared/components/Button/ButtonGroup/ButtonGroup.tsx";
 import { Button } from "../../../../../shared/components/Button/Button.tsx";
 import {
@@ -31,7 +31,7 @@ export function ExecutionControls({
     reset,
     isRunning,
     canStep: canEditorStep,
-  } = useInterpreter();
+  } = useExecution();
   const canStep = canEditorStep();
   const { isMobile } = useCalculateLayout();
   return (

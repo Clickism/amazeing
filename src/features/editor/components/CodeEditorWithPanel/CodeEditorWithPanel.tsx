@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { Panel } from "../../../../shared/components/Panel/Panel.tsx";
 import { CodeEditor, type CodeEditorProps } from "../CodeEditor/CodeEditor.tsx";
 import { Button } from "../../../../shared/components/Button/Button.tsx";
@@ -76,19 +76,17 @@ export function CodeEditorWithPanel({
             />
           </Panel>
         </motion.div>
-        <AnimatePresence mode="popLayout">
-          {panelOpen && (
-            <motion.div
-              initial={isMobile ? undefined : { x: 300, opacity: 0 }}
-              animate={isMobile ? undefined : { x: 0, opacity: 1 }}
-              exit={isMobile ? undefined : { x: 300, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              style={{ height: "100%" }}
-            >
-              <Panel paddingless>{panel.content}</Panel>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {panelOpen && (
+          <motion.div
+            initial={isMobile ? undefined : { x: 300, opacity: 0 }}
+            animate={isMobile ? undefined : { x: 0, opacity: 1 }}
+            exit={isMobile ? undefined : { x: 300, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            style={{ height: "100%" }}
+          >
+            <Panel paddingless>{panel.content}</Panel>
+          </motion.div>
+        )}
       </PanelContainer>
     </div>
   );
