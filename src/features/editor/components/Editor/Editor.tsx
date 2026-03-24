@@ -34,10 +34,6 @@ export const DEFAULT_RUN_SPEED = 5;
 
 export type EditorProps = {
   /**
-   * Whether to allow moving the owl manually, and show the controls for it.
-   */
-  owlControls?: boolean;
-  /**
    * Allows changing the level in the viewport, and uses the
    * provided level storage to save and load levels.
    *
@@ -50,7 +46,7 @@ export type EditorProps = {
 
 const SEPARATOR_WIDTH = 8;
 
-export function Editor({ levelStorage, owlControls = false }: EditorProps) {
+export function Editor({ levelStorage }: EditorProps) {
   const { isMultiSource } = useSourceType();
   const { isMobile } = useCalculateLayout();
   // Open by default if not multi-source (sandbox)
@@ -63,7 +59,7 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
   const codeEditorWidth = codePanelOpen
     ? minWidths.codePanel + minWidths.sidePanel + SEPARATOR_WIDTH
     : minWidths.codePanel;
-  const viewportWidth = owlControls ? 620 : 570;
+  const viewportWidth = 570;
 
   return (
     <div className={clsx(styles.editorContainer, isMobile && styles.mobile)}>
@@ -81,7 +77,7 @@ export function Editor({ levelStorage, owlControls = false }: EditorProps) {
           </Panel>
           <div className={styles.consolePanel}>
             <ButtonGroup center>
-              <ExecutionControls owlControls={owlControls} />
+              <ExecutionControls />
             </ButtonGroup>
             <Panel className={styles.console} paddingless>
               <ConsoleWrapper />

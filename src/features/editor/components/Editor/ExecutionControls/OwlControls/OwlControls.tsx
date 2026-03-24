@@ -7,7 +7,7 @@ import { LevelOwl } from "../../../../../../core/game/owl.ts";
 import { RxMove } from "react-icons/rx";
 import { useGame } from "../../../../context/interpreter/contexts/GameContext.tsx";
 
-// TODO: Make sure it works
+// Is buggy and not reactive atm, avoid
 export function OwlControls() {
   const { t } = useTranslation();
   const { owl: owlData, level } = useGame();
