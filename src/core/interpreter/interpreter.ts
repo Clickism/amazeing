@@ -9,7 +9,7 @@ import { emptyMarks, type MarkData } from "../game/marks.ts";
 import { Lexer } from "./parser/lexer.ts";
 import { Parser } from "./parser/parser.ts";
 
-const MAX_STEPS = 10000;
+const MAX_STEPS = 20000;
 
 export type PcTarget = {
   type: "call" | "jump";
