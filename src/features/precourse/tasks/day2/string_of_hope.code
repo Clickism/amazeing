@@ -1,5 +1,4 @@
-# Test your code here
-exit
+jump tests
 
 # Calculates the length of a given string,
 # excluding the null terminator
@@ -25,3 +24,7 @@ string_concat:
 string_equals:
   # Implement
   ret
+
+tests:
+  # Test your code here
+  exit
