@@ -2,6 +2,12 @@ stages:
   - build
   - deploy
 
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'master'
+
 build:
   stage: build
   tags:
@@ -24,4 +30,3 @@ deploy-prog2vk:
     - cp -r "${CI_PROJECT_DIR}/dist/." "/var/www/amazeing/"
   dependencies:
     - build
-  when: manual
