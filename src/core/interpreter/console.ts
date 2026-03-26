@@ -18,6 +18,9 @@ export class InterpreterConsole {
 
   /**
    * Logs the given message to the console.
+   *
+   * Should not print a newline unless explicitly printed.
+   *
    * @param message The message to log.
    */
   log(message: ConsoleMessage) {

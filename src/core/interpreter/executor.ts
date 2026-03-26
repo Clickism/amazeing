@@ -161,12 +161,14 @@ export const EXECUTORS: Executors = {
 
   print: (env, { src }) => {
     const value = env.getOrThrow(src);
-    env.console.log({ type: "log", text: formatValue(value) });
+    // Print newline automatically
+    env.console.log({ type: "log", text: formatValue(value) + "\n" });
   },
 
   printascii: (env, { src }) => {
     const value = typeof src === "number" ? src : env.getIntegerOrThrow(src);
-    env.console.log({ type: "log", text: String.fromCharCode(value) }); // TODO: Update
+    // Don't print newline
+    env.console.log({ type: "log", text: String.fromCharCode(value) });
   },
 
   debug: (env, { src }) => {

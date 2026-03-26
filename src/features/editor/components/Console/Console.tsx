@@ -35,7 +35,7 @@ export function Console({ messages }: { messages: readonly ConsoleMessage[] }) {
       <div className={styles.messageContainer} ref={containerRef}>
         {messages.map((message, i) => (
           <AnimatePresence key={i}>
-            <motion.div
+            <motion.span
               className={clsx(
                 styles.message,
                 styles[`message-${message.type}`],
@@ -51,7 +51,7 @@ export function Console({ messages }: { messages: readonly ConsoleMessage[] }) {
                 : {})}
             >
               {message.text}
-            </motion.div>
+            </motion.span>
           </AnimatePresence>
         ))}
       </div>
