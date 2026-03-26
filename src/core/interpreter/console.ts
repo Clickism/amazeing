@@ -6,7 +6,6 @@ export type ConsoleMessage = {
   text: string;
 };
 
-// TODO: Refactor so that keeps on same line unless newline
 /**
  * Console for the interpreter.
  */
