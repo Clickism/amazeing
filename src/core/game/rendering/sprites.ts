@@ -9,6 +9,8 @@ import wallStoneVertical from "../../../assets/sprites/game/walls/stone_vertical
 import wallStoneHorizontal from "../../../assets/sprites/game/walls/stone_horizontal.png";
 import wallBlackstoneVertical from "../../../assets/sprites/game/walls/blackstone_vertical.png";
 import wallBlackstoneHorizontal from "../../../assets/sprites/game/walls/blackstone_horizontal.png";
+import wallDarkstoneVertical from "../../../assets/sprites/game/walls/darkstone_vertical.png";
+import wallDarkstoneHorizontal from "../../../assets/sprites/game/walls/darkstone_horizontal.png";
 
 import owlNorth from "../../../assets/sprites/game/owl/north.png";
 import owlSouth from "../../../assets/sprites/game/owl/south.png";
@@ -54,8 +56,8 @@ export async function loadSprites(): Promise<SpriteMap> {
         vertical: await load(wallStoneVertical),
       },
       drylands: {
-        horizontal: await load(wallStoneHorizontal),
-        vertical: await load(wallStoneVertical),
+        horizontal: await load(wallDarkstoneHorizontal),
+        vertical: await load(wallDarkstoneVertical),
       },
       lava: {
         horizontal: await load(wallBlackstoneHorizontal),
