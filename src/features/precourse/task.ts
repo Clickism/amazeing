@@ -37,6 +37,10 @@ export type TaskData = {
    * If set to true, the user can click a button to mark their solution as correct.
    */
   selfChecked?: boolean;
+  /**
+   * Maximum number of steps for the interpreter to solve this task in
+   */
+  maxSteps?: number;
 };
 
 /**

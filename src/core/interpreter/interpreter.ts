@@ -9,7 +9,7 @@ import { emptyMarks, type MarkData } from "../game/marks.ts";
 import { Lexer } from "./parser/lexer.ts";
 import { Parser } from "./parser/parser.ts";
 
-const MAX_STEPS = 10000;
+const DEFAULT_MAX_STEPS = 10000;
 
 export type PcTarget = {
   type: "call" | "jump";
@@ -32,6 +32,7 @@ export class Interpreter {
   private instructions: InstructionData[];
   private env: Environment;
   private steps: number = 0;
+  private maxSteps: number = DEFAULT_MAX_STEPS;
   private console: InterpreterConsole;
   /**
    * Whether the interpreter is locked due to an error or
@@ -52,20 +53,27 @@ export class Interpreter {
     instructions: InstructionData[],
     env: Environment,
     console: InterpreterConsole,
+    maxSteps: number = DEFAULT_MAX_STEPS,
   ) {
     this.instructions = instructions;
     this.env = env;
     this.console = console;
+    this.maxSteps = maxSteps;
   }
 
   /**
    * Parses the given code and returns a new Interpreter instance.
    * @param code The code to parse.
    * @param level The level.
+   * @param maxSteps The maximum number of steps allowed
    *
    * @throws {Error} if parsing failed
    */
-  static fromCode(code: string, level: Level): Interpreter {
+  static fromCode(
+    code: string,
+    level: Level,
+    maxSteps: number = DEFAULT_MAX_STEPS,
+  ): Interpreter {
     const tokens = new Lexer(code).tokenize();
     const { instructions, labels } = new Parser(tokens).parse();
     const console = new InterpreterConsole();
@@ -73,6 +81,7 @@ export class Interpreter {
       instructions,
       new Environment(labels, console, level),
       console,
+      maxSteps,
     );
   }
 
@@ -101,9 +110,9 @@ export class Interpreter {
    * @throws {Error} if an error occurs
    */
   private executeStep() {
-    if (this.steps >= MAX_STEPS) {
+    if (this.steps >= this.maxSteps) {
       throw new ErrorWithTip(
-        "Maximum number of steps exceeded: " + MAX_STEPS,
+        "Maximum number of steps exceeded: " + this.maxSteps,
         "There might be an infinite loop in your program.",
       );
     }

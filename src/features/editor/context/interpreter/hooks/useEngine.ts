@@ -29,6 +29,7 @@ export function useEngine(
   code: string,
   level: Level,
   onFinish?: () => void,
+  maxSteps?: number,
 ): InterpreterEngine {
   const interpreterRef = useRef<Interpreter | null>(null);
 
@@ -45,7 +46,7 @@ export function useEngine(
   // Initializes the interpreter
   const init = useCallback(() => {
     try {
-      const interpreter = Interpreter.fromCode(code, level);
+      const interpreter = Interpreter.fromCode(code, level, maxSteps);
       interpreter.onFinish = onFinish;
       interpreterRef.current = interpreter;
       setSnapshot(interpreter.snapshot());
@@ -59,7 +60,7 @@ export function useEngine(
       }
       return null;
     }
-  }, [code, level, onFinish]);
+  }, [code, level, maxSteps, onFinish]);
 
   // Steps the interpreter
   const step = useCallback(

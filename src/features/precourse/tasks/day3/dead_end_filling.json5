@@ -25,4 +25,6 @@
       direction: 'north',
     },
   },
+  // Increase max steps
+  maxSteps: 30000,
 }

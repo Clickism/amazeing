@@ -26,12 +26,22 @@ import {
   type BreakpointsContextType,
 } from "./contexts/BreakpointsContext.tsx";
 
-type InterpreterProviderProps = PropsWithChildren<{
+export type InterpreterProviderProps = PropsWithChildren<{
   code: string;
   level: Level;
   settings: EditorSettings;
+  /**
+   * Optional constraints for the interpreter
+   */
   constraints?: Constraint[];
+  /**
+   * Optional callback to call when the level is finished, with the evaluated constraints as an argument.
+   */
   onFinish?: (evaluatedConstraints: EvaluatedConstraint[]) => void;
+  /**
+   * Maximum number of steps the interpreter is allowed to make
+   */
+  maxSteps?: number;
 }>;
 
 /**
@@ -39,13 +49,6 @@ type InterpreterProviderProps = PropsWithChildren<{
  *
  * Manages the interpreter state, including the current output, current line, and running state.
  * Also manages the game state, including the owl data.
- *
- * @param code The code to interpret.
- * @param level The level to run the code on.
- * @param settings The editor settings, used to control the run speed and mode.
- * @param constraints Optional constraints for the task that determine full vs partial completion.
- * @param children The child components that will have access to the interpreter context.
- * @param onFinish Optional callback to call when the level is finished, with boolean indicating if constraints were met.
  */
 export function InterpreterProvider({
   code,
@@ -54,6 +57,7 @@ export function InterpreterProvider({
   constraints,
   children,
   onFinish,
+  maxSteps,
 }: InterpreterProviderProps) {
   const evaluatedConstraints = useConstraintsHandler(code, constraints ?? []);
   const onFinishWithConstraints = useCallback(() => {
@@ -67,7 +71,7 @@ export function InterpreterProvider({
     reset: resetInterpreter,
     snapshot,
     init,
-  } = useEngine(code, level, onFinishWithConstraints);
+  } = useEngine(code, level, onFinishWithConstraints, maxSteps);
   const { run, stop, isRunning, breakpoints } = useRunner(
     interpreterRef,
     setSnapshot,

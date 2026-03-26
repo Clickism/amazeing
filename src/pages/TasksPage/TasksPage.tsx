@@ -63,6 +63,7 @@ function EditorWrapper() {
             modal.setOpen(true);
           }
         }}
+        maxSteps={task.maxSteps}
       >
         <Editor />
       </InterpreterWrapper>
