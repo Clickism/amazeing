@@ -33,11 +33,4 @@
       direction: 'north',
     },
   },
-  constraints: [
-    {
-      type: 'max-instruction-count',
-      instruction: 'move',
-      count: 1,
-    },
-  ]
 }
