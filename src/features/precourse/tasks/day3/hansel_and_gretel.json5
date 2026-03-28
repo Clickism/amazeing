@@ -13,7 +13,7 @@
   },
   levelData: {
     maze: {
-      theme: 'plains',
+      theme: 'lava',
       width: 7,
       height: 7,
       walls: {
