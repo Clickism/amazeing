@@ -115,7 +115,7 @@ export const SUPPORTED_THEMES: Record<string, Extension> = {
   oneDark,
 };
 
-const LIGHT_THEMES: Record<string, boolean> = {
+export const LIGHT_THEMES: Record<string, boolean> = {
   vscodeLight: true,
   githubLight: true,
   bbedit: true,
@@ -153,4 +153,8 @@ export function getEditorTheme(
 
 export function getDefaultEditorTheme(colorScheme: ColorScheme): EditorTheme {
   return colorScheme === "dark" ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
+}
+
+export function isLightTheme(themeName: string): boolean {
+  return LIGHT_THEMES[themeName];
 }
