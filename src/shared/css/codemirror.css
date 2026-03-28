@@ -172,3 +172,36 @@
 .documentation .tok-variableName {
   color: var(--label-color);
 }
+
+/* Variable hover */
+.cm-tooltip-hover:has(.cm-variable-hover) {
+  background-color: var(--clr-surface-a10);
+  border-radius: .5rem !important;
+  padding: .25rem .5rem;
+  box-shadow: var(--surface-shadow-light);
+}
+
+.cm-tooltip-hover:has(.cm-variable-hover) .cm-tooltip-arrow::before {
+  border-bottom-color: var(--clr-surface-a10);
+}
+
+.cm-variable-hover .header {
+  margin: 0 0 2px;
+  border-bottom-color: var(--clr-surface-a30);
+}
+
+.cm-variable-hover .content {
+  font-weight: bold;
+}
+
+.cm-variable-has-value > * {
+}
+
+.cm-variable-has-value {
+  cursor: help;
+}
+
+.cm-variable-has-value:hover {
+  text-decoration: underline dotted;
+}
+

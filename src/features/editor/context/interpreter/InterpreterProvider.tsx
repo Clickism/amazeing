@@ -109,8 +109,18 @@ export function InterpreterProvider({
       reset,
       isRunning,
       currentLine: snapshot.line,
+      variables: snapshot.variables,
     }),
-    [canStep, isRunning, reset, run, snapshot.line, step, stop],
+    [
+      canStep,
+      isRunning,
+      reset,
+      run,
+      snapshot.line,
+      snapshot.variables,
+      step,
+      stop,
+    ],
   );
 
   const gameValue = useMemo<GameContextType>(

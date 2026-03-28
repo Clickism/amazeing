@@ -37,7 +37,7 @@
     {
       type: 'max-instruction-count',
       instruction: 'move',
-      count: 1,
+      count: 2,
     },
   ]
 }

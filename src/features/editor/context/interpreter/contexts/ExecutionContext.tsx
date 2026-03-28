@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import type { VariableMap } from "../../../../../core/interpreter/environment.ts";
 
 export type ExecutionContextType = {
   // Interpreter controls
@@ -9,6 +10,7 @@ export type ExecutionContextType = {
   reset: () => void;
   isRunning: boolean;
   currentLine: number | null;
+  variables: VariableMap;
 };
 
 export const ExecutionContext = createContext<ExecutionContextType | null>(

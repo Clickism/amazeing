@@ -29,7 +29,7 @@ export const amazeing = StreamLanguage.define({
       if (/^\$\w+$/.test(word)) return "string";
       if (/^\d+$/.test(word)) return "number";
       if (constantPattern.test(word)) return "number";
-      return null;
+      return "content";
     }
     // Operators
     if (stream.match(/[=+\-*/:[\]]/)) return "operator";
@@ -38,6 +38,6 @@ export const amazeing = StreamLanguage.define({
     // Strings
     if (stream.match(/^".*"/)) return "string";
     stream.next();
-    return null;
+    return "content";
   },
 });

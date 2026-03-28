@@ -1,6 +1,6 @@
 import type { InstructionData } from "./instruction.ts";
 import { ErrorWithTip, LocatableError } from "./error.ts";
-import { Environment } from "./environment.ts";
+import { Environment, type VariableMap } from "./environment.ts";
 import { type ConsoleMessage, InterpreterConsole } from "./console.ts";
 import { EXECUTORS } from "./executor.ts";
 import { type OwlData } from "../game/owl.ts";
@@ -22,6 +22,7 @@ export type InterpreterSnapshot = {
   line: number | null;
   output: readonly ConsoleMessage[];
   isFinished: boolean;
+  variables: VariableMap;
 };
 
 /**
@@ -185,6 +186,7 @@ export class Interpreter {
       line: this.currentLine(),
       output: [...this.console.output],
       isFinished: this.isFinished,
+      variables: this.env.variableMap(),
     };
   }
 
@@ -254,6 +256,7 @@ export function emptySnapshot(level: Level): InterpreterSnapshot {
     line: null,
     output: [],
     isFinished: false,
+    variables: new Map(),
   };
 }
 

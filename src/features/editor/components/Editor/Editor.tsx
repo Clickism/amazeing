@@ -27,6 +27,7 @@ import { useGame } from "../../context/interpreter/contexts/GameContext.tsx";
 import type { PanelMinWidths } from "../CodeEditorWithPanel/CodeEditorWithPanel.tsx";
 import { useExecution } from "../../context/interpreter/contexts/ExecutionContext.tsx";
 import { useBreakpoints } from "../../context/interpreter/contexts/BreakpointsContext.tsx";
+import { variableHighlight, variableHover } from "../../../../core/amazeing/variableHover.ts";
 
 export const MIN_RUN_SPEED = 1;
 export const MAX_RUN_SPEED = 100;
@@ -124,7 +125,7 @@ function CodeEditorWrapper({
 }) {
   const { isMultiSource } = useSourceType();
   const { breakpoints, setBreakpoints } = useBreakpoints();
-  const { isRunning, currentLine } = useExecution();
+  const { isRunning, currentLine, variables } = useExecution();
   const { settings } = useEditorSettings();
   const transitionDuration = getTransitionSpeed(
     isRunning,
@@ -144,6 +145,8 @@ function CodeEditorWrapper({
     }),
     breakpointDisplay(breakpoints),
     breakpointTheme,
+    variableHover(variables),
+    variableHighlight(variables),
   ];
 
   return isMultiSource ? (

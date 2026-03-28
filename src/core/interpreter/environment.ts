@@ -319,6 +319,24 @@ export class Environment {
     return this.stack.pop();
   }
 
+  /**
+   * Gets the current variable map used
+   */
+  variableMap(): VariableMap {
+    if (this.stack.length === 0) return new Map();
+    const currentFrame = this.stack[this.stack.length - 1];
+
+    // Copy args and current stack frame
+    const map = new Map();
+    for (const [name, value] of currentFrame.variables) {
+      map.set(name, value);
+    }
+    for (const [name, value] of this.args) {
+      map.set(name, value);
+    }
+    return map;
+  }
+
   private getArrayValue(address: ArrayAccess): Value | null | undefined {
     const array = this.getArray(address.array);
     // Get index

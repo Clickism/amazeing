@@ -269,7 +269,7 @@ function genericLogicalExecutor(
  * Formats a value
  * @param value variable value
  */
-function formatValue(value: VariableValue): string {
+export function formatValue(value: VariableValue): string {
   if (!Array.isArray(value)) {
     return value?.toString() ?? "?";
   }
