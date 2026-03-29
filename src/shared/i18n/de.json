@@ -14,6 +14,8 @@
   "codeEditor.files": "Dateien",
   "codeEditor.tasks": "Aufgaben",
 
+  "codeEditor.formatCode": "Code formatieren",
+
   "codeEditor.resetCode": "Code zurücksetzen",
   "codeEditor.resetCode.confirm": "Bist du sicher, dass du deinen Code für diese Aufgabe zurücksetzen möchtest? Alle Codeänderungen gehen verloren.",
   "codeEditor.resetCode.confirm.cannotUndo": "Dies kann nicht rückgängig gemacht werden.",

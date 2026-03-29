@@ -14,6 +14,8 @@
   "codeEditor.files": "Files",
   "codeEditor.tasks": "Tasks",
 
+  "codeEditor.formatCode": "Format Code",
+
   "codeEditor.resetCode": "Reset Code",
   "codeEditor.resetCode.confirm": "Are you sure you want to reset your code for this task? All code changes will be lost.",
   "codeEditor.resetCode.confirm.cannotUndo": "This action cannot be undone.",

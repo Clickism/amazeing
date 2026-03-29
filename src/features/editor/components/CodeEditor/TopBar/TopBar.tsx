@@ -3,15 +3,17 @@ import { CodeEditorSettings } from "./CodeEditorSettings/CodeEditorSettings.tsx"
 import { Fragment, type ReactNode } from "react";
 import styles from "./TopBar.module.css";
 import clsx from "clsx";
+import { CodeFormat } from "./CodeFormat/CodeFormat.tsx";
 
 export type TopBarProps = {
   title?: string;
   left?: ReactNode[];
   right?: ReactNode[];
   settingsButton?: boolean;
+  formatButton?: boolean;
 };
 
-export function TopBar({ title, left, right, settingsButton }: TopBarProps) {
+export function TopBar({ title, left, right, settingsButton, formatButton }: TopBarProps) {
   return (
     <div className={styles.topBar}>
       <div className={styles.left}>
@@ -29,6 +31,7 @@ export function TopBar({ title, left, right, settingsButton }: TopBarProps) {
           <Fragment key={i}>{item}</Fragment>
         ))}
       </div>
+      {formatButton && <CodeFormat />}
       {settingsButton && <CodeEditorSettings />}
     </div>
   );
