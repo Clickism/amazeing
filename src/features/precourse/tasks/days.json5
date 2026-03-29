@@ -23,10 +23,11 @@
     null,
     "day3/roundabout",
     null,
-    "day3/hansel_and_gretel",
+    "day3/bits_and_pieces",
     null,
     "day3/dead_end_filling",
-    "day3/queue", // Add where?
+    "day3/queue",
+    null,
     null,
     null,
     "day3/bonus/depth_first_search",
