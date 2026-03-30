@@ -18,13 +18,7 @@ body, html, #root {
   width: 100%;
   height: 100%;
   overscroll-behavior: none;
-  overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  body, html, #root {
-    overflow: auto;
-  }
+  overflow: auto;
 }
 
 *,
@@ -120,5 +114,3 @@ h6.fancy-headers {
   padding-bottom: 4px;
   border-bottom: 1px solid var(--clr-surface-a10);
 }
-
-
