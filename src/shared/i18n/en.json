@@ -45,6 +45,7 @@
   "viewport.notRequired": "The maze is not required to solve this task",
 
   "editor.run": "Run",
+  "editor.restart": "Restart",
   "editor.continue": "Continue",
   "editor.stop": "Stop",
   "editor.step": "Step",

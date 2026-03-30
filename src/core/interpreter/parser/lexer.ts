@@ -80,6 +80,15 @@ export class Lexer {
         return this.readIdentifier();
       }
 
+      // Negative number
+      if (c === "-") {
+        const nextChar = this.peek(1);
+        if (nextChar && isDigit(nextChar)) {
+          this.pop();
+          return this.readNumber(true);
+        }
+      }
+
       // Number
       if (isDigit(c)) {
         return this.readNumber();
@@ -123,12 +132,12 @@ export class Lexer {
     return { type: "identifier", value };
   }
 
-  private readNumber(): Token {
+  private readNumber(isNegative = false): Token {
     let value = "";
     while (this.peek() != null && isDigit(this.peek()!)) {
       value += this.pop();
     }
-    return { type: "number", value: Number(value) };
+    return { type: "number", value: Number(value) * (isNegative ? -1 : 1) };
   }
 
   private readChar(): Token {

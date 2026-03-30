@@ -48,11 +48,16 @@ export function ExecutionControls() {
         </Button>
       ) : (
         <Button
-          variant={canStep ? "success" : "disabled"}
-          disabled={!canStep}
-          onClick={run}
+          variant={canStep ? "success" : "secondary"}
+          onClick={() => {
+            if (!canStep) {
+              reset();
+            }
+            run();
+          }}
         >
-          <VscDebugContinue /> {isMobile ? "" : t("editor.run")}
+          {canStep ? <VscDebugContinue /> : <VscDebugRestart />}{" "}
+          {isMobile ? "" : canStep ? t("editor.run") : t("editor.restart")}
         </Button>
       )}
       <ExecutionSettings />
