@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
-import react, { reactCompilerPreset } from "@vitejs/plugin-react";
-import babel from "@rolldown/plugin-babel"
+import react from "@vitejs/plugin-react";
 import * as child from "child_process";
 
 const commitHash = child
@@ -14,9 +13,6 @@ export default defineConfig({
     __COMMIT_HASH__: JSON.stringify(commitHash),
   },
   plugins: [
-    react(),
-    babel({
-      presets: [reactCompilerPreset()]
-    }),
+    react({ compiler: true }),
   ],
 });
